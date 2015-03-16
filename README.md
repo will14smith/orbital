@@ -1,4 +1,8 @@
-archery
+Archery record management
 =======
 
-A Symfony project created on March 16, 2015, 4:12 pm.
+This app will manage all the records, etc for imperial college archery club
+
+[Features List](https://docs.google.com/a/document/d/1SYdeFXvhFkSVrO89gYwYxv4SR7Yko9fi2o-PIjWWkHw)
+
+[DB Layout](https://docs.google.com/a/spreadsheets/d/1ZJVwgVtGbudxe12c2bmcbQpDwJRgHKISKUP4HH30N_E)
