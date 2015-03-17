@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    List of people...
+
+    {% if is_granted('ROLE_ADMIN') %}
+        | <a href="{{ url('person_import') }}">Import</a>
+        | <a href="{{ url('person_create') }}">Create</a>
+    {% endif %}
+
+    <ul>
+        {% for person in people %}
+            <li>
+                <a href="{{ url('person_detail', { 'id': person.id }) }}">{{ person.name }}</a>
+                {% if is_granted('ROLE_ADMIN') %}
+                    | <a href="{{ url('person_edit', { 'id': person.id }) }}">Edit</a>
+                    | <a href="{{ url('person_delete', { 'id': person.id }) }}">Delete</a>
+                {% endif %}
+            </li>
+        {% else %}
+            <li>No People :(</li>
+        {% endfor %}
+    </ul>
+{% endblock %}
