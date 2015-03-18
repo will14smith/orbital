@@ -1,0 +1,15 @@
+{
+  "name": "orbital",
+  "version": "0.0.0",
+  "homepage": "https://github.com/ICAC/records-app",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "fontawesome": "~4.3.0"
+  }
+}

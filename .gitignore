@@ -9,4 +9,12 @@
 /composer.phar
 /vendor/
 /web/bundles/
-.idea/
+
+/.idea/
+
+/assets/bower_components/
+/assets/node_modules/
+/assets/.sass-cache/
+/web/css/
+/web/fonts/
+/web/js/

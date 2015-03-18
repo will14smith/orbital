@@ -1,0 +1,128 @@
+@import "color";
+@import "variables";
+@import "layout";
+@import "mixins";
+@import "structure";
+
+@import "compass/support";
+@import "compass/css3/background-size";
+
+@import "font-awesome";
+
+body {
+  background-color: map-get($color-grey, '50');
+  height: auto;
+  min-height: 100%;
+}
+
+$link-color: map-get($primary-color-palette, '500');
+$link-hover-color: map-get($primary-color-palette, '300');
+$link-active-color:  map-get($primary-color-palette, '700');
+
+a {
+  color: $link-color; 
+  text-decoration: none;
+  
+  &:hover {
+    color: $link-hover-color;
+  }
+  
+  .active {
+    color: $link-active-color;
+  }
+}
+
+.text-muted {
+  color: map-get($color-grey, '500');
+  
+  a {
+    color: $link-active-color;
+    
+    &:hover {
+      color: $link-color;
+    }
+  }
+}
+
+// header
+header.page-header {
+  @import "menu";
+}
+@import "menu-collapse";
+
+// content
+#primary {
+
+  .card {
+    @extend .md-shadow-bottom-z-1;
+
+    margin: $layout-gutter-width;
+    padding: $layout-gutter-width;
+    background-color: $background-color-base;
+  }
+}
+
+p:first-child {
+  margin-top: 0;
+}
+
+.entry-title {
+  margin: 0;
+}
+
+.archive-header {
+  margin-left: $layout-gutter-width;
+}
+
+.navigation {
+  margin-top: -($layout-gutter-width/2);
+  margin-left: $layout-gutter-width;
+  margin-right: $layout-gutter-width;
+
+  .nav-previous {
+    
+  }
+  
+  .nav-next {
+    text-align: right;
+  }
+}
+
+// widgets
+#secondary {
+  padding: $layout-gutter-width;
+}
+
+.widget {
+  font-size: $h5-font-size-base;
+  
+  .widget-title {
+    margin-bottom: 0;
+  }
+  &:first-child .widget-title {
+    margin-top: 0;
+  }
+
+  
+  ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+  
+    li {
+      padding: ($layout-gutter-width/2) 0;
+
+      border-top: 1px solid map-get($color-grey, '200');
+      
+      &:first-child {
+        border-top: none;
+      }
+    }
+  }
+}
+
+// footer
+footer.page-footer {
+  padding: $layout-gutter-width;
+}
+
