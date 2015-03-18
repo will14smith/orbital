@@ -1,8 +1,7 @@
 {% block form_row %}
     {% spaceless %}
         <div class="form-row">
-            {% if form.vars.widget|default('') == 'choice' %}
-                {# TODO #}
+            {% if compound %}
                 {{ form_label(form) }}
                 {{ form_widget(form, {'attr': {'flex': true, 'flex-order': 2}}) }}
                 {{ form_errors(form) }}

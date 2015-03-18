@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>{{ round.name }}</h1>
+
+    {% if is_granted('ROLE_ADMIN') %}
+        <a href="{{ url('round_edit', { 'id': round.id }) }}">Edit</a>
+        | <a href="{{ url('round_delete', { 'id': round.id }) }}">Delete</a>
+    {% endif %}
+
+    {% for target in round.targets %}
+    <p>
+        {{ target.distanceValue }}
+    </p>
+    {% endfor %}
+{% endblock %}

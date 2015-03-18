@@ -3,7 +3,7 @@
 (function($) {
 
     $(function() {
-        $('.form-input').each(function() {
+        function connect() {
             var $this = $(this);
 
             // toggle the menu on click
@@ -13,13 +13,20 @@
             updateClass();
 
             function updateClass() {
-                if($this.val() != '') {
+                if($this.val() != '' || $this.prop("tagName") == 'SELECT') {
                     $this.addClass('with-value')
                 } else {
                     $this.removeClass('with-value')
                 }
             }
-        });
+        }
+
+        $('.form-input').each(connect);
+
+        $.fn.input_connect = function() {
+            $('.form-input', this).each(connect);
+            return this;
+        }
     });
 
 })(jQuery);

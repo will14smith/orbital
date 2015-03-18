@@ -7,6 +7,7 @@
 
 <ul id="menu-main-menu" class="menu" layout="row">
     <li><a href="{{ url('homepage') }}" flex>Home</a></li>
+    <li><a href="{{ url('round_list') }}" flex>Rounds</a></li>
     <li><a href="{{ url('club_list') }}" flex>Clubs</a></li>
     <li><a href="{{ url('person_list') }}" flex>People</a></li>
     {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
