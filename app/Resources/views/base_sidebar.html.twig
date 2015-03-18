@@ -1,3 +1,4 @@
+{% set hide_login = true %}
 {% extends 'base.html.twig' %}
 
 {% block content %}
@@ -11,7 +12,22 @@
 
     <div id="secondary" flex-gt-md="25" role="complementary">
         {% block sidebar %}
+            <div class="widget">
+                {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+                    <h3 class="widget-title">{{ app.user.displayName }}</h3>
+                    <ul>
+                        <li><a href="{{ url('person_detail', { 'id': app.user.id }) }}">View my Profile</a></li>
+                        <li><a href="{{ url('logout') }}">Logout</a></li>
+                    </ul>
+                {% else %}
+                    <h3 class="widget-title">Login</h3>
 
+                    <ul>
+                        <li><a href="{{ url('login') }}">Login</a></li>
+                        <li>TODO: A form</li>
+                    </ul>
+                {% endif %}
+            </div>
         {% endblock %}
     </div>
 {% endblock %}

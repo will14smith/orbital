@@ -90,7 +90,7 @@ class Person implements UserInterface
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -113,7 +113,7 @@ class Person implements UserInterface
     /**
      * Get name
      *
-     * @return string 
+     * @return string
      */
     public function getName()
     {
@@ -136,11 +136,20 @@ class Person implements UserInterface
     /**
      * Get name_preferred
      *
-     * @return string 
+     * @return string
      */
     public function getNamePreferred()
     {
         return $this->name_preferred;
+    }
+
+    public function getDisplayName()
+    {
+        if($this->name_preferred) {
+            return $this->name_preferred;
+        }
+
+        return $this->name;
     }
 
     /**
@@ -159,7 +168,7 @@ class Person implements UserInterface
     /**
      * Get agb_number
      *
-     * @return string 
+     * @return string
      */
     public function getAgbNumber()
     {
@@ -182,7 +191,7 @@ class Person implements UserInterface
     /**
      * Get cid
      *
-     * @return string 
+     * @return string
      */
     public function getCid()
     {
@@ -205,7 +214,7 @@ class Person implements UserInterface
     /**
      * Get cuser
      *
-     * @return string 
+     * @return string
      */
     public function getCuser()
     {
@@ -228,7 +237,7 @@ class Person implements UserInterface
     /**
      * Get email
      *
-     * @return string 
+     * @return string
      */
     public function getEmail()
     {
@@ -251,7 +260,7 @@ class Person implements UserInterface
     /**
      * Get password
      *
-     * @return string 
+     * @return string
      */
     public function getPassword()
     {
@@ -274,7 +283,7 @@ class Person implements UserInterface
     /**
      * Get mobile
      *
-     * @return string 
+     * @return string
      */
     public function getMobile()
     {
@@ -297,7 +306,7 @@ class Person implements UserInterface
     /**
      * Get gender
      *
-     * @return string 
+     * @return string
      */
     public function getGender()
     {
@@ -320,7 +329,7 @@ class Person implements UserInterface
     /**
      * Get date_of_birth
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getDateOfBirth()
     {
@@ -343,7 +352,7 @@ class Person implements UserInterface
     /**
      * Get skill
      *
-     * @return string 
+     * @return string
      */
     public function getSkill()
     {
@@ -366,7 +375,7 @@ class Person implements UserInterface
     /**
      * Get bowtype
      *
-     * @return string 
+     * @return string
      */
     public function getBowtype()
     {
@@ -389,7 +398,7 @@ class Person implements UserInterface
     /**
      * Get club_bow
      *
-     * @return string 
+     * @return string
      */
     public function getClubBow()
     {
@@ -412,7 +421,7 @@ class Person implements UserInterface
     /**
      * Get admin
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getAdmin()
     {
@@ -437,7 +446,7 @@ class Person implements UserInterface
      */
     public function getRoles()
     {
-        if($this->admin) {
+        if ($this->admin) {
             return ['ROLE_ADMIN'];
         } else {
             return ['ROLE_USER'];
@@ -482,7 +491,7 @@ class Person implements UserInterface
     /**
      * Get salt
      *
-     * @return string 
+     * @return string
      */
     public function getSalt()
     {
