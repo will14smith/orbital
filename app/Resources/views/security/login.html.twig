@@ -6,17 +6,15 @@
     {% endif %}
 
     <form action="{{ path('login_check') }}" method="post">
-        <label for="username">Username:</label>
-        <input type="text" id="username" name="_username" value="{{ last_username }}" />
+        <div class="form-row">
+            <input type="text" class="form-input" id="username" name="_username" value="{{ last_username }}"/>
+            <label for="username">Username</label>
+        </div>
 
-        <label for="password">Password:</label>
-        <input type="password" id="password" name="_password" />
-
-        {#
-            If you want to control the URL the user
-            is redirected to on success (more details below)
-            <input type="hidden" name="_target_path" value="/account" />
-        #}
+        <div class="form-row">
+            <input class="form-input" type="password" id="password" name="_password"/>
+            <label for="password">Password</label>
+        </div>
 
         <button type="submit">login</button>
     </form>
