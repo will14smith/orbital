@@ -19,3 +19,5 @@
 /web/fonts/
 /web/images/
 /web/js/
+
+*.php~

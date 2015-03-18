@@ -19,7 +19,11 @@ class Person implements UserInterface
      */
     protected $id;
 
-    //TODO $club
+    /**
+     * @ORM\ManyToOne(targetEntity="Club", inversedBy="members")
+     */
+    protected $club;
+
 
     /**
      * @ORM\Column(type="string", length=200)
@@ -496,5 +500,28 @@ class Person implements UserInterface
     public function getSalt()
     {
         return $this->salt;
+    }
+
+    /**
+     * Set club
+     *
+     * @param \AppBundle\Entity\Club $club
+     * @return Person
+     */
+    public function setClub(\AppBundle\Entity\Club $club = null)
+    {
+        $this->club = $club;
+
+        return $this;
+    }
+
+    /**
+     * Get club
+     *
+     * @return \AppBundle\Entity\Club 
+     */
+    public function getClub()
+    {
+        return $this->club;
     }
 }
