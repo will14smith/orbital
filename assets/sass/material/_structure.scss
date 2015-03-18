@@ -192,13 +192,13 @@ input {
   border-radius: 50%;
   &.md-ripple-placed {
     transition: left 0.9s $swift-ease-out-timing-function,
-                top 0.9s $swift-ease-out-timing-function,
-                margin 0.65s $swift-ease-out-timing-function,
-                border 0.65s $swift-ease-out-timing-function,
-                width 0.65s $swift-ease-out-timing-function,
-                height 0.65s $swift-ease-out-timing-function,
-                opacity 0.65s $swift-ease-out-timing-function,
-                transform 0.65s $swift-ease-out-timing-function;
+    top 0.9s $swift-ease-out-timing-function,
+    margin 0.65s $swift-ease-out-timing-function,
+    border 0.65s $swift-ease-out-timing-function,
+    width 0.65s $swift-ease-out-timing-function,
+    height 0.65s $swift-ease-out-timing-function,
+    opacity 0.65s $swift-ease-out-timing-function,
+    transform 0.65s $swift-ease-out-timing-function;
   }
   &.md-ripple-scaled {
     transform: scale(1);
@@ -217,10 +217,8 @@ md-tab {
       border-style: solid;
       opacity: 0.20;
       transform: none !important;
-      &.md-ripple-placed {
-      }
-      &.md-ripple-scaled {
-      }
+      &.md-ripple-placed {}
+      &.md-ripple-scaled {}
       &.md-ripple-active, &.md-ripple-full, &.md-ripple-visible {
         opacity: 0.20;
       }
@@ -228,3 +226,34 @@ md-tab {
   }
 }
 
+@function map-to-string($map) {
+  $map-str: '{';
+  $keys: map-keys($map);
+  $len: length($keys);
+  @for $i from 1 through $len {
+    $key: nth($keys, $i);
+    $value: map-get($map, $key);
+    $map-str: $map-str + '_' + $key + '_: _' + map-get($map, $key) + '_';
+    @if $i != $len {
+      $map-str: $map-str + ',';
+    }
+  }
+  @return $map-str + '}';
+}
+.md-color-palette-definition {
+  $content-rule: '{';
+  $map-str: '';
+  $keys: map-keys($colors);
+  $len: length($keys);
+  @for $i from 1 through $len {
+    $key: nth($keys, $i);
+    $value: map-get($colors, $key);
+    $content-rule: $content-rule + '_' + $key + '_: ' + map-to-string($value);
+    @if $i != $len {
+      $content-rule: $content-rule + ',';
+    }
+  }
+  $content-rule: $content-rule + '}';
+  background-image: url("data:image/svg+xml;utf8,#{$content-rule}");
+  display: none;
+}

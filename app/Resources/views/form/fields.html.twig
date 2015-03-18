@@ -1,0 +1,16 @@
+{% block form_row %}
+    {% spaceless %}
+        <div class="form-row">
+            {% if form.vars.widget|default('') == 'choice' %}
+                {# TODO #}
+                {{ form_label(form) }}
+                {{ form_widget(form, {'attr': {'flex': true, 'flex-order': 2}}) }}
+                {{ form_errors(form) }}
+            {% else %}
+                {{ form_widget(form, {'attr': {'class':'form-input'}}) }}
+                {{ form_label(form) }}
+                {{ form_errors(form) }}
+            {% endif %}
+        </div>
+    {% endspaceless %}
+{% endblock form_row %}

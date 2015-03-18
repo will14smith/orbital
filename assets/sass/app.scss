@@ -1,13 +1,15 @@
-@import "color";
-@import "variables";
-@import "layout";
-@import "mixins";
-@import "structure";
+@import "material/color";
+@import "material/variables";
+@import "material/layout";
+@import "material/mixins";
+@import "material/structure";
 
 @import "compass/support";
 @import "compass/css3/background-size";
 
 @import "font-awesome";
+
+@import "forms";
 
 body {
   background-color: map-get($color-grey, '50');

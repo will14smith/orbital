@@ -1,0 +1,84 @@
+$input-container-padding: 2px !default;
+
+$input-label-default-offset: 24px !default;
+$input-label-default-scale: 1.0 !default;
+$input-label-float-offset: 4px !default;
+$input-label-float-scale: 0.75 !default;
+
+$input-border-width-default: 1px !default;
+$input-border-width-focused: 2px !default;
+$input-line-height: 26px !default;
+$input-padding-top: 2px !default;
+
+$input-error-font-size: 12px !default;
+$input-error-height: 24px !default;
+
+form {
+  .form-row {
+    display: flex;
+    position: relative;
+    flex-direction: column;
+    padding: $input-container-padding;
+    padding-bottom: $input-container-padding + $input-error-height;
+
+    textarea,
+    input[type="text"],
+    input[type="password"],
+    input[type="datetime"],
+    input[type="datetime-local"],
+    input[type="date"],
+    input[type="month"],
+    input[type="time"],
+    input[type="week"],
+    input[type="number"],
+    input[type="email"],
+    input[type="url"],
+    input[type="search"],
+    input[type="tel"],
+    input[type="color"] {
+      /* remove default appearance from all input/textarea */
+      -moz-appearance: none;
+      -webkit-appearance: none;
+    }
+    textarea {
+      resize: none;
+      overflow: hidden;
+    }
+
+    .form-input + label {
+      order: 1;
+      pointer-events: none;
+      -webkit-font-smoothing: antialiased;
+      padding-left: $input-container-padding;
+      z-index: 1;
+      transform: translate3d(0, $input-label-default-offset, 0) scale($input-label-default-scale);
+      transform-origin: left top;
+      transition: all $swift-ease-out-timing-function 0.25s;
+    }
+
+    .form-input {
+      flex: 1;
+      order: 2;
+      display: block;
+
+      background: none;
+      padding-top: $input-padding-top;
+      padding-bottom: $input-border-width-focused - $input-border-width-default;
+      border-width: 0 0 $input-border-width-default 0;
+      line-height: $input-line-height;
+      -ms-flex-preferred-size: $input-line-height; //IE fix
+
+      &:focus {
+        outline: none;
+      }
+    }
+
+    .form-input:focus,
+    .form-input.with-value {
+      & + label {
+        transform: translate3d(0, $input-label-float-offset, 0) scale($input-label-float-scale);
+      }
+    }
+
+  }
+}
