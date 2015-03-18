@@ -1,5 +1,6 @@
-var gulp = require('gulp'),     
+var gulp = require('gulp'), 
     sass = require('gulp-ruby-sass'),
+    concat = require('gulp-concat'),
     notify = require("gulp-notify"),
     bower = require('gulp-bower');
 
@@ -11,6 +12,11 @@ gulp.task('bower', function() { 
 gulp.task('icons', function() { 
     return gulp.src('./bower_components/fontawesome/fonts/**.*') 
         .pipe(gulp.dest('../web/fonts')); 
+});
+
+gulp.task('images', function() { 
+    return gulp.src('./images/**.*') 
+        .pipe(gulp.dest('../web/images')); 
 });
 
 gulp.task('css', function() { 
@@ -28,9 +34,23 @@ gulp.task('css', function() { 
     .pipe(gulp.dest('../web/css')); 
 });
 
-gulp.task('watch', function() {
-     gulp.watch('./sass/**/*.scss', ['css']); 
+gulp.task('js', function() {
+  return gulp.src(['js/**/*.js', '!js/head/**/*.js'])
+	.pipe(concat('app.js'))
+	.pipe(gulp.dest('../web/js'));
+});
+gulp.task('js-head', function() {
+    return gulp.src(['js/head/jquery-2.1.3.js', 'js/head/**/*.js'])
+        .pipe(concat('head.js'))
+        .pipe(gulp.dest('../web/js'));
 });
 
-gulp.task('default', ['bower', 'icons', 'css']);
+gulp.task('watch', function() {
+     gulp.watch('./images/**/*', ['images']); 
+     gulp.watch('./sass/**/*.scss', ['css']); 
+     gulp.watch('./js/**/*.js', ['js']); 
+    gulp.watch('./js/head/**/*.js', ['js-head']); 
+});
+
+gulp.task('default', ['bower', 'icons', 'images', 'css', 'js', 'js-head']);
 

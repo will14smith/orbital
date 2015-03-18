@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block content %}
+    <div id="primary" flex-gt-md="75">
+        <div class="card">
+            {% block body %}
+
+            {% endblock %}
+        </div>
+    </div>
+
+    <div id="secondary" flex-gt-md="25" role="complementary">
+        {% block sidebar %}
+
+        {% endblock %}
+    </div>
+{% endblock %}

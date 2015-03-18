@@ -3,9 +3,9 @@
 
 namespace AppBundle\Form;
 
-use AppBundle\Enum\BowType;
-use AppBundle\Enum\Gender;
-use AppBundle\Enum\Skill;
+use AppBundle\Services\Enum\BowType;
+use AppBundle\Services\Enum\Gender;
+use AppBundle\Services\Enum\Skill;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;

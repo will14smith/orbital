@@ -1,0 +1,20 @@
+{# menu #}
+{# current-menu-item #}
+{# menu-item-has-children #}
+{# sub-menu #}
+
+<ul id="menu-main-menu" class="menu" layout="row">
+    <li><a href="{{ url('homepage') }}" flex>Home</a></li>
+    <li><a href="{{ url('person_list') }}" flex>People</a></li>
+    {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+        <li class="menu-item-has-children">
+            <a href="#" flex>{{ app.user.namePreferred|default(app.user.name) }}</a>
+            <ul class="sub-menu">
+                <li><a href="{{ url('person_detail', { 'id': app.user.id }) }}" flex>View my Profile</a></li>
+                <li><a href="{{ url('logout') }}" flex>Logout</a></li>
+            </ul>
+        </li>
+    {% else %}
+        <li><a href="{{ url('login') }}">Login</a></li>
+    {% endif %}
+</ul>
