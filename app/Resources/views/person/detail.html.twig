@@ -1,10 +1,14 @@
-<h1>{{ person.name }}</h1>
+{% extends 'base.html.twig' %}
 
-{% if is_granted('ROLE_ADMIN') %}
-    <a href="{{ url('person_edit', { 'id': person.id }) }}">Edit</a>
-    | <a href="{{ url('person_delete', { 'id': person.id }) }}">Delete</a>
-{% endif %}
+{% block body %}
+    <h1>{{ person.name }}</h1>
 
-<p>
-    TODO add the fields!
-</p>
+    {% if is_granted('ROLE_ADMIN') %}
+        <a href="{{ url('person_edit', { 'id': person.id }) }}">Edit</a>
+        | <a href="{{ url('person_delete', { 'id': person.id }) }}">Delete</a>
+    {% endif %}
+
+    <p>
+        TODO add the fields!
+    </p>
+{% endblock %}

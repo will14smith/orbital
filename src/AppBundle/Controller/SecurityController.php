@@ -6,7 +6,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
-class SecurityController extends Controller {
+class SecurityController extends Controller
+{
     /**
      * @Route("/login", name="login")
      */
@@ -25,7 +26,7 @@ class SecurityController extends Controller {
             array(
                 // last username entered by the user
                 'last_username' => $lastUsername,
-                'error'         => $error,
+                'error' => $error,
             )
         );
     }
@@ -34,6 +35,15 @@ class SecurityController extends Controller {
      * @Route("/login/check", name="login_check")
      */
     public function loginCheckAction()
+    {
+        // this controller will not be executed,
+        // as the route is handled by the Security system
+    }
+
+    /**
+     * @Route("/logout", name="logout")
+     */
+    public function logoutAction()
     {
         // this controller will not be executed,
         // as the route is handled by the Security system
