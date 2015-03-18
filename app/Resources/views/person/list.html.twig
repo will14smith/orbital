@@ -11,7 +11,10 @@
                     <a href="{{ url('person_delete', { 'id': person.id }) }}"><i class="fa fa-trash-o"></i></a>
                     <a href="{{ url('person_edit', { 'id': person.id }) }}"><i class="fa fa-pencil"></i></a>
                 {% endif %}
-                <a href="{{ url('person_detail', { 'id': person.id }) }}">{{ person.name }}</a>
+                <a href="{{ url('person_detail', { 'id': person.id }) }}">
+                    {{ person.name }}
+                    {% if person.namePreferred %}({{ person.namePreferred }}){% endif %}
+                </a>
             </li>
         {% else %}
             <li>No People :(</li>

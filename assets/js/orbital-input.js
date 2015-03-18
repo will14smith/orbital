@@ -6,6 +6,12 @@
         function connect() {
             var $this = $(this);
 
+            if($this.prop("tagName") == 'SELECT'
+                || $this.attr('type') == 'file') {
+                $this.addClass('with-value');
+                return;
+            }
+
             // toggle the menu on click
             $this.on('change', function() {
                 updateClass()
@@ -13,7 +19,7 @@
             updateClass();
 
             function updateClass() {
-                if($this.val() != '' || $this.prop("tagName") == 'SELECT') {
+                if($this.val() != '') {
                     $this.addClass('with-value')
                 } else {
                     $this.removeClass('with-value')
