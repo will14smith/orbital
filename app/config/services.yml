@@ -4,6 +4,10 @@ parameters:
 #    parameter_name: value
 
 services:
-    pam_authenticator:
-        class: AppBundle\Security\PamAuthenticator
+    orbital.authenticator:
+        class: AppBundle\Services\Security\PamAuthenticator
         arguments: ["@security.password_encoder", "@doctrine"]
+
+    orbital.person_importer:
+        class: AppBundle\Services\Importing\PersonImporter
+        arguments: ["@doctrine"]

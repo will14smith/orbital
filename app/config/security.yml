@@ -29,7 +29,7 @@ security:
             anonymous:                  true
 
             simple_form:
-                authenticator: pam_authenticator
+                authenticator: orbital.authenticator
                 check_path:    login_check
                 login_path:    login
 

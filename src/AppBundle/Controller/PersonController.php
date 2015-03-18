@@ -6,6 +6,7 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Person;
 use AppBundle\Form\PersonType;
+use AppBundle\Services\Importing\PersonImportParameters;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -31,9 +32,25 @@ class PersonController extends Controller
      * @Security("has_role('ROLE_ADMIN')")
      * @Route("/person/import", name="person_import")
      */
-    public function importAction()
+    public function importAction(Request $request)
     {
+        $importParameters = new PersonImportParameters();
+        $form = $this->createFormBuilder($importParameters)
+            ->add('file', 'file')
+            ->getForm();
 
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $importer = $this->get('orbital.person_importer');
+            $importer->import($importParameters);
+
+            return $this->redirectToRoute('person_list');
+        }
+
+        return $this->render('person/import.html.twig', array(
+            'form' => $form->createView(),
+        ));
     }
 
     /**
@@ -129,7 +146,7 @@ class PersonController extends Controller
             );
         }
 
-        if($request->isMethod("POST")) {
+        if ($request->isMethod("POST")) {
             //TODO probably shouldn't ever delete people...
             $em->remove($person);
             $em->flush();

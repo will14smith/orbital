@@ -1,7 +1,7 @@
 <?php
 
 
-namespace AppBundle\Enum;
+namespace AppBundle\Services\Enum;
 
 
 class Skill {

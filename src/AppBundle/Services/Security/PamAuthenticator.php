@@ -1,15 +1,13 @@
 <?php
 
 
-namespace AppBundle\Security;
+namespace AppBundle\Services\Security;
 
 
 use AppBundle\Entity\Person;
-use AppBundle\Entity\PersonRepository;
-use AppBundle\Enum\Skill;
+use AppBundle\Services\Enum\Skill;
 use Doctrine\Bundle\DoctrineBundle\Registry;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Intl\Exception\NotImplementedException;
 use Symfony\Component\Security\Core\Authentication\SimpleFormAuthenticatorInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
