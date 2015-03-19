@@ -524,4 +524,12 @@ class Person implements UserInterface
     {
         return $this->club;
     }
+
+    public function __toString() {
+        if($this->name_preferred){
+            return sprintf('%s (%s)', $this->name, $this->name_preferred);
+        }
+
+        return $this->name;
+    }
 }

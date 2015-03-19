@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Score!</h1>
+
+    {% if is_granted('ROLE_ADMIN') %}
+        <a href="{{ url('score_edit', { 'id': score.id }) }}">Edit</a>
+        | <a href="{{ url('score_delete', { 'id': score.id }) }}">Delete</a>
+    {% endif %}
+
+    <p>
+        TODO add the fields!
+    </p>
+{% endblock %}

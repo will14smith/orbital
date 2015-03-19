@@ -1,0 +1,37 @@
+{% extends '::base_sidebar.html.twig' %}
+
+{% block body %}
+    <h1>Scores</h1>
+
+    <ul>
+        {% for score in scores %}
+            <li>
+                {% if is_granted('ROLE_ADMIN') %}
+                    <a href="{{ url('score_delete', { 'id': score.id }) }}"><i class="fa fa-trash-o"></i></a>
+                    <a href="{{ url('score_edit', { 'id': score.id }) }}"><i class="fa fa-pencil"></i></a>
+                {% endif %}
+                <a href="{{ url('score_detail', { 'id': score.id }) }}">
+                    {{ score.dateShot|date('d/m/Y H:i') }} -
+                    {{ score.person.name }} -
+                    {{ score.round.name }} -
+                    {{ score.score }}
+                </a>
+            </li>
+        {% else %}
+            <li>No Scores :(</li>
+        {% endfor %}
+    </ul>
+{% endblock %}
+
+{% block sidebar %}
+    {% if is_granted('ROLE_ADMIN') %}
+        <div class="widget">
+            <h3 class="widget-title">Actions</h3>
+            <ul>
+                <li><a href="{{ url('score_create') }}">Create</a></li>
+            </ul>
+        </div>
+    {% endif %}
+
+    {{ parent() }}
+{% endblock %}

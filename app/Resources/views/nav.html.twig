@@ -10,6 +10,7 @@
     <li><a href="{{ url('round_list') }}" flex>Rounds</a></li>
     <li><a href="{{ url('club_list') }}" flex>Clubs</a></li>
     <li><a href="{{ url('person_list') }}" flex>People</a></li>
+    <li><a href="{{ url('score_list') }}" flex>Scores</a></li>
     {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
     <li class="menu-item-has-children"{% if hide_login %} hide-gt-md{% endif %}>
         <a href="#" flex>{{ app.user.displayName }}</a>

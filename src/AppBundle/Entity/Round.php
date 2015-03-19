@@ -99,4 +99,8 @@ class Round {
     {
         return $this->targets;
     }
+
+    public function __toString() {
+        return $this->name;
+    }
 }
