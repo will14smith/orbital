@@ -20,7 +20,7 @@ class Person implements UserInterface
     protected $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Club", inversedBy="members")
+     * @ORM\ManyToOne(targetEntity="Club", inversedBy="people")
      */
     protected $club;
 
