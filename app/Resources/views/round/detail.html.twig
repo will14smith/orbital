@@ -1,4 +1,4 @@
-{% extends 'base.html.twig' %}
+{% extends 'base_sidebar.html.twig' %}
 
 {% block body %}
     <h1>{{ round.name }}</h1>
@@ -8,9 +8,40 @@
         | <a href="{{ url('round_delete', { 'id': round.id }) }}">Delete</a>
     {% endif %}
 
-    {% for target in round.targets %}
-    <p>
-        {{ target.distanceValue }}
-    </p>
-    {% endfor %}
+    <ul>
+        {% for target in round.targets %}
+            <li>
+                {{ target|measure('distance') }} -
+                {{ target|measure('target') }} -
+                {{ target.arrowCount }} arrows
+                in ends of {{ target.endSize }}
+            </li>
+        {% endfor %}
+    </ul>
+
+    {% if round.records %}
+        <h2>Records</h2>
+        <ul>
+            {% for record in round.records %}
+                <li>
+                    <a href="{{ url('record_detail', { 'id': record.id }) }}">{{ record.displayName }}</a>
+                    - TODO
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+{% endblock %}
+
+{% block sidebar %}
+    {% if is_granted('ROLE_ADMIN') %}
+        <div class="widget">
+            <h3 class="widget-title">Actions</h3>
+            <ul>
+                <li><a href="{{ url('round_edit', { 'id': round.id }) }}">Edit</a></li>
+                <li><a href="{{ url('round_delete', { 'id': round.id }) }}">Delete</a></li>
+            </ul>
+        </div>
+    {% endif %}
+
+    {{ parent() }}
 {% endblock %}

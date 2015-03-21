@@ -17,3 +17,8 @@ services:
         public: false
         tags:
             - { name: twig.extension }
+    orbital.twig.measure:
+        class: AppBundle\Services\Twig\MeasureExtension
+        public: false
+        tags:
+            - { name: twig.extension }

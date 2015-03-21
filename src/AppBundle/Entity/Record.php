@@ -24,8 +24,7 @@ class Record
     protected $id;
 
     /**
-     * TODO inverse?
-     * @ORM\ManyToOne(targetEntity="Round")
+     * @ORM\ManyToOne(targetEntity="Round", inversedBy="records")
      */
     protected $round;
     /**
