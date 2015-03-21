@@ -11,6 +11,16 @@ class BowType {
     const TRADITIONAL = 'traditional';
     const COMPOUND = 'compound';
 
-    static $choices = [BowType::RECURVE, BowType::BAREBOW,
-        BowType::LONGBOW, BowType::TRADITIONAL, BowType::COMPOUND];
+    static $choices = [
+        BowType::RECURVE => 'Recurve',
+        BowType::BAREBOW => 'Barebow',
+        BowType::LONGBOW => 'Longbow',
+        BowType::TRADITIONAL => 'Traditional',
+        BowType::COMPOUND => 'Compound'
+    ];
+
+    public static function display($bowtype)
+    {
+        return BowType::$choices[$bowtype];
+    }
 }

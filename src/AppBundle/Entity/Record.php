@@ -3,6 +3,9 @@
 
 namespace AppBundle\Entity;
 
+use AppBundle\Services\Enum\BowType;
+use AppBundle\Services\Enum\Gender;
+use AppBundle\Services\Enum\Skill;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -11,7 +14,8 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity
  * @ORM\Table(name="record")
  */
-class Record {
+class Record
+{
     /**
      * @ORM\Column(type="integer")
      * @ORM\Id
@@ -35,6 +39,10 @@ class Record {
     /**
      * @ORM\Column(type="string", nullable=true)
      */
+    protected $bowtype;
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     */
     protected $gender;
 
     /**
@@ -42,28 +50,18 @@ class Record {
      */
     protected $holders;
 
-    public function __constructor() {
-        $this->holders = new ArrayCollection();
-    }
-
-    /**
-     * @return AppBundle\Entity\RecordHolder[]
-     */
-    public function getCurrentHolders() {
-        //TODO
-    }
     /**
      * Constructor
      */
     public function __construct()
     {
-        $this->holders = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->holders = new ArrayCollection();
     }
 
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -86,7 +84,7 @@ class Record {
     /**
      * Get num_holders
      *
-     * @return integer 
+     * @return integer
      */
     public function getNumHolders()
     {
@@ -109,11 +107,34 @@ class Record {
     /**
      * Get skill
      *
-     * @return string 
+     * @return string
      */
     public function getSkill()
     {
         return $this->skill;
+    }
+
+    /**
+     * Set bowtype
+     *
+     * @param string $bowtype
+     * @return Record
+     */
+    public function setBowtype($bowtype)
+    {
+        $this->bowtype = $bowtype;
+
+        return $this;
+    }
+
+    /**
+     * Get bowtype
+     *
+     * @return string
+     */
+    public function getBowtype()
+    {
+        return $this->bowtype;
     }
 
     /**
@@ -132,7 +153,7 @@ class Record {
     /**
      * Get gender
      *
-     * @return string 
+     * @return string
      */
     public function getGender()
     {
@@ -155,7 +176,7 @@ class Record {
     /**
      * Get round
      *
-     * @return \AppBundle\Entity\Round 
+     * @return \AppBundle\Entity\Round
      */
     public function getRound()
     {
@@ -188,10 +209,76 @@ class Record {
     /**
      * Get holders
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getHolders()
     {
         return $this->holders;
+    }
+
+    /**
+     * @return RecordHolder[]
+     */
+    public function getCurrentHolders()
+    {
+        $holders = $this->getHolders();
+
+        if($holders->count() == 0) {
+            return [];
+        }
+
+        // fairly safe to assume all records are post 1970
+        $last_broken = (new \DateTime())->setTimestamp(0);
+        /** @var RecordHolder[] $current */
+        $current = [];
+
+        //TODO this need better defined based on the ICAC rules
+        foreach($holders as $holder) {
+            /** @var RecordHolder $holder */
+            if($last_broken < $holder->getDate()) {
+                $last_broken = $holder->getDate();
+                $current = [$holder];
+            } else if($last_broken == $holder->getDate()) {
+                if($this->num_holders == 1) {
+                    if($current[0]->getScore() < $holder->getScore()) {
+                        $current = [$holder];
+                    }
+                } else {
+                    $current[] = $holder;
+                }
+            }
+        }
+
+        return $current;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDisplayName()
+    {
+        // skill gender? bowtype? round team?
+        $name = Skill::display($this->skill);
+
+        if ($this->gender) {
+            $name .= ' ' . Gender::display($this->gender);
+        }
+
+        if ($this->bowtype) {
+            $name .= ' ' . BowType::display($this->bowtype);
+        }
+
+        $name .= ' ' . $this->getRound()->getName();
+
+        if ($this->num_holders > 1) {
+            $name .= ' Team';
+        }
+
+        return $name;
+    }
+
+    public function __toString()
+    {
+        return $this->getDisplayName();
     }
 }

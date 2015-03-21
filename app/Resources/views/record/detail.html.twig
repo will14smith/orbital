@@ -1,0 +1,80 @@
+{% extends '::base_sidebar.html.twig' %}
+
+{# TODO clean this up... #}
+{# TODO link people to profile #}
+
+{% block body %}
+    <h1>{{ record.displayName }}</h1>
+
+    {% set holders = record.currentHolders %}
+
+    {% if holders is not empty %}
+        <p>
+            This record was set
+            on {{ holders[0].date|date('d/m/Y') }}
+            at {{ holders[0].location }}
+            and is held by:
+        </p>
+        <ul>
+            {% set total = 0 %}
+            {% for holder in record.currentHolders %}
+                {% set total = total +  holder.scoreValue %}
+                <li>
+                    {{ holder.person }} -
+                    {% if holder.score %}
+                        <a href="{{ url('score_detail', { 'id': holder.score.id }) }}">
+                            {{ holder.scoreValue }}
+                        </a>
+                    {% else %}
+                        {{ holder.scoreValue }}
+                    {% endif %}
+                </li>
+            {% endfor %}
+            {% if record.numHolders > 1 %}
+                <li><strong>Total: </strong> {{ total }}</li>
+            {% endif %}
+        </ul>
+    {% else %}
+        <p>
+            Nobody currently holds this record!
+        </p>
+    {% endif %}
+
+    <p>
+        To break this record you must:
+    </p>
+    <ul>
+        <li>shoot a {{ record.round.name }} in a competition</li>
+        {% if record.skill == Enum.skill.novice %}
+            <li>be a novice</li>
+        {% endif %}
+        {% if record.gender %}
+            <li>be {{ record.gender|enum('gender') }}</li>
+        {% endif %}
+        {% if record.bowtype %}
+            <li>shoot {{ record.bowtype|enum('bowtype') }}</li>
+        {% endif %}
+        {% if record.numHolders %}
+            <li>shoot in a team of {{ record.numHolders }} (or fewer)</li>
+        {% endif %}
+    </ul>
+
+    <h2>Past Holders</h2>
+    {# TODO past holders #}
+{% endblock %}
+
+{% block sidebar %}
+    {% if is_granted('ROLE_ADMIN') %}
+        <div class="widget">
+            <h3 class="widget-title">Actions</h3>
+            <ul>
+                <li><a href="{{ url('record_award', { 'id': record.id }) }}">Award</a></li>
+                <li><a href="{{ url('record_revoke', { 'id': record.id }) }}">Revoke</a></li>
+                <li><a href="{{ url('record_edit', { 'id': record.id }) }}">Edit</a></li>
+                <li><a href="{{ url('record_delete', { 'id': record.id }) }}">Delete</a></li>
+            </ul>
+        </div>
+    {% endif %}
+
+    {{ parent() }}
+{% endblock %}

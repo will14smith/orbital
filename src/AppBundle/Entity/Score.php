@@ -380,4 +380,13 @@ class Score
     {
         return $this->round;
     }
+
+    public function __toString() {
+        return sprintf('%s - %s - %s - %i',
+            $this->getDateShot()->format('d/m/Y H:i'),
+            $this->getPerson()->getName(),
+            $this->getRound()->getName(),
+            $this->getScore()
+        );
+    }
 }

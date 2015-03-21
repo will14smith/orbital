@@ -8,5 +8,13 @@ class Gender {
     const MALE = 'male';
     const FEMALE = 'female';
 
-    static $choices = [Gender::MALE, Gender::FEMALE];
+    static $choices = [
+        Gender::MALE => 'Male',
+        Gender::FEMALE => 'Female'
+    ];
+
+    public static function display($gender)
+    {
+        return Gender::$choices[$gender];
+    }
 }

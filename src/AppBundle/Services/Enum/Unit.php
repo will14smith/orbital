@@ -3,9 +3,13 @@
 namespace AppBundle\Services\Enum;
 
 class Unit {
-    const METER = 'meter';
-    const CENTIMETER = 'centimeter';
-    const YARD = 'yard';
+    const METER = 'm';
+    const CENTIMETER = 'cm';
+    const YARD = 'yd';
 
-    public static $choices = [Unit::METER, Unit::CENTIMETER, Unit::YARD];
+    public static $choices = [
+        Unit::METER => 'Meter',
+        Unit::CENTIMETER => 'Centimeter',
+        Unit::YARD => 'Yard'
+    ];
 }

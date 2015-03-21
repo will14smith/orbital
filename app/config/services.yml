@@ -11,3 +11,9 @@ services:
     orbital.person_importer:
         class: AppBundle\Services\Importing\PersonImporter
         arguments: ["@doctrine"]
+
+    orbital.twig.enum:
+        class: AppBundle\Services\Twig\EnumExtension
+        public: false
+        tags:
+            - { name: twig.extension }
