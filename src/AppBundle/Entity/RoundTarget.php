@@ -24,6 +24,11 @@ class RoundTarget
     protected $round;
 
     /**
+     * @ORM\Column(type="string", length=20)
+     */
+    protected $scoring_zones;
+
+    /**
      * @ORM\Column(type="decimal")
      */
     protected $distance_value;
@@ -219,5 +224,28 @@ class RoundTarget
     public function getRound()
     {
         return $this->round;
+    }
+
+    /**
+     * Set scoring_zones
+     *
+     * @param string $scoringZones
+     * @return RoundTarget
+     */
+    public function setScoringZones($scoringZones)
+    {
+        $this->scoring_zones = $scoringZones;
+
+        return $this;
+    }
+
+    /**
+     * Get scoring_zones
+     *
+     * @return string 
+     */
+    public function getScoringZones()
+    {
+        return $this->scoring_zones;
     }
 }

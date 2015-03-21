@@ -18,6 +18,7 @@ class RoundTargetType extends AbstractType
             ->add('distance_unit', 'choice', ['choices' => Unit::$choices])
             ->add('target_value')
             ->add('target_unit', 'choice', ['choices' => Unit::$choices])
+            ->add('scoring_zones', 'choice', ['choices' => ScoreZones::$choices])
             ->add('arrow_count')
             ->add('end_size')
         ;

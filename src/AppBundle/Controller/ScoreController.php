@@ -6,6 +6,7 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Score;
 use AppBundle\Form\ScoreType;
+use AppBundle\Services\Enum\BowType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -75,8 +76,11 @@ class ScoreController extends Controller
             );
         }
 
+        $handicap = $this->get('orbital.handicap.calculate')->handicapForScore($score);
+
         return $this->render('score/detail.html.twig', array(
-            'score' => $score
+            'score' => $score,
+            'handicap' => $handicap
         ));
     }
 

@@ -12,6 +12,15 @@ services:
         class: AppBundle\Services\Importing\PersonImporter
         arguments: ["@doctrine"]
 
+# handicaps
+    orbital.handicap.calculate:
+        class: AppBundle\Services\Handicap\HandicapCalculator
+
+    orbital.handicap.manager:
+        class: AppBundle\Services\Handicap\HandicapManager
+        arguments: ["@doctrine"]
+
+# twig extensions
     orbital.twig.enum:
         class: AppBundle\Services\Twig\EnumExtension
         public: false

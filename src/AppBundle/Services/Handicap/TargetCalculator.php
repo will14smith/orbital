@@ -4,6 +4,6 @@
 namespace AppBundle\Services\Handicap;
 
 
-interface HandicapArrowCalculator {
+interface TargetCalculator {
     function calculate($sigma, $target);
 }

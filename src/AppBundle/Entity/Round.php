@@ -99,7 +99,7 @@ class Round {
     /**
      * Get targets
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection|RoundTarget[]
      */
     public function getTargets()
     {
