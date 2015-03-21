@@ -24,7 +24,7 @@ class PersonType extends AbstractType
             ->add('email')
             ->add('mobile')
             ->add('gender', 'choice', ['choices' => Gender::$choices])
-            ->add('date_of_birth', 'birthday')
+            ->add('date_of_birth', 'birthday', ['required' => false])
             ->add('skill', 'choice', ['choices' => Skill::$choices])
             ->add('bowtype', 'choice', ['choices' => BowType::$choices])
             ->add('club_bow')

@@ -1,14 +1,79 @@
-{% extends 'base.html.twig' %}
+{% extends 'base_sidebar.html.twig' %}
 
 {% block body %}
-    <h1>{{ person.name }}</h1>
+    <h1>{{ person.name }}
+        {% if person.namePreferred %}
+            <small>({{ person.namePreferred }})</small>
+        {% endif %}</h1>
 
     {% if is_granted('ROLE_ADMIN') %}
-        <a href="{{ url('person_edit', { 'id': person.id }) }}">Edit</a>
-        | <a href="{{ url('person_delete', { 'id': person.id }) }}">Delete</a>
+        <ul>
+            {% if person.agbNumber %}
+                <li>ArcheryGB #: {{ person.agbNumber }}</li>
+            {% endif %}
+            {% if person.cid %}
+                <li>CID: {{ person.cid }}</li>
+            {% endif %}
+            {% if person.cuser %}
+                <li>College username: {{ person.cuser }}</li>
+            {% endif %}
+            {% if person.email %}
+                <li>Email:
+                    <a href="mailto:{{ person.email|escape('html_attr') }}">
+                        {{ person.email }}
+                    </a>
+                </li>
+            {% endif %}
+            {% if person.mobile %}
+                <li>Mobile: {{ person.mobile }}</li>
+            {% endif %}
+            {% if person.gender %}
+                <li>Gender: {{ person.gender|enum('gender') }}</li>
+            {% endif %}
+            {% if person.dateOfBirth %}
+                <li>DoB: {{ person.dateOfBirth|date('d/m/Y') }}</li>
+            {% endif %}
+        </ul>
     {% endif %}
 
-    <p>
-        TODO add the fields!
-    </p>
+    <dl>
+        <dt>Skill</dt>
+        <dd>{{ person.skill|enum('skill') }}</dd>
+        {% if person.bowtype %}
+            <dt>Prefered style</dt>
+            <dd>{{ person.bowtype|enum('bowtype') }}</dd>
+        {% endif %}
+        <dt>Handicap</dt>
+        <dd>
+            TODO
+        </dd>
+        <dt>Classification</dt>
+        <dd>
+            TODO
+        </dd>
+    </dl>
+
+    <h2>Badges</h2>
+    TODO
+    <h2>Records</h2>
+    TODO
+    <h2>Recent Scores</h2>
+    TODO
+    <h2>Personal Bests</h2>
+    TODO
 {% endblock %}
+
+        {% block sidebar %}
+            {% if is_granted('ROLE_ADMIN') %}
+                <div class="widget">
+                    <h3 class="widget-title">Actions</h3>
+                    <ul>
+                        <li><a href="{{ url('person_edit', { 'id': person.id }) }}">Edit</a></li>
+                        <li><a href="{{ url('person_handicap_reassess', { 'id': person.id }) }}">Reassess Handicap</a></li>
+                        <li><a href="{{ url('person_delete', { 'id': person.id }) }}">Delete</a></li>
+                    </ul>
+                </div>
+            {% endif %}
+
+            {{ parent() }}
+        {% endblock %}

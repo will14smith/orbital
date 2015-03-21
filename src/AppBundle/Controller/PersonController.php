@@ -133,6 +133,28 @@ class PersonController extends Controller
 
     /**
      * @Security("has_role('ROLE_ADMIN')")
+     * @Route("/person/{id}/reassess", name="person_handicap_reassess")
+     */
+    public function handicapReassessAction($id, Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $person = $em->getRepository('AppBundle:Person')->find($id);
+        if (!$person) {
+            throw $this->createNotFoundException(
+                'No person found for id ' . $id
+            );
+        }
+
+        //TODO invoke reassessment code
+
+        return $this->redirectToRoute(
+            'person_detail',
+            array('id' => $person->getId())
+        );
+    }
+
+    /**
+     * @Security("has_role('ROLE_ADMIN')")
      * @Route("/person/{id}/delete", name="person_delete")
      */
     public function deleteAction($id, Request $request)
