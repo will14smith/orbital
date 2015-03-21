@@ -1,0 +1,41 @@
+{% extends '::base_sidebar.html.twig' %}
+
+
+{% block body %}
+    <h1>{{ badge.name }}</h1>
+    <p>
+        {{ badge.description }}
+    </p>
+
+    <h2>People who have this</h2>
+    <ul>
+        {% for holder in badge.holders %}
+            <li>
+                {% if is_granted('ROLE_ADMIN') %}
+                    <a href="{{ url('badge_award_delete', { 'id': badge.id, 'award_id': holder.id }) }}"><i class="fa fa-trash-o"></i></a>
+                    <a href="{{ url('badge_award_edit', { 'id': badge.id, 'award_id': holder.id }) }}"><i class="fa fa-pencil"></i></a>
+                    {# todo quick state change #}
+                {% endif %}
+                {# todo show state: unconfirmed, confirmed, awaiting delivery, done #}
+                {{ holder.dateAwarded|date('d/m/Y') }} - {{ holder.person }}
+            </li>
+        {% else %}
+            <li>Nobody has this! You could be the first...</li>
+        {% endfor %}
+    </ul>
+{% endblock %}
+
+{% block sidebar %}
+    {% if is_granted('ROLE_ADMIN') %}
+        <div class="widget">
+            <h3 class="widget-title">Actions</h3>
+            <ul>
+                <li><a href="{{ url('badge_award', { 'id': badge.id }) }}">Award</a></li>
+                <li><a href="{{ url('badge_edit', { 'id': badge.id }) }}">Edit</a></li>
+                <li><a href="{{ url('badge_delete', { 'id': badge.id }) }}">Delete</a></li>
+            </ul>
+        </div>
+    {% endif %}
+
+    {{ parent() }}
+{% endblock %}

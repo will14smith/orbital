@@ -4,6 +4,7 @@
 namespace AppBundle\Services\Twig;
 
 
+use AppBundle\Services\Enum\BadgeCategory;
 use AppBundle\Services\Enum\BowType;
 use AppBundle\Services\Enum\Gender;
 use AppBundle\Services\Enum\Skill;
@@ -23,6 +24,7 @@ class EnumExtension extends \Twig_Extension
             'gender' => Gender::$choices,
             'skill' => Skill::$choices,
             'unit' => Unit::$choices,
+            'bagdecat' => BadgeCategory::$choices,
         ]];
     }
 
