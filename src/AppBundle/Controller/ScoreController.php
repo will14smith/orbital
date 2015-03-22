@@ -40,11 +40,16 @@ class ScoreController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            // fill the default values
             if(!$score->getSkill()) {
                 $score->setSkill($score->getPerson()->getSkill());
             }
             if(!$score->getBowtype()) {
                 $score->setBowtype($score->getPerson()->getBowtype());
+            }
+            // auto approve admin entered scores
+            if($this->isGranted('ROLE_ADMIN')) {
+                $score->accept();
             }
 
             $em = $this->getDoctrine()->getManager();
