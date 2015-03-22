@@ -45,7 +45,9 @@ class Record
     protected $gender;
 
     /**
+     * TODO reverse ordering?
      * @ORM\OneToMany(targetEntity="RecordHolder", mappedBy="record")
+     * @ORM\OrderBy({"date" = "ASC", "score_value" = "ASC"})
      */
     protected $holders;
 

@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\Role\Role;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -92,6 +93,20 @@ class Person implements UserInterface
     protected $admin;
 
     /**
+     * @ORM\OneToMany(targetEntity="PersonHandicap", mappedBy="person")
+     * @ORM\OrderBy({"date" = "ASC"})
+     */
+    protected $handicaps;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->handicaps = new ArrayCollection();
+    }
+
+    /**
      * Get id
      *
      * @return integer
@@ -149,7 +164,7 @@ class Person implements UserInterface
 
     public function getDisplayName()
     {
-        if($this->name_preferred) {
+        if ($this->name_preferred) {
             return $this->name_preferred;
         }
 
@@ -518,15 +533,57 @@ class Person implements UserInterface
     /**
      * Get club
      *
-     * @return \AppBundle\Entity\Club 
+     * @return \AppBundle\Entity\Club
      */
     public function getClub()
     {
         return $this->club;
     }
 
-    public function __toString() {
-        if($this->name_preferred){
+    /**
+     * Add handicaps
+     *
+     * @param PersonHandicap $handicaps
+     * @return Person
+     */
+    public function addHandicap(PersonHandicap $handicaps)
+    {
+        $this->handicaps[] = $handicaps;
+
+        return $this;
+    }
+
+    /**
+     * Remove handicaps
+     *
+     * @param PersonHandicap $handicaps
+     */
+    public function removeHandicap(PersonHandicap $handicaps)
+    {
+        $this->handicaps->removeElement($handicaps);
+    }
+
+    /**
+     * Get handicaps
+     *
+     * @return \Doctrine\Common\Collections\Collection|PersonHandicap[]
+     */
+    public function getHandicaps()
+    {
+        return $this->handicaps;
+    }
+
+    /**
+     * @return PersonHandicap
+     */
+    public function getCurrentHandicap()
+    {
+        return $this->getHandicaps()->last();
+    }
+
+    public function __toString()
+    {
+        if ($this->name_preferred) {
             return sprintf('%s (%s)', $this->name, $this->name_preferred);
         }
 

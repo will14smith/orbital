@@ -45,7 +45,11 @@
         {% endif %}
         <dt>Handicap</dt>
         <dd>
-            TODO
+            {% if person.currentHandicap %}
+                {{ person.currentHandicap.handicap }}
+            {% else %}
+                None
+            {% endif %}
         </dd>
         <dt>Classification</dt>
         <dd>
@@ -69,7 +73,8 @@
                     <h3 class="widget-title">Actions</h3>
                     <ul>
                         <li><a href="{{ url('person_edit', { 'id': person.id }) }}">Edit</a></li>
-                        <li><a href="{{ url('person_handicap_reassess', { 'id': person.id }) }}">Reassess Handicap</a></li>
+                        <li><a href="{{ url('person_handicap_reassess', { 'id': person.id }) }}">Reassess Handicap</a>
+                        </li>
                         <li><a href="{{ url('person_delete', { 'id': person.id }) }}">Delete</a></li>
                     </ul>
                 </div>
