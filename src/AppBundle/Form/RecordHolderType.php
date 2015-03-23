@@ -3,9 +3,6 @@
 
 namespace AppBundle\Form;
 
-use AppBundle\Services\Enum\BowType;
-use AppBundle\Services\Enum\Gender;
-use AppBundle\Services\Enum\Skill;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
@@ -15,6 +12,8 @@ class RecordHolderType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
+            ->add('date')
+            ->add('location')
             ->add('holders', 'collection', [
                 'type' => new RecordHolderInnerType()
             ]);
@@ -33,10 +32,7 @@ class RecordHolderInnerType extends AbstractType
         $builder
             ->add('person')
             ->add('score_value')
-            ->add('score')
-            ->add('location')
-            ->add('date')
-        ;
+            ->add('score');
     }
 
     public function setDefaultOptions(OptionsResolverInterface $resolver)

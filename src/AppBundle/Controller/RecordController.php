@@ -135,6 +135,8 @@ class RecordController extends Controller
             //TODO verify this breaks the record
 
             foreach ($recordHolders as $recordHolder) {
+                $recordHolder->setDate($data['date']);
+                $recordHolder->setLocation($data['location']);
                 $recordHolder->setRecord($record);
                 $em->persist($recordHolder);
             }
