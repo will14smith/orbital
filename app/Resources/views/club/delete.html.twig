@@ -1,8 +1,12 @@
 {% extends 'base.html.twig' %}
 
+{% block title %}
+    Delete Club
+{% endblock %}
+
 {% block body %}
     <form method="post" action="{{ url('club_delete', { id: club.id }) }}">
-        Are you sure you want to delete {{ club.name }}?
+        <p>Are you sure you want to delete {{ club.name }}?</p>
         <input type="submit" value="Yes"> | <a href="{{ url('club_detail', { id: club.id }) }}">No</a>
     </form>
 {% endblock %}
