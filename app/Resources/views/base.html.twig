@@ -5,7 +5,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width">
 
-    <title>ORBITAL - {% block title %}Welcome!{% endblock %}</title>
+    {% set _head_title = block('title')|trim|striptags %}
+    {% set _head_title = _head_title ? _head_title : 'Welcome!' %}
+    <title>ORBITAL - {{ _head_title }}</title>
 
     {% block stylesheets %}
         <link rel="stylesheet" href="{{ asset('css/app.css') }}"/>

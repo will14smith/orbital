@@ -1,14 +1,11 @@
 @import "normalize";
-
 @import "material/color";
 @import "material/variables";
 @import "material/layout";
 @import "material/mixins";
 @import "material/structure";
-
 @import "compass/support";
 @import "compass/css3/background-size";
-
 @import "font-awesome";
 
 body {
@@ -19,16 +16,21 @@ body {
 
 $link-color: map-get($primary-color-palette, '500');
 $link-hover-color: map-get($primary-color-palette, '300');
-$link-active-color:  map-get($primary-color-palette, '700');
+$link-active-color: map-get($primary-color-palette, '700');
+
+h1, h2, h3, h4, h5, h6 {
+  line-height: 1;
+  margin-bottom: 0;
+}
 
 a {
-  color: $link-color; 
+  color: $link-color;
   text-decoration: none;
-  
+
   &:hover {
     color: $link-hover-color;
   }
-  
+
   .active {
     color: $link-active-color;
   }
@@ -36,25 +38,29 @@ a {
 
 .text-muted {
   color: map-get($color-grey, '500');
-  
+
   a {
     color: $link-active-color;
-    
+
     &:hover {
       color: $link-color;
     }
   }
 }
 
+.text-center {
+  text-align: center;
+}
+
 // header
 header.page-header {
   @import "menu";
 }
+
 @import "menu-collapse";
 
 // content
 #primary {
-
   h1.page-title {
     margin: $layout-gutter-width;
   }
@@ -86,9 +92,9 @@ p:first-child {
   margin-right: $layout-gutter-width;
 
   .nav-previous {
-    
+
   }
-  
+
   .nav-next {
     text-align: right;
   }
@@ -104,7 +110,7 @@ p:first-child {
 
 .widget {
   font-size: $h5-font-size-base;
-  
+
   .widget-title {
     margin-bottom: 0;
   }
@@ -112,17 +118,16 @@ p:first-child {
     margin-top: 0;
   }
 
-  
   ul {
     list-style-type: none;
     padding: 0;
     margin: 0;
-  
+
     li {
       padding: ($layout-gutter-width/2) 0;
 
       border-top: 1px solid map-get($color-grey, '200');
-      
+
       &:first-child {
         border-top: none;
       }

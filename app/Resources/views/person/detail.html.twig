@@ -1,42 +1,50 @@
 {% extends 'base_sidebar.html.twig' %}
 
-{% block body %}
-    <h1>{{ person.name }}
-        {% if person.namePreferred %}
-            <small>({{ person.namePreferred }})</small>
-        {% endif %}</h1>
+{% block title %}
+    {{ person.name }}
+    {% if person.namePreferred %}
+        <small>({{ person.namePreferred }})</small>
+    {% endif %}
+{% endblock %}
 
-    {% if is_granted('ROLE_ADMIN') %}
-        <ul>
+{% block body %}
+    <dl>
+        {% if is_granted('ROLE_ADMIN') %}
             {% if person.agbNumber %}
-                <li>ArcheryGB #: {{ person.agbNumber }}</li>
+                <dt class="admin">ArcheryGB #</dt>
+                <dd>{{ person.agbNumber }}</dd>
             {% endif %}
             {% if person.cid %}
-                <li>CID: {{ person.cid }}</li>
+                <dt class="admin">CID</dt>
+                <dd>{{ person.cid }}</dd>
             {% endif %}
             {% if person.cuser %}
-                <li>College username: {{ person.cuser }}</li>
+                <dt class="admin">College username</dt>
+                <dd>{{ person.cuser }}</dd>
             {% endif %}
             {% if person.email %}
-                <li>Email:
+                <dt class="admin">Email</dt>
+                <dd>
                     <a href="mailto:{{ person.email|escape('html_attr') }}">
                         {{ person.email }}
                     </a>
-                </li>
+                </dd>
             {% endif %}
             {% if person.mobile %}
-                <li>Mobile: {{ person.mobile }}</li>
+                <dt class="admin">Mobile</dt>
+                <dd>{{ person.mobile }}</dd>
             {% endif %}
             {% if person.gender %}
-                <li>Gender: {{ person.gender|enum('gender') }}</li>
+                <dt class="admin">Gender</dt>
+                <dd>{{ person.gender|enum('gender') }}</dd>
             {% endif %}
             {% if person.dateOfBirth %}
-                <li>DoB: {{ person.dateOfBirth|date('d/m/Y') }}</li>
+                <dt class="admin">
+                    DoB
+                </dt>
+                <dd>{{ person.dateOfBirth|date('d/m/Y') }}</dd>
             {% endif %}
-        </ul>
-    {% endif %}
-
-    <dl>
+        {% endif %}
         <dt>Skill</dt>
         <dd>{{ person.skill|enum('skill') }}</dd>
         {% if person.bowtype %}
@@ -58,40 +66,53 @@
     </dl>
 
     <h2>Badges</h2>
-    <ul>
+    <ul class="list">
         {% for badge in badges %}
             <li>
-                {{ badge.dateAwarded|date('d/m/Y') }} -
-                {{ badge.badge.name }}
+                <span class="text shrink">{{ badge.dateAwarded|date('d/m/Y') }}</span>
+                <span class="text">{{ badge.badge.name }}</span>
                 {# TODO badge state #}
             </li>
         {% endfor %}
+        <li>
+            {# TODO accordian #}
+            <a href="#" class="text-muted">View all Badges</a>
+        </li>
     </ul>
     <h2>Records</h2>
-    <ul>
+    <ul class="list">
         {% for record in records %}
             <li>
-                {{ record.record.displayName }} -
-                When (from/to?) -
-                Score
+                <span class="text">{{ record.record.displayName }}</span>
+                <span class="text shrink">When (from/to?)</span>
+                <span class="text shrink">Score</span>
             </li>
         {% endfor %}
     </ul>
     <h2>Recent Scores</h2>
-    {% for score in scores %}
+    <ul class="list">
+        {% for score in scores %}
+            <li>
+                <span class="text shrink">{{ score.dateShot|date('d/m/Y') }}</span>
+                <span class="text">{{ score.round.name }}</span>
+                <span class="text shrink">{{ score.score }}</span>
+            </li>
+        {% endfor %}
         <li>
-            {{ score.dateShot|date('d/m/Y') }} -
-            {{ score.round.name }} -
-            {{ score.score }}
+            {# TODO link to view all page (filter list?) #}
+            <a href="#" class="text-muted">View all Scores</a>
         </li>
-    {% endfor %}
+    </ul>
     <h2>Personal Bests</h2>
-    {% for score in pbs %}
-        <li>
-            {{ score.round.name }} -
-            {{ score.score }} ({{ score.dateShot|date('d/m/Y') }})
-        </li>
-    {% endfor %}
+    <ul class="list">
+        {% for score in pbs %}
+            <li>
+                <span class="text shrink">{{ score.dateShot|date('d/m/Y') }}</span>
+                <span class="text">{{ score.round.name }}</span>
+                <span class="text shrink">{{ score.score }}</span>
+            </li>
+        {% endfor %}
+    </ul>
 {% endblock %}
 
 {% block sidebar %}

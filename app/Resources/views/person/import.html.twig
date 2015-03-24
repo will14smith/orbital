@@ -1,6 +1,14 @@
 {% extends 'base.html.twig' %}
 
+{% block title %}
+    Import People
+{% endblock %}
+
 {% block body %}
+    <p>
+        Import people from a CSV file (from eActivities)
+    </p>
+
     {{ form_start(form) }}
     {{ form_widget(form) }}
 

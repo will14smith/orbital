@@ -1,4 +1,4 @@
-ul.list {
+.list {
   list-style-type: none;
   margin: 0;
   padding: 0;
@@ -10,12 +10,20 @@ ul.list {
 
     a, span.text {
       display: flex;
-      width: 100%;
+      flex: 1;
 
       padding: $baseline-grid;
 
       &:hover {
         background-color: map-get($color-grey, '100');
+      }
+
+      & + a, & + span.text {
+        border-left: 1px solid map-get($color-grey, '300');
+      }
+
+      &.shrink {
+        flex: inherit;
       }
     }
 
@@ -24,6 +32,7 @@ ul.list {
 
       a {
         font-size: $h3-font-size;
+        border-left: none;
       }
     }
   }
@@ -31,5 +40,34 @@ ul.list {
   li:first-child {
     padding-top: 0;
     border-top: none;
+  }
+}
+
+dl {
+  margin-top: 0;
+
+  dt, dd {
+    display: inline-flex;
+    margin: 0;
+    padding: $baseline-grid;
+
+    border-top: 1px solid map-get($color-grey, '300');
+  }
+
+  dt:first-child, dt:first-child + dd {
+    border-top: none;
+  }
+
+  dt {
+    width: 33%;
+  }
+
+  dd {
+    width: 66%;
+    border-left: 1px solid map-get($color-grey, '300');
+  }
+
+  dt.admin, dt.admin + dd {
+    color: map-get($color-red, '900')
   }
 }

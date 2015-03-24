@@ -1,8 +1,12 @@
 {% extends 'base.html.twig' %}
 
+{% block title %}
+    Delete Person
+{% endblock %}
+
 {% block body %}
     <form method="post" action="{{ url('person_delete', { id: person.id }) }}">
-        Are you sure you want to delete {{ person.name }}?
+        <p>Are you sure you want to delete {{ person.name }}?</p>
         <input type="submit" value="Yes"> | <a href="{{ url('person_detail', { id: person.id }) }}">No</a>
     </form>
 {% endblock %}
