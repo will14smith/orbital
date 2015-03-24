@@ -1,8 +1,12 @@
 {% extends 'base.html.twig' %}
 
+{% block title %}
+    Delete Record
+{% endblock %}
+
 {% block body %}
     <form method="post" action="{{ url('record_delete', { id: record.id }) }}">
-        Are you sure you want to delete '{{ record.displayName }}'?
+        <p>Are you sure you want to delete '{{ record.displayName }}'?</p>
         <input type="submit" value="Yes"> | <a href="{{ url('record_detail', { id: record.id }) }}">No</a>
     </form>
 {% endblock %}

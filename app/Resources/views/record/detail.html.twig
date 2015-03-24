@@ -3,9 +3,11 @@
 {# TODO clean this up... #}
 {# TODO link people to profile #}
 
-{% block body %}
-    <h1>{{ record.displayName }}</h1>
+{% block title %}
+    {{ record.displayName }}
+{% endblock %}
 
+{% block body %}
     {% set holders = record.currentHolders %}
 
     {% if holders is not empty %}
@@ -15,18 +17,18 @@
             at {{ holders[0].location }}
             and is held by:
         </p>
-        <ul>
+        <ul class="list">
             {% set total = 0 %}
             {% for holder in record.currentHolders %}
                 {% set total = total +  holder.scoreValue %}
                 <li>
-                    {{ holder.person }} -
+                    <a href="{{ url('person_detail', {'id': holder.person.id}) }}">{{ holder.person }}</a>
                     {% if holder.score %}
-                        <a href="{{ url('score_detail', { 'id': holder.score.id }) }}">
+                        <a href="{{ url('score_detail', { 'id': holder.score.id }) }}" class="shrink">
                             {{ holder.scoreValue }}
                         </a>
                     {% else %}
-                        {{ holder.scoreValue }}
+                        <span class="text shrink">{{ holder.scoreValue }}</span>
                     {% endif %}
                 </li>
             {% endfor %}
@@ -40,22 +42,20 @@
         </p>
     {% endif %}
 
-    <p>
-        To break this record you must:
-    </p>
-    <ul>
-        <li>shoot a {{ record.round.name }} in a competition</li>
+    <p>To break this record you must shoot a round that matches the following requirements:</p>
+    <ul class="list">
+        <li><span class="text">shoot a {{ record.round.name }} in a competition</span></li>
         {% if record.skill == Enum.skill.novice %}
-            <li>be a novice</li>
+            <li><span class="text">be a novice</span></li>
         {% endif %}
         {% if record.gender %}
-            <li>be {{ record.gender|enum('gender') }}</li>
+            <li><span class="text">be {{ record.gender|enum('gender') }}</span></li>
         {% endif %}
         {% if record.bowtype %}
-            <li>shoot {{ record.bowtype|enum('bowtype') }}</li>
+            <li><span class="text">shoot {{ record.bowtype|enum('bowtype') }}</span></li>
         {% endif %}
         {% if record.numHolders %}
-            <li>shoot in a team of {{ record.numHolders }} (or fewer)</li>
+            <li><span class="text">shoot in a team of {{ record.numHolders }} (or fewer)</span></li>
         {% endif %}
     </ul>
 
