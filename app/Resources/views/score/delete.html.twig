@@ -1,8 +1,12 @@
 {% extends 'base.html.twig' %}
 
+{% block title %}
+    Delete Score
+{% endblock %}
+
 {% block body %}
     <form method="post" action="{{ url('score_delete', { id: score.id }) }}">
-        Are you sure you want to delete this score (TODO)?
+        <p>Are you sure you want to delete this score (TODO)?</p>
         <input type="submit" value="Yes"> | <a href="{{ url('score_detail', { id: score.id }) }}">No</a>
     </form>
 {% endblock %}

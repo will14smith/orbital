@@ -1,29 +1,25 @@
 {% extends 'base_sidebar.html.twig' %}
 
-{# TODO clean up #}
+{% block title %}
+    {{ score.person.name }} - {{ score.round.name }}
+{% endblock %}
 
 {% block body %}
-    <h1>{{ score.person.name }} - {{ score.round.name }}</h1>
-    <p>
-        {{ score.skill|enum('skill') }} {{ score.bowtype|enum('bowtype') }}
-        {% if score.competition %}
-            in Competition
-        {% endif %}
-        {% if not score.complete %}
-            (in progress)
-        {% endif %}
-    </p>
-    <p>
-        Shot on {{ score.dateShot|date('d/m/Y H:i') }}
-        (added {{ score.dateEntered|date('d/m/Y') }},
-        {% if score.dateAccepted %}
-            accepted {{ score.dateAccepted|date('d/m/Y') }}
-        {% else %}
-            not yet accepted
-        {% endif %}
-        )
-    </p>
     <dl>
+        <dt>Date Shot</dt>
+        <dd>
+            {{ score.dateShot|date('d/m/Y H:i') }}
+            {% if score.competition %}
+                in Competition
+            {% endif %}
+            {% if not score.complete %}
+                (in progress)
+            {% endif %}
+        </dd>
+        <dt>Skill / Bow</dt>
+        <dd>
+            {{ score.skill|enum('skill') }} {{ score.bowtype|enum('bowtype') }}
+        </dd>
         <dt>Score</dt>
         <dd>{{ score.score }}</dd>
         <dt>Golds</dt>
@@ -32,6 +28,14 @@
         <dd>{{ score.hits }}</dd>
         <dt>Handicap</dt>
         <dd>{{ handicap }}</dd>
+        <dt>Date Accepted</dt>
+        <dd>
+            {% if score.dateAccepted %}
+                accepted {{ score.dateAccepted|date('d/m/Y') }}
+            {% else %}
+                not yet accepted
+            {% endif %}
+        </dd>
     </dl>
 {% endblock %}
 
