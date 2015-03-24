@@ -1,6 +1,12 @@
 {% extends 'base.html.twig' %}
 
+{% block title %}
+    Award Badge
+{% endblock %}
+
 {% block body %}
+    <p>Award the "{{ badge.name }}" badge</p>
+
     {{ form_start(form) }}
     {{ form_widget(form) }}
 

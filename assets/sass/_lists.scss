@@ -8,7 +8,7 @@ ul.list {
     align-items: center;
     border-top: 1px solid map-get($color-grey, '300');
 
-    a {
+    a, span.text {
       display: flex;
       width: 100%;
 

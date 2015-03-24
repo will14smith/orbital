@@ -137,6 +137,7 @@ class BadgeController extends Controller
 
         return $this->render('badge/award.html.twig', array(
             'form' => $form->createView(),
+            'badge' => $badge
         ));
     }
 
@@ -174,6 +175,7 @@ class BadgeController extends Controller
 
         return $this->render('badge/award_edit.html.twig', array(
             'form' => $form->createView(),
+            'badge' => $badgeHolder->getBadge()
         ));
     }
 

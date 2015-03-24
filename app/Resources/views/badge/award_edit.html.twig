@@ -1,6 +1,11 @@
 {% extends 'base.html.twig' %}
 
+{% block title %}
+    Edit awarded Badge
+{% endblock %}
 {% block body %}
+    <p>Edit the awarded "{{ badge.name }}" badge</p>
+
     {{ form_start(form) }}
     {{ form_widget(form) }}
 

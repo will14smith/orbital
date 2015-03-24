@@ -1,8 +1,12 @@
 {% extends 'base.html.twig' %}
 
+{% block title %}
+    Delete Badge
+{% endblock %}
+
 {% block body %}
     <form method="post" action="{{ url('badge_delete', { id: badge.id }) }}">
-        Are you sure you want to delete '{{ badge.name }}'?
+        <div>Are you sure you want to delete '{{ badge.name }}'?</div>
         <input type="submit" value="Yes"> | <a href="{{ url('badge_detail', { id: badge.id }) }}">No</a>
     </form>
 {% endblock %}

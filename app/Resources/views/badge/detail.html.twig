@@ -1,26 +1,36 @@
 {% extends '::base_sidebar.html.twig' %}
 
+{% block title %}
+    {{ badge.name }}
+{% endblock %}
 
 {% block body %}
-    <h1>{{ badge.name }}</h1>
     <p>
         {{ badge.description }}
     </p>
 
     <h2>People who have this</h2>
-    <ul>
+    <ul class="list">
         {% for holder in badge.holders %}
             <li>
+                {# todo show state: unconfirmed, confirmed, awaiting delivery, done #}
+                <span class="text">{{ holder.dateAwarded|date('d/m/Y') }} - {{ holder.person }}</span>
                 {% if is_granted('ROLE_ADMIN') %}
-                    <a href="{{ url('badge_award_delete', { 'id': badge.id, 'award_id': holder.id }) }}"><i class="fa fa-trash-o"></i></a>
-                    <a href="{{ url('badge_award_edit', { 'id': badge.id, 'award_id': holder.id }) }}"><i class="fa fa-pencil"></i></a>
+                    <span class="actions">
+                        <a href="{{ url('badge_award_edit', { 'id': badge.id, 'award_id': holder.id }) }}">
+                            <i class="fa fa-pencil"></i>
+                        </a>
+                        <a href="{{ url('badge_award_delete', { 'id': badge.id, 'award_id': holder.id }) }}">
+                            <i class="fa fa-trash-o"></i>
+                        </a>
+                    </span>
                     {# todo quick state change #}
                 {% endif %}
-                {# todo show state: unconfirmed, confirmed, awaiting delivery, done #}
-                {{ holder.dateAwarded|date('d/m/Y') }} - {{ holder.person }}
             </li>
         {% else %}
-            <li>Nobody has this! You could be the first...</li>
+            <li>
+                <span class="text">Nobody has this! You could be the first...</span>
+            </li>
         {% endfor %}
     </ul>
 {% endblock %}
