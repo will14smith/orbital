@@ -1,8 +1,12 @@
 {% extends 'base.html.twig' %}
 
+{% block title %}
+    Delete Round
+{% endblock %}
+
 {% block body %}
     <form method="post" action="{{ url('round_delete', { id: round.id }) }}">
-        Are you sure you want to delete {{ round.name }}?
+        <p>Are you sure you want to delete {{ round.name }}?</p>
         <input type="submit" value="Yes"> | <a href="{{ url('round_detail', { id: round.id }) }}">No</a>
     </form>
 {% endblock %}

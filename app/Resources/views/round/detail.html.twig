@@ -1,31 +1,28 @@
 {% extends 'base_sidebar.html.twig' %}
 
+{% block title %}
+    {{ round.name }}
+{% endblock %}
+
 {% block body %}
-    <h1>{{ round.name }}</h1>
-
-    {% if is_granted('ROLE_ADMIN') %}
-        <a href="{{ url('round_edit', { 'id': round.id }) }}">Edit</a>
-        | <a href="{{ url('round_delete', { 'id': round.id }) }}">Delete</a>
-    {% endif %}
-
-    <ul>
+    <ul class="list">
         {% for target in round.targets %}
             <li>
-                {{ target|measure('distance') }} -
-                {{ target|measure('target') }} -
-                {{ target.arrowCount }} arrows
-                in ends of {{ target.endSize }}
+                <span class="text">{{ target|measure('distance') }}</span>
+                <span class="text">{{ target|measure('target') }}</span>
+                <span class="text">{{ target.arrowCount }} arrows total</span>
+                <span class="text">in ends of {{ target.endSize }} arrows</span>
             </li>
         {% endfor %}
     </ul>
 
     {% if round.records %}
         <h2>Records</h2>
-        <ul>
+        <ul class="list">
             {% for record in round.records %}
                 <li>
                     <a href="{{ url('record_detail', { 'id': record.id }) }}">{{ record.displayName }}</a>
-                    - TODO
+                    <span class="text shrink">TODO</span>
                 </li>
             {% endfor %}
         </ul>
