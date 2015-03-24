@@ -53,10 +53,10 @@ class HandicapManager
             }
         } else {
             $score_handicap = $this->calculator->handicapForScore($score);
-            $new_hc = ceil(($score_handicap + $old_hc) / 2);
+            $new_hc = ceil(($score_handicap + $old_hc->getHandicap()) / 2);
         }
 
-        if ($new_hc < $old_hc || !$old_hc) {
+        if ($new_hc < $old_hc->getHandicap() || !$old_hc) {
             $handicap = new PersonHandicap();
 
             $handicap->setPerson($person);

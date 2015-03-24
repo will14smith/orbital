@@ -85,8 +85,10 @@ class PersonController extends Controller
      */
     public function detailAction($id)
     {
-        $personRepository = $this->getDoctrine()->getRepository("AppBundle:Person");
+        $doctrine = $this->getDoctrine();
+        $personRepository = $doctrine->getRepository("AppBundle:Person");
 
+        /** @var Person $person */
         $person = $personRepository->find($id);
         if (!$person) {
             throw $this->createNotFoundException(
@@ -94,9 +96,31 @@ class PersonController extends Controller
             );
         }
 
-        return $this->render('person/detail.html.twig', array(
-            'person' => $person
-        ));
+        $badges = $doctrine->getRepository('AppBundle:BadgeHolder')
+            ->findBy([
+                'person' => $person->getId()
+            ], ['date_awarded' => 'DESC']);
+
+        $records = $doctrine->getRepository('AppBundle:RecordHolder')
+            ->findBy([
+                'person' => $person->getId()
+            ], ['date' => 'DESC']);
+
+        $scoreRepository = $doctrine->getRepository('AppBundle:Score');
+        $recent_scores =  $scoreRepository
+            ->findBy([
+                'person' => $person->getId()
+            ], ['date_shot' => 'DESC'], 5);
+
+        $pbs = $scoreRepository->getPersonalBests($person);
+
+        return $this->render('person/detail.html.twig', [
+            'person' => $person,
+            'badges' => $badges,
+            'records' => $records,
+            'scores' => $recent_scores,
+            'pbs' => $pbs
+        ]);
     }
 
     /**

@@ -58,27 +58,54 @@
     </dl>
 
     <h2>Badges</h2>
-    TODO
+    <ul>
+        {% for badge in badges %}
+            <li>
+                {{ badge.dateAwarded|date('d/m/Y') }} -
+                {{ badge.badge.name }}
+                {# TODO badge state #}
+            </li>
+        {% endfor %}
+    </ul>
     <h2>Records</h2>
-    TODO
+    <ul>
+        {% for record in records %}
+            <li>
+                {{ record.record.displayName }} -
+                When (from/to?) -
+                Score
+            </li>
+        {% endfor %}
+    </ul>
     <h2>Recent Scores</h2>
-    TODO
+    {% for score in scores %}
+        <li>
+            {{ score.dateShot|date('d/m/Y') }} -
+            {{ score.round.name }} -
+            {{ score.score }}
+        </li>
+    {% endfor %}
     <h2>Personal Bests</h2>
-    TODO
+    {% for score in pbs %}
+        <li>
+            {{ score.round.name }} -
+            {{ score.score }} ({{ score.dateShot|date('d/m/Y') }})
+        </li>
+    {% endfor %}
 {% endblock %}
 
-        {% block sidebar %}
-            {% if is_granted('ROLE_ADMIN') %}
-                <div class="widget">
-                    <h3 class="widget-title">Actions</h3>
-                    <ul>
-                        <li><a href="{{ url('person_edit', { 'id': person.id }) }}">Edit</a></li>
-                        <li><a href="{{ url('person_handicap_reassess', { 'id': person.id }) }}">Reassess Handicap</a>
-                        </li>
-                        <li><a href="{{ url('person_delete', { 'id': person.id }) }}">Delete</a></li>
-                    </ul>
-                </div>
-            {% endif %}
+{% block sidebar %}
+    {% if is_granted('ROLE_ADMIN') %}
+        <div class="widget">
+            <h3 class="widget-title">Actions</h3>
+            <ul>
+                <li><a href="{{ url('person_edit', { 'id': person.id }) }}">Edit</a></li>
+                <li><a href="{{ url('person_handicap_reassess', { 'id': person.id }) }}">Reassess Handicap</a>
+                </li>
+                <li><a href="{{ url('person_delete', { 'id': person.id }) }}">Delete</a></li>
+            </ul>
+        </div>
+    {% endif %}
 
-            {{ parent() }}
-        {% endblock %}
+    {{ parent() }}
+{% endblock %}
