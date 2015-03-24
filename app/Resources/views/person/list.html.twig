@@ -1,20 +1,24 @@
 {% extends '::base_sidebar.html.twig' %}
 
+{% block title %}
+    People
+{% endblock %}
+
 {% block body %}
-    <h1>People</h1>
-
-
-    <ul>
+    <ul class="list">
         {% for person in people %}
             <li>
-                {% if is_granted('ROLE_ADMIN') %}
-                    <a href="{{ url('person_delete', { 'id': person.id }) }}"><i class="fa fa-trash-o"></i></a>
-                    <a href="{{ url('person_edit', { 'id': person.id }) }}"><i class="fa fa-pencil"></i></a>
-                {% endif %}
                 <a href="{{ url('person_detail', { 'id': person.id }) }}">
                     {{ person.name }}
                     {% if person.namePreferred %}({{ person.namePreferred }}){% endif %}
                 </a>
+
+                {% if is_granted('ROLE_ADMIN') %}
+                    <span class="actions">
+                        <a href="{{ url('person_edit', { 'id': person.id }) }}"><i class="fa fa-pencil"></i></a>
+                        <a href="{{ url('person_delete', { 'id': person.id }) }}"><i class="fa fa-trash-o"></i></a>
+                    </span>
+                {% endif %}
             </li>
         {% else %}
             <li>No People :(</li>

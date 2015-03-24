@@ -1,18 +1,22 @@
 {% extends '::base_sidebar.html.twig' %}
 
-{% block body %}
-    <h1>Badges</h1>
+{% block title %}
+    Badges
+{% endblock %}
 
-    <ul>
+{% block body %}
+    <ul class="list">
         {% for badge in badges %}
             <li>
-                {% if is_granted('ROLE_ADMIN') %}
-                    <a href="{{ url('badge_delete', { 'id': badge.id }) }}"><i class="fa fa-trash-o"></i></a>
-                    <a href="{{ url('badge_edit', { 'id': badge.id }) }}"><i class="fa fa-pencil"></i></a>
-                {% endif %}
                 <a href="{{ url('badge_detail', { 'id': badge.id }) }}">
                     {{ badge.name }}
                 </a>
+                {% if is_granted('ROLE_ADMIN') %}
+                    <span class="actions">
+                        <a href="{{ url('badge_edit', { 'id': badge.id }) }}"><i class="fa fa-pencil"></i></a>
+                        <a href="{{ url('badge_delete', { 'id': badge.id }) }}"><i class="fa fa-trash-o"></i></a>
+                    </span>
+                {% endif %}
             </li>
         {% else %}
             <li>No Badges :(</li>

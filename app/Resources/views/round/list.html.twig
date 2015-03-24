@@ -1,16 +1,20 @@
 {% extends '::base_sidebar.html.twig' %}
 
-{% block body %}
-    <h1>Rounds</h1>
+{% block title %}
+    Rounds
+{% endblock %}
 
-    <ul>
+{% block body %}
+    <ul class="list">
         {% for round in rounds %}
             <li>
-                {% if is_granted('ROLE_ADMIN') %}
-                    <a href="{{ url('round_delete', { 'id': round.id }) }}"><i class="fa fa-trash-o"></i></a>
-                    <a href="{{ url('round_edit', { 'id': round.id }) }}"><i class="fa fa-pencil"></i></a>
-                {% endif %}
                 <a href="{{ url('round_detail', { 'id': round.id }) }}">{{ round.name }}</a>
+                {% if is_granted('ROLE_ADMIN') %}
+                   <span class="actions">
+                        <a href="{{ url('round_edit', { 'id': round.id }) }}"><i class="fa fa-pencil"></i></a>
+                        <a href="{{ url('round_delete', { 'id': round.id }) }}"><i class="fa fa-trash-o"></i></a>
+                    </span>
+                {% endif %}
             </li>
         {% else %}
             <li>No Rounds :(</li>

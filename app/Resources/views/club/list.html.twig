@@ -1,16 +1,20 @@
 {% extends '::base_sidebar.html.twig' %}
 
-{% block body %}
-    <h1>Clubs</h1>
+{% block title %}
+    Clubs
+{% endblock %}
 
-    <ul>
+{% block body %}
+    <ul class="list">
         {% for club in clubs %}
             <li>
-                {% if is_granted('ROLE_ADMIN') %}
-                    <a href="{{ url('club_delete', { 'id': club.id }) }}"><i class="fa fa-trash-o"></i></a>
-                    <a href="{{ url('club_edit', { 'id': club.id }) }}"><i class="fa fa-pencil"></i></a>
-                {% endif %}
                 <a href="{{ url('club_detail', { 'id': club.id }) }}">{{ club.name }}</a>
+                {% if is_granted('ROLE_ADMIN') %}
+                    <span class="actions">
+                        <a href="{{ url('club_edit', { 'id': club.id }) }}"><i class="fa fa-pencil"></i></a>
+                        <a href="{{ url('club_delete', { 'id': club.id }) }}"><i class="fa fa-trash-o"></i></a>
+                    </span>
+                {% endif %}
             </li>
         {% else %}
             <li>No Clubs :(</li>

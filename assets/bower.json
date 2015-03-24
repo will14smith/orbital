@@ -10,6 +10,7 @@
     "tests"
   ],
   "dependencies": {
-    "fontawesome": "~4.3.0"
+    "fontawesome": "~4.3.0",
+    "normalize.scss": "~3.0.2+normalize.3.0.2"
   }
 }

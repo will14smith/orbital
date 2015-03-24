@@ -1,18 +1,22 @@
 {% extends '::base_sidebar.html.twig' %}
 
-{% block body %}
-    <h1>Records</h1>
+{% block title %}
+    Records
+{% endblock %}
 
-    <ul>
+{% block body %}
+    <ul class="list">
         {% for record in records %}
             <li>
-                {% if is_granted('ROLE_ADMIN') %}
-                    <a href="{{ url('record_delete', { 'id': record.id }) }}"><i class="fa fa-trash-o"></i></a>
-                    <a href="{{ url('record_edit', { 'id': record.id }) }}"><i class="fa fa-pencil"></i></a>
-                {% endif %}
                 <a href="{{ url('record_detail', { 'id': record.id }) }}">
                     {{ record.displayName }}
                 </a>
+                {% if is_granted('ROLE_ADMIN') %}
+                    <span class="actions">
+                        <a href="{{ url('record_edit', { 'id': record.id }) }}"><i class="fa fa-pencil"></i></a>
+                        <a href="{{ url('record_delete', { 'id': record.id }) }}"><i class="fa fa-trash-o"></i></a>
+                    </span>
+                {% endif %}
             </li>
         {% else %}
             <li>No Records :(</li>

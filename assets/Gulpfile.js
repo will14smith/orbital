@@ -26,6 +26,7 @@ gulp.task('css', function() { 
         loadPath: [
             './sass',
             './bower_components/fontawesome/scss',
+            './bower_components/normalize.scss',
          ]
     })
     .on("error", notify.onError(function (error) {

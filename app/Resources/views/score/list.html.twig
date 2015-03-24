@@ -1,21 +1,25 @@
 {% extends '::base_sidebar.html.twig' %}
 
-{% block body %}
-    <h1>Scores</h1>
+{% block title %}
+    Scores
+{% endblock %}
 
-    <ul>
+{% block body %}
+    <ul class="list">
         {% for score in scores %}
             <li>
-                {% if is_granted('ROLE_ADMIN') %}
-                    <a href="{{ url('score_delete', { 'id': score.id }) }}"><i class="fa fa-trash-o"></i></a>
-                    <a href="{{ url('score_edit', { 'id': score.id }) }}"><i class="fa fa-pencil"></i></a>
-                {% endif %}
                 <a href="{{ url('score_detail', { 'id': score.id }) }}">
                     {{ score.dateShot|date('d/m/Y H:i') }} -
                     {{ score.person.name }} -
                     {{ score.round.name }} -
                     {{ score.score }}
                 </a>
+                {% if is_granted('ROLE_ADMIN') %}
+                    <span class="actions">
+                        <a href="{{ url('score_edit', { 'id': score.id }) }}"><i class="fa fa-pencil"></i></a>
+                        <a href="{{ url('score_delete', { 'id': score.id }) }}"><i class="fa fa-trash-o"></i></a>
+                    </span>
+                {% endif %}
             </li>
         {% else %}
             <li>No Scores :(</li>

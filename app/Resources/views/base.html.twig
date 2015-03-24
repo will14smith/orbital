@@ -33,6 +33,10 @@
 <main id="content" layout="column" layout-gt-md="row">
     {% block content %}
         <div id="primary" flex>
+            {% set _title_block = block('title') %}
+            {% if _title_block is not empty %}
+                <h1 class="page-title">{{ _title_block|trim|raw }}</h1>
+            {% endif %}
             <div class="card">
                 {% block body %}
 

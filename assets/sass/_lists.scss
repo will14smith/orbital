@@ -1,0 +1,35 @@
+ul.list {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+
+  li {
+    display: flex;
+    align-items: center;
+    border-top: 1px solid map-get($color-grey, '300');
+
+    a {
+      display: flex;
+      width: 100%;
+
+      padding: $baseline-grid;
+
+      &:hover {
+        background-color: map-get($color-grey, '100');
+      }
+    }
+
+    .actions {
+      display: flex;
+
+      a {
+        font-size: $h3-font-size;
+      }
+    }
+  }
+
+  li:first-child {
+    padding-top: 0;
+    border-top: none;
+  }
+}

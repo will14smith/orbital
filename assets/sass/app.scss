@@ -1,3 +1,5 @@
+@import "normalize";
+
 @import "material/color";
 @import "material/variables";
 @import "material/layout";
@@ -8,8 +10,6 @@
 @import "compass/css3/background-size";
 
 @import "font-awesome";
-
-@import "forms";
 
 body {
   background-color: map-get($color-grey, '50');
@@ -55,6 +55,10 @@ header.page-header {
 // content
 #primary {
 
+  h1.page-title {
+    margin: $layout-gutter-width;
+  }
+
   .card {
     @extend .md-shadow-bottom-z-1;
 
@@ -89,6 +93,9 @@ p:first-child {
     text-align: right;
   }
 }
+
+@import "forms";
+@import "lists";
 
 // widgets
 #secondary {
