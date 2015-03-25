@@ -6,6 +6,7 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Record;
 use AppBundle\Entity\RecordHolder;
+use AppBundle\Entity\RecordHolderPerson;
 use AppBundle\Form\RecordHolderType;
 use AppBundle\Form\RecordType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -112,35 +113,24 @@ class RecordController extends Controller
      */
     public function awardAction($id, Request $request)
     {
-        $em = $this->getDoctrine()->getManager();
-        $record = $em->getRepository('AppBundle:Record')->find($id);
+        $record_repository = $this->getDoctrine()->getRepository('AppBundle:Record');
+        $record = $record_repository->find($id);
         if (!$record) {
             throw $this->createNotFoundException(
                 'No record found for id ' . $id
             );
         }
 
+        $recordHolder = new RecordHolder();
 
-        /** @var RecordHolder[] $recordHolders */
-        $recordHolders = [];
         for ($i = 0; $i < $record->getNumHolders(); $i++) {
-            $recordHolders[] = new RecordHolder();
+            $recordHolder->addPerson(new RecordHolderPerson());
         }
-        $data = ['holders' => $recordHolders];
-
-        $form = $this->createForm(new RecordHolderType($record->getNumHolders()), $data);
+        $form = $this->createForm(new RecordHolderType(), $recordHolder);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            //TODO verify this breaks the record
-
-            foreach ($recordHolders as $recordHolder) {
-                $recordHolder->setDate($data['date']);
-                $recordHolder->setLocation($data['location']);
-                $recordHolder->setRecord($record);
-                $em->persist($recordHolder);
-            }
-            $em->flush();
+            $record_repository->award($record, $recordHolder);
 
             return $this->redirectToRoute(
                 'record_detail',

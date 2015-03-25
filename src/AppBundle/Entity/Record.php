@@ -11,7 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 
 /**
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="AppBundle\Entity\RecordRepository")
  * @ORM\Table(name="record")
  */
 class Record
@@ -45,9 +45,8 @@ class Record
     protected $gender;
 
     /**
-     * TODO reverse ordering?
      * @ORM\OneToMany(targetEntity="RecordHolder", mappedBy="record")
-     * @ORM\OrderBy({"date" = "ASC", "score_value" = "ASC"})
+     * @ORM\OrderBy({"date" = "DESC", "score" = "DESC"})
      */
     protected $holders;
 
@@ -187,12 +186,12 @@ class Record
     /**
      * Add holders
      *
-     * @param \AppBundle\Entity\RecordHolder $holders
+     * @param \AppBundle\Entity\RecordHolder $holder
      * @return Record
      */
-    public function addHolder(\AppBundle\Entity\RecordHolder $holders)
+    public function addHolder(\AppBundle\Entity\RecordHolder $holder)
     {
-        $this->holders[] = $holders;
+        $this->holders[] = $holder;
 
         return $this;
     }
@@ -210,7 +209,7 @@ class Record
     /**
      * Get holders
      *
-     * @return \Doctrine\Common\Collections\Collection
+     * @return \Doctrine\Common\Collections\Collection|RecordHolder[]
      */
     public function getHolders()
     {
@@ -218,39 +217,12 @@ class Record
     }
 
     /**
-     * @return RecordHolder[]
+     * @return RecordHolder
      */
-    public function getCurrentHolders()
+    public function getCurrentHolder()
     {
-        $holders = $this->getHolders();
-
-        if($holders->count() == 0) {
-            return [];
-        }
-
-        // fairly safe to assume all records are post 1970
-        $last_broken = (new \DateTime())->setTimestamp(0);
-        /** @var RecordHolder[] $current */
-        $current = [];
-
-        //TODO this need better defined based on the ICAC rules
-        foreach($holders as $holder) {
-            /** @var RecordHolder $holder */
-            if($last_broken < $holder->getDate()) {
-                $last_broken = $holder->getDate();
-                $current = [$holder];
-            } else if($last_broken == $holder->getDate()) {
-                if($this->num_holders == 1) {
-                    if($current[0]->getScore() < $holder->getScore()) {
-                        $current = [$holder];
-                    }
-                } else {
-                    $current[] = $holder;
-                }
-            }
-        }
-
-        return $current;
+        // the array is ordered by date then score, exactly what we want
+        return $this->getHolders()->first();
     }
 
     /**

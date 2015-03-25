@@ -8,7 +8,7 @@
     align-items: center;
     border-top: 1px solid map-get($color-grey, '300');
 
-    a, span.text {
+    > a, > span.text, .actions a {
       display: flex;
       flex: 1;
 

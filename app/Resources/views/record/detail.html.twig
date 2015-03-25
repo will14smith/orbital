@@ -8,32 +8,32 @@
 {% endblock %}
 
 {% block body %}
-    {% set holders = record.currentHolders %}
-
-    {% if holders is not empty %}
+    {% set holder = record.currentHolder %}
+    {% if holder %}
         <p>
             This record was set
-            on {{ holders[0].date|date('d/m/Y') }}
-            at {{ holders[0].location }}
+            on {{ holder.date|date('d/m/Y') }}
+            at {{ holder.location }}
             and is held by:
         </p>
         <ul class="list">
-            {% set total = 0 %}
-            {% for holder in record.currentHolders %}
-                {% set total = total +  holder.scoreValue %}
+            {% for person in holder.people %}
                 <li>
-                    <a href="{{ url('person_detail', {'id': holder.person.id}) }}">{{ holder.person }}</a>
-                    {% if holder.score %}
-                        <a href="{{ url('score_detail', { 'id': holder.score.id }) }}" class="shrink">
-                            {{ holder.scoreValue }}
+                    <a href="{{ url('person_detail', {'id': person.person.id}) }}">{{ person.person.name }}</a>
+                    {% if person.score %}
+                        <a href="{{ url('score_detail', { 'id': person.score.id }) }}" class="shrink">
+                            {{ person.scoreValue }}
                         </a>
                     {% else %}
-                        <span class="text shrink">{{ holder.scoreValue }}</span>
+                        <span class="text shrink">{{ person.scoreValue }}</span>
                     {% endif %}
                 </li>
             {% endfor %}
             {% if record.numHolders > 1 %}
-                <li><strong>Total: </strong> {{ total }}</li>
+                <li>
+                    <span class="text">Total</span>
+                    <span class="text shrink">{{ holder.score }}</span>
+                </li>
             {% endif %}
         </ul>
     {% else %}
@@ -59,8 +59,36 @@
         {% endif %}
     </ul>
 
-    <h2>Past Holders</h2>
-    {# TODO past holders #}
+    {% if record.holders|length > 1 %}
+        <h2>Past Holders</h2>
+        <ul class="list">
+            {% for holder in record.holders[1:] %}
+                <li>
+                    <span class="text shrink">{{ holder.date|date('d/m/Y') }}</span>
+                    <span class="text shrink">{{ holder.dateBroken|date('d/m/Y') }}</span>
+                    <span class="text">
+                        {% for person in holder.people %}
+                            <a href="{{ url('person_detail', {'id': person.person.id}) }}">{{ person.person.name }}</a>
+                            <span>&nbsp;-&nbsp;</span>
+                            {% if person.score %}
+                                <a href="{{ url('score_detail', { 'id': person.score.id }) }}" class="shrink">
+                                    {{ person.scoreValue }}
+                                </a>
+                            {% else %}
+                                {{ person.scoreValue }}
+                            {% endif %}
+                            {% if not loop.last %}
+                                <span>,&nbsp;</span>
+                            {% endif %}
+                        {% endfor %}
+                    </span>
+                    {% if record.numHolders > 1 %}
+                        <span class="text shrink">{{ holder.score }}</span>
+                    {% endif %}
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
 {% endblock %}
 
 {% block sidebar %}

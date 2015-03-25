@@ -9,7 +9,8 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity
  * @ORM\Table(name="record_holder")
  */
-class RecordHolder {
+class RecordHolder
+{
     /**
      * @ORM\Column(type="integer")
      * @ORM\Id
@@ -23,19 +24,7 @@ class RecordHolder {
     protected $record;
 
     /**
-     * TODO inverse
-     * @ORM\ManyToOne(targetEntity="Person")
-     */
-    protected $person;
-
-    /**
      * @ORM\Column(type="integer")
-     */
-    protected $score_value;
-    /**
-     * TODO inverse?
-     * @ORM\JoinColumn(nullable=true)
-     * @ORM\ManyToOne(targetEntity="Score")
      */
     protected $score;
 
@@ -47,38 +36,24 @@ class RecordHolder {
      * @ORM\Column(type="datetime")
      */
     protected $date;
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    protected $date_broken;
+
+    /**
+     * @ORM\OneToMany(targetEntity="RecordHolderPerson", mappedBy="record_holder")
+     */
+    protected $people;
 
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * Set score_value
-     *
-     * @param integer $scoreValue
-     * @return RecordHolder
-     */
-    public function setScoreValue($scoreValue)
-    {
-        $this->score_value = $scoreValue;
-
-        return $this;
-    }
-
-    /**
-     * Get score_value
-     *
-     * @return integer 
-     */
-    public function getScoreValue()
-    {
-        return $this->score_value;
     }
 
     /**
@@ -97,7 +72,7 @@ class RecordHolder {
     /**
      * Get location
      *
-     * @return string 
+     * @return string
      */
     public function getLocation()
     {
@@ -120,7 +95,7 @@ class RecordHolder {
     /**
      * Get date
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getDate()
     {
@@ -143,43 +118,27 @@ class RecordHolder {
     /**
      * Get record
      *
-     * @return \AppBundle\Entity\Record 
+     * @return \AppBundle\Entity\Record
      */
     public function getRecord()
     {
         return $this->record;
     }
-
     /**
-     * Set person
-     *
-     * @param \AppBundle\Entity\Person $person
-     * @return RecordHolder
+     * Constructor
      */
-    public function setPerson(\AppBundle\Entity\Person $person = null)
+    public function __construct()
     {
-        $this->person = $person;
-
-        return $this;
-    }
-
-    /**
-     * Get person
-     *
-     * @return \AppBundle\Entity\Person 
-     */
-    public function getPerson()
-    {
-        return $this->person;
+        $this->people = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
      * Set score
      *
-     * @param \AppBundle\Entity\Score $score
+     * @param integer $score
      * @return RecordHolder
      */
-    public function setScore(\AppBundle\Entity\Score $score = null)
+    public function setScore($score)
     {
         $this->score = $score;
 
@@ -189,10 +148,66 @@ class RecordHolder {
     /**
      * Get score
      *
-     * @return \AppBundle\Entity\Score 
+     * @return integer 
      */
     public function getScore()
     {
         return $this->score;
+    }
+
+    /**
+     * Add people
+     *
+     * @param \AppBundle\Entity\RecordHolderPerson $people
+     * @return RecordHolder
+     */
+    public function addPerson(\AppBundle\Entity\RecordHolderPerson $people)
+    {
+        $this->people[] = $people;
+
+        return $this;
+    }
+
+    /**
+     * Remove people
+     *
+     * @param \AppBundle\Entity\RecordHolderPerson $people
+     */
+    public function removePerson(\AppBundle\Entity\RecordHolderPerson $people)
+    {
+        $this->people->removeElement($people);
+    }
+
+    /**
+     * Get people
+     *
+     * @return \Doctrine\Common\Collections\Collection|RecordHolderPerson[]
+     */
+    public function getPeople()
+    {
+        return $this->people;
+    }
+
+    /**
+     * Set date_broken
+     *
+     * @param \DateTime $dateBroken
+     * @return RecordHolder
+     */
+    public function setDateBroken($dateBroken)
+    {
+        $this->date_broken = $dateBroken;
+
+        return $this;
+    }
+
+    /**
+     * Get date_broken
+     *
+     * @return \DateTime 
+     */
+    public function getDateBroken()
+    {
+        return $this->date_broken;
     }
 }

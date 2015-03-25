@@ -14,9 +14,16 @@ class RecordHolderType extends AbstractType
         $builder
             ->add('date')
             ->add('location')
-            ->add('holders', 'collection', [
-                'type' => new RecordHolderInnerType()
+            ->add('people', 'collection', [
+                'type' => new RecordHolderPersonType()
             ]);
+    }
+
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    {
+        $resolver->setDefaults(array(
+            'data_class' => 'AppBundle\Entity\RecordHolder'
+        ));
     }
 
     public function getName()
@@ -25,7 +32,7 @@ class RecordHolderType extends AbstractType
     }
 }
 
-class RecordHolderInnerType extends AbstractType
+class RecordHolderPersonType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -38,12 +45,12 @@ class RecordHolderInnerType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'AppBundle\Entity\RecordHolder'
+            'data_class' => 'AppBundle\Entity\RecordHolderPerson'
         ));
     }
 
     public function getName()
     {
-        return 'record_holder_inner';
+        return 'record_holder_person';
     }
 }

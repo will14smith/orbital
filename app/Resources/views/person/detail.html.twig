@@ -82,10 +82,18 @@
     <h2>Records</h2>
     <ul class="list">
         {% for record in records %}
+            {% set holder = record.recordHolder %}
             <li>
-                <span class="text">{{ record.record.displayName }}</span>
-                <span class="text shrink">When (from/to?)</span>
-                <span class="text shrink">Score</span>
+                <span class="text shrink">{{ holder.date|date('d/m/Y') }}</span>
+                {% if holder.dateBroken %}
+                    <span class="text shrink">{{ holder.dateBroken|date('d/m/Y') }}</span>
+                {% else %}
+                    <span class="text shrink">Current</span>
+                {% endif %}
+                <span class="text">
+                        {{ holder.record.displayName }}
+                    </span>
+                <span class="text shrink">{{ holder.score }}</span>
             </li>
         {% endfor %}
     </ul>

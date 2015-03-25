@@ -101,10 +101,8 @@ class PersonController extends Controller
                 'person' => $person->getId()
             ], ['date_awarded' => 'DESC']);
 
-        $records = $doctrine->getRepository('AppBundle:RecordHolder')
-            ->findBy([
-                'person' => $person->getId()
-            ], ['date' => 'DESC']);
+        $records = $doctrine->getRepository('AppBundle:Record')
+            ->findByPerson($person->getId());
 
         $scoreRepository = $doctrine->getRepository('AppBundle:Score');
         $recent_scores =  $scoreRepository
