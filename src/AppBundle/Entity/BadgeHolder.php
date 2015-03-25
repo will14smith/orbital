@@ -6,7 +6,7 @@ namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="AppBundle\Entity\BadgeHolderRepository")
  * @ORM\Table(name="badge_holder")
  */
 class BadgeHolder

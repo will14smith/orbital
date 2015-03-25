@@ -32,6 +32,15 @@
                     </ul>
                 {% endif %}
             </div>
+
+            {% if is_granted('ROLE_ADMIN') %}
+                <div class="widget">
+                    <h3 class="widget-title">Quick Tools</h3>
+                    <ul>
+                        <li><a href="{{ url('roundup') }}">Roundup</a></li>
+                    </ul>
+                </div>
+            {% endif %}
         {% endblock %}
     </div>
 {% endblock %}

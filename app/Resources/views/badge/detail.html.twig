@@ -14,7 +14,8 @@
         {% for holder in badge.holders %}
             <li>
                 {# todo show state: unconfirmed, confirmed, awaiting delivery, done #}
-                <span class="text">{{ holder.dateAwarded|date('d/m/Y') }} - {{ holder.person }}</span>
+                <span class="text shrink">{{ holder.dateAwarded|date('d/m/Y') }}</span>
+                <span class="text">{{ holder.person }}</span>
                 {% if is_granted('ROLE_ADMIN') %}
                     <span class="actions">
                         <a href="{{ url('badge_award_edit', { 'id': badge.id, 'award_id': holder.id }) }}">

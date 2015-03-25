@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Roundup
+{% endblock %}
+
+{% block body %}
+    {{ form_start(form) }}
+    {{ form_widget(form) }}
+
+    <input type="submit" value="Generate"/>
+    {{ form_end(form) }}
+
+    <h2>New Records</h2>
+    <ul class="list">
+        <li>
+            <span class="text">TODO</span>
+        </li>
+    </ul>
+
+    <h2>New Badges</h2>
+    <ul class="list">
+        {% for badge in badges %}
+            <li>
+                <span class="text shrink">{{ badge.dateAwarded|date('d/m/Y') }}</span>
+                <span class="text">{{ badge.badge.name }}</span>
+                <span class="text">{{ badge.person }}</span>
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock %}
