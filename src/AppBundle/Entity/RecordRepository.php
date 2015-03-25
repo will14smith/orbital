@@ -49,8 +49,7 @@ class RecordRepository extends EntityRepository
                 ->join('rh.record', 'r')
                 ->where('rhp.person = :person')
                 ->addOrderBy('rh.date', 'DESC')
-                ->setParameter('person', $person_id)
-            ;
+                ->setParameter('person', $person_id);
 
             if ($i == 0) {
                 $q = $q->andWhere('rh.date_broken IS NULL');
@@ -62,5 +61,30 @@ class RecordRepository extends EntityRepository
         }
 
         return $people;
+    }
+
+    /**
+     * @param \DateTime $start_date
+     * @param \DateTime $end_date
+     * @return
+     */
+    public function getByRoundup($start_date, $end_date)
+    {
+        $qb = $this->getEntityManager()->createQueryBuilder();
+
+        $q = $qb->select('rh', 'rhp', 'r')
+            ->from('AppBundle:RecordHolder', 'rh')
+            ->join('rh.people', 'rhp')
+            ->join('rh.record', 'r')
+
+            ->where('rh.date >= :start_date')
+            ->andWhere('rh.date <= :end_date')
+            ->orderBy('rh.date', 'DESC')
+
+            ->setParameter('start_date', $start_date, \Doctrine\DBAL\Types\Type::DATETIME)
+            ->setParameter('end_date', $end_date, \Doctrine\DBAL\Types\Type::DATETIME)
+        ;
+
+        return $q->getQuery()->getResult();
     }
 }

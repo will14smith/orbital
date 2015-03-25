@@ -51,8 +51,7 @@ class DefaultController extends Controller
         $doctrine = $this->getDoctrine();
 
         $records = $doctrine->getRepository('AppBundle:Record')
-            //TODO
-            ->findAll();
+            ->getByRoundup($start_date, $end_date);
         $badges = $doctrine->getRepository('AppBundle:BadgeHolder')
             ->getByRoundup($start_date, $end_date);
 
