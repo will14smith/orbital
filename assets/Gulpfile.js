@@ -1,5 +1,6 @@
 var gulp = require('gulp'), 
     sass = require('gulp-ruby-sass'),
+    autoprefixer = require('gulp-autoprefixer'),
     concat = require('gulp-concat'),
     notify = require("gulp-notify"),
     bower = require('gulp-bower');
@@ -32,6 +33,7 @@ gulp.task('css', function() { 
     .on("error", notify.onError(function (error) {
         return "Error: " + error.message;
     }))
+    .pipe(autoprefixer())
     .pipe(gulp.dest('../web/css')); 
 });
 
