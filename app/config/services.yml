@@ -19,7 +19,7 @@ services:
         arguments: ["@doctrine", "@orbital.handicap.calculate"]
     orbital.handicap.listener:
         class: AppBundle\Services\Handicap\HandicapListener
-        arguments: ["@orbital.handicap.manager"]
+        arguments: ["@orbital.handicap.manager", "@doctrine"]
         tags:
             - { name: kernel.event_listener, event: 'orbital.events.score_create', method: score_create }
             - { name: kernel.event_listener, event: 'orbital.events.score_update', method: score_update }
