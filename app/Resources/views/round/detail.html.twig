@@ -22,7 +22,11 @@
             {% for record in round.records %}
                 <li>
                     <a href="{{ url('record_detail', { 'id': record.id }) }}">{{ record.displayName }}</a>
-                    <span class="text shrink">TODO</span>
+                    {% if record.currentHolder %}
+                        <span class="text shrink">{{ record.currentHolder.score }}</span>
+                    {% else %}
+                        <span class="text shrink">Not broken</span>
+                    {% endif %}
                 </li>
             {% endfor %}
         </ul>

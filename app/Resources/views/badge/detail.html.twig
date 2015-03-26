@@ -15,7 +15,9 @@
             <li>
                 {# todo show state: unconfirmed, confirmed, awaiting delivery, done #}
                 <span class="text shrink">{{ holder.dateAwarded|date('d/m/Y') }}</span>
-                <span class="text">{{ holder.person }}</span>
+                <a href="{{ url('person_detail', { 'id': holder.person.id }) }}">
+                    {{ holder.person }}
+                </a>
                 {% if is_granted('ROLE_ADMIN') %}
                     <span class="actions">
                         <a href="{{ url('badge_award_edit', { 'id': badge.id, 'award_id': holder.id }) }}">

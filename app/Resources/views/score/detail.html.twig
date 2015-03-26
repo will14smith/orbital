@@ -1,7 +1,8 @@
 {% extends 'base_sidebar.html.twig' %}
 
 {% block title %}
-    {{ score.person.name }} - {{ score.round.name }}
+    <a href="{{ url('person_detail', { 'id': score.person.id }) }}">{{ score.person.name }}</a> -
+    <a href="{{ url('round_detail', { 'id': score.round.id }) }}">{{ score.round.name }}</a>
 {% endblock %}
 
 {% block body %}
@@ -45,17 +46,15 @@
                 {% for proof in score.proof %}
                     <li>
                         {% if proof.notes %}
-                            <span class="text shrink">Added by {{ proof.person.name }}</span>
-                            <span class="text">
-                            {{ proof.notes }}
-                        </span>
+                            <span class="text">{{ proof.notes }}</span>
                         {% else %}
-                            <span class="text">Added by {{ proof.person.name }}</span>
-                            <span class="actions">
                             <a href="{{ asset('uploads/' ~ proof.imageName) }}" target="_blank">
-                                <i class="fa fa-image"></i></a>
-                        </span>
+                                View Image
+                            </a>
                         {% endif %}
+                        <a href="{{ url('person_detail', { 'id': proof.person.id }) }}" class="shrink">
+                            {{ proof.person.name }}
+                        </a>
                     </li>
                 {% else %}
                     <li><span class="text">There is no proof.</span></li>
@@ -75,7 +74,7 @@
                 {% endif %}
                 <li><a href="{{ url('score_edit', { 'id': score.id }) }}">Edit</a></li>
                 {% if is_granted('ROLE_ADMIN') %}
-                <li><a href="{{ url('score_delete', { 'id': score.id }) }}">Delete</a></li>
+                    <li><a href="{{ url('score_delete', { 'id': score.id }) }}">Delete</a></li>
                 {% endif %}
             </ul>
         </div>

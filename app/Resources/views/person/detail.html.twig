@@ -70,7 +70,7 @@
         {% for badge in badges %}
             <li>
                 <span class="text shrink">{{ badge.dateAwarded|date('d/m/Y') }}</span>
-                <span class="text">{{ badge.badge.name }}</span>
+                <a href="{{ url('badge_detail', { 'id': badge.badge.id }) }}">{{ badge.badge.name }}</a>
                 {# TODO badge state #}
             </li>
         {% endfor %}
@@ -90,9 +90,9 @@
                 {% else %}
                     <span class="text shrink">Current</span>
                 {% endif %}
-                <span class="text">
-                        {{ holder.record.displayName }}
-                    </span>
+                <a href="{{ url('record_detail', { 'id': holder.record.id }) }}">
+                    {{ holder.record.displayName }}
+                </a>
                 <span class="text shrink">{{ holder.score }}</span>
             </li>
         {% endfor %}
@@ -102,7 +102,8 @@
         {% for score in scores %}
             <li>
                 <span class="text shrink">{{ score.dateShot|date('d/m/Y') }}</span>
-                <span class="text">{{ score.round.name }}</span>
+                {# NOTE: the round name links to the score... #}
+                <a href="{{ url('score_detail', { 'id': score.id }) }}">{{ score.round.name }}</a>
                 <span class="text shrink">{{ score.score }}</span>
             </li>
         {% endfor %}
@@ -116,7 +117,8 @@
         {% for score in pbs %}
             <li>
                 <span class="text shrink">{{ score.dateShot|date('d/m/Y') }}</span>
-                <span class="text">{{ score.round.name }}</span>
+                {# NOTE: the round name links to the score... #}
+                <a href="{{ url('score_detail', { 'id': score.id }) }}">{{ score.round.name }}</a>
                 <span class="text shrink">{{ score.score }}</span>
             </li>
         {% endfor %}
