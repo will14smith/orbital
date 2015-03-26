@@ -44,6 +44,9 @@
         <div class="widget">
             <h3 class="widget-title">Actions</h3>
             <ul>
+                {% if not score.dateAccepted %}
+                    <li><a href="{{ url('score_accept', { 'id': score.id }) }}">Accept</a></li>
+                {% endif %}
                 <li><a href="{{ url('score_edit', { 'id': score.id }) }}">Edit</a></li>
                 <li><a href="{{ url('score_delete', { 'id': score.id }) }}">Delete</a></li>
             </ul>

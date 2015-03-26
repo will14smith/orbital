@@ -41,14 +41,14 @@ class ScoreController extends Controller
 
         if ($form->isSubmitted() && $form->isValid()) {
             // fill the default values
-            if(!$score->getSkill()) {
+            if (!$score->getSkill()) {
                 $score->setSkill($score->getPerson()->getSkill());
             }
-            if(!$score->getBowtype()) {
+            if (!$score->getBowtype()) {
                 $score->setBowtype($score->getPerson()->getBowtype());
             }
             // auto approve admin entered scores
-            if($this->isGranted('ROLE_ADMIN')) {
+            if ($this->isGranted('ROLE_ADMIN')) {
                 $score->accept();
             }
 
@@ -87,6 +87,33 @@ class ScoreController extends Controller
             'score' => $score,
             'handicap' => $handicap
         ));
+    }
+
+    /**
+     * @Security("has_role('ROLE_ADMIN')")
+     * @Route("/score/{id}/accept", name="score_accept")
+     */
+    public function acceptAction($id, Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $score = $em->getRepository('AppBundle:Score')->find($id);
+        if (!$score) {
+            throw $this->createNotFoundException(
+                'No score found for id ' . $id
+            );
+        }
+
+        $score->accept();
+        $em->flush();
+
+        if($request->query->get('index')) {
+            return $this->redirectToRoute('score_list');
+        }
+
+        return $this->redirectToRoute(
+            'score_detail',
+            array('id' => $score->getId())
+        );
     }
 
     /**

@@ -16,6 +16,9 @@
                 </a>
                 {% if is_granted('ROLE_ADMIN') %}
                     <span class="actions">
+                        {% if not score.dateAccepted %}
+                            <a href="{{ url('score_accept', { 'id': score.id, 'index': true }) }}"><i class="fa fa-check"></i></a>
+                        {% endif %}
                         <a href="{{ url('score_edit', { 'id': score.id }) }}"><i class="fa fa-pencil"></i></a>
                         <a href="{{ url('score_delete', { 'id': score.id }) }}"><i class="fa fa-trash-o"></i></a>
                     </span>
