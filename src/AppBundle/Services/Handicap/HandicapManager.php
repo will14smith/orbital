@@ -109,24 +109,25 @@ class HandicapManager
         /** @var QueryBuilder $score_query */
         $score_query = $this->doctrine->getRepository('AppBundle:Score')
             ->createQueryBuilder('s');
-        $score_criteria = Criteria::create()
-            ->where(Criteria::expr()->gte('date_shot', $start_date))
-            ->andWhere(Criteria::expr()->lte('date_shot', $end_date));
 
         /** @var Score[] $scores */
         $scores = $score_query
             ->addSelect('s')
-            ->addCriteria($score_criteria)
-            ->getQuery()
-            ->getArrayResult();
+            ->where('s.date_shot >= :start_date')
+            ->andWhere('s.date_shot <= :end_date')
+
+            ->setParameter('start_date', $start_date, \Doctrine\DBAL\Types\Type::DATE)
+            ->setParameter('end_date', $end_date, \Doctrine\DBAL\Types\Type::DATE)
+
+            ->getQuery()->getResult();
 
         // compute handicaps
         $handicaps = array_map(function ($score) {
             return $this->calculator->handicapForScore($score);
         }, $scores);
 
-        // take highest 3 HC and average
-        rsort($handicaps);
+        // take lowest 3 HC and average
+        sort($handicaps);
         $hc_scores = array_slice($handicaps, 0, 3);
         $hc = array_sum($hc_scores) / count($hc_scores);
 

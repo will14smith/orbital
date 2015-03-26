@@ -6,6 +6,7 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Person;
 use AppBundle\Form\PersonType;
+use AppBundle\Form\ReassessType;
 use AppBundle\Services\Importing\PersonImportParameters;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -105,7 +106,7 @@ class PersonController extends Controller
             ->findByPerson($person->getId());
 
         $scoreRepository = $doctrine->getRepository('AppBundle:Score');
-        $recent_scores =  $scoreRepository
+        $recent_scores = $scoreRepository
             ->findBy([
                 'person' => $person->getId()
             ], ['date_shot' => 'DESC'], 5);
@@ -167,12 +168,23 @@ class PersonController extends Controller
             );
         }
 
-        //TODO invoke reassessment code
+        $data = [];
+        $form = $this->createForm(new ReassessType(), $data);
+        $form->handleRequest($request);
 
-        return $this->redirectToRoute(
-            'person_detail',
-            array('id' => $person->getId())
-        );
+        if ($form->isSubmitted() && $form->isValid()) {
+            $data = $form->getData();
+            $this->get('orbital.handicap.manager')->reassess($person, $data['start_date'], $data['end_date']);
+
+            return $this->redirectToRoute(
+                'person_detail',
+                array('id' => $person->getId())
+            );
+        }
+
+        return $this->render('person/reassess.html.twig', array(
+            'form' => $form->createView(),
+        ));
     }
 
     /**
