@@ -21,7 +21,7 @@ class HandicapListener
     {
         //TODO wait for acceptance
 
-        $this->manager->handleNewScore($event->getScore());
+        $this->manager->updateHandicap($event->getScore());
     }
 
     public function score_update(ScoreEvent $event)

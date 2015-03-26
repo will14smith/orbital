@@ -36,6 +36,12 @@ class PersonHandicap {
     protected $handicap;
 
     /**
+     * @ORM\ManyToOne(targetEntity="Score")
+     * @ORM\JoinColumn(nullable=true)
+     */
+    protected $score;
+
+    /**
      * Get id
      *
      * @return integer 
@@ -135,5 +141,28 @@ class PersonHandicap {
     public function getPerson()
     {
         return $this->person;
+    }
+
+    /**
+     * Set score
+     *
+     * @param \AppBundle\Entity\Score $score
+     * @return PersonHandicap
+     */
+    public function setScore(\AppBundle\Entity\Score $score = null)
+    {
+        $this->score = $score;
+
+        return $this;
+    }
+
+    /**
+     * Get score
+     *
+     * @return \AppBundle\Entity\Score 
+     */
+    public function getScore()
+    {
+        return $this->score;
     }
 }

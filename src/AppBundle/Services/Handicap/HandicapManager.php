@@ -29,13 +29,12 @@ class HandicapManager
         $this->calculator = $calculator;
     }
 
-    public function handleNewScore(Score $score)
+    public function updateHandicap(Score $score)
     {
-        //TODO handle out of order dates...
-
         $person = $score->getPerson();
         $old_hc = $person->getCurrentHandicap();
-        $type = HandicapType::UPDATE;
+
+        $handicap = new PersonHandicap();
 
         if (!$old_hc) {
             $scores = $this->doctrine->getRepository('AppBundle:Score')
@@ -46,7 +45,7 @@ class HandicapManager
 
             if (count($scores) >= 3) {
                 $new_hc = $this->rebuild($scores);
-                $type = HandicapType::INITIAL;
+                $handicap->setType(HandicapType::INITIAL);
             } else {
                 // can't do anything...
                 return;
@@ -54,13 +53,13 @@ class HandicapManager
         } else {
             $score_handicap = $this->calculator->handicapForScore($score);
             $new_hc = ceil(($score_handicap + $old_hc->getHandicap()) / 2);
+
+            $handicap->setType(HandicapType::UPDATE);
+            $handicap->setScore($score);
         }
 
         if ($new_hc < $old_hc->getHandicap() || !$old_hc) {
-            $handicap = new PersonHandicap();
-
             $handicap->setPerson($person);
-            $handicap->setType($type);
             $handicap->setDate(new \DateTime('now'));
             $handicap->setHandicap($new_hc);
 
