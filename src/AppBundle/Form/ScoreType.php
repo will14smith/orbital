@@ -13,17 +13,14 @@ class ScoreType extends AbstractType
 {
     private $edit;
 
-    public function __construct($edit = false) {
+    public function __construct($edit = false)
+    {
         $this->edit = $edit;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder
-            ->add('person', 'entity', [
-                'class' => 'AppBundle:Person',
-                'disabled' => $this->edit
-            ])
+        $mode = $builder->create('mode', 'form', ['inherit_data' => true, 'label' => false, 'attr' => ['orbital-collapse' => 'Skill / Bowtype']])
             ->add('skill', 'choice', [
                 'choices' => Skill::$choices,
                 'required' => false,
@@ -31,20 +28,30 @@ class ScoreType extends AbstractType
             ->add('bowtype', 'choice', [
                 'choices' => BowType::$choices,
                 'required' => false,
+            ]);
+
+        $score = $builder->create('score', 'form', ['inherit_data' => true, 'label' => false, 'attr' => ['class' => 'inline']])
+            ->add('score')
+            ->add('golds')
+            ->add('hits');
+
+        $checks = $builder->create('checks', 'form', ['inherit_data' => true, 'label' => false, 'attr' => ['class' => 'inline']])
+            ->add('competition', 'checkbox', ['required' => false])
+            ->add('complete', 'checkbox', ['required' => false]);
+
+        $builder
+            ->add('person', 'entity', [
+                'class' => 'AppBundle:Person',
+                'disabled' => $this->edit
             ])
+            ->add($mode)
             ->add('round', 'entity', [
                 'class' => 'AppBundle:Round',
                 'disabled' => $this->edit
             ])
-            //TODO group these
-            ->add('score')
-            ->add('golds')
-            ->add('hits')
-            // END GROUP
-            ->add('competition', 'checkbox', ['required' => false])
-            ->add('complete', 'checkbox', ['required' => false])
+            ->add($score)
+            ->add($checks)
             ->add('date_shot');
-        ;
     }
 
     public function setDefaultOptions(OptionsResolverInterface $resolver)

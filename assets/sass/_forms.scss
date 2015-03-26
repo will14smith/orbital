@@ -21,6 +21,17 @@ form {
     padding: $input-container-padding;
     padding-bottom: $input-container-padding + $input-error-height;
 
+    @media (min-width: $layout-breakpoint-sm) {
+      .inline {
+        display: flex;
+        flex-direction: row;
+
+        .form-row {
+          width: 100%;
+        }
+      }
+    }
+
     textarea,
     input[type="text"],
     input[type="password"],
