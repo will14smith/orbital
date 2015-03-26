@@ -44,6 +44,8 @@
   }
 }
 
+$dl-border: 1px solid map-get($color-grey, '300');
+
 dl {
   margin-top: 0;
 
@@ -52,20 +54,34 @@ dl {
     margin: 0;
     padding: $baseline-grid;
 
-    border-top: 1px solid map-get($color-grey, '300');
-  }
-
-  dt:first-child, dt:first-child + dd {
-    border-top: none;
+    width: 100%;
   }
 
   dt {
-    width: 33%;
+    font-weight: bold;
+
+    border-top: $dl-border;
   }
 
-  dd {
-    width: 66%;
-    border-left: 1px solid map-get($color-grey, '300');
+  dt:first-child {
+    border-top: none;
+  }
+
+  @media (min-width: $layout-breakpoint-sm) {
+    dt {
+      width: 33%;
+      font-weight: normal;
+    }
+
+    dd {
+      width: 66%;
+      border-top: $dl-border;
+      border-left: $dl-border;
+    }
+
+    dt:first-child + dd {
+      border-top: none;
+    }
   }
 
   dt.admin, dt.admin + dd {

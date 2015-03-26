@@ -1,12 +1,12 @@
 .brand-image {
-  background: url('../images/header3.jpg') no-repeat center center; 
+  background: url('../images/header3.jpg') no-repeat right center;
   @include background-size(cover);
  
   height: 300px;
  
   img {
-    margin-bottom: -6px;
-    height: 100px;
+    margin-bottom: -9px;
+    max-width: 100%;
     padding-left: $layout-gutter-width;
   }
 }
