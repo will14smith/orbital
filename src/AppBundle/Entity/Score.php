@@ -74,6 +74,11 @@ class Score
      */
     protected $date_accepted;
 
+    /**
+     * @ORM\OneToMany(targetEntity="ScoreProof", mappedBy="score")
+     */
+    protected $proof;
+
     /** @ORM\PrePersist */
     function on_create()
     {
@@ -388,5 +393,45 @@ class Score
             $this->getRound()->getName(),
             $this->getScore()
         );
+    }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->proof = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add proof
+     *
+     * @param \AppBundle\Entity\ScoreProof $proof
+     * @return Score
+     */
+    public function addProof(\AppBundle\Entity\ScoreProof $proof)
+    {
+        $this->proof[] = $proof;
+
+        return $this;
+    }
+
+    /**
+     * Remove proof
+     *
+     * @param \AppBundle\Entity\ScoreProof $proof
+     */
+    public function removeProof(\AppBundle\Entity\ScoreProof $proof)
+    {
+        $this->proof->removeElement($proof);
+    }
+
+    /**
+     * Get proof
+     *
+     * @return \Doctrine\Common\Collections\Collection|ScoreProof[]
+     */
+    public function getProof()
+    {
+        return $this->proof;
     }
 }

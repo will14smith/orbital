@@ -37,18 +37,46 @@
             {% endif %}
         </dd>
     </dl>
+
+    {% if is_granted('ROLE_ADMIN') %}
+        <div{% if score.proof|length > 0 %} orbital-collapse="Proof"{% endif %}>
+            <h2>Proof</h2>
+            <ul class="list">
+                {% for proof in score.proof %}
+                    <li>
+                        {% if proof.notes %}
+                            <span class="text shrink">Added by {{ proof.person.name }}</span>
+                            <span class="text">
+                            {{ proof.notes }}
+                        </span>
+                        {% else %}
+                            <span class="text">Added by {{ proof.person.name }}</span>
+                            <span class="actions">
+                            <a href="{{ asset('uploads/' ~ proof.imageName) }}" target="_blank">
+                                <i class="fa fa-image"></i></a>
+                        </span>
+                        {% endif %}
+                    </li>
+                {% else %}
+                    <li><span class="text">There is no proof.</span></li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
 {% endblock %}
 
 {% block sidebar %}
-    {% if is_granted('ROLE_ADMIN') %}
+    {% if is_granted('EDIT', score) or is_granted('ROLE_ADMIN') %}
         <div class="widget">
             <h3 class="widget-title">Actions</h3>
             <ul>
-                {% if not score.dateAccepted %}
+                {% if not score.dateAccepted and is_granted('ROLE_ADMIN') %}
                     <li><a href="{{ url('score_accept', { 'id': score.id }) }}">Accept</a></li>
                 {% endif %}
                 <li><a href="{{ url('score_edit', { 'id': score.id }) }}">Edit</a></li>
+                {% if is_granted('ROLE_ADMIN') %}
                 <li><a href="{{ url('score_delete', { 'id': score.id }) }}">Delete</a></li>
+                {% endif %}
             </ul>
         </div>
     {% endif %}

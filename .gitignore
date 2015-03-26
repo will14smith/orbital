@@ -19,5 +19,7 @@
 /web/fonts/
 /web/images/
 /web/js/
+/web/uploads/*
+!web/uploads/.gitkeep
 
 *.php~

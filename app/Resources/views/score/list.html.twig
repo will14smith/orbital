@@ -14,13 +14,17 @@
                     {{ score.round.name }} -
                     {{ score.score }}
                 </a>
-                {% if is_granted('ROLE_ADMIN') %}
+                {% if is_granted('ROLE_ADMIN') or is_granted('EDIT', score) %}
                     <span class="actions">
-                        {% if not score.dateAccepted %}
-                            <a href="{{ url('score_accept', { 'id': score.id, 'index': true }) }}"><i class="fa fa-check"></i></a>
+                        {% if not score.dateAccepted and is_granted('ROLE_ADMIN') %}
+                            <a href="{{ url('score_accept', { 'id': score.id, 'index': true }) }}">
+                                <i class="fa fa-check"></i>
+                            </a>
                         {% endif %}
                         <a href="{{ url('score_edit', { 'id': score.id }) }}"><i class="fa fa-pencil"></i></a>
-                        <a href="{{ url('score_delete', { 'id': score.id }) }}"><i class="fa fa-trash-o"></i></a>
+                        {% if is_granted('ROLE_ADMIN') %}
+                            <a href="{{ url('score_delete', { 'id': score.id }) }}"><i class="fa fa-trash-o"></i></a>
+                        {% endif %}
                     </span>
                 {% endif %}
             </li>
@@ -31,7 +35,7 @@
 {% endblock %}
 
 {% block sidebar %}
-    {% if is_granted('ROLE_ADMIN') %}
+    {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
         <div class="widget">
             <h3 class="widget-title">Actions</h3>
             <ul>
