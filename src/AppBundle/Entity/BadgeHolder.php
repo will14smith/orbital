@@ -3,6 +3,7 @@
 
 namespace AppBundle\Entity;
 
+use AppBundle\Services\Enum\BadgeState;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -192,5 +193,25 @@ class BadgeHolder
     public function getPerson()
     {
         return $this->person;
+    }
+
+    /**
+     * @return string State of badge
+     */
+    public function getState()
+    {
+        if(!$this->date_confirmed) {
+            return BadgeState::UNCONFIRMED;
+        }
+
+        if(!$this->date_made) {
+            return BadgeState::CONFIRMED;
+        }
+
+        if(!$this->date_delivered) {
+            return BadgeState::MADE;
+        }
+
+        return BadgeState::DELIVERED;
     }
 }

@@ -28,7 +28,7 @@ class BadgeType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'AppBundle\Entity\Badge'
+            'data_class' => 'AppBundle\Entity\Badge',
         ));
     }
 

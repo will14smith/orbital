@@ -8,6 +8,7 @@ use AppBundle\Entity\Badge;
 use AppBundle\Entity\BadgeHolder;
 use AppBundle\Form\BadgeHolderType;
 use AppBundle\Form\BadgeType;
+use AppBundle\Services\Enum\BadgeState;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -121,6 +122,9 @@ class BadgeController extends Controller
         }
 
         $badgeHolder = new BadgeHolder();
+        //TODO auto confirm if admin enters
+        //TODO remove most fields for non-admins
+        //TODO proof
         $form = $this->createForm(new BadgeHolderType(), $badgeHolder);
         $form->handleRequest($request);
 
@@ -155,12 +159,14 @@ class BadgeController extends Controller
             );
         }
 
-        if($id != $badgeHolder->getBadge()->getId()) {
+        if ($id != $badgeHolder->getBadge()->getId()) {
             throw $this->createNotFoundException(
                 'Badge-holder ' . $award_id . ' not associated with badge ' . $id
             );
         }
 
+        //TODO remove most fields for non-admins
+        //TODO proof
         $form = $this->createForm(new BadgeHolderType(), $badgeHolder);
         $form->handleRequest($request);
 
@@ -177,6 +183,51 @@ class BadgeController extends Controller
             'form' => $form->createView(),
             'badge' => $badgeHolder->getBadge()
         ));
+    }
+
+    /**
+     * @Security("has_role('ROLE_ADMIN')")
+     * @Route("/badge/{id}/award/{award_id}/state", name="badge_award_state")
+     */
+    public function awardStateAction($id, $award_id, Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        /** @var BadgeHolder $badgeHolder */
+        $badgeHolder = $em->getRepository('AppBundle:BadgeHolder')->find($award_id);
+        if (!$badgeHolder) {
+            throw $this->createNotFoundException(
+                'No badge-holder found for id ' . $award_id
+            );
+        }
+
+        if ($id != $badgeHolder->getBadge()->getId()) {
+            throw $this->createNotFoundException(
+                'Badge-holder ' . $award_id . ' not associated with badge ' . $id
+            );
+        }
+
+        switch ($badgeHolder->getState()) {
+            case BadgeState::UNCONFIRMED:
+                $badgeHolder->setDateConfirmed(new \DateTime('now'));
+                break;
+            case BadgeState::CONFIRMED:
+                $badgeHolder->setDateMade(new \DateTime('now'));
+                break;
+            case BadgeState::MADE:
+                $badgeHolder->setDateDelivered(new \DateTime('now'));
+                break;
+        }
+        $em->flush();
+
+        if ($request->query->get('person')) {
+            return $this->redirectToRoute('person_detail', [
+                'id' => $badgeHolder->getPerson()->getId()
+            ]);
+        } else {
+            return $this->redirectToRoute('badge_detail', [
+               'id' => $badgeHolder->getBadge()->getId()
+            ]);
+        }
     }
 
     /**

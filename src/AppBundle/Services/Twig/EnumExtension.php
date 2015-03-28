@@ -5,6 +5,7 @@ namespace AppBundle\Services\Twig;
 
 
 use AppBundle\Services\Enum\BadgeCategory;
+use AppBundle\Services\Enum\BadgeState;
 use AppBundle\Services\Enum\BowType;
 use AppBundle\Services\Enum\Gender;
 use AppBundle\Services\Enum\Skill;
@@ -19,13 +20,22 @@ class EnumExtension extends \Twig_Extension
 
     public function getGlobals()
     {
-        return ['Enum' => [
+        return ['Enum' => array_map([$this, 'process_enum_global'], [
             'bowtype' => BowType::$choices,
             'gender' => Gender::$choices,
             'skill' => Skill::$choices,
             'unit' => Unit::$choices,
-            'bagdecat' => BadgeCategory::$choices,
-        ]];
+            'badgecat' => BadgeCategory::$choices,
+            'badgestate' => BadgeState::$choices,
+        ])];
+    }
+
+    private function process_enum_global($enum) {
+        array_walk($enum, function(&$v, $k) {
+            $v = $k;
+        });
+
+        return $enum;
     }
 
     public function enum_filter($value, $enum) {

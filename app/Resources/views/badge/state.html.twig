@@ -1,0 +1,12 @@
+{% set state = badge.state %}
+{% if state != Enum.badgestate.delivered %}
+    <a class="shrink" href="{{ url('badge_award_state', { 'id': badge.badge.id, 'award_id': badge.id }) }}">
+        {% if state == Enum.badgestate.unconfirmed %}
+            <i class="fa fa-check" title="Confirm"></i>
+        {% elseif state == Enum.badgestate.confirmed %}
+            <i class="fa fa-magic" title="Mark as Made"></i>
+        {% elseif state == Enum.badgestate.made %}
+            <i class="fa fa-car" title="Mark as Delivered"></i>
+        {% endif %}
+    </a>
+{% endif %}

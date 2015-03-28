@@ -20,6 +20,7 @@
                 </a>
                 {% if is_granted('ROLE_ADMIN') %}
                     <span class="actions">
+                        {% include '::badge/state.html.twig' with { 'badge': holder } only %}
                         <a href="{{ url('badge_award_edit', { 'id': badge.id, 'award_id': holder.id }) }}">
                             <i class="fa fa-pencil"></i>
                         </a>
