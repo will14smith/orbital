@@ -4,7 +4,8 @@
 namespace AppBundle\Services\Enum;
 
 
-class BowType {
+class BowType
+{
     const RECURVE = 'recurve';
     const BAREBOW = 'barebow';
     const LONGBOW = 'longbow';
@@ -19,8 +20,8 @@ class BowType {
         BowType::COMPOUND => 'Compound'
     ];
 
-    public static function display($bowtype)
+    public static function display($bow_type)
     {
-        return BowType::$choices[$bowtype];
+        return BowType::$choices[$bow_type];
     }
 }

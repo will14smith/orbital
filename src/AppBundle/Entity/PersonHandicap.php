@@ -9,7 +9,8 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity(repositoryClass="PersonHandicapRepository")
  * @ORM\Table(name="person_handicap")
  */
-class PersonHandicap {
+class PersonHandicap
+{
     /**
      * @ORM\Column(type="integer")
      * @ORM\Id
@@ -44,7 +45,7 @@ class PersonHandicap {
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -55,6 +56,7 @@ class PersonHandicap {
      * Set type
      *
      * @param string $type
+     *
      * @return PersonHandicap
      */
     public function setType($type)
@@ -67,7 +69,7 @@ class PersonHandicap {
     /**
      * Get type
      *
-     * @return string 
+     * @return string
      */
     public function getType()
     {
@@ -78,6 +80,7 @@ class PersonHandicap {
      * Set date
      *
      * @param \DateTime $date
+     *
      * @return PersonHandicap
      */
     public function setDate($date)
@@ -90,7 +93,7 @@ class PersonHandicap {
     /**
      * Get date
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getDate()
     {
@@ -101,6 +104,7 @@ class PersonHandicap {
      * Set handicap
      *
      * @param integer $handicap
+     *
      * @return PersonHandicap
      */
     public function setHandicap($handicap)
@@ -113,7 +117,7 @@ class PersonHandicap {
     /**
      * Get handicap
      *
-     * @return integer 
+     * @return integer
      */
     public function getHandicap()
     {
@@ -124,9 +128,10 @@ class PersonHandicap {
      * Set person
      *
      * @param \AppBundle\Entity\Person $person
+     *
      * @return PersonHandicap
      */
-    public function setPerson(\AppBundle\Entity\Person $person = null)
+    public function setPerson(Person $person = null)
     {
         $this->person = $person;
 
@@ -136,7 +141,7 @@ class PersonHandicap {
     /**
      * Get person
      *
-     * @return \AppBundle\Entity\Person 
+     * @return \AppBundle\Entity\Person
      */
     public function getPerson()
     {
@@ -147,9 +152,10 @@ class PersonHandicap {
      * Set score
      *
      * @param \AppBundle\Entity\Score $score
+     *
      * @return PersonHandicap
      */
-    public function setScore(\AppBundle\Entity\Score $score = null)
+    public function setScore(Score $score = null)
     {
         $this->score = $score;
 
@@ -159,7 +165,7 @@ class PersonHandicap {
     /**
      * Get score
      *
-     * @return \AppBundle\Entity\Score 
+     * @return \AppBundle\Entity\Score
      */
     public function getScore()
     {

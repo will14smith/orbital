@@ -9,7 +9,7 @@ use AppBundle\Entity\PersonHandicap;
 use AppBundle\Entity\Score;
 use AppBundle\Services\Enum\HandicapType;
 use Doctrine\Bundle\DoctrineBundle\Registry;
-use Doctrine\Common\Collections\Criteria;
+use Doctrine\DBAL\Types\Type;
 use Doctrine\ORM\QueryBuilder;
 
 class HandicapManager
@@ -73,6 +73,7 @@ class HandicapManager
      * Only run this when >3 scores exist and there isn't a current handicap
      *
      * @param Score[] $scores
+     *
      * @return int
      */
     private function rebuild(array $scores)
@@ -87,7 +88,7 @@ class HandicapManager
         // average it up for the remainder
         for ($i = 3; $i < count($handicaps); $i++) {
             $new_hc = ceil(($handicaps[$i] + $handicap) / 2);
-            if($new_hc < $handicap) {
+            if ($new_hc < $handicap) {
                 $handicap = $new_hc;
             }
         }
@@ -114,10 +115,8 @@ class HandicapManager
             ->addSelect('s')
             ->where('s.date_shot >= :start_date')
             ->andWhere('s.date_shot <= :end_date')
-
-            ->setParameter('start_date', $start_date, \Doctrine\DBAL\Types\Type::DATE)
-            ->setParameter('end_date', $end_date, \Doctrine\DBAL\Types\Type::DATE)
-
+            ->setParameter('start_date', $start_date, Type::DATE)
+            ->setParameter('end_date', $end_date, Type::DATE)
             ->getQuery()->getResult();
 
         // compute handicaps

@@ -3,6 +3,7 @@
 
 namespace AppBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -100,6 +101,7 @@ class Score
      * Set skill
      *
      * @param string $skill
+     *
      * @return Score
      */
     public function setSkill($skill)
@@ -123,6 +125,7 @@ class Score
      * Set bowtype
      *
      * @param string $bowtype
+     *
      * @return Score
      */
     public function setBowtype($bowtype)
@@ -146,6 +149,7 @@ class Score
      * Set score
      *
      * @param integer $score
+     *
      * @return Score
      */
     public function setScore($score)
@@ -169,6 +173,7 @@ class Score
      * Set golds
      *
      * @param integer $golds
+     *
      * @return Score
      */
     public function setGolds($golds)
@@ -192,6 +197,7 @@ class Score
      * Set hits
      *
      * @param integer $hits
+     *
      * @return Score
      */
     public function setHits($hits)
@@ -215,6 +221,7 @@ class Score
      * Set competition
      *
      * @param boolean $competition
+     *
      * @return Score
      */
     public function setCompetition($competition)
@@ -238,6 +245,7 @@ class Score
      * Set complete
      *
      * @param boolean $complete
+     *
      * @return Score
      */
     public function setComplete($complete)
@@ -261,6 +269,7 @@ class Score
      * Set date_shot
      *
      * @param \DateTime $dateShot
+     *
      * @return Score
      */
     public function setDateShot($dateShot)
@@ -284,7 +293,9 @@ class Score
      * Set date_entered
      *
      * @deprecated
+     *
      * @param \DateTime $dateEntered
+     *
      * @return Score
      * @throws \Exception
      */
@@ -307,7 +318,9 @@ class Score
      * Set date_accepted
      *
      * @deprecated
+     *
      * @param \DateTime $dateAccepted
+     *
      * @return Score
      * @throws \Exception
      */
@@ -333,7 +346,7 @@ class Score
      */
     public function accept()
     {
-        if(!$this->date_accepted) {
+        if (!$this->date_accepted) {
             $this->date_accepted = new \DateTime('now');
         }
 
@@ -344,6 +357,7 @@ class Score
      * Set person
      *
      * @param \AppBundle\Entity\Person $person
+     *
      * @return Score
      */
     public function setPerson(Person $person = null)
@@ -367,9 +381,10 @@ class Score
      * Set round
      *
      * @param \AppBundle\Entity\Round $round
+     *
      * @return Score
      */
-    public function setRound(\AppBundle\Entity\Round $round = null)
+    public function setRound(Round $round = null)
     {
         $this->round = $round;
 
@@ -386,7 +401,8 @@ class Score
         return $this->round;
     }
 
-    public function __toString() {
+    public function __toString()
+    {
         return sprintf('%s - %s - %s - %i',
             $this->getDateShot()->format('d/m/Y H:i'),
             $this->getPerson()->getName(),
@@ -394,21 +410,23 @@ class Score
             $this->getScore()
         );
     }
+
     /**
      * Constructor
      */
     public function __construct()
     {
-        $this->proof = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->proof = new ArrayCollection();
     }
 
     /**
      * Add proof
      *
      * @param \AppBundle\Entity\ScoreProof $proof
+     *
      * @return Score
      */
-    public function addProof(\AppBundle\Entity\ScoreProof $proof)
+    public function addProof(ScoreProof $proof)
     {
         $this->proof[] = $proof;
 
@@ -420,7 +438,7 @@ class Score
      *
      * @param \AppBundle\Entity\ScoreProof $proof
      */
-    public function removeProof(\AppBundle\Entity\ScoreProof $proof)
+    public function removeProof(ScoreProof $proof)
     {
         $this->proof->removeElement($proof);
     }

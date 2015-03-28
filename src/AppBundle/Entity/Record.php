@@ -72,6 +72,7 @@ class Record
      * Set num_holders
      *
      * @param integer $numHolders
+     *
      * @return Record
      */
     public function setNumHolders($numHolders)
@@ -95,6 +96,7 @@ class Record
      * Set skill
      *
      * @param string $skill
+     *
      * @return Record
      */
     public function setSkill($skill)
@@ -118,6 +120,7 @@ class Record
      * Set bowtype
      *
      * @param string $bowtype
+     *
      * @return Record
      */
     public function setBowtype($bowtype)
@@ -141,6 +144,7 @@ class Record
      * Set gender
      *
      * @param string $gender
+     *
      * @return Record
      */
     public function setGender($gender)
@@ -164,9 +168,10 @@ class Record
      * Set round
      *
      * @param \AppBundle\Entity\Round $round
+     *
      * @return Record
      */
-    public function setRound(\AppBundle\Entity\Round $round = null)
+    public function setRound(Round $round = null)
     {
         $this->round = $round;
 
@@ -187,9 +192,10 @@ class Record
      * Add holders
      *
      * @param \AppBundle\Entity\RecordHolder $holder
+     *
      * @return Record
      */
-    public function addHolder(\AppBundle\Entity\RecordHolder $holder)
+    public function addHolder(RecordHolder $holder)
     {
         $this->holders[] = $holder;
 
@@ -201,7 +207,7 @@ class Record
      *
      * @param \AppBundle\Entity\RecordHolder $holders
      */
-    public function removeHolder(\AppBundle\Entity\RecordHolder $holders)
+    public function removeHolder(RecordHolder $holders)
     {
         $this->holders->removeElement($holders);
     }

@@ -11,8 +11,7 @@ class PersonHandicapRepository extends EntityRepository
         $q = $this->createQueryBuilder('ph')
             ->select('count(ph.id)')
             ->where('ph.score = :score')
-            ->setParameter('score', $score->getId())
-        ;
+            ->setParameter('score', $score->getId());
 
         return $q->getQuery()->getSingleScalarResult();
     }

@@ -39,7 +39,7 @@ class ScoreProof
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -50,6 +50,7 @@ class ScoreProof
      * Set image_name
      *
      * @param string $imageName
+     *
      * @return ScoreProof
      */
     public function setImageName($imageName)
@@ -62,7 +63,7 @@ class ScoreProof
     /**
      * Get image_name
      *
-     * @return string 
+     * @return string
      */
     public function getImageName()
     {
@@ -73,6 +74,7 @@ class ScoreProof
      * Set notes
      *
      * @param string $notes
+     *
      * @return ScoreProof
      */
     public function setNotes($notes)
@@ -85,7 +87,7 @@ class ScoreProof
     /**
      * Get notes
      *
-     * @return string 
+     * @return string
      */
     public function getNotes()
     {
@@ -96,9 +98,10 @@ class ScoreProof
      * Set score
      *
      * @param \AppBundle\Entity\Score $score
+     *
      * @return ScoreProof
      */
-    public function setScore(\AppBundle\Entity\Score $score = null)
+    public function setScore(Score $score = null)
     {
         $this->score = $score;
 
@@ -108,7 +111,7 @@ class ScoreProof
     /**
      * Get score
      *
-     * @return \AppBundle\Entity\Score 
+     * @return \AppBundle\Entity\Score
      */
     public function getScore()
     {
@@ -119,9 +122,10 @@ class ScoreProof
      * Set person
      *
      * @param \AppBundle\Entity\Person $person
+     *
      * @return ScoreProof
      */
-    public function setPerson(\AppBundle\Entity\Person $person = null)
+    public function setPerson(Person $person = null)
     {
         $this->person = $person;
 
@@ -131,7 +135,7 @@ class ScoreProof
     /**
      * Get person
      *
-     * @return \AppBundle\Entity\Person 
+     * @return \AppBundle\Entity\Person
      */
     public function getPerson()
     {

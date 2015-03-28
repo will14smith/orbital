@@ -15,21 +15,20 @@ class BadgeType extends AbstractType
         $builder
             ->add('name')
             ->add('description', 'textarea')
-            ->add('algo_name') // TODO ENUM
+            ->add('algo_name')// TODO ENUM
             ->add('category', 'choice', [
                 'choices' => BadgeCategory::$choices
             ])
             ->add('multiple', 'checkbox', [
                 'required' => false
-            ])
-        ;
+            ]);
     }
 
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'data_class' => 'AppBundle\Entity\Badge',
-        ));
+        ]);
     }
 
     public function getName()

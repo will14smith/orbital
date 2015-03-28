@@ -33,6 +33,7 @@ class HandicapCalculator
      * @param Round $round
      * @param boolean $compound
      * @param int $handicap
+     *
      * @return int
      * @throws \Exception
      */
@@ -59,6 +60,7 @@ class HandicapCalculator
      * @param Round $round
      * @param boolean $compound
      * @param int $score
+     *
      * @return int
      */
     public function handicap(Round $round, $compound, $score)
@@ -70,9 +72,11 @@ class HandicapCalculator
         while ($delta >= 1) {
             $point_score = $this->score($round, $compound, $point);
 
-            if($score < $point_score) { $point += $delta; }
-            else if($score > $point_score) { $point -= $delta; }
-            else return $point;
+            if ($score < $point_score) {
+                $point += $delta;
+            } else if ($score > $point_score) {
+                $point -= $delta;
+            } else return $point;
 
             $delta /= 2;
         }
@@ -80,7 +84,8 @@ class HandicapCalculator
         return $point;
     }
 
-    public function handicapForScore(Score $score){
+    public function handicapForScore(Score $score)
+    {
         return $this->handicap(
             $score->getRound(),
             $score->getBowtype() == BowType::COMPOUND,

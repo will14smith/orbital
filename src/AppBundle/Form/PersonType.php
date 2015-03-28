@@ -29,15 +29,14 @@ class PersonType extends AbstractType
             ->add('bowtype', 'choice', ['choices' => BowType::$choices])
             ->add('club_bow')
             ->add('password', 'password', ['required' => false])
-            ->add('admin', 'checkbox', ['required' => false])
-        ;
+            ->add('admin', 'checkbox', ['required' => false]);
     }
 
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'data_class' => 'AppBundle\Entity\Person'
-        ));
+        ]);
     }
 
     public function getName()

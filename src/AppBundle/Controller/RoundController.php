@@ -22,14 +22,17 @@ class RoundController extends Controller
 
         $rounds = $roundRepository->findAll();
 
-        return $this->render('round/list.html.twig', array(
+        return $this->render('round/list.html.twig', [
             'rounds' => $rounds
-        ));
+        ]);
     }
 
     /**
      * @Security("has_role('ROLE_ADMIN')")
      * @Route("/round/create", name="round_create")
+     * @param Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function createAction(Request $request)
     {
@@ -46,17 +49,20 @@ class RoundController extends Controller
 
             return $this->redirectToRoute(
                 'round_detail',
-                array('id' => $round->getId())
+                ['id' => $round->getId()]
             );
         }
 
-        return $this->render('round/create.html.twig', array(
+        return $this->render('round/create.html.twig', [
             'form' => $form->createView(),
-        ));
+        ]);
     }
 
     /**
      * @Route("/round/{id}", name="round_detail")
+     * @param integer $id
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function detailAction($id)
     {
@@ -69,14 +75,19 @@ class RoundController extends Controller
             );
         }
 
-        return $this->render('round/detail.html.twig', array(
+        return $this->render('round/detail.html.twig', [
             'round' => $round
-        ));
+        ]);
     }
 
     /**
      * @Security("has_role('ROLE_ADMIN')")
      * @Route("/round/{id}/edit", name="round_edit")
+     *
+     * @param integer $id
+     * @param Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function editAction($id, Request $request)
     {
@@ -97,18 +108,23 @@ class RoundController extends Controller
 
             return $this->redirectToRoute(
                 'round_detail',
-                array('id' => $round->getId())
+                ['id' => $round->getId()]
             );
         }
 
-        return $this->render('round/edit.html.twig', array(
+        return $this->render('round/edit.html.twig', [
             'form' => $form->createView(),
-        ));
+        ]);
     }
 
     /**
      * @Security("has_role('ROLE_ADMIN')")
      * @Route("/round/{id}/delete", name="round_delete")
+     *
+     * @param integer $id
+     * @param Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function deleteAction($id, Request $request)
     {
@@ -128,8 +144,8 @@ class RoundController extends Controller
             return $this->redirectToRoute('round_list');
         }
 
-        return $this->render('round/delete.html.twig', array(
+        return $this->render('round/delete.html.twig', [
             'round' => $round
-        ));
+        ]);
     }
 }

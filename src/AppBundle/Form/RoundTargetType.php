@@ -21,15 +21,14 @@ class RoundTargetType extends AbstractType
             ->add('target_unit', 'choice', ['choices' => Unit::$choices])
             ->add('scoring_zones', 'choice', ['choices' => ScoreZones::$choices])
             ->add('arrow_count')
-            ->add('end_size')
-        ;
+            ->add('end_size');
     }
 
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'data_class' => 'AppBundle\Entity\RoundTarget'
-        ));
+        ]);
     }
 
     public function getName()

@@ -29,14 +29,18 @@ class BadgeController extends Controller
 
         $badges = $badgeRepository->findAll();
 
-        return $this->render('badge/list.html.twig', array(
+        return $this->render('badge/list.html.twig', [
             'badges' => $badges
-        ));
+        ]);
     }
 
     /**
      * @Security("has_role('ROLE_ADMIN')")
      * @Route("/badge/create", name="badge_create")
+     *
+     * @param Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function createAction(Request $request)
     {
@@ -52,18 +56,22 @@ class BadgeController extends Controller
 
             return $this->redirectToRoute(
                 'badge_detail',
-                array('id' => $badge->getId())
+                ['id' => $badge->getId()]
             );
         }
 
-        return $this->render('badge/create.html.twig', array(
+        return $this->render('badge/create.html.twig', [
             'form' => $form->createView(),
-        ));
+        ]);
     }
 
     /**
      * @Security("is_granted('IS_AUTHENTICATED_REMEMBERED')")
      * @Route("/badge/claim", name="badge_award")
+     *
+     * @param Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function awardAction(Request $request)
     {
@@ -98,17 +106,21 @@ class BadgeController extends Controller
 
             return $this->redirectToRoute(
                 'badge_detail',
-                array('id' => $badgeHolder->getBadge()->getId())
+                ['id' => $badgeHolder->getBadge()->getId()]
             );
         }
 
-        return $this->render('badge/award.html.twig', array(
+        return $this->render('badge/award.html.twig', [
             'form' => $form->createView(),
-        ));
+        ]);
     }
 
     /**
      * @Route("/badge/{id}", name="badge_detail")
+     *
+     * @param int $id
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function detailAction($id)
     {
@@ -121,14 +133,19 @@ class BadgeController extends Controller
             );
         }
 
-        return $this->render('badge/detail.html.twig', array(
+        return $this->render('badge/detail.html.twig', [
             'badge' => $badge
-        ));
+        ]);
     }
 
     /**
      * @Security("has_role('ROLE_ADMIN')")
      * @Route("/badge/{id}/edit", name="badge_edit")
+     *
+     * @param int $id
+     * @param Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function editAction($id, Request $request)
     {
@@ -148,18 +165,24 @@ class BadgeController extends Controller
 
             return $this->redirectToRoute(
                 'badge_detail',
-                array('id' => $badge->getId())
+                ['id' => $badge->getId()]
             );
         }
 
-        return $this->render('badge/edit.html.twig', array(
+        return $this->render('badge/edit.html.twig', [
             'form' => $form->createView(),
-        ));
+        ]);
     }
 
     /**
      * @Security("has_role('ROLE_ADMIN')")
      * @Route("/badge/{id}/award/{award_id}", name="badge_award_edit")
+     *
+     * @param int $id
+     * @param int $award_id
+     * @param Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function awardEditAction($id, $award_id, Request $request)
     {
@@ -185,19 +208,25 @@ class BadgeController extends Controller
 
             return $this->redirectToRoute(
                 'badge_detail',
-                array('id' => $badgeHolder->getBadge()->getId())
+                ['id' => $badgeHolder->getBadge()->getId()]
             );
         }
 
-        return $this->render('badge/award_edit.html.twig', array(
+        return $this->render('badge/award_edit.html.twig', [
             'form' => $form->createView(),
             'holder' => $badgeHolder,
-        ));
+        ]);
     }
 
     /**
      * @Security("has_role('ROLE_ADMIN')")
      * @Route("/badge/{id}/award/{award_id}/state", name="badge_award_state")
+     *
+     * @param int $id
+     * @param int $award_id
+     * @param Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function awardStateAction($id, $award_id, Request $request)
     {
@@ -249,6 +278,12 @@ class BadgeController extends Controller
     /**
      * @Security("has_role('ROLE_ADMIN')")
      * @Route("/badge/{id}/award/{award_id}/delete", name="badge_award_delete")
+     *
+     * @param int $id
+     * @param int $award_id
+     * @param Request $request
+     *
+     * @throws \Exception
      */
     public function awardDeleteAction($id, $award_id, Request $request)
     {
@@ -258,6 +293,11 @@ class BadgeController extends Controller
     /**
      * @Security("has_role('ROLE_ADMIN')")
      * @Route("/badge/{id}/delete", name="badge_delete")
+     *
+     * @param int $id
+     * @param Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
     public function deleteAction($id, Request $request)
     {
@@ -277,9 +317,9 @@ class BadgeController extends Controller
             return $this->redirectToRoute('badge_list');
         }
 
-        return $this->render('badge/delete.html.twig', array(
+        return $this->render('badge/delete.html.twig', [
             'badge' => $badge
-        ));
+        ]);
     }
 
     private function handle_proof(FormInterface $form)
@@ -339,6 +379,7 @@ class BadgeController extends Controller
     /**
      * @param BadgeHolder $holder
      * @param Request $request
+     *
      * @return bool|\Symfony\Component\HttpFoundation\Response
      */
     private function confirm_proof(BadgeHolder $holder, Request $request)

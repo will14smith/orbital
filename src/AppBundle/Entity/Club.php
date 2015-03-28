@@ -48,7 +48,7 @@ class Club
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -59,6 +59,7 @@ class Club
      * Set name
      *
      * @param string $name
+     *
      * @return Club
      */
     public function setName($name)
@@ -71,7 +72,7 @@ class Club
     /**
      * Get name
      *
-     * @return string 
+     * @return string
      */
     public function getName()
     {
@@ -82,6 +83,7 @@ class Club
      * Set website
      *
      * @param string $website
+     *
      * @return Club
      */
     public function setWebsite($website)
@@ -94,7 +96,7 @@ class Club
     /**
      * Get website
      *
-     * @return string 
+     * @return string
      */
     public function getWebsite()
     {
@@ -105,6 +107,7 @@ class Club
      * Set email
      *
      * @param string $email
+     *
      * @return Club
      */
     public function setEmail($email)
@@ -117,7 +120,7 @@ class Club
     /**
      * Get email
      *
-     * @return string 
+     * @return string
      */
     public function getEmail()
     {
@@ -128,9 +131,10 @@ class Club
      * Add people
      *
      * @param \AppBundle\Entity\Person $people
+     *
      * @return Club
      */
-    public function addPerson(\AppBundle\Entity\Person $people)
+    public function addPerson(Person $people)
     {
         $this->people[] = $people;
 
@@ -142,7 +146,7 @@ class Club
      *
      * @param \AppBundle\Entity\Person $people
      */
-    public function removePerson(\AppBundle\Entity\Person $people)
+    public function removePerson(Person $people)
     {
         $this->people->removeElement($people);
     }
@@ -150,14 +154,15 @@ class Club
     /**
      * Get people
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getPeople()
     {
         return $this->people;
     }
 
-    public function __toString() {
+    public function __toString()
+    {
         return $this->name;
     }
 }

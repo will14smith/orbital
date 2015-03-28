@@ -4,6 +4,7 @@
 namespace AppBundle\Entity;
 
 use AppBundle\Services\Enum\BadgeState;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -55,7 +56,7 @@ class BadgeHolder
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -66,6 +67,7 @@ class BadgeHolder
      * Set date_awarded
      *
      * @param \DateTime $dateAwarded
+     *
      * @return BadgeHolder
      */
     public function setDateAwarded($dateAwarded)
@@ -78,7 +80,7 @@ class BadgeHolder
     /**
      * Get date_awarded
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getDateAwarded()
     {
@@ -89,6 +91,7 @@ class BadgeHolder
      * Set date_confirmed
      *
      * @param \DateTime $dateConfirmed
+     *
      * @return BadgeHolder
      */
     public function setDateConfirmed($dateConfirmed)
@@ -101,7 +104,7 @@ class BadgeHolder
     /**
      * Get date_confirmed
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getDateConfirmed()
     {
@@ -112,6 +115,7 @@ class BadgeHolder
      * Set date_made
      *
      * @param \DateTime $dateMade
+     *
      * @return BadgeHolder
      */
     public function setDateMade($dateMade)
@@ -124,7 +128,7 @@ class BadgeHolder
     /**
      * Get date_made
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getDateMade()
     {
@@ -135,6 +139,7 @@ class BadgeHolder
      * Set date_delivered
      *
      * @param \DateTime $dateDelivered
+     *
      * @return BadgeHolder
      */
     public function setDateDelivered($dateDelivered)
@@ -147,7 +152,7 @@ class BadgeHolder
     /**
      * Get date_delivered
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getDateDelivered()
     {
@@ -158,9 +163,10 @@ class BadgeHolder
      * Set badge
      *
      * @param \AppBundle\Entity\Badge $badge
+     *
      * @return BadgeHolder
      */
-    public function setBadge(\AppBundle\Entity\Badge $badge = null)
+    public function setBadge(Badge $badge = null)
     {
         $this->badge = $badge;
 
@@ -170,7 +176,7 @@ class BadgeHolder
     /**
      * Get badge
      *
-     * @return \AppBundle\Entity\Badge 
+     * @return \AppBundle\Entity\Badge
      */
     public function getBadge()
     {
@@ -181,9 +187,10 @@ class BadgeHolder
      * Set person
      *
      * @param \AppBundle\Entity\Person $person
+     *
      * @return BadgeHolder
      */
-    public function setPerson(\AppBundle\Entity\Person $person = null)
+    public function setPerson(Person $person = null)
     {
         $this->person = $person;
 
@@ -193,7 +200,7 @@ class BadgeHolder
     /**
      * Get person
      *
-     * @return \AppBundle\Entity\Person 
+     * @return \AppBundle\Entity\Person
      */
     public function getPerson()
     {
@@ -205,35 +212,37 @@ class BadgeHolder
      */
     public function getState()
     {
-        if(!$this->date_confirmed) {
+        if (!$this->date_confirmed) {
             return BadgeState::UNCONFIRMED;
         }
 
-        if(!$this->date_made) {
+        if (!$this->date_made) {
             return BadgeState::CONFIRMED;
         }
 
-        if(!$this->date_delivered) {
+        if (!$this->date_delivered) {
             return BadgeState::MADE;
         }
 
         return BadgeState::DELIVERED;
     }
+
     /**
      * Constructor
      */
     public function __construct()
     {
-        $this->proof = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->proof = new ArrayCollection();
     }
 
     /**
      * Add proof
      *
      * @param \AppBundle\Entity\BadgeHolderProof $proof
+     *
      * @return BadgeHolder
      */
-    public function addProof(\AppBundle\Entity\BadgeHolderProof $proof)
+    public function addProof(BadgeHolderProof $proof)
     {
         $this->proof[] = $proof;
 
@@ -245,7 +254,7 @@ class BadgeHolder
      *
      * @param \AppBundle\Entity\BadgeHolderProof $proof
      */
-    public function removeProof(\AppBundle\Entity\BadgeHolderProof $proof)
+    public function removeProof(BadgeHolderProof $proof)
     {
         $this->proof->removeElement($proof);
     }
@@ -253,7 +262,7 @@ class BadgeHolder
     /**
      * Get proof
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getProof()
     {

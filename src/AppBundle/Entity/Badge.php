@@ -3,6 +3,7 @@
 
 namespace AppBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -46,18 +47,19 @@ class Badge
      * @ORM\OneToMany(targetEntity="BadgeHolder", mappedBy="badge")
      */
     protected $holders;
+
     /**
      * Constructor
      */
     public function __construct()
     {
-        $this->holders = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->holders = new ArrayCollection();
     }
 
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -68,6 +70,7 @@ class Badge
      * Set name
      *
      * @param string $name
+     *
      * @return Badge
      */
     public function setName($name)
@@ -80,7 +83,7 @@ class Badge
     /**
      * Get name
      *
-     * @return string 
+     * @return string
      */
     public function getName()
     {
@@ -91,6 +94,7 @@ class Badge
      * Set description
      *
      * @param string $description
+     *
      * @return Badge
      */
     public function setDescription($description)
@@ -103,7 +107,7 @@ class Badge
     /**
      * Get description
      *
-     * @return string 
+     * @return string
      */
     public function getDescription()
     {
@@ -114,6 +118,7 @@ class Badge
      * Set algo_name
      *
      * @param string $algoName
+     *
      * @return Badge
      */
     public function setAlgoName($algoName)
@@ -126,7 +131,7 @@ class Badge
     /**
      * Get algo_name
      *
-     * @return string 
+     * @return string
      */
     public function getAlgoName()
     {
@@ -137,6 +142,7 @@ class Badge
      * Set category
      *
      * @param string $category
+     *
      * @return Badge
      */
     public function setCategory($category)
@@ -149,7 +155,7 @@ class Badge
     /**
      * Get category
      *
-     * @return string 
+     * @return string
      */
     public function getCategory()
     {
@@ -160,6 +166,7 @@ class Badge
      * Set multiple
      *
      * @param boolean $multiple
+     *
      * @return Badge
      */
     public function setMultiple($multiple)
@@ -172,7 +179,7 @@ class Badge
     /**
      * Get multiple
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getMultiple()
     {
@@ -183,9 +190,10 @@ class Badge
      * Add holders
      *
      * @param \AppBundle\Entity\BadgeHolder $holders
+     *
      * @return Badge
      */
-    public function addHolder(\AppBundle\Entity\BadgeHolder $holders)
+    public function addHolder(BadgeHolder $holders)
     {
         $this->holders[] = $holders;
 
@@ -197,7 +205,7 @@ class Badge
      *
      * @param \AppBundle\Entity\BadgeHolder $holders
      */
-    public function removeHolder(\AppBundle\Entity\BadgeHolder $holders)
+    public function removeHolder(BadgeHolder $holders)
     {
         $this->holders->removeElement($holders);
     }
@@ -205,14 +213,15 @@ class Badge
     /**
      * Get holders
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getHolders()
     {
         return $this->holders;
     }
 
-    public function __toString() {
+    public function __toString()
+    {
         return $this->name;
     }
 }

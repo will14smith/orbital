@@ -13,9 +13,9 @@ class BadgeVoter implements VoterInterface
 
     public function supportsAttribute($attribute)
     {
-        return in_array($attribute, array(
+        return in_array($attribute, [
             self::CLAIM,
-        ));
+        ]);
     }
 
     public function supportsClass($class)

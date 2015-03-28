@@ -24,14 +24,17 @@ class PersonController extends Controller
 
         $people = $personRepository->findAll();
 
-        return $this->render('person/list.html.twig', array(
+        return $this->render('person/list.html.twig', [
             'people' => $people
-        ));
+        ]);
     }
 
     /**
      * @Security("has_role('ROLE_ADMIN')")
      * @Route("/person/import", name="person_import")
+     * @param Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function importAction(Request $request)
     {
@@ -49,14 +52,17 @@ class PersonController extends Controller
             return $this->redirectToRoute('person_list');
         }
 
-        return $this->render('person/import.html.twig', array(
+        return $this->render('person/import.html.twig', [
             'form' => $form->createView(),
-        ));
+        ]);
     }
 
     /**
      * @Security("has_role('ROLE_ADMIN')")
      * @Route("/person/create", name="person_create")
+     * @param Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function createAction(Request $request)
     {
@@ -72,17 +78,21 @@ class PersonController extends Controller
 
             return $this->redirectToRoute(
                 'person_detail',
-                array('id' => $person->getId())
+                ['id' => $person->getId()]
             );
         }
 
-        return $this->render('person/create.html.twig', array(
+        return $this->render('person/create.html.twig', [
             'form' => $form->createView(),
-        ));
+        ]);
     }
 
     /**
      * @Route("/person/{id}", name="person_detail")
+     *
+     * @param int $id
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function detailAction($id)
     {
@@ -125,6 +135,11 @@ class PersonController extends Controller
     /**
      * @Security("has_role('ROLE_ADMIN')")
      * @Route("/person/{id}/edit", name="person_edit")
+     *
+     * @param int $id
+     * @param Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function editAction($id, Request $request)
     {
@@ -145,18 +160,23 @@ class PersonController extends Controller
 
             return $this->redirectToRoute(
                 'person_detail',
-                array('id' => $person->getId())
+                ['id' => $person->getId()]
             );
         }
 
-        return $this->render('person/edit.html.twig', array(
+        return $this->render('person/edit.html.twig', [
             'form' => $form->createView(),
-        ));
+        ]);
     }
 
     /**
      * @Security("has_role('ROLE_ADMIN')")
      * @Route("/person/{id}/reassess", name="person_handicap_reassess")
+     *
+     * @param int $id
+     * @param Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function handicapReassessAction($id, Request $request)
     {
@@ -178,18 +198,23 @@ class PersonController extends Controller
 
             return $this->redirectToRoute(
                 'person_detail',
-                array('id' => $person->getId())
+                ['id' => $person->getId()]
             );
         }
 
-        return $this->render('person/reassess.html.twig', array(
+        return $this->render('person/reassess.html.twig', [
             'form' => $form->createView(),
-        ));
+        ]);
     }
 
     /**
      * @Security("has_role('ROLE_ADMIN')")
      * @Route("/person/{id}/delete", name="person_delete")
+     *
+     * @param int $id
+     * @param Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function deleteAction($id, Request $request)
     {
@@ -210,8 +235,8 @@ class PersonController extends Controller
             return $this->redirectToRoute('person_list');
         }
 
-        return $this->render('person/delete.html.twig', array(
+        return $this->render('person/delete.html.twig', [
             'person' => $person
-        ));
+        ]);
     }
 }

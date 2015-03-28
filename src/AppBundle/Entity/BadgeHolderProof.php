@@ -14,7 +14,8 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity
  * @ORM\Table(name="badge_holder_proof")
  */
-class BadgeHolderProof {
+class BadgeHolderProof
+{
     /**
      * @ORM\Column(type="integer")
      * @ORM\Id
@@ -43,7 +44,7 @@ class BadgeHolderProof {
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -54,6 +55,7 @@ class BadgeHolderProof {
      * Set image_name
      *
      * @param string $imageName
+     *
      * @return BadgeHolderProof
      */
     public function setImageName($imageName)
@@ -66,7 +68,7 @@ class BadgeHolderProof {
     /**
      * Get image_name
      *
-     * @return string 
+     * @return string
      */
     public function getImageName()
     {
@@ -77,6 +79,7 @@ class BadgeHolderProof {
      * Set notes
      *
      * @param string $notes
+     *
      * @return BadgeHolderProof
      */
     public function setNotes($notes)
@@ -89,7 +92,7 @@ class BadgeHolderProof {
     /**
      * Get notes
      *
-     * @return string 
+     * @return string
      */
     public function getNotes()
     {
@@ -100,9 +103,10 @@ class BadgeHolderProof {
      * Set badge_holder
      *
      * @param \AppBundle\Entity\BadgeHolder $badgeHolder
+     *
      * @return BadgeHolderProof
      */
-    public function setBadgeHolder(\AppBundle\Entity\BadgeHolder $badgeHolder = null)
+    public function setBadgeHolder(BadgeHolder $badgeHolder = null)
     {
         $this->badge_holder = $badgeHolder;
 
@@ -112,7 +116,7 @@ class BadgeHolderProof {
     /**
      * Get badge_holder
      *
-     * @return \AppBundle\Entity\BadgeHolder 
+     * @return \AppBundle\Entity\BadgeHolder
      */
     public function getBadgeHolder()
     {
@@ -123,9 +127,10 @@ class BadgeHolderProof {
      * Set person
      *
      * @param \AppBundle\Entity\Person $person
+     *
      * @return BadgeHolderProof
      */
-    public function setPerson(\AppBundle\Entity\Person $person = null)
+    public function setPerson(Person $person = null)
     {
         $this->person = $person;
 
@@ -135,7 +140,7 @@ class BadgeHolderProof {
     /**
      * Get person
      *
-     * @return \AppBundle\Entity\Person 
+     * @return \AppBundle\Entity\Person
      */
     public function getPerson()
     {

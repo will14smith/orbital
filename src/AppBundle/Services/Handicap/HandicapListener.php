@@ -18,7 +18,8 @@ class HandicapListener
      */
     private $doctrine;
 
-    public function __construct(HandicapManager $manager, Registry $doctrine) {
+    public function __construct(HandicapManager $manager, Registry $doctrine)
+    {
 
         $this->manager = $manager;
         $this->doctrine = $doctrine;
@@ -28,7 +29,7 @@ class HandicapListener
     {
         $score = $event->getScore();
 
-        if($this->should_accept($score, false)) {
+        if ($this->should_accept($score, false)) {
             $this->manager->updateHandicap($score);
         }
     }
@@ -37,7 +38,7 @@ class HandicapListener
     {
         $score = $event->getScore();
 
-        if($this->should_accept($score)) {
+        if ($this->should_accept($score)) {
             $this->manager->updateHandicap($score);
         }
     }
@@ -45,24 +46,25 @@ class HandicapListener
     /**
      * @param Score $score
      * @param bool $full
+     *
      * @return bool
      */
     private function should_accept(Score $score, $full = true)
     {
-        if(!$score->getComplete()) {
+        if (!$score->getComplete()) {
             return false;
         }
-        if(!$score->getDateAccepted()) {
+        if (!$score->getDateAccepted()) {
             return false;
         }
 
-        if(!$full) {
+        if (!$full) {
             return true;
         }
 
         $repo = $this->doctrine->getRepository('AppBundle:PersonHandicap');
 
-        if($repo->exists($score)) {
+        if ($repo->exists($score)) {
             return false;
         }
 

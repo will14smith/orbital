@@ -3,7 +3,6 @@
 
 namespace AppBundle\Form;
 
-use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
@@ -20,6 +19,7 @@ class BadgeHolderType extends AbstractProofType
 
     /**
      * @param bool $admin
+     * @param bool $show_proof
      */
     public function __construct($admin, $show_proof = true)
     {
@@ -48,9 +48,9 @@ class BadgeHolderType extends AbstractProofType
 
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'data_class' => 'AppBundle\Entity\BadgeHolder'
-        ));
+        ]);
     }
 
     public function getName()

@@ -4,7 +4,8 @@
 namespace AppBundle\Services\Enum;
 
 
-class BadgeCategory {
+class BadgeCategory
+{
     const COLOUR = 'colour';
     const SKILL = 'skill';
     const EQUIPMENT = 'equipment';

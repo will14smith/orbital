@@ -48,6 +48,7 @@ class PersonRepository extends EntityRepository implements UserProviderInterface
         }
 
         /** @var Person $user */
+
         return $this->find($user->getId());
     }
 

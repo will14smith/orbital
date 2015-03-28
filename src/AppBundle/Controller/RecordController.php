@@ -25,14 +25,18 @@ class RecordController extends Controller
 
         $records = $recordRepository->findAll();
 
-        return $this->render('record/list.html.twig', array(
+        return $this->render('record/list.html.twig', [
             'records' => $records
-        ));
+        ]);
     }
 
     /**
      * @Security("has_role('ROLE_ADMIN')")
      * @Route("/record/create", name="record_create")
+     *
+     * @param Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function createAction(Request $request)
     {
@@ -48,17 +52,21 @@ class RecordController extends Controller
 
             return $this->redirectToRoute(
                 'record_detail',
-                array('id' => $record->getId())
+                ['id' => $record->getId()]
             );
         }
 
-        return $this->render('record/create.html.twig', array(
+        return $this->render('record/create.html.twig', [
             'form' => $form->createView(),
-        ));
+        ]);
     }
 
     /**
      * @Route("/record/{id}", name="record_detail")
+     *
+     * @param int $id
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function detailAction($id)
     {
@@ -71,14 +79,19 @@ class RecordController extends Controller
             );
         }
 
-        return $this->render('record/detail.html.twig', array(
+        return $this->render('record/detail.html.twig', [
             'record' => $record
-        ));
+        ]);
     }
 
     /**
      * @Security("has_role('ROLE_ADMIN')")
      * @Route("/record/{id}/edit", name="record_edit")
+     *
+     * @param int $id
+     * @param Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
     public function editAction($id, Request $request)
     {
@@ -98,18 +111,23 @@ class RecordController extends Controller
 
             return $this->redirectToRoute(
                 'record_detail',
-                array('id' => $record->getId())
+                ['id' => $record->getId()]
             );
         }
 
-        return $this->render('record/edit.html.twig', array(
+        return $this->render('record/edit.html.twig', [
             'form' => $form->createView(),
-        ));
+        ]);
     }
 
     /**
      * @Security("has_role('ROLE_ADMIN')")
      * @Route("/record/{id}/award", name="record_award")
+     *
+     * @param int $id
+     * @param Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
     public function awardAction($id, Request $request)
     {
@@ -134,18 +152,23 @@ class RecordController extends Controller
 
             return $this->redirectToRoute(
                 'record_detail',
-                array('id' => $record->getId())
+                ['id' => $record->getId()]
             );
         }
 
-        return $this->render('record/award.html.twig', array(
+        return $this->render('record/award.html.twig', [
             'form' => $form->createView(),
-        ));
+        ]);
     }
 
     /**
      * @Security("has_role('ROLE_ADMIN')")
      * @Route("/record/{id}/revoke", name="record_revoke")
+     *
+     * @param int $id
+     * @param Request $request
+     *
+     * @throws \Exception
      */
     public function revokeAction($id, Request $request)
     {
@@ -155,6 +178,11 @@ class RecordController extends Controller
     /**
      * @Security("has_role('ROLE_ADMIN')")
      * @Route("/record/{id}/delete", name="record_delete")
+     *
+     * @param int $id
+     * @param Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function deleteAction($id, Request $request)
     {
@@ -174,8 +202,8 @@ class RecordController extends Controller
             return $this->redirectToRoute('record_list');
         }
 
-        return $this->render('record/delete.html.twig', array(
+        return $this->render('record/delete.html.twig', [
             'record' => $record
-        ));
+        ]);
     }
 }

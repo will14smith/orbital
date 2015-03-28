@@ -58,7 +58,7 @@ class RoundTarget
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -69,6 +69,7 @@ class RoundTarget
      * Set distance_value
      *
      * @param string $distanceValue
+     *
      * @return RoundTarget
      */
     public function setDistanceValue($distanceValue)
@@ -81,7 +82,7 @@ class RoundTarget
     /**
      * Get distance_value
      *
-     * @return string 
+     * @return string
      */
     public function getDistanceValue()
     {
@@ -92,6 +93,7 @@ class RoundTarget
      * Set distance_unit
      *
      * @param string $distanceUnit
+     *
      * @return RoundTarget
      */
     public function setDistanceUnit($distanceUnit)
@@ -104,7 +106,7 @@ class RoundTarget
     /**
      * Get distance_unit
      *
-     * @return string 
+     * @return string
      */
     public function getDistanceUnit()
     {
@@ -115,6 +117,7 @@ class RoundTarget
      * Set target_value
      *
      * @param string $targetValue
+     *
      * @return RoundTarget
      */
     public function setTargetValue($targetValue)
@@ -127,7 +130,7 @@ class RoundTarget
     /**
      * Get target_value
      *
-     * @return string 
+     * @return string
      */
     public function getTargetValue()
     {
@@ -138,6 +141,7 @@ class RoundTarget
      * Set target_unit
      *
      * @param string $targetUnit
+     *
      * @return RoundTarget
      */
     public function setTargetUnit($targetUnit)
@@ -150,7 +154,7 @@ class RoundTarget
     /**
      * Get target_unit
      *
-     * @return string 
+     * @return string
      */
     public function getTargetUnit()
     {
@@ -161,6 +165,7 @@ class RoundTarget
      * Set arrow_count
      *
      * @param integer $arrowCount
+     *
      * @return RoundTarget
      */
     public function setArrowCount($arrowCount)
@@ -173,7 +178,7 @@ class RoundTarget
     /**
      * Get arrow_count
      *
-     * @return integer 
+     * @return integer
      */
     public function getArrowCount()
     {
@@ -184,6 +189,7 @@ class RoundTarget
      * Set end_size
      *
      * @param integer $endSize
+     *
      * @return RoundTarget
      */
     public function setEndSize($endSize)
@@ -196,7 +202,7 @@ class RoundTarget
     /**
      * Get end_size
      *
-     * @return integer 
+     * @return integer
      */
     public function getEndSize()
     {
@@ -207,6 +213,7 @@ class RoundTarget
      * Set round
      *
      * @param \AppBundle\Entity\Round $round
+     *
      * @return RoundTarget
      */
     public function setRound(Round $round = null)
@@ -219,7 +226,7 @@ class RoundTarget
     /**
      * Get round
      *
-     * @return \AppBundle\Entity\Round 
+     * @return \AppBundle\Entity\Round
      */
     public function getRound()
     {
@@ -230,6 +237,7 @@ class RoundTarget
      * Set scoring_zones
      *
      * @param string $scoringZones
+     *
      * @return RoundTarget
      */
     public function setScoringZones($scoringZones)
@@ -242,7 +250,7 @@ class RoundTarget
     /**
      * Get scoring_zones
      *
-     * @return string 
+     * @return string
      */
     public function getScoringZones()
     {

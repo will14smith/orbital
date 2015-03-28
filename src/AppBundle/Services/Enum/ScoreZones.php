@@ -4,7 +4,8 @@
 namespace AppBundle\Services\Enum;
 
 
-class ScoreZones {
+class ScoreZones
+{
     const METRIC = 'metric';
     const IMPERIAL = 'imperial';
     const TRIPLE = 'triple';

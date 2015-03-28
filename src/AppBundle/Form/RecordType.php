@@ -25,15 +25,14 @@ class RecordType extends AbstractType
             ->add('gender', 'choice', [
                 'choices' => Gender::$choices,
                 'required' => false
-            ])
-        ;
+            ]);
     }
 
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'data_class' => 'AppBundle\Entity\Record'
-        ));
+        ]);
     }
 
     public function getName()

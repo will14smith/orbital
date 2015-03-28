@@ -146,11 +146,11 @@ class PersonImporter
     {
         // lookup person
         $current_person = $this->doctrine->getRepository('AppBundle:Person')
-            ->findOneBy(array(
+            ->findOneBy([
                 'cid' => $person->getCid()
-            ));
+            ]);
 
-        if(!$current_person) {
+        if (!$current_person) {
             $person->setSkill(Skill::NOVICE);
             $person->setAdmin(false);
 

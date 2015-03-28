@@ -19,6 +19,7 @@ class ImageUploader
 
     /**
      * @param UploadedFile $file
+     *
      * @return string Uploaded file name (rel to upload path)
      */
     public function persist(UploadedFile $file)

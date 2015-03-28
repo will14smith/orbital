@@ -120,6 +120,7 @@ class Person implements UserInterface
      * Set name
      *
      * @param string $name
+     *
      * @return Person
      */
     public function setName($name)
@@ -143,6 +144,7 @@ class Person implements UserInterface
      * Set name_preferred
      *
      * @param string $namePreferred
+     *
      * @return Person
      */
     public function setNamePreferred($namePreferred)
@@ -175,6 +177,7 @@ class Person implements UserInterface
      * Set agb_number
      *
      * @param string $agbNumber
+     *
      * @return Person
      */
     public function setAgbNumber($agbNumber)
@@ -198,6 +201,7 @@ class Person implements UserInterface
      * Set cid
      *
      * @param string $cid
+     *
      * @return Person
      */
     public function setCid($cid)
@@ -221,6 +225,7 @@ class Person implements UserInterface
      * Set cuser
      *
      * @param string $cuser
+     *
      * @return Person
      */
     public function setCuser($cuser)
@@ -244,6 +249,7 @@ class Person implements UserInterface
      * Set email
      *
      * @param string $email
+     *
      * @return Person
      */
     public function setEmail($email)
@@ -267,6 +273,7 @@ class Person implements UserInterface
      * Set password
      *
      * @param string $password
+     *
      * @return Person
      */
     public function setPassword($password)
@@ -290,6 +297,7 @@ class Person implements UserInterface
      * Set mobile
      *
      * @param string $mobile
+     *
      * @return Person
      */
     public function setMobile($mobile)
@@ -313,6 +321,7 @@ class Person implements UserInterface
      * Set gender
      *
      * @param string $gender
+     *
      * @return Person
      */
     public function setGender($gender)
@@ -336,6 +345,7 @@ class Person implements UserInterface
      * Set date_of_birth
      *
      * @param \DateTime $dateOfBirth
+     *
      * @return Person
      */
     public function setDateOfBirth($dateOfBirth)
@@ -359,6 +369,7 @@ class Person implements UserInterface
      * Set skill
      *
      * @param string $skill
+     *
      * @return Person
      */
     public function setSkill($skill)
@@ -382,6 +393,7 @@ class Person implements UserInterface
      * Set bowtype
      *
      * @param string $bowtype
+     *
      * @return Person
      */
     public function setBowtype($bowtype)
@@ -405,6 +417,7 @@ class Person implements UserInterface
      * Set club_bow
      *
      * @param string $clubBow
+     *
      * @return Person
      */
     public function setClubBow($clubBow)
@@ -428,6 +441,7 @@ class Person implements UserInterface
      * Set admin
      *
      * @param boolean $admin
+     *
      * @return Person
      */
     public function setAdmin($admin)
@@ -498,6 +512,7 @@ class Person implements UserInterface
      * Set salt
      *
      * @param string $salt
+     *
      * @return Person
      */
     public function setSalt($salt)
@@ -521,9 +536,10 @@ class Person implements UserInterface
      * Set club
      *
      * @param \AppBundle\Entity\Club $club
+     *
      * @return Person
      */
-    public function setClub(\AppBundle\Entity\Club $club = null)
+    public function setClub(Club $club = null)
     {
         $this->club = $club;
 
@@ -544,6 +560,7 @@ class Person implements UserInterface
      * Add handicaps
      *
      * @param PersonHandicap $handicaps
+     *
      * @return Person
      */
     public function addHandicap(PersonHandicap $handicaps)

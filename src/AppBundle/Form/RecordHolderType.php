@@ -21,9 +21,9 @@ class RecordHolderType extends AbstractType
 
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'data_class' => 'AppBundle\Entity\RecordHolder'
-        ));
+        ]);
     }
 
     public function getName()
@@ -44,9 +44,9 @@ class RecordHolderPersonType extends AbstractType
 
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'data_class' => 'AppBundle\Entity\RecordHolderPerson'
-        ));
+        ]);
     }
 
     public function getName()

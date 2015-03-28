@@ -4,7 +4,8 @@
 namespace AppBundle\Services\Enum;
 
 
-class Skill {
+class Skill
+{
     const NOVICE = 'novice';
     const SENIOR = 'senior';
 

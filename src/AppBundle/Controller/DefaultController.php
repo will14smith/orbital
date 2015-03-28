@@ -21,6 +21,9 @@ class DefaultController extends Controller
     /**
      * @Security("has_role('ROLE_ADMIN')")
      * @Route("/roundup", name="roundup")
+     * @param Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function roundupAction(Request $request)
     {

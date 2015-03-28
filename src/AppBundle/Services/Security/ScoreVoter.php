@@ -14,10 +14,10 @@ class ScoreVoter implements VoterInterface
 
     public function supportsAttribute($attribute)
     {
-        return in_array($attribute, array(
+        return in_array($attribute, [
             self::EDIT,
             self::DELETE,
-        ));
+        ]);
     }
 
     public function supportsClass($class)

@@ -14,15 +14,14 @@ class ClubType extends AbstractType
         $builder
             ->add('name')
             ->add('website')
-            ->add('email')
-        ;
+            ->add('email');
     }
 
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'data_class' => 'AppBundle\Entity\Club'
-        ));
+        ]);
     }
 
     public function getName()

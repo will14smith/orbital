@@ -14,7 +14,8 @@ class MetricTargetCalculator implements TargetCalculator
     /**
      * @param boolean $compound
      */
-    public function __construct($compound) {
+    public function __construct($compound)
+    {
 
         $this->compound = $compound;
     }
@@ -25,7 +26,7 @@ class MetricTargetCalculator implements TargetCalculator
 
         $sigma_sq = pow($sigma, 2);
 
-        if($this->compound) {
+        if ($this->compound) {
             $x = pow($target / 40 + 0.357, 2);
             $sum = exp(-$x / $sigma_sq);
 

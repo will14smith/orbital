@@ -15,7 +15,7 @@ class EnumExtension extends \Twig_Extension
 {
     public function getFilters()
     {
-        return [new \Twig_SimpleFilter('enum', array($this, 'enum_filter'))];
+        return [new \Twig_SimpleFilter('enum', [$this, 'enum_filter'])];
     }
 
     public function getGlobals()
@@ -30,15 +30,17 @@ class EnumExtension extends \Twig_Extension
         ])];
     }
 
-    private function process_enum_global($enum) {
-        array_walk($enum, function(&$v, $k) {
+    private function process_enum_global($enum)
+    {
+        array_walk($enum, function (&$v, $k) {
             $v = $k;
         });
 
         return $enum;
     }
 
-    public function enum_filter($value, $enum) {
+    public function enum_filter($value, $enum)
+    {
         //TODO check exists?
         return $this->getGlobals()['Enum'][$enum][$value];
     }

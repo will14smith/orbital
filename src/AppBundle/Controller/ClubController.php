@@ -22,14 +22,17 @@ class ClubController extends Controller
 
         $clubs = $clubRepository->findAll();
 
-        return $this->render('club/list.html.twig', array(
+        return $this->render('club/list.html.twig', [
             'clubs' => $clubs
-        ));
+        ]);
     }
 
     /**
      * @Security("has_role('ROLE_ADMIN')")
      * @Route("/club/create", name="club_create")
+     * @param Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function createAction(Request $request)
     {
@@ -45,17 +48,21 @@ class ClubController extends Controller
 
             return $this->redirectToRoute(
                 'club_detail',
-                array('id' => $club->getId())
+                ['id' => $club->getId()]
             );
         }
 
-        return $this->render('club/create.html.twig', array(
+        return $this->render('club/create.html.twig', [
             'form' => $form->createView(),
-        ));
+        ]);
     }
 
     /**
      * @Route("/club/{id}", name="club_detail")
+     *
+     * @param int $id
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function detailAction($id)
     {
@@ -68,14 +75,19 @@ class ClubController extends Controller
             );
         }
 
-        return $this->render('club/detail.html.twig', array(
+        return $this->render('club/detail.html.twig', [
             'club' => $club
-        ));
+        ]);
     }
 
     /**
      * @Security("has_role('ROLE_ADMIN')")
      * @Route("/club/{id}/edit", name="club_edit")
+     *
+     * @param int $id
+     * @param Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function editAction($id, Request $request)
     {
@@ -96,18 +108,23 @@ class ClubController extends Controller
 
             return $this->redirectToRoute(
                 'club_detail',
-                array('id' => $club->getId())
+                ['id' => $club->getId()]
             );
         }
 
-        return $this->render('club/edit.html.twig', array(
+        return $this->render('club/edit.html.twig', [
             'form' => $form->createView(),
-        ));
+        ]);
     }
 
     /**
      * @Security("has_role('ROLE_ADMIN')")
      * @Route("/club/{id}/delete", name="club_delete")
+     *
+     * @param int $id
+     * @param Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function deleteAction($id, Request $request)
     {
@@ -127,8 +144,8 @@ class ClubController extends Controller
             return $this->redirectToRoute('club_list');
         }
 
-        return $this->render('club/delete.html.twig', array(
+        return $this->render('club/delete.html.twig', [
             'club' => $club
-        ));
+        ]);
     }
 }

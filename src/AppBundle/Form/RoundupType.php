@@ -5,7 +5,6 @@ namespace AppBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class RoundupType extends AbstractType
 {
@@ -13,8 +12,7 @@ class RoundupType extends AbstractType
     {
         $builder
             ->add('start_date', 'date')
-            ->add('end_date', 'date')
-        ;
+            ->add('end_date', 'date');
     }
 
     public function getName()

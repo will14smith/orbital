@@ -18,15 +18,14 @@ class RoundType extends AbstractType
                 'type' => new RoundTargetType(),
                 'allow_add' => true,
                 'by_reference' => false
-            ])
-        ;
+            ]);
     }
 
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'data_class' => 'AppBundle\Entity\Round'
-        ));
+        ]);
     }
 
     public function getName()

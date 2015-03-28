@@ -4,7 +4,8 @@
 namespace AppBundle\Services\Enum;
 
 
-class HandicapType {
+class HandicapType
+{
     const INITIAL = 'initial';
     const UPDATE = 'update';
     const REASSESS = 'reassess';

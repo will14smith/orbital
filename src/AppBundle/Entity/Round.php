@@ -10,7 +10,8 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity
  * @ORM\Table(name="round")
  */
-class Round {
+class Round
+{
     /**
      * @ORM\Column(type="integer")
      * @ORM\Id
@@ -42,7 +43,7 @@ class Round {
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -53,6 +54,7 @@ class Round {
      * Set name
      *
      * @param string $name
+     *
      * @return Round
      */
     public function setName($name)
@@ -65,7 +67,7 @@ class Round {
     /**
      * Get name
      *
-     * @return string 
+     * @return string
      */
     public function getName()
     {
@@ -76,6 +78,7 @@ class Round {
      * Add targets
      *
      * @param \AppBundle\Entity\RoundTarget $target
+     *
      * @return Round
      */
     public function addTarget(RoundTarget $target)
@@ -106,7 +109,8 @@ class Round {
         return $this->targets;
     }
 
-    public function __toString() {
+    public function __toString()
+    {
         return $this->name;
     }
 
@@ -114,9 +118,10 @@ class Round {
      * Add records
      *
      * @param \AppBundle\Entity\Record $records
+     *
      * @return Round
      */
-    public function addRecord(\AppBundle\Entity\Record $records)
+    public function addRecord(Record $records)
     {
         $this->records[] = $records;
 
@@ -128,7 +133,7 @@ class Round {
      *
      * @param \AppBundle\Entity\Record $records
      */
-    public function removeRecord(\AppBundle\Entity\Record $records)
+    public function removeRecord(Record $records)
     {
         $this->records->removeElement($records);
     }

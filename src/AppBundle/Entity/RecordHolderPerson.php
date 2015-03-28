@@ -40,7 +40,7 @@ class RecordHolderPerson
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -51,6 +51,7 @@ class RecordHolderPerson
      * Set score_value
      *
      * @param integer $scoreValue
+     *
      * @return RecordHolderPerson
      */
     public function setScoreValue($scoreValue)
@@ -63,7 +64,7 @@ class RecordHolderPerson
     /**
      * Get score_value
      *
-     * @return integer 
+     * @return integer
      */
     public function getScoreValue()
     {
@@ -74,9 +75,10 @@ class RecordHolderPerson
      * Set record_holder
      *
      * @param \AppBundle\Entity\RecordHolder $recordHolder
+     *
      * @return RecordHolderPerson
      */
-    public function setRecordHolder(\AppBundle\Entity\RecordHolder $recordHolder = null)
+    public function setRecordHolder(RecordHolder $recordHolder = null)
     {
         $this->record_holder = $recordHolder;
 
@@ -86,7 +88,7 @@ class RecordHolderPerson
     /**
      * Get record_holder
      *
-     * @return \AppBundle\Entity\RecordHolder 
+     * @return \AppBundle\Entity\RecordHolder
      */
     public function getRecordHolder()
     {
@@ -97,9 +99,10 @@ class RecordHolderPerson
      * Set person
      *
      * @param \AppBundle\Entity\Person $person
+     *
      * @return RecordHolderPerson
      */
-    public function setPerson(\AppBundle\Entity\Person $person = null)
+    public function setPerson(Person $person = null)
     {
         $this->person = $person;
 
@@ -109,7 +112,7 @@ class RecordHolderPerson
     /**
      * Get person
      *
-     * @return \AppBundle\Entity\Person 
+     * @return \AppBundle\Entity\Person
      */
     public function getPerson()
     {
@@ -120,9 +123,10 @@ class RecordHolderPerson
      * Set score
      *
      * @param \AppBundle\Entity\Score $score
+     *
      * @return RecordHolderPerson
      */
-    public function setScore(\AppBundle\Entity\Score $score = null)
+    public function setScore(Score $score = null)
     {
         $this->score = $score;
 
@@ -132,7 +136,7 @@ class RecordHolderPerson
     /**
      * Get score
      *
-     * @return \AppBundle\Entity\Score 
+     * @return \AppBundle\Entity\Score
      */
     public function getScore()
     {

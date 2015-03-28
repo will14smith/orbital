@@ -16,6 +16,7 @@ abstract class AbstractProofType extends AbstractType
 {
     /**
      * @param FormBuilderInterface $builder
+     *
      * @return FormBuilderInterface
      */
     protected function getProofForm(FormBuilderInterface $builder)

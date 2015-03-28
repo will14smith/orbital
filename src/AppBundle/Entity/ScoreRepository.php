@@ -5,12 +5,7 @@ namespace AppBundle\Entity;
 
 
 use Doctrine\ORM\EntityRepository;
-use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\Query\Expr;
-use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
-use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
-use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Component\Security\Core\User\UserProviderInterface;
 
 class ScoreRepository extends EntityRepository
 {
@@ -29,6 +24,7 @@ class ScoreRepository extends EntityRepository
         $pbs_nested = $pbs_nested
             ->where($pbs_nested_1)
             ->orWhere($pbs_nested_2);
+
         return $this->createQueryBuilder('s')
             ->where((new Expr())->not((new Expr())->exists($pbs_nested->getDQL())))
             ->getQuery()

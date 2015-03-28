@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use Doctrine\DBAL\Types\Type;
 use Doctrine\ORM\EntityRepository;
 
 class RecordRepository extends EntityRepository
@@ -34,6 +35,7 @@ class RecordRepository extends EntityRepository
 
     /**
      * @param int $person_id
+     *
      * @return RecordHolderPerson[]
      */
     public function findByPerson($person_id)
@@ -66,7 +68,8 @@ class RecordRepository extends EntityRepository
     /**
      * @param \DateTime $start_date
      * @param \DateTime $end_date
-     * @return
+     *
+     * @return array
      */
     public function getByRoundup($start_date, $end_date)
     {
@@ -76,14 +79,11 @@ class RecordRepository extends EntityRepository
             ->from('AppBundle:RecordHolder', 'rh')
             ->join('rh.people', 'rhp')
             ->join('rh.record', 'r')
-
             ->where('rh.date >= :start_date')
             ->andWhere('rh.date <= :end_date')
             ->orderBy('rh.date', 'DESC')
-
-            ->setParameter('start_date', $start_date, \Doctrine\DBAL\Types\Type::DATETIME)
-            ->setParameter('end_date', $end_date, \Doctrine\DBAL\Types\Type::DATETIME)
-        ;
+            ->setParameter('start_date', $start_date, Type::DATETIME)
+            ->setParameter('end_date', $end_date, Type::DATETIME);
 
         return $q->getQuery()->getResult();
     }

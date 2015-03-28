@@ -5,7 +5,6 @@ namespace AppBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class ReassessType extends AbstractType
 {
@@ -13,8 +12,7 @@ class ReassessType extends AbstractType
     {
         $builder
             ->add('start_date', 'date', ['required' => false])
-            ->add('end_date', 'date', ['required' => false])
-        ;
+            ->add('end_date', 'date', ['required' => false]);
     }
 
     public function getName()

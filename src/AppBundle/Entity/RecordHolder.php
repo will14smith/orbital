@@ -3,6 +3,7 @@
 
 namespace AppBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -60,6 +61,7 @@ class RecordHolder
      * Set location
      *
      * @param string $location
+     *
      * @return RecordHolder
      */
     public function setLocation($location)
@@ -83,6 +85,7 @@ class RecordHolder
      * Set date
      *
      * @param \DateTime $date
+     *
      * @return RecordHolder
      */
     public function setDate($date)
@@ -106,9 +109,10 @@ class RecordHolder
      * Set record
      *
      * @param \AppBundle\Entity\Record $record
+     *
      * @return RecordHolder
      */
-    public function setRecord(\AppBundle\Entity\Record $record = null)
+    public function setRecord(Record $record = null)
     {
         $this->record = $record;
 
@@ -124,18 +128,20 @@ class RecordHolder
     {
         return $this->record;
     }
+
     /**
      * Constructor
      */
     public function __construct()
     {
-        $this->people = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->people = new ArrayCollection();
     }
 
     /**
      * Set score
      *
      * @param integer $score
+     *
      * @return RecordHolder
      */
     public function setScore($score)
@@ -148,7 +154,7 @@ class RecordHolder
     /**
      * Get score
      *
-     * @return integer 
+     * @return integer
      */
     public function getScore()
     {
@@ -159,9 +165,10 @@ class RecordHolder
      * Add people
      *
      * @param \AppBundle\Entity\RecordHolderPerson $people
+     *
      * @return RecordHolder
      */
-    public function addPerson(\AppBundle\Entity\RecordHolderPerson $people)
+    public function addPerson(RecordHolderPerson $people)
     {
         $this->people[] = $people;
 
@@ -173,7 +180,7 @@ class RecordHolder
      *
      * @param \AppBundle\Entity\RecordHolderPerson $people
      */
-    public function removePerson(\AppBundle\Entity\RecordHolderPerson $people)
+    public function removePerson(RecordHolderPerson $people)
     {
         $this->people->removeElement($people);
     }
@@ -192,6 +199,7 @@ class RecordHolder
      * Set date_broken
      *
      * @param \DateTime $dateBroken
+     *
      * @return RecordHolder
      */
     public function setDateBroken($dateBroken)
@@ -204,7 +212,7 @@ class RecordHolder
     /**
      * Get date_broken
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getDateBroken()
     {

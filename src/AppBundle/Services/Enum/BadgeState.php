@@ -4,7 +4,8 @@
 namespace AppBundle\Services\Enum;
 
 
-class BadgeState {
+class BadgeState
+{
     const UNCONFIRMED = 'unconfirmed';
     const CONFIRMED = 'confirmed';
     const MADE = 'made';
