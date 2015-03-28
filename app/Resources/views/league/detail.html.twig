@@ -1,0 +1,30 @@
+{% extends 'base_sidebar.html.twig' %}
+
+{% block title %}
+    {{ league.name }}
+{% endblock %}
+
+{% block body %}
+    <p>
+        TODO add the fields!
+    </p>
+
+    {# TODO general info #}
+    {# TODO rankings #}
+    {# TODO matches #}
+{% endblock %}
+
+{% block sidebar %}
+    {% if is_granted('ROLE_ADMIN') %}
+        <div class="widget">
+            <h3 class="widget-title">Actions</h3>
+            <ul>
+                {# TODO enter / submit #}
+                <li><a href="{{ url('league_edit', { 'id': league.id }) }}">Edit</a></li>
+                <li><a href="{{ url('league_delete', { 'id': league.id }) }}">Delete</a></li>
+            </ul>
+        </div>
+    {% endif %}
+
+    {{ parent() }}
+{% endblock %}

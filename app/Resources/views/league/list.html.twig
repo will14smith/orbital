@@ -1,0 +1,37 @@
+{% extends '::base_sidebar.html.twig' %}
+
+{% block title %}
+    Leagues
+{% endblock %}
+
+{% block body %}
+    <ul class="list">
+        {% for league in leagues %}
+            <li>
+                <a href="{{ url('league_detail', { 'id': league.id }) }}">{{ league.name }}</a>
+                {% if is_granted('ROLE_ADMIN') %}
+                    <span class="actions">
+                        {# TODO enter / submit #}
+                        <a href="{{ url('league_edit', { 'id': league.id }) }}"><i class="fa fa-pencil"></i></a>
+                        <a href="{{ url('league_delete', { 'id': league.id }) }}"><i class="fa fa-trash-o"></i></a>
+                    </span>
+                {% endif %}
+            </li>
+        {% else %}
+            <li>No Leagues :(</li>
+        {% endfor %}
+    </ul>
+{% endblock %}
+
+{% block sidebar %}
+    {% if is_granted('ROLE_ADMIN') %}
+        <div class="widget">
+            <h3 class="widget-title">Actions</h3>
+            <ul>
+                <li><a href="{{ url('league_create') }}">Create</a></li>
+            </ul>
+        </div>
+    {% endif %}
+
+    {{ parent() }}
+{% endblock %}

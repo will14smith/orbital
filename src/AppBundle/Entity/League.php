@@ -45,6 +45,10 @@ class League
     /**
      * @ORM\Column(type="string", nullable=true)
      */
+    protected $bowtype_limit;
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     */
     protected $gender_limit;
 
     /**
@@ -342,5 +346,28 @@ class League
     public function getMatches()
     {
         return $this->matches;
+    }
+
+    /**
+     * Set bowtype_limit
+     *
+     * @param string $bowtypeLimit
+     * @return League
+     */
+    public function setBowtypeLimit($bowtypeLimit)
+    {
+        $this->bowtype_limit = $bowtypeLimit;
+
+        return $this;
+    }
+
+    /**
+     * Get bowtype_limit
+     *
+     * @return string 
+     */
+    public function getBowtypeLimit()
+    {
+        return $this->bowtype_limit;
     }
 }

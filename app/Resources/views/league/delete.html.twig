@@ -1,0 +1,12 @@
+{% extends '::base_sidebar.html.twig' %}
+
+{% block title %}
+    Delete League
+{% endblock %}
+
+{% block body %}
+    <form method="post" action="{{ url('league_delete', { id: league.id }) }}">
+        <p>Are you sure you want to delete {{ league.name }}?</p>
+        <input type="submit" value="Yes"> | <a href="{{ url('league_detail', { id: league.id }) }}">No</a>
+    </form>
+{% endblock %}
