@@ -9,10 +9,21 @@
         {% for competition in competitions %}
             <li>
                 <a href="{{ url('competition_detail', { 'id': competition.id }) }}">{{ competition.name }}</a>
-                {% if is_granted('ROLE_ADMIN') %}
+                {% if is_granted('ROLE_ADMIN') or is_granted('ENTER', competition) %}
                     <span class="actions">
-                        <a href="{{ url('competition_edit', { 'id': competition.id }) }}"><i class="fa fa-pencil"></i></a>
-                        <a href="{{ url('competition_delete', { 'id': competition.id }) }}"><i class="fa fa-trash-o"></i></a>
+                        {% if is_granted('ENTER', competition) %}
+                            <a href="{{ url('competition_enter', { 'id': competition.id }) }}">
+                                <i class="fa fa-sign-in" title="Enter this competition"></i>
+                            </a>
+                        {% endif %}
+                        {% if is_granted('ROLE_ADMIN') %}
+                            <a href="{{ url('competition_edit', { 'id': competition.id }) }}">
+                                <i class="fa fa-pencil"></i>
+                            </a>
+                            <a href="{{ url('competition_delete', { 'id': competition.id }) }}">
+                                <i class="fa fa-trash-o"></i>
+                            </a>
+                        {% endif %}
                     </span>
                 {% endif %}
             </li>

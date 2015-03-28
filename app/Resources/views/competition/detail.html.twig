@@ -56,6 +56,18 @@
                         <em>{{ entry.club.name }}</em>
                     </a>
                 {% endif %}
+                {% if is_granted('ROLE_ADMIN') %}
+                    <span class="actions">
+                        {% if not entry.dateApproved %}
+                            <a href="{{ url('competition_entry_approve', { 'id': competition.id, 'entry_id': entry.id }) }}">
+                                <i class="fa fa-check"></i>
+                            </a>
+                        {% endif %}
+                        <a href="{{ url('competition_entry_edit', { 'id': competition.id, 'entry_id': entry.id }) }}">
+                            <i class="fa fa-pencil"></i>
+                        </a>
+                    </span>
+                {% endif %}
             </li>
         {% else %}
             <li>
@@ -68,12 +80,17 @@
 {% endblock %}
 
 {% block sidebar %}
-    {% if is_granted('ROLE_ADMIN') %}
+    {% if is_granted('ROLE_ADMIN') or is_granted('ENTER', competition) %}
         <div class="widget">
             <h3 class="widget-title">Actions</h3>
             <ul>
-                <li><a href="{{ url('competition_edit', { 'id': competition.id }) }}">Edit</a></li>
-                <li><a href="{{ url('competition_delete', { 'id': competition.id }) }}">Delete</a></li>
+                {% if is_granted('ENTER', competition) %}
+                    <li><a href="{{ url('competition_enter', { 'id': competition.id }) }}"> Enter </a></li>
+                {% endif %}
+                {% if is_granted('ROLE_ADMIN') %}
+                    <li><a href="{{ url('competition_edit', { 'id': competition.id }) }}">Edit</a></li>
+                    <li><a href="{{ url('competition_delete', { 'id': competition.id }) }}">Delete</a></li>
+                {% endif %}
             </ul>
         </div>
     {% endif %}

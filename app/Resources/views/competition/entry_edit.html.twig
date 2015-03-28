@@ -1,0 +1,18 @@
+{% extends '::base_sidebar.html.twig' %}
+
+{% block title %}
+    Edit Competition Entry
+{% endblock %}
+
+{% block body %}
+    <dl>
+        <dt>Competition</dt>
+        <dd>{{ competition.name }}</dd>
+    </dl>
+
+    {{ form_start(form) }}
+    {{ form_widget(form) }}
+
+    <input type="submit" value="Save"/>
+    {{ form_end(form) }}
+{% endblock %}

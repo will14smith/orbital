@@ -60,6 +60,7 @@ class Competition
      *      )
      */
     protected $rounds;
+
     /**
      * Constructor
      */
@@ -72,7 +73,7 @@ class Competition
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -83,6 +84,7 @@ class Competition
      * Set name
      *
      * @param string $name
+     *
      * @return Competition
      */
     public function setName($name)
@@ -95,7 +97,7 @@ class Competition
     /**
      * Get name
      *
-     * @return string 
+     * @return string
      */
     public function getName()
     {
@@ -106,6 +108,7 @@ class Competition
      * Set description
      *
      * @param string $description
+     *
      * @return Competition
      */
     public function setDescription($description)
@@ -118,7 +121,7 @@ class Competition
     /**
      * Get description
      *
-     * @return string 
+     * @return string
      */
     public function getDescription()
     {
@@ -129,6 +132,7 @@ class Competition
      * Set info_only
      *
      * @param boolean $infoOnly
+     *
      * @return Competition
      */
     public function setInfoOnly($infoOnly)
@@ -141,7 +145,7 @@ class Competition
     /**
      * Get info_only
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getInfoOnly()
     {
@@ -152,6 +156,7 @@ class Competition
      * Set location
      *
      * @param string $location
+     *
      * @return Competition
      */
     public function setLocation($location)
@@ -164,7 +169,7 @@ class Competition
     /**
      * Get location
      *
-     * @return string 
+     * @return string
      */
     public function getLocation()
     {
@@ -175,6 +180,7 @@ class Competition
      * Set date
      *
      * @param \DateTime $date
+     *
      * @return Competition
      */
     public function setDate($date)
@@ -187,7 +193,7 @@ class Competition
     /**
      * Get date
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getDate()
     {
@@ -198,6 +204,7 @@ class Competition
      * Set boss_count
      *
      * @param integer $bossCount
+     *
      * @return Competition
      */
     public function setBossCount($bossCount)
@@ -210,7 +217,7 @@ class Competition
     /**
      * Get boss_count
      *
-     * @return integer 
+     * @return integer
      */
     public function getBossCount()
     {
@@ -221,6 +228,7 @@ class Competition
      * Set target_count
      *
      * @param integer $targetCount
+     *
      * @return Competition
      */
     public function setTargetCount($targetCount)
@@ -233,7 +241,7 @@ class Competition
     /**
      * Get target_count
      *
-     * @return integer 
+     * @return integer
      */
     public function getTargetCount()
     {
@@ -244,6 +252,7 @@ class Competition
      * Add entries
      *
      * @param \AppBundle\Entity\CompetitionEntry $entries
+     *
      * @return Competition
      */
     public function addEntry(\AppBundle\Entity\CompetitionEntry $entries)
@@ -277,6 +286,7 @@ class Competition
      * Add rounds
      *
      * @param \AppBundle\Entity\Round $rounds
+     *
      * @return Competition
      */
     public function addRound(\AppBundle\Entity\Round $rounds)
@@ -299,10 +309,34 @@ class Competition
     /**
      * Get rounds
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection|Round[]
      */
     public function getRounds()
     {
         return $this->rounds;
+    }
+
+    /**
+     * @return int
+     */
+    public function getTotalSpaces()
+    {
+        return $this->getTargetCount() * $this->getBossCount();
+    }
+
+    /**
+     * @return int
+     */
+    public function getFreeSpaces()
+    {
+        return $this->getTotalSpaces() - $this->getEntries()->count();
+    }
+
+    public function hasEntered(Person $user)
+    {
+        return $this->getEntries()->exists(function($_, CompetitionEntry $entry) use ($user) {
+            $person = $entry->getPerson();
+            return $person && $person->getId() == $user->getId();
+        });
     }
 }

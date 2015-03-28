@@ -34,6 +34,24 @@ class CompetitionEntry
     protected $person;
 
     /**
+     * @ORM\ManyToOne(targetEntity="Round")
+     */
+    protected $round;
+
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     */
+    protected $bowtype;
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     */
+    protected $skill;
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     */
+    protected $gender;
+
+    /**
      * @ORM\Column(type="datetime", nullable=true)
      */
     protected $date_approved;
@@ -56,7 +74,7 @@ class CompetitionEntry
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -67,6 +85,7 @@ class CompetitionEntry
      * Set date_approved
      *
      * @param \DateTime $dateApproved
+     *
      * @return CompetitionEntry
      */
     public function setDateApproved($dateApproved)
@@ -79,7 +98,7 @@ class CompetitionEntry
     /**
      * Get date_approved
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getDateApproved()
     {
@@ -90,6 +109,7 @@ class CompetitionEntry
      * Set boss_number
      *
      * @param integer $bossNumber
+     *
      * @return CompetitionEntry
      */
     public function setBossNumber($bossNumber)
@@ -102,7 +122,7 @@ class CompetitionEntry
     /**
      * Get boss_number
      *
-     * @return integer 
+     * @return integer
      */
     public function getBossNumber()
     {
@@ -113,6 +133,7 @@ class CompetitionEntry
      * Set target_number
      *
      * @param integer $targetNumber
+     *
      * @return CompetitionEntry
      */
     public function setTargetNumber($targetNumber)
@@ -125,7 +146,7 @@ class CompetitionEntry
     /**
      * Get target_number
      *
-     * @return integer 
+     * @return integer
      */
     public function getTargetNumber()
     {
@@ -136,6 +157,7 @@ class CompetitionEntry
      * Set competition
      *
      * @param \AppBundle\Entity\Competition $competition
+     *
      * @return CompetitionEntry
      */
     public function setCompetition(\AppBundle\Entity\Competition $competition = null)
@@ -148,7 +170,7 @@ class CompetitionEntry
     /**
      * Get competition
      *
-     * @return \AppBundle\Entity\Competition 
+     * @return \AppBundle\Entity\Competition
      */
     public function getCompetition()
     {
@@ -159,6 +181,7 @@ class CompetitionEntry
      * Set club
      *
      * @param \AppBundle\Entity\Club $club
+     *
      * @return CompetitionEntry
      */
     public function setClub(\AppBundle\Entity\Club $club = null)
@@ -171,7 +194,7 @@ class CompetitionEntry
     /**
      * Get club
      *
-     * @return \AppBundle\Entity\Club 
+     * @return \AppBundle\Entity\Club
      */
     public function getClub()
     {
@@ -182,6 +205,7 @@ class CompetitionEntry
      * Set person
      *
      * @param \AppBundle\Entity\Person $person
+     *
      * @return CompetitionEntry
      */
     public function setPerson(\AppBundle\Entity\Person $person = null)
@@ -194,7 +218,7 @@ class CompetitionEntry
     /**
      * Get person
      *
-     * @return \AppBundle\Entity\Person 
+     * @return \AppBundle\Entity\Person
      */
     public function getPerson()
     {
@@ -205,6 +229,7 @@ class CompetitionEntry
      * Set score
      *
      * @param \AppBundle\Entity\Score $score
+     *
      * @return CompetitionEntry
      */
     public function setScore(\AppBundle\Entity\Score $score = null)
@@ -217,10 +242,102 @@ class CompetitionEntry
     /**
      * Get score
      *
-     * @return \AppBundle\Entity\Score 
+     * @return \AppBundle\Entity\Score
      */
     public function getScore()
     {
         return $this->score;
+    }
+
+    /**
+     * Set bowtype
+     *
+     * @param string $bowtype
+     * @return CompetitionEntry
+     */
+    public function setBowtype($bowtype)
+    {
+        $this->bowtype = $bowtype;
+
+        return $this;
+    }
+
+    /**
+     * Get bowtype
+     *
+     * @return string 
+     */
+    public function getBowtype()
+    {
+        return $this->bowtype;
+    }
+
+    /**
+     * Set skill
+     *
+     * @param string $skill
+     * @return CompetitionEntry
+     */
+    public function setSkill($skill)
+    {
+        $this->skill = $skill;
+
+        return $this;
+    }
+
+    /**
+     * Get skill
+     *
+     * @return string 
+     */
+    public function getSkill()
+    {
+        return $this->skill;
+    }
+
+    /**
+     * Set gender
+     *
+     * @param string $gender
+     * @return CompetitionEntry
+     */
+    public function setGender($gender)
+    {
+        $this->gender = $gender;
+
+        return $this;
+    }
+
+    /**
+     * Get gender
+     *
+     * @return string 
+     */
+    public function getGender()
+    {
+        return $this->gender;
+    }
+
+    /**
+     * Set round
+     *
+     * @param \AppBundle\Entity\Round $round
+     * @return CompetitionEntry
+     */
+    public function setRound(\AppBundle\Entity\Round $round = null)
+    {
+        $this->round = $round;
+
+        return $this;
+    }
+
+    /**
+     * Get round
+     *
+     * @return \AppBundle\Entity\Round 
+     */
+    public function getRound()
+    {
+        return $this->round;
     }
 }

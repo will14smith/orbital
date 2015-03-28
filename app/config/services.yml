@@ -67,6 +67,11 @@ services:
         public: false
         tags:
           - { name: security.voter }
+    orbital.security.competition_voter:
+        class: AppBundle\Services\Security\CompetitionVoter
+        public: false
+        tags:
+          - { name: security.voter }
     orbital.security.league_voter:
       class: AppBundle\Services\Security\LeagueVoter
       public: false
