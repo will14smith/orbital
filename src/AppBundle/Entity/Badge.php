@@ -211,4 +211,8 @@ class Badge
     {
         return $this->holders;
     }
+
+    public function __toString() {
+        return $this->name;
+    }
 }

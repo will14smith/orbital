@@ -6,12 +6,16 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Badge;
 use AppBundle\Entity\BadgeHolder;
+use AppBundle\Entity\BadgeHolderProof;
 use AppBundle\Form\BadgeHolderType;
 use AppBundle\Form\BadgeType;
 use AppBundle\Services\Enum\BadgeState;
+use Doctrine\Common\Persistence\ObjectManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Form\FormError;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 class BadgeController extends Controller
@@ -53,6 +57,52 @@ class BadgeController extends Controller
         }
 
         return $this->render('badge/create.html.twig', array(
+            'form' => $form->createView(),
+        ));
+    }
+
+    /**
+     * @Security("is_granted('IS_AUTHENTICATED_REMEMBERED')")
+     * @Route("/badge/claim", name="badge_award")
+     */
+    public function awardAction(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $badgeHolder = new BadgeHolder();
+
+        $badge_id = $request->get('badge');
+        if ($badge_id) {
+            $badge = $em->getRepository('AppBundle:Badge')->find($badge_id);
+            if ($badge) {
+                $badgeHolder->setBadge($badge);
+            }
+        }
+
+        $is_admin = $this->isGranted('ROLE_ADMIN');
+
+        if ($is_admin) {
+            $badgeHolder->setDateConfirmed(new \DateTime('now'));
+        }
+
+        $form = $this->createForm(new BadgeHolderType($is_admin), $badgeHolder);
+        $form_proof = $form->get('proof');
+
+        $form->handleRequest($request);
+        $this->handleProof($form_proof);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->saveProof($em, $badgeHolder, $form_proof);
+            $em->persist($badgeHolder);
+            $em->flush();
+
+            return $this->redirectToRoute(
+                'badge_detail',
+                array('id' => $badgeHolder->getBadge()->getId())
+            );
+        }
+
+        return $this->render('badge/award.html.twig', array(
             'form' => $form->createView(),
         ));
     }
@@ -109,44 +159,6 @@ class BadgeController extends Controller
 
     /**
      * @Security("has_role('ROLE_ADMIN')")
-     * @Route("/badge/{id}/award", name="badge_award")
-     */
-    public function awardAction($id, Request $request)
-    {
-        $em = $this->getDoctrine()->getManager();
-        $badge = $em->getRepository('AppBundle:Badge')->find($id);
-        if (!$badge) {
-            throw $this->createNotFoundException(
-                'No badge found for id ' . $id
-            );
-        }
-
-        $badgeHolder = new BadgeHolder();
-        //TODO auto confirm if admin enters
-        //TODO remove most fields for non-admins
-        //TODO proof
-        $form = $this->createForm(new BadgeHolderType(), $badgeHolder);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $badgeHolder->setBadge($badge);
-            $em->persist($badgeHolder);
-            $em->flush();
-
-            return $this->redirectToRoute(
-                'badge_detail',
-                array('id' => $badge->getId())
-            );
-        }
-
-        return $this->render('badge/award.html.twig', array(
-            'form' => $form->createView(),
-            'badge' => $badge
-        ));
-    }
-
-    /**
-     * @Security("has_role('ROLE_ADMIN')")
      * @Route("/badge/{id}/award/{award_id}", name="badge_award_edit")
      */
     public function awardEditAction($id, $award_id, Request $request)
@@ -165,9 +177,7 @@ class BadgeController extends Controller
             );
         }
 
-        //TODO remove most fields for non-admins
-        //TODO proof
-        $form = $this->createForm(new BadgeHolderType(), $badgeHolder);
+        $form = $this->createForm(new BadgeHolderType(true, false), $badgeHolder);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -181,7 +191,7 @@ class BadgeController extends Controller
 
         return $this->render('badge/award_edit.html.twig', array(
             'form' => $form->createView(),
-            'badge' => $badgeHolder->getBadge()
+            'holder' => $badgeHolder,
         ));
     }
 
@@ -225,7 +235,7 @@ class BadgeController extends Controller
             ]);
         } else {
             return $this->redirectToRoute('badge_detail', [
-               'id' => $badgeHolder->getBadge()->getId()
+                'id' => $badgeHolder->getBadge()->getId()
             ]);
         }
     }
@@ -264,5 +274,59 @@ class BadgeController extends Controller
         return $this->render('badge/delete.html.twig', array(
             'badge' => $badge
         ));
+    }
+
+    private function handleProof(FormInterface $form)
+    {
+        if ($this->isGranted('ROLE_ADMIN')) {
+            return;
+        }
+
+        if (!$form->isSubmitted()) {
+            return;
+        }
+
+        $data = $form->getData();
+        if (count($data['proof_images']) > 0) {
+            return;
+        }
+        if (trim($data['proof_notes'])) {
+            return;
+        }
+
+        $form->addError(new FormError('Expecting some proof'));
+    }
+
+    private function saveProof(ObjectManager $em, BadgeHolder $badge_holder, FormInterface $form)
+    {
+        $person = $this->getUser();
+        $data = $form->getData();
+
+        // images
+        $image_importer = $this->get('orbital.image_importer');
+
+        foreach ($data['proof_images'] as $image) {
+            $outpath = $image_importer->persist($image);
+
+            $proof = new BadgeHolderProof();
+
+            $proof->setBadgeHolder($badge_holder);
+            $proof->setImageName($outpath);
+            $proof->setPerson($person);
+
+            $em->persist($proof);
+        }
+
+        // notes
+        $notes = trim($data['proof_notes']);
+        if (!empty($notes)) {
+            $proof = new BadgeHolderProof();
+
+            $proof->setBadgeHolder($badge_holder);
+            $proof->setNotes($notes);
+            $proof->setPerson($person);
+
+            $em->persist($proof);
+        }
     }
 }

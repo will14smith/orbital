@@ -9,7 +9,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-class ScoreType extends AbstractType
+class ScoreType extends AbstractProofType
 {
     private $edit;
 
@@ -39,13 +39,6 @@ class ScoreType extends AbstractType
             ->add('competition', 'checkbox', ['required' => false])
             ->add('complete', 'checkbox', ['required' => false]);
 
-        $proof = $builder->create('proof', 'form', ['mapped' => false, 'label' => false, 'attr' => ['orbital-collapse' => 'Proof']])
-            ->add('proof_images', 'collection', [
-                'type' => 'file',
-                'allow_add' => true,
-            ])
-            ->add('proof_notes', 'textarea', ['required' => false]);
-
         $builder
             ->add('person', 'entity', [
                 'class' => 'AppBundle:Person',
@@ -59,7 +52,7 @@ class ScoreType extends AbstractType
             ->add($score)
             ->add($checks)
             ->add('date_shot')
-            ->add($proof);
+            ->add($this->getProofForm($builder));
     }
 
     public function setDefaultOptions(OptionsResolverInterface $resolver)

@@ -1,15 +1,26 @@
-{% extends 'base.html.twig' %}
+{% extends '::base_sidebar.html.twig' %}
 
 {% block title %}
     Award Badge
 {% endblock %}
 
 {% block body %}
-    <p>Award the "{{ badge.name }}" badge</p>
-
     {{ form_start(form) }}
     {{ form_widget(form) }}
 
     <input type="submit" value="Award"/>
     {{ form_end(form) }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <script>
+        'use strict';
+
+        (function ($) {
+            $('#badge_holder_proof_proof_images').collection('Image');
+        })(jQuery);
+    </script>
+
 {% endblock %}

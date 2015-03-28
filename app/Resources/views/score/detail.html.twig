@@ -40,27 +40,7 @@
     </dl>
 
     {% if is_granted('ROLE_ADMIN') %}
-        <div{% if score.proof|length > 0 %} orbital-collapse="Proof"{% endif %}>
-            <h2>Proof</h2>
-            <ul class="list">
-                {% for proof in score.proof %}
-                    <li>
-                        {% if proof.notes %}
-                            <span class="text">{{ proof.notes }}</span>
-                        {% else %}
-                            <a href="{{ asset('uploads/' ~ proof.imageName) }}" target="_blank">
-                                View Image
-                            </a>
-                        {% endif %}
-                        <a href="{{ url('person_detail', { 'id': proof.person.id }) }}" class="shrink">
-                            {{ proof.person.name }}
-                        </a>
-                    </li>
-                {% else %}
-                    <li><span class="text">There is no proof.</span></li>
-                {% endfor %}
-            </ul>
-        </div>
+        {% include '::proof.html.twig' with { 'proofs': holder.proof } only %}
     {% endif %}
 {% endblock %}
 

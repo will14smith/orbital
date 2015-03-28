@@ -29,6 +29,11 @@ services:
             - { name: kernel.event_listener, event: 'orbital.events.score_update', method: score_update }
 
 # voters
+    orbital.security.badge_voter:
+        class: AppBundle\Services\Security\BadgeVoter
+        public: false
+        tags:
+          - { name: security.voter }
     orbital.security.score_voter:
         class: AppBundle\Services\Security\ScoreVoter
         public: false

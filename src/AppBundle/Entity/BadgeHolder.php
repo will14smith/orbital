@@ -48,6 +48,11 @@ class BadgeHolder
     protected $date_delivered;
 
     /**
+     * @ORM\OneToMany(targetEntity="BadgeHolderProof", mappedBy="badge_holder")
+     */
+    protected $proof;
+
+    /**
      * Get id
      *
      * @return integer 
@@ -213,5 +218,45 @@ class BadgeHolder
         }
 
         return BadgeState::DELIVERED;
+    }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->proof = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add proof
+     *
+     * @param \AppBundle\Entity\BadgeHolderProof $proof
+     * @return BadgeHolder
+     */
+    public function addProof(\AppBundle\Entity\BadgeHolderProof $proof)
+    {
+        $this->proof[] = $proof;
+
+        return $this;
+    }
+
+    /**
+     * Remove proof
+     *
+     * @param \AppBundle\Entity\BadgeHolderProof $proof
+     */
+    public function removeProof(\AppBundle\Entity\BadgeHolderProof $proof)
+    {
+        $this->proof->removeElement($proof);
+    }
+
+    /**
+     * Get proof
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getProof()
+    {
+        return $this->proof;
     }
 }

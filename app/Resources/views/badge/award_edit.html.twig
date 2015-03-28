@@ -1,13 +1,13 @@
-{% extends 'base.html.twig' %}
+{% extends '::base_sidebar.html.twig' %}
 
 {% block title %}
     Edit awarded Badge
 {% endblock %}
 {% block body %}
-    <p>Edit the awarded "{{ badge.name }}" badge</p>
-
     {{ form_start(form) }}
     {{ form_widget(form) }}
+
+    {% include '::proof.html.twig' with { 'proofs': holder.proof } only %}
 
     <input type="submit" value="Save"/>
     {{ form_end(form) }}
