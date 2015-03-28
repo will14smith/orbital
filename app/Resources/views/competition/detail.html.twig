@@ -1,0 +1,82 @@
+{% extends 'base_sidebar.html.twig' %}
+
+{% block title %}
+    {{ competition.name }}
+{% endblock %}
+
+{% block body %}
+    {% if competition.description|trim %}
+        <p>
+            {{ competition.description }}
+        </p>
+    {% endif %}
+
+    <dl>
+        <dt>Location</dt>
+        <dd>{{ competition.location|default('Unknown') }}</dd>
+        <dt>Date</dt>
+        <dd>{{ competition.date|date('d/m/Y H:i') }}</dd>
+        <dt>Rounds</dt>
+        <dd>
+            {% for round in competition.rounds %}
+                <a href="{{ url('round_detail', { 'id': round.id }) }}">{{ round.name }}</a>
+                {% if not loop.last %}
+                    <span>,&nbsp;</span>
+                {% endif %}
+            {% endfor %}
+        </dd>
+        {% if competition.bossCount and competition.targetCount %}
+            <dt>Total Spaces</dt>
+            <dd>{{ competition.totalSpaces }}</dd>
+            <dt>Spaces Left</dt>
+            <dd>{{ competition.freeSpaces }}</dd>
+        {% endif %}
+    </dl>
+
+    <h2>Entries</h2>
+    <ul class="list">
+        {% for entry in competition.entries %}
+            <li>
+                {% if entry.bossNumber %}
+                    <span class="text shrink">{{ entry.bossNumber }}</span>
+                {% else %}
+                    <span class="text shrink">-</span>
+                {% endif %}
+                {% if entry.targetNumber %}
+                    <span class="text shrink">{{ entry.bossNumber }}</span>
+                {% else %}
+                    <span class="text shrink">-</span>
+                {% endif %}
+                {% if entry.person %}
+                    <a href="{{ url('person_detail', { 'id': entry.person.id }) }}">
+                        {{ entry.person.name }}
+                    </a>
+                {% else %}
+                    <a href="{{ url('club_detail', { 'id': entry.club.id }) }}">
+                        <em>{{ entry.club.name }}</em>
+                    </a>
+                {% endif %}
+            </li>
+        {% else %}
+            <li>
+                <span class="text">
+                    There are no entries :(
+                </span>
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock %}
+
+{% block sidebar %}
+    {% if is_granted('ROLE_ADMIN') %}
+        <div class="widget">
+            <h3 class="widget-title">Actions</h3>
+            <ul>
+                <li><a href="{{ url('competition_edit', { 'id': competition.id }) }}">Edit</a></li>
+                <li><a href="{{ url('competition_delete', { 'id': competition.id }) }}">Delete</a></li>
+            </ul>
+        </div>
+    {% endif %}
+
+    {{ parent() }}
+{% endblock %}

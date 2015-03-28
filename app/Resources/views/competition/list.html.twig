@@ -1,0 +1,36 @@
+{% extends '::base_sidebar.html.twig' %}
+
+{% block title %}
+    Competitions
+{% endblock %}
+
+{% block body %}
+    <ul class="list">
+        {% for competition in competitions %}
+            <li>
+                <a href="{{ url('competition_detail', { 'id': competition.id }) }}">{{ competition.name }}</a>
+                {% if is_granted('ROLE_ADMIN') %}
+                    <span class="actions">
+                        <a href="{{ url('competition_edit', { 'id': competition.id }) }}"><i class="fa fa-pencil"></i></a>
+                        <a href="{{ url('competition_delete', { 'id': competition.id }) }}"><i class="fa fa-trash-o"></i></a>
+                    </span>
+                {% endif %}
+            </li>
+        {% else %}
+            <li>No Competitions :(</li>
+        {% endfor %}
+    </ul>
+{% endblock %}
+
+{% block sidebar %}
+    {% if is_granted('ROLE_ADMIN') %}
+        <div class="widget">
+            <h3 class="widget-title">Actions</h3>
+            <ul>
+                <li><a href="{{ url('competition_create') }}">Create</a></li>
+            </ul>
+        </div>
+    {% endif %}
+
+    {{ parent() }}
+{% endblock %}
