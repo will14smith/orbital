@@ -1,0 +1,29 @@
+{% extends '::base_sidebar.html.twig' %}
+
+{% block title %}
+    Confirm Score
+{% endblock %}
+{% block body %}
+    {{ form_start(form) }}
+
+    <p>
+        Please review the following proof for this score:
+    </p>
+    <dl>
+        <dt>Person</dt>
+        <dd>{{ score.person.name }}</dd>
+        <dt>Round</dt>
+        <dd>{{ score.round.name }}</dd>
+        <dt>Score</dt>
+        <dd>{{ score.score }}</dd>
+        <dt>Date Shot</dt>
+        <dd>{{ score.dateShot|date('d/m/Y') }}</dd>
+    </dl>
+
+    {% include '::proof.html.twig' with { 'proofs': score.proof, 'expand': false } only %}
+
+    <div>
+        <input type="submit" value="Confirm"> | <a href="{{ url('score_detail', { id: score.id }) }}">Cancel</a>
+    </div>
+    {{ form_end(form) }}
+{% endblock %}

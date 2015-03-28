@@ -40,7 +40,7 @@
     </dl>
 
     {% if is_granted('ROLE_ADMIN') %}
-        {% include '::proof.html.twig' with { 'proofs': holder.proof } only %}
+        {% include '::proof.html.twig' with { 'proofs': score.proof } only %}
     {% endif %}
 {% endblock %}
 

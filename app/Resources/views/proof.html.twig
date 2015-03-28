@@ -1,4 +1,8 @@
-<div{% if proofs|length > 0 %} orbital-collapse="Proof"{% endif %}>
+{% if expand is not defined %}
+    {% set expand = true %}
+{% endif %}
+
+<div{% if expand and proofs|length > 0 %} orbital-collapse="Proof"{% endif %}>
     <h2>Proof</h2>
     <ul class="list">
         {% for proof in proofs %}

@@ -89,10 +89,10 @@ class BadgeController extends Controller
         $form_proof = $form->get('proof');
 
         $form->handleRequest($request);
-        $this->handleProof($form_proof);
+        $this->handle_proof($form_proof);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->saveProof($em, $badgeHolder, $form_proof);
+            $this->save_proof($em, $badgeHolder, $form_proof);
             $em->persist($badgeHolder);
             $em->flush();
 
@@ -202,40 +202,46 @@ class BadgeController extends Controller
     public function awardStateAction($id, $award_id, Request $request)
     {
         $em = $this->getDoctrine()->getManager();
-        /** @var BadgeHolder $badgeHolder */
-        $badgeHolder = $em->getRepository('AppBundle:BadgeHolder')->find($award_id);
-        if (!$badgeHolder) {
+        /** @var BadgeHolder $badge_holder */
+        $badge_holder = $em->getRepository('AppBundle:BadgeHolder')->find($award_id);
+        if (!$badge_holder) {
             throw $this->createNotFoundException(
                 'No badge-holder found for id ' . $award_id
             );
         }
 
-        if ($id != $badgeHolder->getBadge()->getId()) {
+        if ($id != $badge_holder->getBadge()->getId()) {
             throw $this->createNotFoundException(
                 'Badge-holder ' . $award_id . ' not associated with badge ' . $id
             );
         }
 
-        switch ($badgeHolder->getState()) {
+        switch ($badge_holder->getState()) {
             case BadgeState::UNCONFIRMED:
-                $badgeHolder->setDateConfirmed(new \DateTime('now'));
+                //TODO ask the admin to look at the proof
+                $confirm_proof = $this->confirm_proof($badge_holder, $request);
+                if ($confirm_proof !== false) {
+                    return $confirm_proof;
+                }
+
+                $badge_holder->setDateConfirmed(new \DateTime('now'));
                 break;
             case BadgeState::CONFIRMED:
-                $badgeHolder->setDateMade(new \DateTime('now'));
+                $badge_holder->setDateMade(new \DateTime('now'));
                 break;
             case BadgeState::MADE:
-                $badgeHolder->setDateDelivered(new \DateTime('now'));
+                $badge_holder->setDateDelivered(new \DateTime('now'));
                 break;
         }
         $em->flush();
 
         if ($request->query->get('person')) {
             return $this->redirectToRoute('person_detail', [
-                'id' => $badgeHolder->getPerson()->getId()
+                'id' => $badge_holder->getPerson()->getId()
             ]);
         } else {
             return $this->redirectToRoute('badge_detail', [
-                'id' => $badgeHolder->getBadge()->getId()
+                'id' => $badge_holder->getBadge()->getId()
             ]);
         }
     }
@@ -276,7 +282,7 @@ class BadgeController extends Controller
         ));
     }
 
-    private function handleProof(FormInterface $form)
+    private function handle_proof(FormInterface $form)
     {
         if ($this->isGranted('ROLE_ADMIN')) {
             return;
@@ -297,7 +303,7 @@ class BadgeController extends Controller
         $form->addError(new FormError('Expecting some proof'));
     }
 
-    private function saveProof(ObjectManager $em, BadgeHolder $badge_holder, FormInterface $form)
+    private function save_proof(ObjectManager $em, BadgeHolder $badge_holder, FormInterface $form)
     {
         $person = $this->getUser();
         $data = $form->getData();
@@ -328,5 +334,25 @@ class BadgeController extends Controller
 
             $em->persist($proof);
         }
+    }
+
+    /**
+     * @param BadgeHolder $holder
+     * @param Request $request
+     * @return bool|\Symfony\Component\HttpFoundation\Response
+     */
+    private function confirm_proof(BadgeHolder $holder, Request $request)
+    {
+        $form = $this->createFormBuilder()->getForm();
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            return false;
+        }
+
+        return $this->render('badge/proof_confirm.html.twig', [
+            'form' => $form->createView(),
+            'badge' => $holder
+        ]);
     }
 }

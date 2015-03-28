@@ -116,6 +116,11 @@ class ScoreController extends Controller
             );
         }
 
+        $confirm_proof = $this->confirm_proof($score, $request);
+        if($confirm_proof !== false) {
+            return $confirm_proof;
+        }
+
         $score->accept();
         $em->flush();
 
@@ -141,9 +146,10 @@ class ScoreController extends Controller
         $form_proof = $form->get('proof');
 
         $form->handleRequest($request);
-        $this->handleProof($form_proof);
+        // don't need proof on edit, must have been supplied by user on create
 
         if ($form->isSubmitted() && $form->isValid()) {
+            //  however, if they provide more we should save it
             $this->saveProof($em, $score, $form_proof);
             $em->flush();
 
@@ -230,5 +236,25 @@ class ScoreController extends Controller
 
             $em->persist($proof);
         }
+    }
+
+    /**
+     * @param Score $score
+     * @param Request $request
+     * @return bool|\Symfony\Component\HttpFoundation\Response
+     */
+    private function confirm_proof(Score $score, Request $request)
+    {
+        $form = $this->createFormBuilder()->getForm();
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            return false;
+        }
+
+        return $this->render('score/proof_confirm.html.twig', [
+            'form' => $form->createView(),
+            'score' => $score
+        ]);
     }
 }
