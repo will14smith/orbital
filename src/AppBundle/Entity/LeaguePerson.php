@@ -168,4 +168,8 @@ class LeaguePerson
     {
         return $this->person;
     }
+
+    public function __toString() {
+        return (string) $this->person;
+    }
 }

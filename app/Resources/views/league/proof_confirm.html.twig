@@ -1,0 +1,33 @@
+{% extends '::base_sidebar.html.twig' %}
+
+{% block title %}
+    Confirm League Match Claim
+{% endblock %}
+{% block body %}
+    {{ form_start(form) }}
+
+    <p>
+        Please review the following proof for this league match:
+    </p>
+    <dl>
+        <dt>Challenger</dt>
+        <dd>{{ match.challenger }}</dd>
+        <dt>Challengee</dt>
+        <dd>{{ match.challengee  }}</dd>
+        <dt>Accepted</dt>
+        <dd>{{ match.accepted ? 'Yes' : 'No' }}</dd>
+        {% if match.accepted %}
+            <dt>Winner</dt>
+            <dd>{{ match.winner }}</dd>
+        {% endif %}
+        <dt>Date Challenged</dt>
+        <dd>{{ match.dateChallenged|date('d/m/Y') }}</dd>
+    </dl>
+
+    {% include '::proof.html.twig' with { 'proofs': match.proofs, 'expand': false } only %}
+
+    <div>
+        <input type="submit" value="Confirm"> | <a href="{{ url('league_detail', { id: match.league.id }) }}">Cancel</a>
+    </div>
+    {{ form_end(form) }}
+{% endblock %}

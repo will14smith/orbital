@@ -319,6 +319,10 @@ class LeagueMatch
      */
     public function getWinner()
     {
+        if (!$this->getAccepted()) {
+            return false;
+        }
+
         return $this->getResult() ? $this->getChallenger() : $this->getChallengee();
     }
 
@@ -329,6 +333,10 @@ class LeagueMatch
      */
     public function getLoser()
     {
+        if (!$this->getAccepted()) {
+            return false;
+        }
+
         return !$this->getResult() ? $this->getChallenger() : $this->getChallengee();
     }
 

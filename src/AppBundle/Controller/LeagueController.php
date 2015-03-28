@@ -5,12 +5,18 @@ namespace AppBundle\Controller;
 
 
 use AppBundle\Entity\League;
+use AppBundle\Entity\LeagueMatch;
+use AppBundle\Entity\LeagueMatchProof;
 use AppBundle\Entity\LeaguePerson;
+use AppBundle\Form\LeagueMatchType;
 use AppBundle\Form\LeaguePersonType;
 use AppBundle\Form\LeagueType;
+use Doctrine\Common\Persistence\ObjectManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Form\FormError;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 class LeagueController extends Controller
@@ -288,7 +294,89 @@ class LeagueController extends Controller
         ]);
     }
 
-    //TODO league submission/approval
+    /**
+     * @Security("is_granted('SUBMIT', league)")
+     * @Route("/league/{id}/submit", name="league_submit")
+     *
+     * @param League $league
+     * @param Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function submitChallenge(League $league, Request $request)
+    {
+        $lm = new LeagueMatch();
+        $lm->setLeague($league);
+
+        $is_admin = $this->isGranted('ROLE_ADMIN');
+        if ($is_admin) {
+            $lm->setDateConfirmed(new \DateTime('now'));
+        } else {
+            $lm->setChallenger($this->getUser());
+        }
+
+        $form = $this->createForm(new LeagueMatchType($is_admin), $lm);
+        $form_proof = $form->get('proof');
+
+        $form->handleRequest($request);
+        $this->handleProof($form_proof);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $this->saveProof($em, $lm, $form_proof);
+            $em->persist($lm);
+            $em->flush();
+
+            return $this->redirectToRoute(
+                'league_detail',
+                ['id' => $lm->getLeague()->getId()]
+            );
+        }
+
+        return $this->render('league/create_match.html.twig', [
+            'form' => $form->createView(),
+        ]);
+
+    }
+
+    /**
+     * @Security("has_role('ROLE_ADMIN')")
+     * @Route("/league/{id}/match/{match_id}/accept", name="league_match_accept")
+     *
+     * @param int $id
+     * @param int $match_id
+     * @param Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function confirmChallenge($id, $match_id, Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $lm = $em->getRepository('AppBundle:LeagueMatch')->find($match_id);
+        if (!$lm) {
+            throw $this->createNotFoundException(
+                'No league-match found for id ' . $match_id
+            );
+        }
+        if ($lm->getLeague()->getId() != $id) {
+            throw $this->createNotFoundException(
+                'No league found for id ' . $id
+            );
+        }
+
+        $confirm_proof = $this->confirmProof($lm, $request);
+        if ($confirm_proof !== false) {
+            return $confirm_proof;
+        }
+
+        $lm->setDateConfirmed(new \DateTime('now'));
+        $em->flush();
+
+        return $this->redirectToRoute(
+            'league_detail',
+            ['id' => $lm->getLeague()->getId()]
+        );
+    }
 
     /**
      * @Security("has_role('ROLE_ADMIN')")
@@ -319,6 +407,81 @@ class LeagueController extends Controller
 
         return $this->render('league/delete.html.twig', [
             'league' => $league
+        ]);
+    }
+
+    private function handleProof(FormInterface $form)
+    {
+        if ($this->isGranted('ROLE_ADMIN')) {
+            return;
+        }
+
+        if (!$form->isSubmitted()) {
+            return;
+        }
+
+        $data = $form->getData();
+        if (count($data['proof_images']) > 0) {
+            return;
+        }
+        if (trim($data['proof_notes'])) {
+            return;
+        }
+
+        $form->addError(new FormError('Expecting some proof'));
+    }
+
+    private function saveProof(ObjectManager $em, LeagueMatch $match, FormInterface $form)
+    {
+        $person = $this->getUser();
+        $data = $form->getData();
+
+        // images
+        $image_importer = $this->get('orbital.image_importer');
+
+        foreach ($data['proof_images'] as $image) {
+            $outpath = $image_importer->persist($image);
+
+            $proof = new LeagueMatchProof();
+
+            $proof->setMatch($match);
+            $proof->setImageName($outpath);
+            $proof->setPerson($person);
+
+            $em->persist($proof);
+        }
+
+        // notes
+        $notes = trim($data['proof_notes']);
+        if (!empty($notes)) {
+            $proof = new LeagueMatchProof();
+
+            $proof->setMatch($match);
+            $proof->setNotes($notes);
+            $proof->setPerson($person);
+
+            $em->persist($proof);
+        }
+    }
+
+    /**
+     * @param LeagueMatch $match
+     * @param Request $request
+     *
+     * @return bool|\Symfony\Component\HttpFoundation\Response
+     */
+    private function confirmProof(LeagueMatch $match, Request $request)
+    {
+        $form = $this->createFormBuilder()->getForm();
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            return false;
+        }
+
+        return $this->render('league/proof_confirm.html.twig', [
+            'form' => $form->createView(),
+            'match' => $match
         ]);
     }
 }

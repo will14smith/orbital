@@ -3,6 +3,7 @@
 
 namespace AppBundle\Services\Events;
 
+use AppBundle\Entity\LeagueMatch;
 use AppBundle\Entity\Score;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Symfony\Component\EventDispatcher\EventDispatcher;
@@ -24,6 +25,9 @@ class DoctrineListener
         if ($entity instanceof Score) {
             $event = new ScoreEvent($entity);
             $this->event_dispatcher->dispatch('orbital.events.score_create', $event);
+        } else if ($entity instanceof LeagueMatch) {
+            $event = new LeagueMatchEvent($entity);
+            $this->event_dispatcher->dispatch('orbital.events.match_create', $event);
         }
     }
 
@@ -34,6 +38,9 @@ class DoctrineListener
         if ($entity instanceof Score) {
             $event = new ScoreEvent($entity);
             $this->event_dispatcher->dispatch('orbital.events.score_update', $event);
+        } else if ($entity instanceof LeagueMatch) {
+            $event = new LeagueMatchEvent($entity);
+            $this->event_dispatcher->dispatch('orbital.events.match_update', $event);
         }
     }
 }

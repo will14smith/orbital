@@ -31,6 +31,13 @@ services:
 # leagues
     orbital.league.manager:
         class: AppBundle\Services\Leagues\LeagueManager
+        arguments: ["@doctrine"]
+    orbital.league.listener:
+        class: AppBundle\Services\Leagues\LeagueListener
+        arguments: ["@orbital.league.manager"]
+        tags:
+            - { name: kernel.event_listener, event: 'orbital.events.match_create', method: match_create }
+            - { name: kernel.event_listener, event: 'orbital.events.match_update', method: match_update }
 
     orbital.league.algo.wins:
         class: AppBundle\Services\Leagues\Algorithms\WinsAlgorithm

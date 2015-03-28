@@ -1,0 +1,26 @@
+{% extends '::base_sidebar.html.twig' %}
+
+{% block title %}
+    Submit Match to League
+{% endblock %}
+
+{% block body %}
+    {{ form_start(form) }}
+    {{ form_widget(form) }}
+
+    <input type="submit" value="Submit"/>
+    {{ form_end(form) }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <script>
+        'use strict';
+
+        (function ($) {
+            $('#league_match_proof_proof_images').collection('Image');
+        })(jQuery);
+    </script>
+
+{% endblock %}

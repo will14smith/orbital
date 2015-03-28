@@ -66,6 +66,7 @@ class League
     protected $people;
     /**
      * @ORM\OneToMany(targetEntity="LeagueMatch", mappedBy="league")
+     * @ORM\OrderBy({ "date_challenged"="DESC" })
      */
     protected $matches;
 
@@ -406,7 +407,7 @@ class League
     /**
      * Get matches
      *
-     * @return \Doctrine\Common\Collections\Collection
+     * @return \Doctrine\Common\Collections\Collection|LeagueMatch[]
      */
     public function getMatches()
     {

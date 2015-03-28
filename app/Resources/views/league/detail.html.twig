@@ -56,8 +56,45 @@
             <li><span class="text">Nobody has entered this league yet!</span></li>
         {% endfor %}
     </ul>
+
     <h2>Matches</h2>
-    {# TODO matches #}
+    <ul class="list">
+        {% for match in league.matches %}
+            <li>
+                <span class="text shrink">
+                    {{ match.dateChallenged|date('d/m/Y H:i') }}
+                </span>
+                <span class="text">
+                    {% if match.accepted and match.result %}
+                    <strong>
+                        {% endif %}
+                        {{ match.challenger }}
+                        {% if match.accepted and match.result %}
+                    </strong>
+                    {% endif %}
+                </span>
+                <span class="text">
+                    {% if match.accepted and not match.result %}
+                    <strong>
+                        {% endif %}
+                        {{ match.challengee }}
+                        {% if match.accepted and not match.result %}
+                    </strong>
+                    {% endif %}
+                </span>
+                <span class="text shrink">
+                    {{ match.round.name }}
+                </span>
+                {% if is_granted('ROLE_ADMIN') and not match.dateConfirmed %}
+                <span class="actions">
+                    <a href="{{ url('league_match_accept', { 'id': league.id, 'match_id': match.id }) }}">
+                        <i class="fa fa-check"></i>
+                    </a>
+                </span>
+                {% endif %}
+            </li>
+        {% endfor %}
+    </ul>
 {% endblock %}
 
 {% block sidebar %}
@@ -66,10 +103,10 @@
             <h3 class="widget-title">Actions</h3>
             <ul>
                 {% if is_granted('SIGNUP', league) %}
-                    <a href="{{ url('league_signup', { 'id': league.id }) }}"> Join </a>
+                    <li><a href="{{ url('league_signup', { 'id': league.id }) }}">Join</a></li>
                 {% endif %}
                 {% if is_granted('SUBMIT', league) %}
-                    {# TODO submit #}
+                    <li><a href="{{ url('league_submit', { 'id': league.id }) }}">Submit</a></li>
                 {% endif %}
                 {% if is_granted('ROLE_ADMIN') %}
                     <li><a href="{{ url('league_init', { 'id': league.id }) }}">Init</a></li>
