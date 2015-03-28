@@ -63,6 +63,6 @@ class ScoreType extends AbstractProofType
 
     public function getName()
     {
-        return 'club';
+        return 'score';
     }
 }

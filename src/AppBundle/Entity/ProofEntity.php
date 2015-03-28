@@ -7,7 +7,8 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\MappedSuperclass
  */
-abstract class ProofEntity {
+abstract class ProofEntity
+{
     /**
      * @ORM\Column(type="integer")
      * @ORM\Id
@@ -26,6 +27,11 @@ abstract class ProofEntity {
      */
     private $image_name;
     /**
+     * @ORM\ManyToOne(targetEntity="Person")
+     * @ORM\JoinColumn(nullable=true)
+     */
+    private $voucher;
+    /**
      * @ORM\Column(type="string", nullable=true)
      */
     private $notes;
@@ -33,7 +39,7 @@ abstract class ProofEntity {
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -44,6 +50,7 @@ abstract class ProofEntity {
      * Set image_name
      *
      * @param string $imageName
+     *
      * @return ProofEntity
      */
     public function setImageName($imageName)
@@ -56,7 +63,7 @@ abstract class ProofEntity {
     /**
      * Get image_name
      *
-     * @return string 
+     * @return string
      */
     public function getImageName()
     {
@@ -67,6 +74,7 @@ abstract class ProofEntity {
      * Set notes
      *
      * @param string $notes
+     *
      * @return ProofEntity
      */
     public function setNotes($notes)
@@ -79,7 +87,7 @@ abstract class ProofEntity {
     /**
      * Get notes
      *
-     * @return string 
+     * @return string
      */
     public function getNotes()
     {
@@ -90,6 +98,7 @@ abstract class ProofEntity {
      * Set person
      *
      * @param \AppBundle\Entity\Person $person
+     *
      * @return ProofEntity
      */
     public function setPerson(\AppBundle\Entity\Person $person = null)
@@ -102,10 +111,33 @@ abstract class ProofEntity {
     /**
      * Get person
      *
-     * @return \AppBundle\Entity\Person 
+     * @return \AppBundle\Entity\Person
      */
     public function getPerson()
     {
         return $this->person;
+    }
+
+    /**
+     * Set voucher
+     *
+     * @param \AppBundle\Entity\Person $voucher
+     * @return ProofEntity
+     */
+    public function setVoucher(\AppBundle\Entity\Person $voucher = null)
+    {
+        $this->voucher = $voucher;
+
+        return $this;
+    }
+
+    /**
+     * Get voucher
+     *
+     * @return \AppBundle\Entity\Person 
+     */
+    public function getVoucher()
+    {
+        return $this->voucher;
     }
 }

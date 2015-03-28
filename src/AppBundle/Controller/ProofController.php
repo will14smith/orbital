@@ -32,6 +32,9 @@ abstract class ProofController extends Controller
         if (count($data['proof_images']) > 0) {
             return;
         }
+        if (count($data['proof_people']) > 0) {
+            return;
+        }
         if (trim($data['proof_notes'])) {
             return;
         }
@@ -52,6 +55,18 @@ abstract class ProofController extends Controller
 
             $proof = $this->createProof($object);
             $proof->setImageName($outpath);
+            $proof->setPerson($person);
+
+            $em->persist($proof);
+        }
+
+        // people
+        $personRepository = $this->getDoctrine()->getRepository('AppBundle:Person');
+        foreach ($data['proof_people'] as $voucher_id) {
+            $voucher = $personRepository->find($voucher_id);
+
+            $proof = $this->createProof($object);
+            $proof->setVoucher($voucher);
             $proof->setPerson($person);
 
             $em->persist($proof);

@@ -9,6 +9,11 @@
             <li>
                 {% if proof.notes %}
                     <span class="text">{{ proof.notes }}</span>
+                {% elseif proof.voucher %}
+                    <span class="text shrink">Vouched for by</span>
+                    <a href="{{ url('person_detail', {'id': proof.voucher.id}) }}" target="_blank">
+                        {{ proof.voucher.name }}
+                    </a>
                 {% else %}
                     <a href="{{ asset('uploads/' ~ proof.imageName) }}" target="_blank">
                         View Image

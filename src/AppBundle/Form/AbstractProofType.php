@@ -26,6 +26,13 @@ abstract class AbstractProofType extends AbstractType
                 'type' => 'file',
                 'allow_add' => true,
             ])
+            ->add('proof_people', 'collection', [
+                'type' => 'entity',
+                'options' => [
+                    'class' => 'AppBundle:Person',
+                ],
+                'allow_add' => true,
+            ])
             ->add('proof_notes', 'textarea', ['required' => false]);
     }
 }
