@@ -79,3 +79,12 @@ swiftmailer:
     username:  "%mailer_user%"
     password:  "%mailer_password%"
     spool:     { type: memory }
+
+# KNP Snappy (html-pdf)
+knp_snappy:
+    pdf:
+        enabled:    true
+        binary:     "%wkhtmltopdf_path%"
+        options:    []
+    image:
+        enabled:    false

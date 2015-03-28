@@ -1,0 +1,11 @@
+<h2>Badges</h2>
+
+<ul class="list">
+    {% for badge in badges %}
+        <li>
+            <span class="text shrink">{{ badge.dateAwarded|date('d/m/Y') }}</span>
+            <span class="text">{{ badge.badge.name }}</span>
+            <span class="text">{{ badge.person }}</span>
+        </li>
+    {% endfor %}
+</ul>

@@ -1,0 +1,7 @@
+{% extends '::base.pdf.twig' %}
+
+{% block content %}
+    {% for key, block in blocks %}
+        {% include '::pdf/' ~ key ~ '.pdf.twig' with { (key): block } only %}
+    {% endfor %}
+{% endblock %}

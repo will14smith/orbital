@@ -7,6 +7,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class DefaultController extends Controller
 {
@@ -37,11 +38,17 @@ class DefaultController extends Controller
 
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
-            $roundup = $this->generateRoundup($data['start_date'], $data['end_date']);
+            $roundup = $this->generateRoundup($data['start_date'], $data['end_date'], $data['type']);
 
-            return $this->render('default/roundup.html.twig', array_merge([
-                'form' => $form->createView(),
-            ], $roundup));
+            $html = $this->renderView('pdf/roundup.pdf.twig', [
+                'blocks' => $roundup
+            ]);
+
+            return new Response($this->get('knp_snappy.pdf')->getOutputFromHtml($html), 200, [
+                    'Content-Type' => 'application/pdf',
+                    'Content-Disposition' => 'attachment; filename="roundup.pdf"'
+                ]
+            );
         }
 
         return $this->render('default/roundup.html.twig', [
@@ -49,18 +56,25 @@ class DefaultController extends Controller
         ]);
     }
 
-    private function generateRoundup($start_date, $end_date)
+    private function generateRoundup($start_date, $end_date, array $types)
     {
+        $data = [];
         $doctrine = $this->getDoctrine();
 
-        $records = $doctrine->getRepository('AppBundle:Record')
-            ->getByRoundup($start_date, $end_date);
-        $badges = $doctrine->getRepository('AppBundle:BadgeHolder')
-            ->getByRoundup($start_date, $end_date);
+        if (in_array('records', $types)) {
+            $records = $doctrine->getRepository('AppBundle:Record')
+                ->getByRoundup($start_date, $end_date);
 
-        return [
-            'records' => $records,
-            'badges' => $badges
-        ];
+            $data['records'] = $records;
+        }
+
+        if (in_array('badges', $types)) {
+            $badges = $doctrine->getRepository('AppBundle:BadgeHolder')
+                ->getByRoundup($start_date, $end_date);
+
+            $data['badges'] = $badges;
+        }
+
+        return $data;
     }
 }

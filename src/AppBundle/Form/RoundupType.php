@@ -12,7 +12,17 @@ class RoundupType extends AbstractType
     {
         $builder
             ->add('start_date', 'date')
-            ->add('end_date', 'date');
+            ->add('end_date', 'date')
+            ->add('type', 'choice', [
+                'multiple' => true,
+                'required' => true,
+                'choices' => [
+                    'records' => 'Records',
+                    'badges' => 'Badges',
+                    'leagues' => 'Leagues',
+                    'competitions' => 'Competitions'
+                ]
+            ]);
     }
 
     public function getName()

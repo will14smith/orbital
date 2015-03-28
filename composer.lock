@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "2d1a883977bade2ae24b24bc001ff4d1",
+    "hash": "c8a8b3958dbd52629e93c46bcb72d999",
     "packages": [
         {
             "name": "doctrine/annotations",
@@ -928,6 +928,125 @@
             "time": "2014-01-12 16:20:24"
         },
         {
+            "name": "knplabs/knp-snappy",
+            "version": "0.3.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/KnpLabs/snappy.git",
+                "reference": "eda1b39cb06b3f9ac7b4423df4c115feccea1194"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/KnpLabs/snappy/zipball/eda1b39cb06b3f9ac7b4423df4c115feccea1194",
+                "reference": "eda1b39cb06b3f9ac7b4423df4c115feccea1194",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "require-dev": {
+                "symfony/process": "~2.1"
+            },
+            "suggest": {
+                "h4cc/wkhtmltopdf-amd64": "Provide wkhtmltopdf-amd64 binary, use version `0.12.0` as dependency",
+                "h4cc/wkhtmltopdf-i386": "Provide wkhtmltopdf-i386 binary, use version `0.12.0` as dependency"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "0.3.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Knp\\Snappy": "src/"
+                }
+            },
+            "notification-url": "http://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "KnpLabs Team",
+                    "homepage": "http://knplabs.com"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "http://github.com/KnpLabs/snappy/contributors"
+                }
+            ],
+            "description": "PHP5 library allowing thumbnail, snapshot or PDF generation from a url or a html page. Wrapper for wkhtmltopdf/wkhtmltoimage.",
+            "homepage": "http://github.com/KnpLabs/snappy",
+            "keywords": [
+                "knp",
+                "knplabs",
+                "pdf",
+                "snapshot",
+                "thumbnail",
+                "wkhtmltopdf"
+            ],
+            "time": "2015-03-11 12:24:42"
+        },
+        {
+            "name": "knplabs/knp-snappy-bundle",
+            "version": "dev-master",
+            "target-dir": "Knp/Bundle/SnappyBundle",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/KnpLabs/KnpSnappyBundle.git",
+                "reference": "c023573e1b0b7c6a9124330867493faa839a7216"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/KnpLabs/KnpSnappyBundle/zipball/c023573e1b0b7c6a9124330867493faa839a7216",
+                "reference": "c023573e1b0b7c6a9124330867493faa839a7216",
+                "shasum": ""
+            },
+            "require": {
+                "knplabs/knp-snappy": "*",
+                "php": ">=5.3.2",
+                "symfony/finder": ">=2.0.0",
+                "symfony/framework-bundle": ">=2.0.0",
+                "symfony/validator": ">=2.0.0"
+            },
+            "type": "symfony-bundle",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.2.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Knp\\Bundle\\SnappyBundle": ""
+                }
+            },
+            "notification-url": "http://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "KnpLabs Team",
+                    "homepage": "http://knplabs.com"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "http://github.com/KnpLabs/KnpSnappyBundle/contributors"
+                }
+            ],
+            "description": "Easily create PDF and images in Symfony2 by converting Twig/HTML templates.",
+            "homepage": "http://github.com/KnpLabs/KnpSnappyBundle",
+            "keywords": [
+                "bundle",
+                "knp",
+                "knplabs",
+                "pdf",
+                "snappy"
+            ],
+            "time": "2015-03-16 11:56:54"
+        },
+        {
             "name": "kriswallsmith/assetic",
             "version": "v1.2.1",
             "source": {
@@ -1786,7 +1905,8 @@
     "minimum-stability": "stable",
     "stability-flags": {
         "doctrine/migrations": 20,
-        "doctrine/doctrine-migrations-bundle": 20
+        "doctrine/doctrine-migrations-bundle": 20,
+        "knplabs/knp-snappy-bundle": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,
