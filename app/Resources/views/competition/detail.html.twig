@@ -37,13 +37,8 @@
     <ul class="list">
         {% for entry in competition.entries %}
             <li>
-                {% if entry.bossNumber %}
-                    <span class="text shrink">{{ entry.bossNumber }}</span>
-                {% else %}
-                    <span class="text shrink">-</span>
-                {% endif %}
-                {% if entry.targetNumber %}
-                    <span class="text shrink">{{ entry.bossNumber }}</span>
+                {% if entry.bossNumber and entry.targetNumber %}
+                    <span class="text shrink">{{ entry.bossNumber }}{{ entry.targetNumber|toLetter }}</span>
                 {% else %}
                     <span class="text shrink">-</span>
                 {% endif %}
@@ -88,6 +83,7 @@
                     <li><a href="{{ url('competition_enter', { 'id': competition.id }) }}"> Enter </a></li>
                 {% endif %}
                 {% if is_granted('ROLE_ADMIN') %}
+                    <li><a href="{{ url('competition_assign', { 'id': competition.id }) }}">Assign Targets</a></li>
                     <li><a href="{{ url('competition_edit', { 'id': competition.id }) }}">Edit</a></li>
                     <li><a href="{{ url('competition_delete', { 'id': competition.id }) }}">Delete</a></li>
                 {% endif %}

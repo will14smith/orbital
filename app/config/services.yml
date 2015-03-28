@@ -15,6 +15,11 @@ services:
         class: AppBundle\Services\Importing\ImageUploader
         arguments: ["%orbital.upload_dir%"]
 
+# competitions
+    orbital.competition.manager:
+        class: AppBundle\Services\Competitions\CompetitionManager
+        arguments: ["@doctrine"]
+
 # handicaps
     orbital.handicap.calculate:
         class: AppBundle\Services\Handicap\HandicapCalculator
@@ -94,6 +99,11 @@ services:
 # twig extensions
     orbital.twig.enum:
         class: AppBundle\Services\Twig\EnumExtension
+        public: false
+        tags:
+            - { name: twig.extension }
+    orbital.twig.letter:
+        class: AppBundle\Services\Twig\LetterExtension
         public: false
         tags:
             - { name: twig.extension }

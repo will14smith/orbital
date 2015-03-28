@@ -221,14 +221,27 @@ class CompetitionController extends Controller
      * @Route("/competition/{id}/assign", name="competition_assign")
      *
      * @param int $id
-     * @param int $entry_id
      * @param Request $request
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function assignAction($id, Request $request)
     {
-        //TODO assign targets to archers
+        $em = $this->getDoctrine()->getManager();
+        $competition = $em->getRepository('AppBundle:Competition')->find($id);
+        if (!$competition) {
+            throw $this->createNotFoundException(
+                'No competition found for id ' . $id
+            );
+        }
+
+        $this->get('orbital.competition.manager')
+            ->assignTargets($competition);
+
+        return $this->redirectToRoute(
+            'competition_detail',
+            ['id' => $competition->getId()]
+        );
     }
 
     /**
