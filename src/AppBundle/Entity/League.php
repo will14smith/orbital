@@ -370,6 +370,16 @@ class League
     }
 
     /**
+     * @param LeaguePerson $person
+     *
+     * @return int
+     */
+    public function getPersonPosition(LeaguePerson $person)
+    {
+        return $this->getPeople()->indexOf($person);
+    }
+
+    /**
      * Add matches
      *
      * @param \AppBundle\Entity\LeagueMatch $matches

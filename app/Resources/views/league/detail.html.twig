@@ -46,7 +46,7 @@
                 </span>
                 <span class="text shrink">
                     {# TODO green-up, red-down #}
-                    {{ loop.index - person.initialPosition }}
+                    {{ person.initialPosition - loop.index }}
                 </span>
                 <span class="text shrink">
                     {{ person.points }}
@@ -72,6 +72,7 @@
                     {# TODO submit #}
                 {% endif %}
                 {% if is_granted('ROLE_ADMIN') %}
+                    <li><a href="{{ url('league_init', { 'id': league.id }) }}">Init</a></li>
                     <li><a href="{{ url('league_edit', { 'id': league.id }) }}">Edit</a></li>
                     <li><a href="{{ url('league_delete', { 'id': league.id }) }}">Delete</a></li>
                 {% endif %}

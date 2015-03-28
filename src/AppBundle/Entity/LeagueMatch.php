@@ -77,6 +77,7 @@ class LeagueMatch
      * @ORM\OneToMany(targetEntity="LeagueMatchProof", mappedBy="match")
      */
     protected $proofs;
+
     /**
      * Constructor
      */
@@ -88,7 +89,7 @@ class LeagueMatch
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -99,6 +100,7 @@ class LeagueMatch
      * Set challenger_score_value
      *
      * @param integer $challengerScoreValue
+     *
      * @return LeagueMatch
      */
     public function setChallengerScoreValue($challengerScoreValue)
@@ -111,7 +113,7 @@ class LeagueMatch
     /**
      * Get challenger_score_value
      *
-     * @return integer 
+     * @return integer
      */
     public function getChallengerScoreValue()
     {
@@ -122,6 +124,7 @@ class LeagueMatch
      * Set challengee_score_value
      *
      * @param integer $challengeeScoreValue
+     *
      * @return LeagueMatch
      */
     public function setChallengeeScoreValue($challengeeScoreValue)
@@ -134,7 +137,7 @@ class LeagueMatch
     /**
      * Get challengee_score_value
      *
-     * @return integer 
+     * @return integer
      */
     public function getChallengeeScoreValue()
     {
@@ -145,6 +148,7 @@ class LeagueMatch
      * Set accepted
      *
      * @param boolean $accepted
+     *
      * @return LeagueMatch
      */
     public function setAccepted($accepted)
@@ -157,7 +161,7 @@ class LeagueMatch
     /**
      * Get accepted
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getAccepted()
     {
@@ -168,6 +172,7 @@ class LeagueMatch
      * Set result
      *
      * @param boolean $result
+     *
      * @return LeagueMatch
      */
     public function setResult($result)
@@ -180,7 +185,7 @@ class LeagueMatch
     /**
      * Get result
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getResult()
     {
@@ -191,6 +196,7 @@ class LeagueMatch
      * Set date_challenged
      *
      * @param \DateTime $dateChallenged
+     *
      * @return LeagueMatch
      */
     public function setDateChallenged($dateChallenged)
@@ -203,7 +209,7 @@ class LeagueMatch
     /**
      * Get date_challenged
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getDateChallenged()
     {
@@ -214,6 +220,7 @@ class LeagueMatch
      * Set date_confirmed
      *
      * @param \DateTime $dateConfirmed
+     *
      * @return LeagueMatch
      */
     public function setDateConfirmed($dateConfirmed)
@@ -226,7 +233,7 @@ class LeagueMatch
     /**
      * Get date_confirmed
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getDateConfirmed()
     {
@@ -237,6 +244,7 @@ class LeagueMatch
      * Set league
      *
      * @param \AppBundle\Entity\League $league
+     *
      * @return LeagueMatch
      */
     public function setLeague(\AppBundle\Entity\League $league = null)
@@ -249,7 +257,7 @@ class LeagueMatch
     /**
      * Get league
      *
-     * @return \AppBundle\Entity\League 
+     * @return \AppBundle\Entity\League
      */
     public function getLeague()
     {
@@ -260,6 +268,7 @@ class LeagueMatch
      * Set challenger
      *
      * @param \AppBundle\Entity\LeaguePerson $challenger
+     *
      * @return LeagueMatch
      */
     public function setChallenger(\AppBundle\Entity\LeaguePerson $challenger = null)
@@ -272,7 +281,7 @@ class LeagueMatch
     /**
      * Get challenger
      *
-     * @return \AppBundle\Entity\LeaguePerson 
+     * @return \AppBundle\Entity\LeaguePerson
      */
     public function getChallenger()
     {
@@ -283,6 +292,7 @@ class LeagueMatch
      * Set challengee
      *
      * @param \AppBundle\Entity\LeaguePerson $challengee
+     *
      * @return LeagueMatch
      */
     public function setChallengee(\AppBundle\Entity\LeaguePerson $challengee = null)
@@ -295,7 +305,7 @@ class LeagueMatch
     /**
      * Get challengee
      *
-     * @return \AppBundle\Entity\LeaguePerson 
+     * @return \AppBundle\Entity\LeaguePerson
      */
     public function getChallengee()
     {
@@ -303,9 +313,30 @@ class LeagueMatch
     }
 
     /**
+     * Get the person who won
+     *
+     * @return LeaguePerson
+     */
+    public function getWinner()
+    {
+        return $this->getResult() ? $this->getChallenger() : $this->getChallengee();
+    }
+
+    /**
+     * Get the person who lost
+     *
+     * @return LeaguePerson
+     */
+    public function getLoser()
+    {
+        return !$this->getResult() ? $this->getChallenger() : $this->getChallengee();
+    }
+
+    /**
      * Set round
      *
      * @param \AppBundle\Entity\Round $round
+     *
      * @return LeagueMatch
      */
     public function setRound(\AppBundle\Entity\Round $round = null)
@@ -318,7 +349,7 @@ class LeagueMatch
     /**
      * Get round
      *
-     * @return \AppBundle\Entity\Round 
+     * @return \AppBundle\Entity\Round
      */
     public function getRound()
     {
@@ -329,6 +360,7 @@ class LeagueMatch
      * Set challenger_score
      *
      * @param \AppBundle\Entity\Score $challengerScore
+     *
      * @return LeagueMatch
      */
     public function setChallengerScore(\AppBundle\Entity\Score $challengerScore = null)
@@ -341,7 +373,7 @@ class LeagueMatch
     /**
      * Get challenger_score
      *
-     * @return \AppBundle\Entity\Score 
+     * @return \AppBundle\Entity\Score
      */
     public function getChallengerScore()
     {
@@ -352,6 +384,7 @@ class LeagueMatch
      * Set challengee_score
      *
      * @param \AppBundle\Entity\Score $challengeeScore
+     *
      * @return LeagueMatch
      */
     public function setChallengeeScore(\AppBundle\Entity\Score $challengeeScore = null)
@@ -364,7 +397,7 @@ class LeagueMatch
     /**
      * Get challengee_score
      *
-     * @return \AppBundle\Entity\Score 
+     * @return \AppBundle\Entity\Score
      */
     public function getChallengeeScore()
     {
@@ -375,6 +408,7 @@ class LeagueMatch
      * Add proofs
      *
      * @param \AppBundle\Entity\LeagueMatchProof $proofs
+     *
      * @return LeagueMatch
      */
     public function addProof(\AppBundle\Entity\LeagueMatchProof $proofs)
@@ -397,7 +431,7 @@ class LeagueMatch
     /**
      * Get proofs
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getProofs()
     {

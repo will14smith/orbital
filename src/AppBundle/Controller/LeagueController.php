@@ -38,8 +38,10 @@ class LeagueController extends Controller
      */
     public function createAction(Request $request)
     {
+        $leagueManager = $this->get('orbital.league.manager');
+
         $league = new League();
-        $form = $this->createForm(new LeagueType(), $league);
+        $form = $this->createForm(new LeagueType($leagueManager), $league);
 
         $form->handleRequest($request);
 
@@ -101,7 +103,8 @@ class LeagueController extends Controller
             );
         }
 
-        $form = $this->createForm(new LeagueType(), $league);
+        $leagueManager = $this->get('orbital.league.manager');
+        $form = $this->createForm(new LeagueType($leagueManager), $league);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -257,7 +260,34 @@ class LeagueController extends Controller
         ]);
     }
 
-    //TODO league initialization
+    /**
+     * @Security("has_role('ROLE_ADMIN')")
+     * @Route("/league/{id}/init", name="league_init")
+     *
+     * @param int $id
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function initAction($id)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $league = $em->getRepository('AppBundle:League')->find($id);
+        if (!$league) {
+            throw $this->createNotFoundException(
+                'No league found for id ' . $id
+            );
+        }
+
+        $algo = $this->get('orbital.league.manager')->getAlgorithm($league->getAlgoName());
+
+        $algo->init($league->getPeople()->toArray());
+        $em->flush();
+
+        return $this->redirectToRoute('league_detail', [
+            'id' => $league->getId()
+        ]);
+    }
+
     //TODO league submission/approval
 
     /**

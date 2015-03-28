@@ -28,6 +28,32 @@ services:
             - { name: kernel.event_listener, event: 'orbital.events.score_create', method: score_create }
             - { name: kernel.event_listener, event: 'orbital.events.score_update', method: score_update }
 
+# leagues
+    orbital.league.manager:
+        class: AppBundle\Services\Leagues\LeagueManager
+
+    orbital.league.algo.wins:
+        class: AppBundle\Services\Leagues\Algorithms\WinsAlgorithm
+        public: false
+        tags:
+          - { name: orbital.league.algo }
+    orbital.league.algo.steal:
+        class: AppBundle\Services\Leagues\Algorithms\StealAlgorithm
+        public: false
+        tags:
+          - { name: orbital.league.algo }
+    orbital.league.algo.icac:
+        class: AppBundle\Services\Leagues\Algorithms\ICACAlgorithm
+        public: false
+        tags:
+          - { name: orbital.league.algo }
+    orbital.league.algo.icac_hc:
+        class: AppBundle\Services\Leagues\Algorithms\ICACHandicapAlgorithm
+        public: false
+        tags:
+          - { name: orbital.league.algo }
+
+
 # voters
     orbital.security.badge_voter:
         class: AppBundle\Services\Security\BadgeVoter

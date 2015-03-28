@@ -6,12 +6,23 @@ namespace AppBundle\Form;
 use AppBundle\Services\Enum\BowType;
 use AppBundle\Services\Enum\Gender;
 use AppBundle\Services\Enum\Skill;
+use AppBundle\Services\Leagues\LeagueManager;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class LeagueType extends AbstractType
 {
+    /**
+     * @var LeagueManager
+     */
+    private $leagueManager;
+
+    public function __construct(LeagueManager $leagueManager)
+    {
+        $this->leagueManager = $leagueManager;
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
@@ -19,7 +30,10 @@ class LeagueType extends AbstractType
             ->add('description', 'textarea', [
                 'required' => false
             ])
-            ->add('algo_name')
+            ->add('algo_name', 'choice', [
+                'choices' => $this->leagueManager->getAlgorithms(),
+                'required' => false
+            ])
             #region LIMIT
             ->add('open_date')
             ->add('close_date')
@@ -40,8 +54,7 @@ class LeagueType extends AbstractType
                 'class' => 'AppBundle:Round',
                 'multiple' => true,
                 'required' => false
-            ])
-        ;
+            ]);
     }
 
     public function setDefaultOptions(OptionsResolverInterface $resolver)
