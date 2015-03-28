@@ -61,6 +61,7 @@ class League
     protected $rounds;
     /**
      * @ORM\OneToMany(targetEntity="LeaguePerson", mappedBy="league")
+     * @ORM\OrderBy({ "points"="DESC", "initial_position"="ASC", "date_added"="ASC" })
      */
     protected $people;
     /**
@@ -81,7 +82,7 @@ class League
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -92,6 +93,7 @@ class League
      * Set name
      *
      * @param string $name
+     *
      * @return League
      */
     public function setName($name)
@@ -104,7 +106,7 @@ class League
     /**
      * Get name
      *
-     * @return string 
+     * @return string
      */
     public function getName()
     {
@@ -115,6 +117,7 @@ class League
      * Set description
      *
      * @param string $description
+     *
      * @return League
      */
     public function setDescription($description)
@@ -127,7 +130,7 @@ class League
     /**
      * Get description
      *
-     * @return string 
+     * @return string
      */
     public function getDescription()
     {
@@ -138,6 +141,7 @@ class League
      * Set algo_name
      *
      * @param string $algoName
+     *
      * @return League
      */
     public function setAlgoName($algoName)
@@ -150,7 +154,7 @@ class League
     /**
      * Get algo_name
      *
-     * @return string 
+     * @return string
      */
     public function getAlgoName()
     {
@@ -161,6 +165,7 @@ class League
      * Set open_date
      *
      * @param \DateTime $openDate
+     *
      * @return League
      */
     public function setOpenDate($openDate)
@@ -173,7 +178,7 @@ class League
     /**
      * Get open_date
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getOpenDate()
     {
@@ -184,6 +189,7 @@ class League
      * Set close_date
      *
      * @param \DateTime $closeDate
+     *
      * @return League
      */
     public function setCloseDate($closeDate)
@@ -196,7 +202,7 @@ class League
     /**
      * Get close_date
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getCloseDate()
     {
@@ -207,6 +213,7 @@ class League
      * Set skill_limit
      *
      * @param string $skillLimit
+     *
      * @return League
      */
     public function setSkillLimit($skillLimit)
@@ -219,7 +226,7 @@ class League
     /**
      * Get skill_limit
      *
-     * @return string 
+     * @return string
      */
     public function getSkillLimit()
     {
@@ -230,6 +237,7 @@ class League
      * Set gender_limit
      *
      * @param string $genderLimit
+     *
      * @return League
      */
     public function setGenderLimit($genderLimit)
@@ -242,7 +250,7 @@ class League
     /**
      * Get gender_limit
      *
-     * @return string 
+     * @return string
      */
     public function getGenderLimit()
     {
@@ -253,6 +261,7 @@ class League
      * Add rounds
      *
      * @param \AppBundle\Entity\Round $rounds
+     *
      * @return League
      */
     public function addRound(\AppBundle\Entity\Round $rounds)
@@ -275,7 +284,7 @@ class League
     /**
      * Get rounds
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getRounds()
     {
@@ -286,6 +295,7 @@ class League
      * Add people
      *
      * @param \AppBundle\Entity\LeaguePerson $people
+     *
      * @return League
      */
     public function addPerson(\AppBundle\Entity\LeaguePerson $people)
@@ -308,7 +318,7 @@ class League
     /**
      * Get people
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection|LeaguePerson[]
      */
     public function getPeople()
     {
@@ -316,9 +326,54 @@ class League
     }
 
     /**
+     * @param Person $person
+     *
+     * @return bool
+     */
+    public function canSignUp(Person $person)
+    {
+        if ($this->getSkillLimit()) {
+            if ($person->getSkill() != $this->getSkillLimit()) {
+                return false;
+            }
+        }
+        if ($this->getBowtypeLimit()) {
+            if ($person->getBowtype()) {
+                if ($person->getBowtype() != $this->getBowtypeLimit()) {
+                    return false;
+                }
+            }
+        }
+        if ($this->getGenderLimit()) {
+            if ($person->getGender()) {
+                if ($person->getGender() != $this->getGenderLimit()) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * @param Person $person
+     *
+     * @return bool
+     */
+    public function isSignedUp(Person $person)
+    {
+        $person_id = $person->getId();
+
+        return $this->getPeople()->exists(function ($i, LeaguePerson $lp) use ($person_id) {
+            return $lp->getPerson()->getId() == $person_id;
+        });
+    }
+
+    /**
      * Add matches
      *
      * @param \AppBundle\Entity\LeagueMatch $matches
+     *
      * @return League
      */
     public function addMatch(\AppBundle\Entity\LeagueMatch $matches)
@@ -341,7 +396,7 @@ class League
     /**
      * Get matches
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getMatches()
     {
@@ -352,6 +407,7 @@ class League
      * Set bowtype_limit
      *
      * @param string $bowtypeLimit
+     *
      * @return League
      */
     public function setBowtypeLimit($bowtypeLimit)
@@ -364,7 +420,7 @@ class League
     /**
      * Get bowtype_limit
      *
-     * @return string 
+     * @return string
      */
     public function getBowtypeLimit()
     {

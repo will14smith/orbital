@@ -5,23 +5,76 @@
 {% endblock %}
 
 {% block body %}
-    <p>
-        TODO add the fields!
-    </p>
+    {% if league.description|trim %}
+        <p>
+            {{ league.description }}
+        </p>
+    {% endif %}
 
-    {# TODO general info #}
-    {# TODO rankings #}
+    <dl>
+        <dt>Open Date</dt>
+        <dd>{{ league.openDate|date('d/m/Y H:i') }}</dd>
+        {% if league.closeDate %}
+            <dt>Close Date</dt>
+            <dd>{{ league.closeDate|date('d/m/Y H:i') }}</dd>
+        {% endif %}
+        <dt>Rounds</dt>
+        {% if league.rounds|length > 0 %}
+            <dd>
+                {% for round in league.rounds %}
+                    <a href="{{ url('round_detail', { 'id': round.id }) }}">{{ round.name }}</a>
+                    {% if not loop.last %}
+                        <span>,&nbsp;</span>
+                    {% endif %}
+                {% endfor %}
+            </dd>
+        {% else %}
+            <dd>Any</dd>
+        {% endif %}
+        {# TODO gender/skill/bowtype limits #}
+    </dl>
+
+    <h2>Standings</h2>
+    <ul class="list">
+        {% for person in league.people %}
+            <li>
+                <span class="text shrink">
+                    {{ loop.index }}
+                </span>
+                <span class="text">
+                    {{ person.person.name }} {#TODO link#}
+                </span>
+                <span class="text shrink">
+                    {# TODO green-up, red-down #}
+                    {{ loop.index - person.initialPosition }}
+                </span>
+                <span class="text shrink">
+                    {{ person.points }}
+                </span>
+            </li>
+        {% else %}
+            <li><span class="text">Nobody has entered this league yet!</span></li>
+        {% endfor %}
+    </ul>
+    <h2>Matches</h2>
     {# TODO matches #}
 {% endblock %}
 
 {% block sidebar %}
-    {% if is_granted('ROLE_ADMIN') %}
+    {% if is_granted('ROLE_ADMIN')  or is_granted('SIGNUP', league) or is_granted('SUBMIT', league) %}
         <div class="widget">
             <h3 class="widget-title">Actions</h3>
             <ul>
-                {# TODO enter / submit #}
-                <li><a href="{{ url('league_edit', { 'id': league.id }) }}">Edit</a></li>
-                <li><a href="{{ url('league_delete', { 'id': league.id }) }}">Delete</a></li>
+                {% if is_granted('SIGNUP', league) %}
+                    <a href="{{ url('league_signup', { 'id': league.id }) }}"> Join </a>
+                {% endif %}
+                {% if is_granted('SUBMIT', league) %}
+                    {# TODO submit #}
+                {% endif %}
+                {% if is_granted('ROLE_ADMIN') %}
+                    <li><a href="{{ url('league_edit', { 'id': league.id }) }}">Edit</a></li>
+                    <li><a href="{{ url('league_delete', { 'id': league.id }) }}">Delete</a></li>
+                {% endif %}
             </ul>
         </div>
     {% endif %}

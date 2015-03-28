@@ -9,12 +9,21 @@
         {% for league in leagues %}
             <li>
                 <a href="{{ url('league_detail', { 'id': league.id }) }}">{{ league.name }}</a>
-                {% if is_granted('ROLE_ADMIN') %}
+                {% if is_granted('ROLE_ADMIN')  or is_granted('SIGNUP', league) or is_granted('SUBMIT', league) %}
                     <span class="actions">
-                        {# TODO enter / submit #}
-                        <a href="{{ url('league_edit', { 'id': league.id }) }}"><i class="fa fa-pencil"></i></a>
-                        <a href="{{ url('league_delete', { 'id': league.id }) }}"><i class="fa fa-trash-o"></i></a>
-                    </span>
+                    {% if is_granted('SIGNUP', league) %}
+                        <a href="{{ url('league_signup', { 'id': league.id }) }}">
+                            <i class="fa fa-sign-in" title="Join this League"></i>
+                        </a>
+                    {% endif %}
+                        {% if is_granted('SUBMIT', league) %}
+                            {# TODO submit #}
+                        {% endif %}
+                        {% if is_granted('ROLE_ADMIN') %}
+                            <a href="{{ url('league_edit', { 'id': league.id }) }}"><i class="fa fa-pencil"></i></a>
+                            <a href="{{ url('league_delete', { 'id': league.id }) }}"><i class="fa fa-trash-o"></i></a>
+                        {% endif %}
+                </span>
                 {% endif %}
             </li>
         {% else %}

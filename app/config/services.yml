@@ -34,6 +34,11 @@ services:
         public: false
         tags:
           - { name: security.voter }
+    orbital.security.league_voter:
+      class: AppBundle\Services\Security\LeagueVoter
+      public: false
+      tags:
+        - { name: security.voter }
     orbital.security.score_voter:
         class: AppBundle\Services\Security\ScoreVoter
         public: false

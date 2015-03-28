@@ -5,7 +5,7 @@ namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="AppBundle\Entity\LeaguePersonRepository")
  * @ORM\Table(name="league_person")
  */
 class LeaguePerson
@@ -42,7 +42,7 @@ class LeaguePerson
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -53,6 +53,7 @@ class LeaguePerson
      * Set date_added
      *
      * @param \DateTime $dateAdded
+     *
      * @return LeaguePerson
      */
     public function setDateAdded($dateAdded)
@@ -65,7 +66,7 @@ class LeaguePerson
     /**
      * Get date_added
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getDateAdded()
     {
@@ -76,6 +77,7 @@ class LeaguePerson
      * Set initial_position
      *
      * @param integer $initialPosition
+     *
      * @return LeaguePerson
      */
     public function setInitialPosition($initialPosition)
@@ -88,7 +90,7 @@ class LeaguePerson
     /**
      * Get initial_position
      *
-     * @return integer 
+     * @return integer
      */
     public function getInitialPosition()
     {
@@ -99,6 +101,7 @@ class LeaguePerson
      * Set points
      *
      * @param integer $points
+     *
      * @return LeaguePerson
      */
     public function setPoints($points)
@@ -111,7 +114,7 @@ class LeaguePerson
     /**
      * Get points
      *
-     * @return integer 
+     * @return integer
      */
     public function getPoints()
     {
@@ -122,6 +125,7 @@ class LeaguePerson
      * Set league
      *
      * @param \AppBundle\Entity\League $league
+     *
      * @return LeaguePerson
      */
     public function setLeague(\AppBundle\Entity\League $league = null)
@@ -134,7 +138,7 @@ class LeaguePerson
     /**
      * Get league
      *
-     * @return \AppBundle\Entity\League 
+     * @return \AppBundle\Entity\League
      */
     public function getLeague()
     {
@@ -145,6 +149,7 @@ class LeaguePerson
      * Set person
      *
      * @param \AppBundle\Entity\Person $person
+     *
      * @return LeaguePerson
      */
     public function setPerson(\AppBundle\Entity\Person $person = null)
@@ -157,7 +162,7 @@ class LeaguePerson
     /**
      * Get person
      *
-     * @return \AppBundle\Entity\Person 
+     * @return \AppBundle\Entity\Person
      */
     public function getPerson()
     {

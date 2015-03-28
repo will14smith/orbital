@@ -1,0 +1,13 @@
+{% extends '::base_sidebar.html.twig' %}
+
+{% block title %}
+    Edit Person in League
+{% endblock %}
+
+{% block body %}
+    {{ form_start(form) }}
+    {{ form_widget(form) }}
+
+    <input type="submit" value="Save"/>
+    {{ form_end(form) }}
+{% endblock %}
