@@ -4,18 +4,15 @@
 namespace AppBundle\Controller;
 
 
+use AppBundle\Entity\ProofEntity;
 use AppBundle\Entity\Score;
 use AppBundle\Entity\ScoreProof;
 use AppBundle\Form\ScoreType;
-use Doctrine\Common\Persistence\ObjectManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\Form\FormError;
-use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 
-class ScoreController extends Controller
+class ScoreController extends ProofController
 {
     /**
      * @Route("/scores", name="score_list")
@@ -127,9 +124,12 @@ class ScoreController extends Controller
             );
         }
 
-        $confirm_proof = $this->confirm_proof($score, $request);
+        $confirm_proof = $this->confirmProof($request);
         if ($confirm_proof !== null) {
-            return $confirm_proof;
+            return $this->render('score/proof_confirm.html.twig', [
+                'form' => $confirm_proof,
+                'score' => $score
+            ]);
         }
 
         $score->accept();
@@ -205,83 +205,16 @@ class ScoreController extends Controller
         ]);
     }
 
-    private function handleProof(FormInterface $form)
-    {
-        if ($this->isGranted('ROLE_ADMIN')) {
-            return;
-        }
-
-        if (!$form->isSubmitted()) {
-            return;
-        }
-
-        $data = $form->getData();
-        if (count($data['proof_images']) > 0) {
-            return;
-        }
-        if (trim($data['proof_notes'])) {
-            return;
-        }
-
-        $form->addError(new FormError('Expecting some proof'));
-    }
-
     /**
-     * @param ObjectManager $em
-     * @param Score $score
-     * @param FormInterface $form
-     */
-    private function saveProof(ObjectManager $em, Score $score, FormInterface $form)
-    {
-        $person = $this->getUser();
-        $data = $form->getData();
-
-        // images
-        $image_importer = $this->get('orbital.image_importer');
-
-        foreach ($data['proof_images'] as $image) {
-            $outpath = $image_importer->persist($image);
-
-            $proof = new ScoreProof();
-
-            $proof->setScore($score);
-            $proof->setImageName($outpath);
-            $proof->setPerson($person);
-
-            $em->persist($proof);
-        }
-
-        // notes
-        $notes = trim($data['proof_notes']);
-        if (!empty($notes)) {
-            $proof = new ScoreProof();
-
-            $proof->setScore($score);
-            $proof->setNotes($notes);
-            $proof->setPerson($person);
-
-            $em->persist($proof);
-        }
-    }
-
-    /**
-     * @param Score $score
-     * @param Request $request
+     * @param $object
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return ProofEntity
      */
-    private function confirm_proof(Score $score, Request $request)
+    protected function createProof($object)
     {
-        $form = $this->createFormBuilder()->getForm();
-        $form->handleRequest($request);
+        $proof = new ScoreProof();
+        $proof->setScore($object);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            return null;
-        }
-
-        return $this->render('score/proof_confirm.html.twig', [
-            'form' => $form->createView(),
-            'score' => $score
-        ]);
+        return $proof;
     }
 }
