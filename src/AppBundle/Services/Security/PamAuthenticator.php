@@ -20,7 +20,12 @@ use Symfony\Component\Security\Core\User\UserProviderInterface;
 if (!function_exists('pam_auth')) {
     function pam_auth($username, $password)
     {
-        return $username == "will" && $password == "will";
+        $login_data = [
+            'will' => 'will',
+            'tim' => 'squid'
+        ];
+
+        return array_key_exists($username, $login_data) && $login_data[$username] == $password;
     }
 
     function ldap_get_name($username)
@@ -67,7 +72,7 @@ class PamAuthenticator implements SimpleFormAuthenticatorInterface
             }
 
             $passwordValid = $this->encoder->isPasswordValid($user, $token->getCredentials());
-            if(!$passwordValid) {
+            if (!$passwordValid) {
                 throw new AuthenticationException("Unable to login with the given details");
             }
         }

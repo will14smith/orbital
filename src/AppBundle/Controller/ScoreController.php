@@ -34,12 +34,17 @@ class ScoreController extends Controller
     }
 
     /**
-     * @Security("has_role('IS_AUTHENTICATED_REMEMBERED')")
+     * @Security("is_granted('IS_AUTHENTICATED_REMEMBERED')")
      * @Route("/score/create", name="score_create")
      */
     public function createAction(Request $request)
     {
         $score = new Score();
+
+        if (!$this->isGranted('ROLE_ADMIN')) {
+            $score->setPerson($this->getUser());
+        }
+
         $form = $this->createForm(new ScoreType(), $score);
         $form_proof = $form->get('proof');
 

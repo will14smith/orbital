@@ -1,5 +1,5 @@
 {% set hide_login = true %}
-{% extends 'base.html.twig' %}
+{% extends '::base.html.twig' %}
 
 {% block content %}
     <div id="primary" flex-gt-md="75">
@@ -33,11 +33,14 @@
                 {% endif %}
             </div>
 
-            {% if is_granted('ROLE_ADMIN') %}
+            {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
                 <div class="widget">
                     <h3 class="widget-title">Quick Tools</h3>
                     <ul>
-                        <li><a href="{{ url('roundup') }}">Roundup</a></li>
+                        {% if is_granted('ROLE_ADMIN') %}
+                            <li><a href="{{ url('roundup') }}">Roundup</a></li>
+                        {% endif %}
+                        <li><a href="{{ url('score_create') }}">Submit Score</a></li>
                     </ul>
                 </div>
             {% endif %}
