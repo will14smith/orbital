@@ -24,7 +24,13 @@
 
             m.module($("#scoring_app")[0], {
                 controller: function () {
-                    app.vm.init(round, score_id, scoring);
+                    var urls = {
+                        'add': '{{ url('score_data_arrows_add', { 'id': score.id }) }}',
+                        'amend': '{{ url('score_data_arrows_amend', { 'id': score.id }) }}',
+                        'remove': '{{ url('score_data_arrows_remove', { 'id': score.id }) }}'
+                    };
+
+                    app.vm.init(round, score_id, scoring, urls);
                 },
                 view: app.view
             })

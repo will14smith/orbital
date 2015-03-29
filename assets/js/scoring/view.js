@@ -7,16 +7,20 @@ window['orbital'] = window['orbital'] || {};
 
     scoring.view = function () {
         var targets = scoring.vm.round.targets;
-        var rendered_targets = [];
+        var children = [];
 
         var arrow_offset = 0;
         targets.forEach(function (element) {
             var target = scoring.view_target(element, arrow_offset);
             arrow_offset = target['arrow_end'];
-            rendered_targets.push(target['view']);
+            children.push(target['view']);
         });
 
-        return m("div", {'class': 'scoresheet'}, rendered_targets);
+        if(scoring.vm.input) {
+            children.push(scoring.input.view());
+        }
+
+        return m("div", {'class': 'scoresheet'}, children);
     };
 
     // render score
