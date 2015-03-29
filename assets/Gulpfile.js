@@ -7,16 +7,8 @@ var gulp = require('gulp'),
     rename = require('gulp-rename'),
     uglify = require('gulp-uglify'),
 
-    fs = require('fs'),
     path = require('path'),
     merge = require('merge-stream');
-
-function getFolders(dir) {
-    return fs.readdirSync(dir)
-        .filter(function (file) {
-            return fs.statSync(path.join(dir, file)).isDirectory();
-        });
-}
 
 gulp.task('bower', function () {
     return bower()
@@ -52,10 +44,23 @@ gulp.task('css', function () {
 ;
 
 gulp.task('js', function () {
-    var folders = getFolders('js');
+    var folders = {
+        'head': ['modernizr*.js', 'jquery-*.js'],
+        'app': []
+    };
 
-    var tasks = folders.map(function (folder) {
-        return gulp.src(path.join('js', folder, '/**/*.js'))
+    var tasks = Object.keys(folders).map(function (value) {
+        var folder = value;
+
+        var paths = [];
+
+        folders[value].forEach(function(file) {
+            paths.push(path.join('js', folder, file));
+        });
+
+        paths.push(path.join('js', folder, '/**/*.js'));
+        
+        return gulp.src(paths)
             .pipe(concat(folder + '.js'))
             .pipe(gulp.dest('../web/js'))
             .pipe(uglify())
