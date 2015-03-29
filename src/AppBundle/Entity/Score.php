@@ -76,6 +76,10 @@ class Score
     protected $date_accepted;
 
     /**
+     * @ORM\OneToMany(targetEntity="ScoreArrow", mappedBy="score")
+     */
+    protected $arrows;
+    /**
      * @ORM\OneToMany(targetEntity="ScoreProof", mappedBy="score")
      */
     protected $proof;
@@ -451,5 +455,38 @@ class Score
     public function getProof()
     {
         return $this->proof;
+    }
+
+    /**
+     * Add arrows
+     *
+     * @param \AppBundle\Entity\ScoreArrow $arrows
+     * @return Score
+     */
+    public function addArrow(\AppBundle\Entity\ScoreArrow $arrows)
+    {
+        $this->arrows[] = $arrows;
+
+        return $this;
+    }
+
+    /**
+     * Remove arrows
+     *
+     * @param \AppBundle\Entity\ScoreArrow $arrows
+     */
+    public function removeArrow(\AppBundle\Entity\ScoreArrow $arrows)
+    {
+        $this->arrows->removeElement($arrows);
+    }
+
+    /**
+     * Get arrows
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getArrows()
+    {
+        return $this->arrows;
     }
 }
