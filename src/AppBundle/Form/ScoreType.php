@@ -30,9 +30,9 @@ class ScoreType extends AbstractProofType
             ]);
 
         $score = $builder->create('score', 'form', ['inherit_data' => true, 'label' => false, 'attr' => ['class' => 'inline']])
-            ->add('score')
-            ->add('golds')
-            ->add('hits');
+            ->add('score', 'integer', ['required' => false])
+            ->add('golds', 'integer', ['required' => false])
+            ->add('hits', 'integer', ['required' => false]);
 
         $checks = $builder->create('checks', 'form', ['inherit_data' => true, 'label' => false, 'attr' => ['class' => 'inline']])
             ->add('competition', 'checkbox', ['required' => false])

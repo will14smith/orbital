@@ -6,6 +6,16 @@
 {% endblock %}
 
 {% block body %}
+    {% if not score.complete %}
+        <div>
+            This score is not yet complete, click to view
+            <a href="{{ url('score_live', { 'id': score.id }) }}">live scoring</a>
+            {% if is_granted('EDIT', score) %}
+                (or <em>you</em> can <a href="{{ url('score_input', { 'id': score.id }) }}">input scores</a>)
+            {% endif %}
+        </div>
+    {% endif %}
+
     <dl>
         <dt>Date Shot</dt>
         <dd>
@@ -27,16 +37,18 @@
         <dd>{{ score.golds }}</dd>
         <dt>Hits</dt>
         <dd>{{ score.hits }}</dd>
-        <dt>Handicap</dt>
-        <dd>{{ handicap }}</dd>
-        <dt>Date Accepted</dt>
-        <dd>
-            {% if score.dateAccepted %}
-                accepted {{ score.dateAccepted|date('d/m/Y') }}
-            {% else %}
-                not yet accepted
-            {% endif %}
-        </dd>
+        {% if score.complete %}
+            <dt>Handicap</dt>
+            <dd>{{ handicap }}</dd>
+            <dt>Date Accepted</dt>
+            <dd>
+                {% if score.dateAccepted %}
+                    accepted {{ score.dateAccepted|date('d/m/Y') }}
+                {% else %}
+                    not yet accepted
+                {% endif %}
+            </dd>
+        {% endif %}
     </dl>
 
     {% if is_granted('ROLE_ADMIN') %}
@@ -49,10 +61,15 @@
         <div class="widget">
             <h3 class="widget-title">Actions</h3>
             <ul>
-                {% if not score.dateAccepted and is_granted('ROLE_ADMIN') %}
+                {% if is_granted('EDIT', score) %}
+                    <li><a href="{{ url('score_input', { 'id': score.id }) }}">Input Score</a></li>
+                {% endif %}
+                {% if is_granted('ACCEPT', score) %}
                     <li><a href="{{ url('score_accept', { 'id': score.id }) }}">Accept</a></li>
                 {% endif %}
-                <li><a href="{{ url('score_edit', { 'id': score.id }) }}">Edit</a></li>
+                {% if is_granted('EDIT', score) %}
+                    <li><a href="{{ url('score_edit', { 'id': score.id }) }}">Edit</a></li>
+                {% endif %}
                 {% if is_granted('ROLE_ADMIN') %}
                     <li><a href="{{ url('score_delete', { 'id': score.id }) }}">Delete</a></li>
                 {% endif %}

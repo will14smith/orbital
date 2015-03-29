@@ -11,12 +11,14 @@ class ScoreVoter implements VoterInterface
 {
     const EDIT = 'EDIT';
     const DELETE = 'DELETE';
+    const ACCEPT = 'ACCEPT';
 
     public function supportsAttribute($attribute)
     {
         return in_array($attribute, [
             self::EDIT,
             self::DELETE,
+            self::ACCEPT,
         ]);
     }
 
@@ -49,12 +51,26 @@ class ScoreVoter implements VoterInterface
                 if (in_array('ROLE_ADMIN', $user->getRoles())) {
                     return VoterInterface::ACCESS_GRANTED;
                 }
+
                 if ($score->getPerson()->getId() == $user->getId()) {
-                    if (!$score->getDateAccepted()) {
+                    if (!$score->getComplete() && !$score->getDateAccepted()) {
                         return VoterInterface::ACCESS_GRANTED;
                     }
                 }
 
+                break;
+            case self::ACCEPT:
+                if (!in_array('ROLE_ADMIN', $user->getRoles())) {
+                    return VoterInterface::ACCESS_DENIED;
+                }
+                if (!$score->getComplete()) {
+                    return VoterInterface::ACCESS_DENIED;
+                }
+                if ($score->getDateAccepted()) {
+                    return VoterInterface::ACCESS_DENIED;
+                }
+
+                return VoterInterface::ACCESS_GRANTED;
                 break;
         }
 

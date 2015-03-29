@@ -10,6 +10,8 @@ use AppBundle\Entity\ScoreProof;
 use AppBundle\Form\ScoreType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Symfony\Component\Form\FormError;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 class ScoreController extends ProofController
@@ -48,6 +50,7 @@ class ScoreController extends ProofController
         $form_proof = $form->get('proof');
 
         $form->handleRequest($request);
+        $this->validateScore($form);
         $this->handleProof($form_proof);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -97,7 +100,11 @@ class ScoreController extends ProofController
             );
         }
 
-        $handicap = $this->get('orbital.handicap.calculate')->handicapForScore($score);
+        if($score->getComplete()) {
+            $handicap = $this->get('orbital.handicap.calculate')->handicapForScore($score);
+        } else {
+            $handicap = null;
+        }
 
         return $this->render('score/detail.html.twig', [
             'score' => $score,
@@ -147,6 +154,37 @@ class ScoreController extends ProofController
 
     /**
      * @Security("is_granted('EDIT', score)")
+     * @Route("/score/{id}/input", name="score_input")
+     *
+     * @param Score $score
+     * @param Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function inputAction(Score $score, Request $request)
+    {
+        return $this->render('score/input.html.twig', [
+            'score' => $score
+        ]);
+    }
+
+    /**
+     * @Route("/score/{id}/live", name="score_live")
+     *
+     * @param Score $score
+     * @param Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function liveAction(Score $score, Request $request)
+    {
+        return $this->render('score/live.html.twig', [
+            'score' => $score
+        ]);
+    }
+
+    /**
+     * @Security("is_granted('EDIT', score)")
      * @Route("/score/{id}/edit", name="score_edit")
      *
      * @param Score $score
@@ -162,6 +200,7 @@ class ScoreController extends ProofController
         $form_proof = $form->get('proof');
 
         $form->handleRequest($request);
+        $this->validateScore($form);
         // don't need proof on edit, must have been supplied by user on create
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -216,5 +255,39 @@ class ScoreController extends ProofController
         $proof->setScore($object);
 
         return $proof;
+    }
+
+    private function validateScore(FormInterface $form)
+    {
+        if (!$form->isSubmitted()) {
+            return;
+        }
+
+        $score_form = $form->get('score');
+
+        /** @var Score $data */
+        $data = $form->getData();
+
+        if ($data->getScore() === null) {
+            if($data->getComplete()) {
+                $score_form->get('score')->addError(new FormError('Score is required if completed.'));
+            } else {
+                $data->setScore(0);
+            }
+        }
+        if ($data->getHits() === null) {
+            if($data->getComplete()) {
+                $score_form->get('hits')->addError(new FormError('Hits are required if completed.'));
+            } else {
+                $data->setHits(0);
+            }
+        }
+        if ($data->getGolds() === null) {
+            if($data->getComplete()) {
+                $score_form->get('golds')->addError(new FormError('Golds are required if completed.'));
+            } else {
+                $data->setGolds(0);
+            }
+        }
     }
 }
