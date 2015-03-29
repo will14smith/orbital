@@ -1,59 +1,77 @@
-var gulp = require('gulp'), 
+var gulp = require('gulp'),
     sass = require('gulp-ruby-sass'),
     autoprefixer = require('gulp-autoprefixer'),
     concat = require('gulp-concat'),
     notify = require("gulp-notify"),
-    bower = require('gulp-bower');
+    bower = require('gulp-bower'),
+    rename = require('gulp-rename'),
+    uglify = require('gulp-uglify'),
 
-gulp.task('bower', function() { 
+    fs = require('fs'),
+    path = require('path'),
+    merge = require('merge-stream');
+
+function getFolders(dir) {
+    return fs.readdirSync(dir)
+        .filter(function (file) {
+            return fs.statSync(path.join(dir, file)).isDirectory();
+        });
+}
+
+gulp.task('bower', function () {
     return bower()
-         .pipe(gulp.dest('./bower_components')) 
+        .pipe(gulp.dest('./bower_components'));
 });
 
-gulp.task('icons', function() { 
-    return gulp.src('./bower_components/fontawesome/fonts/**.*') 
-        .pipe(gulp.dest('../web/fonts')); 
+gulp.task('icons', function () {
+    return gulp.src('./bower_components/fontawesome/fonts/**.*')
+        .pipe(gulp.dest('../web/fonts'));
 });
 
-gulp.task('images', function() { 
-    return gulp.src('./images/**.*') 
-        .pipe(gulp.dest('../web/images')); 
+gulp.task('images', function () {
+    return gulp.src('./images/**.*')
+        .pipe(gulp.dest('../web/images'));
 });
 
-gulp.task('css', function() { 
+gulp.task('css', function () {
     return sass('./sass/app.scss', {
         style: 'compressed',
-	compass: true,
-        loadPath: [
-            './sass',
-            './bower_components/fontawesome/scss',
-            './bower_components/normalize.scss',
-         ]
+        compass: true,
+        loadPath: [
+            './sass',
+            './bower_components/fontawesome/scss',
+            './bower_components/normalize.scss'
+        ]
     })
-    .on("error", notify.onError(function (error) {
-        return "Error: " + error.message;
-    }))
-    .pipe(autoprefixer())
-    .pipe(gulp.dest('../web/css')); 
+        .on("error", notify.onError(function (error) {
+            return "Error: " + error.message;
+        }))
+        .pipe(autoprefixer())
+        .pipe(gulp.dest('../web/css'));
+})
+;
+
+gulp.task('js', function () {
+    var folders = getFolders('js');
+
+    var tasks = folders.map(function (folder) {
+        return gulp.src(path.join('js', folder, '/**/*.js'))
+            .pipe(concat(folder + '.js'))
+            .pipe(gulp.dest('../web/js'))
+            .pipe(uglify())
+            .pipe(rename(folder + '.min.js'))
+            .pipe(gulp.dest('../web/js'))
+    });
+
+    return merge(tasks);
 });
 
-gulp.task('js', function() {
-  return gulp.src(['js/**/*.js', '!js/head/**/*.js'])
-	.pipe(concat('app.js'))
-	.pipe(gulp.dest('../web/js'));
-});
-gulp.task('js-head', function() {
-    return gulp.src(['js/head/jquery-2.1.3.js', 'js/head/**/*.js'])
-        .pipe(concat('head.js'))
-        .pipe(gulp.dest('../web/js'));
+gulp.task('watch', function () {
+    gulp.watch('./images/**/*', ['images']);
+    gulp.watch('./sass/**/*.scss', ['css']);
+    gulp.watch('./js/**/*.js', ['js']);
+    gulp.watch('./js/head/**/*.js', ['js-head']);
 });
 
-gulp.task('watch', function() {
-     gulp.watch('./images/**/*', ['images']); 
-     gulp.watch('./sass/**/*.scss', ['css']); 
-     gulp.watch('./js/**/*.js', ['js']); 
-    gulp.watch('./js/head/**/*.js', ['js-head']); 
-});
-
-gulp.task('default', ['bower', 'icons', 'images', 'css', 'js', 'js-head']);
+gulp.task('default', ['bower', 'icons', 'images', 'css', 'js']);
 
