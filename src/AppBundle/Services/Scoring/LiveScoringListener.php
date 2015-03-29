@@ -1,11 +1,11 @@
 <?php
 
-namespace AppBundle\Services;
+namespace AppBundle\Services\Scoring;
 
 use AppBundle\Services\Events\ScoreArrowEvent;
-use Nc\Bundle\ElephantIOBundle\Service\Client;
+use SocketIOBundle\Service\Client;
 
-class ScoringListener
+class LiveScoringListener
 {
     /**
      * @var Client
@@ -21,10 +21,15 @@ class ScoringListener
     {
         $arrow = $event->getArrow();
 
-        $this->client->send('arrow_added', [
-            'score' => $arrow->getScore()->getId(),
-            'arrow' => $arrow->getNumber()
-        ]);
+        $arrow_data = [
+            'id' => $arrow->getId(),
+            'score_id' => $arrow->getScore()->getId(),
+            'number' => $arrow->getNumber(),
+            'value' => $arrow->getValue(),
+            //TODO input/edit??
+        ];
+
+        $this->client->send('arrow_added', $arrow_data);
     }
 
     public function arrowUpdated(ScoreArrowEvent $event)

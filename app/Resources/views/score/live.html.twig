@@ -13,6 +13,7 @@
 {% block javascripts %}
     {{ parent() }}
 
+    <script src="{{ socketio_url }}/socket.io/socket.io.js"></script>
     <script src="{{ asset('js/scoring.js') }}"></script>
     <script>
         'use strict';
@@ -27,7 +28,8 @@
                     var urls = {
                         'add': '{{ url('score_data_arrows_add', { 'id': score.id }) }}',
                         'amend': '{{ url('score_data_arrows_amend', { 'id': score.id }) }}',
-                        'remove': '{{ url('score_data_arrows_remove', { 'id': score.id }) }}'
+                        'remove': '{{ url('score_data_arrows_remove', { 'id': score.id }) }}',
+                        'socket.io': '{{ socketio_url }}'
                     };
 
                     app.vm.init(round, score_id, scoring, urls);

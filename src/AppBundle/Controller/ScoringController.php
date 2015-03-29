@@ -7,8 +7,8 @@ use AppBundle\Entity\ScoreArrow;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\BrowserKit\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 
 class ScoringController extends Controller
 {
@@ -73,12 +73,11 @@ class ScoringController extends Controller
             $arrow->setNumber($index++);
             $arrow->setValue($value);
 
-            $arrow->getInputBy($this->getUser());
-            $arrow->getInputTime(new \DateTime('now'));
+            $arrow->setInputBy($this->getUser());
+            $arrow->setInputTime(new \DateTime('now'));
 
             $em->persist($arrow);
         }
-
         $em->flush();
 
         return JsonResponse::create([

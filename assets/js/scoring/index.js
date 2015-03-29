@@ -17,7 +17,7 @@ window['orbital'] = window['orbital'] || {};
                 var target = this.targets[i];
                 var arrows = target.arrow_count();
 
-                if(arrows > index) {
+                if (arrows > index) {
                     return target;
                 }
 
@@ -46,17 +46,32 @@ window['orbital'] = window['orbital'] || {};
             scoring.vm.round = new Round(round);
 
             scoring.vm.input = input;
+            // current arrow input
             scoring.vm.arrow_index = 0;
             // hold arrows from input
             scoring.vm.arrow_buffer = [];
 
             scoring.vm.arrows = [];
+            scoring.vm.socket = io(urls['socket.io']);
+            scoring.vm.socket.on('arrows', scoring.vm.handle_arrows);
+            scoring.vm.socket.on('arrow', scoring.vm.handle_arrow);
 
-            //TODO connect to socket.io
-            //  load arrows
-            //  sub to score
+            scoring.vm.socket.emit('sub_score', score_id);
         },
-        submit_buffer: function() {
+
+        get_arrow: function(index) {
+            var arrows = scoring.vm.arrows;
+
+            if(arrows.length <= index) {
+                return null;
+            }
+
+            //TODO return arrows in buffer?
+
+            return arrows[index];
+        },
+
+        submit_buffer: function () {
             var vm = scoring.vm;
 
             m.request({
@@ -66,9 +81,34 @@ window['orbital'] = window['orbital'] || {};
                     'index': vm.arrow_index - vm.arrow_buffer.length,
                     'arrows': vm.arrow_buffer
                 }
-            }).then(function() {
+            }).then(function () {
                 vm.arrow_buffer = [];
             });
+        },
+
+        handle_arrows: function (data) {
+            var arrows = data['arrows'];
+            var score_id = data['score_id'];
+
+            //TODO check score_id
+
+            m.startComputation();
+            arrows.forEach(function (arrow) {
+                scoring.vm.arrows.push(arrow)
+            });
+            scoring.vm.arrow_index = arrows.length;
+            m.endComputation();
+        },
+        handle_arrow: function (data) {
+            var arrow = data['arrow'];
+            var score_id = data['score_id'];
+
+            //TODO check score_id
+
+            m.startComputation();
+            scoring.vm.arrows.push(arrow);
+            m.endComputation();
+
         }
     };
 })(window['orbital']);

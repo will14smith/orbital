@@ -7,6 +7,7 @@ use AppBundle\Entity\LeagueMatch;
 use AppBundle\Entity\Score;
 use AppBundle\Entity\ScoreArrow;
 use Doctrine\ORM\Event\LifecycleEventArgs;
+use Doctrine\ORM\Event\PostFlushEventArgs;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
 class DoctrineListener
@@ -59,5 +60,9 @@ class DoctrineListener
             $event = new ScoreArrowEvent($entity);
             $this->event_dispatcher->dispatch('orbital.events.score_arrow_remove', $event);
         }
+    }
+
+    public function postFlush(PostFlushEventArgs $args){
+
     }
 }

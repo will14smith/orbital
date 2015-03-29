@@ -16,7 +16,7 @@ window['orbital'] = window['orbital'] || {};
             children.push(target['view']);
         });
 
-        if(scoring.vm.input) {
+        if (scoring.vm.input) {
             children.push(scoring.input.view());
         }
 
@@ -98,12 +98,22 @@ window['orbital'] = window['orbital'] || {};
     };
 
     scoring.view_arrow = function (target, arrow_index, stats) {
-        var arrow = null;
-        var scoring_zones = target.scoring_zones();
+        var arrow = scoring.vm.get_arrow(arrow_index);
+        var zones = target.scoring_zones();
 
         var text;
         if (arrow) {
-            throw "TODO";
+            var value = arrow['value'];
+
+            var score = scoring.zones.get_value(zones, value);
+            var gold = scoring.zones.get_value(zones, value);
+            var hit = scoring.zones.get_value(zones, value);
+
+            stats['total'] += score;
+            stats['golds'] += gold ? 1 : 0;
+            stats['hits'] += hit ? 1 : 0;
+
+            text = value;
         } else {
             text = "-";
         }

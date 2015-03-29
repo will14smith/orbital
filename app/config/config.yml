@@ -31,6 +31,8 @@ twig:
     strict_variables: "%kernel.debug%"
     form_themes:
         - form/fields.html.twig
+    globals:
+      socketio_url: "%socketio_url%"
 
 # Assetic Configuration
 assetic:
@@ -89,9 +91,7 @@ knp_snappy:
     image:
         enabled:    false
 
-# ElephantIO (socket.io client)
-nc_elephant_io:
-  clients:
-    default:
-      connection: "%socketio_url%"
-      version: 1.x
+# socket.io client
+socket_io:
+    connection: "%socketio_url%"
+    version: 1.x

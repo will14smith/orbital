@@ -15,9 +15,17 @@ services:
         class: AppBundle\Services\Importing\ImageUploader
         arguments: ["%orbital.upload_dir%"]
 
-    orbital.scoring.listener:
-        class: AppBundle\Services\ScoringListener
-        arguments: ['@elephantio_client.default']
+#scoring
+    orbital.scoring.live_listener:
+        class: AppBundle\Services\Scoring\LiveScoringListener
+        arguments: ['@socketio_client']
+        tags:
+            - { name: kernel.event_listener, event: 'orbital.events.score_arrow_create', method: arrowAdded }
+            - { name: kernel.event_listener, event: 'orbital.events.score_arrow_update', method: arrowUpdated }
+            - { name: kernel.event_listener, event: 'orbital.events.score_arrow_remove', method: arrowRemoved }
+    orbital.scoring.agg_listener:
+        class: AppBundle\Services\Scoring\ScoringAggregationListener
+        arguments: ['@doctrine']
         tags:
             - { name: kernel.event_listener, event: 'orbital.events.score_arrow_create', method: arrowAdded }
             - { name: kernel.event_listener, event: 'orbital.events.score_arrow_update', method: arrowUpdated }
@@ -104,6 +112,7 @@ services:
             - { name: doctrine.event_listener, event: postPersist }
             - { name: doctrine.event_listener, event: postUpdate }
             - { name: doctrine.event_listener, event: postRemove }
+            - { name: doctrine.event_listener, event: postFlush }
 
 # twig extensions
     orbital.twig.enum:

@@ -12,9 +12,10 @@
 
 /.idea/
 
-/assets/bower_components/
-/assets/node_modules/
-/assets/.sass-cache/
+bower_components/
+node_modules/
+.sass-cache/
+
 /web/css/
 /web/fonts/
 /web/images/
