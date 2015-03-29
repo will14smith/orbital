@@ -76,7 +76,6 @@ gulp.task('watch', function () {
     gulp.watch('./images/**/*', ['images']);
     gulp.watch('./sass/**/*.scss', ['css']);
     gulp.watch('./js/**/*.js', ['js']);
-    gulp.watch('./js/head/**/*.js', ['js-head']);
 });
 
 gulp.task('default', ['bower', 'icons', 'images', 'css', 'js']);

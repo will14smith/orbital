@@ -1,0 +1,66 @@
+$target-info-bg: #000;
+$target-info-fg: #fff;
+
+.scoresheet {
+  display: flex;
+  flex-direction: column;
+
+  .target {
+
+    text-align: center;
+    border-left: 1px solid $target-info-bg;
+
+    .header {
+      background-color: $target-info-bg;
+      color: $target-info-fg;
+    }
+
+    .scores {
+      display: flex;
+      flex-direction: row;
+
+      .ends {
+        flex: 1;
+
+        .end {
+          display: flex;
+          flex-direction: row;
+
+          .arrow {
+            flex: 1;
+            padding: $baseline-grid;
+          }
+        }
+      }
+      .endTotals {
+        .endTotal {
+          background-color: $target-info-bg;
+          color: $target-info-fg;
+
+          padding: $baseline-grid;
+        }
+      }
+    }
+
+    .footer {
+      display: flex;
+      flex-direction: row;
+
+      background-color: $target-info-bg;
+      color: $target-info-fg;
+
+      div {
+        flex: 1;
+
+        strong {
+          &:after {
+            content: " ";
+          }
+        }
+        span {
+
+        }
+      }
+    }
+  }
+}

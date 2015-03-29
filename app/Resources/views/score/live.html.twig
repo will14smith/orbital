@@ -7,6 +7,7 @@
 {% endblock %}
 
 {% block body %}
+    <div id="scoring_app"></div>
 {% endblock %}
 
 {% block javascripts %}
@@ -16,12 +17,17 @@
     <script>
         'use strict';
 
-        (function(app) {
+        (function (app) {
             var round = {{ score.round|json_encode|raw }};
             var score_id = {{ score.id }};
-            var scoring = {{ scoring ? 'true' : 'false' }};
+            var scoring = {{ scoring|default(false) ? 'true' : 'false' }};
 
-            app.vm.init(round, score_id, scoring);
+            m.module($("#scoring_app")[0], {
+                controller: function () {
+                    app.vm.init(round, score_id, scoring);
+                },
+                view: app.view
+            })
 
         })(window['orbital']['scoring']);
     </script>
