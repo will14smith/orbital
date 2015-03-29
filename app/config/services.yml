@@ -15,6 +15,14 @@ services:
         class: AppBundle\Services\Importing\ImageUploader
         arguments: ["%orbital.upload_dir%"]
 
+    orbital.scoring.listener:
+        class: AppBundle\Services\ScoringListener
+        arguments: ['@elephantio_client.default']
+        tags:
+            - { name: kernel.event_listener, event: 'orbital.events.score_arrow_create', method: arrowAdded }
+            - { name: kernel.event_listener, event: 'orbital.events.score_arrow_update', method: arrowUpdated }
+            - { name: kernel.event_listener, event: 'orbital.events.score_arrow_remove', method: arrowRemoved }
+
 # competitions
     orbital.competition.manager:
         class: AppBundle\Services\Competitions\CompetitionManager
@@ -95,6 +103,7 @@ services:
         tags:
             - { name: doctrine.event_listener, event: postPersist }
             - { name: doctrine.event_listener, event: postUpdate }
+            - { name: doctrine.event_listener, event: postRemove }
 
 # twig extensions
     orbital.twig.enum:

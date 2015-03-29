@@ -10,7 +10,8 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * @ORM\Table(name="score_arrow", uniqueConstraints={
  *      @ORM\UniqueConstraint(name="score_arrow_number_idx", columns={"score_id", "number"})
  * })
- * @UniqueEntity({"score", "number"})
+ * @UniqueEntity({"score", "number"})#
+ * @ORM\HasLifecycleCallbacks
  */
 class ScoreArrow
 {

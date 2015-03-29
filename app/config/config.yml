@@ -88,3 +88,10 @@ knp_snappy:
         options:    []
     image:
         enabled:    false
+
+# ElephantIO (socket.io client)
+nc_elephant_io:
+  clients:
+    default:
+      connection: "%socketio_url%"
+      version: 1.x
