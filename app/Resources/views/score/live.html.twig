@@ -1,0 +1,29 @@
+{% extends '::base_sidebar.html.twig' %}
+
+{% block title %}
+    Live Scoring for
+    <a href="{{ url('person_detail', { 'id': score.person.id }) }}">{{ score.person.name }}</a> -
+    <a href="{{ url('round_detail', { 'id': score.round.id }) }}">{{ score.round.name }}</a>
+{% endblock %}
+
+{% block body %}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <script src="{{ asset('js/scoring.js') }}"></script>
+    <script>
+        'use strict';
+
+        (function(app) {
+            var round = {{ score.round|json_encode|raw }};
+            var score_id = {{ score.id }};
+            var scoring = {{ scoring ? 'true' : 'false' }};
+
+            app.vm.init(round, score_id, scoring);
+
+        })(window['orbital']['scoring']);
+    </script>
+
+{% endblock %}

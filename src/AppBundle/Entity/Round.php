@@ -5,12 +5,13 @@ namespace AppBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use JsonSerializable;
 
 /**
  * @ORM\Entity
  * @ORM\Table(name="round")
  */
-class Round
+class Round implements JsonSerializable
 {
     /**
      * @ORM\Column(type="integer")
@@ -26,6 +27,7 @@ class Round
 
     /**
      * @ORM\OneToMany(targetEntity="RoundTarget", mappedBy="round", cascade={"persist", "remove"})
+     * @ORM\OrderBy({"id": "ASC"})
      */
     protected $targets;
 
@@ -146,5 +148,17 @@ class Round
     public function getRecords()
     {
         return $this->records;
+    }
+
+    function jsonSerialize()
+    {
+        $targets = $this->getTargets()->map(function(RoundTarget $value) {
+            return $value->jsonSerialize();
+        })->toArray();
+
+        return [
+            'name' => $this->name,
+            'targets' => $targets,
+        ];
     }
 }

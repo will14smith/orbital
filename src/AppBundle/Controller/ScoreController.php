@@ -154,37 +154,6 @@ class ScoreController extends ProofController
 
     /**
      * @Security("is_granted('EDIT', score)")
-     * @Route("/score/{id}/input", name="score_input")
-     *
-     * @param Score $score
-     * @param Request $request
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function inputAction(Score $score, Request $request)
-    {
-        return $this->render('score/input.html.twig', [
-            'score' => $score
-        ]);
-    }
-
-    /**
-     * @Route("/score/{id}/live", name="score_live")
-     *
-     * @param Score $score
-     * @param Request $request
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function liveAction(Score $score, Request $request)
-    {
-        return $this->render('score/live.html.twig', [
-            'score' => $score
-        ]);
-    }
-
-    /**
-     * @Security("is_granted('EDIT', score)")
      * @Route("/score/{id}/edit", name="score_edit")
      *
      * @param Score $score

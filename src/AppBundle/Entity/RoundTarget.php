@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity
  * @ORM\Table(name="round_target")
  */
-class RoundTarget
+class RoundTarget implements \JsonSerializable
 {
     /**
      * @ORM\Column(type="integer")
@@ -255,5 +255,22 @@ class RoundTarget
     public function getScoringZones()
     {
         return $this->scoring_zones;
+    }
+
+    function jsonSerialize()
+    {
+        return [
+            'scoring_zones' => $this->getScoringZones(),
+            'distance' => [
+                'value' => $this->getDistanceValue(),
+                'unit' => $this->getDistanceUnit()
+            ],
+            'target' => [
+                'value' => $this->getTargetValue(),
+                'unit' => $this->getTargetUnit()
+            ],
+            'arrow_count' => $this->getArrowCount(),
+            'end_size' => $this->getEndSize()
+        ];
     }
 }

@@ -46,7 +46,8 @@ gulp.task('css', function () {
 gulp.task('js', function () {
     var folders = {
         'head': ['modernizr*.js', 'jquery-*.js'],
-        'app': []
+        'app': [],
+        'scoring': ['mithril.js']
     };
 
     var tasks = Object.keys(folders).map(function (value) {
@@ -59,7 +60,7 @@ gulp.task('js', function () {
         });
 
         paths.push(path.join('js', folder, '/**/*.js'));
-        
+
         return gulp.src(paths)
             .pipe(concat(folder + '.js'))
             .pipe(gulp.dest('../web/js'))
