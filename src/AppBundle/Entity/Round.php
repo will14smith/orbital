@@ -150,14 +150,22 @@ class Round implements JsonSerializable
         return $this->records;
     }
 
+    public function getTotalArrows()
+    {
+        return array_sum($this->getTargets()->map(function (RoundTarget $target) {
+            return $target->getArrowCount();
+        })->toArray());
+    }
+
     function jsonSerialize()
     {
-        $targets = $this->getTargets()->map(function(RoundTarget $value) {
+        $targets = $this->getTargets()->map(function (RoundTarget $value) {
             return $value->jsonSerialize();
         })->toArray();
 
         return [
             'name' => $this->name,
+            'total_arrows' => $this->getTotalArrows(),
             'targets' => $targets,
         ];
     }

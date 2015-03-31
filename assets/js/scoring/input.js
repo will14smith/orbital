@@ -13,7 +13,7 @@ window['orbital'] = window['orbital'] || {};
 
     var score_click_factory = function (score) {
         return function () {
-            if(scoring.vm.arrow_index >= scoring.vm.round.total_arrows) {
+            if (scoring.vm.arrow_index >= scoring.vm.round.total_arrows()) {
                 return;
             }
 
@@ -21,14 +21,14 @@ window['orbital'] = window['orbital'] || {};
             scoring.vm.arrow_index++;
         }
     };
-    var undo_click = function() {
+    var undo_click = function () {
         scoring.vm.arrow_buffer.pop();
         scoring.vm.arrow_index--;
     };
-    var save_click = function() {
+    var save_click = function () {
         scoring.vm.submit_buffer();
     };
-    var complete_click = function() {
+    var complete_click = function () {
         scoring.vm.complete();
     };
 
@@ -43,10 +43,10 @@ window['orbital'] = window['orbital'] || {};
         return m("div", {'class': 'input'}, children);
     };
     scoring.input.view_buttons = function () {
-        var complete = scoring.vm.arrow_index >= scoring.vm.round.total_arrows;
+        var complete = scoring.vm.arrow_index >= scoring.vm.round.total_arrows();
 
-        if(complete) {
-            if(scoring.vm.arrow_buffer.length) {
+        if (complete) {
+            if (scoring.vm.arrow_buffer.length) {
                 return;
             } else {
                 return scoring.input.view_accept();
@@ -62,14 +62,14 @@ window['orbital'] = window['orbital'] || {};
 
 
         var buttons = scoring_zone_data[scoring_zones].map(function (score) {
-            return m("button", { onclick: score_click_factory(score) }, score);
+            return m("button", {onclick: score_click_factory(score)}, score);
         });
 
-        return m("div", { 'class': 'buttons' }, buttons);
+        return m("div", {'class': 'buttons'}, buttons);
     };
-    scoring.input.view_accept = function() {
-        return m("div", { 'class': 'accept' }, [
-            m('button', { onclick: complete_click }, 'Sign & Complete')
+    scoring.input.view_accept = function () {
+        return m("div", {'class': 'accept'}, [
+            m('button', {onclick: complete_click}, 'Sign & Complete')
         ]);
     }
     scoring.input.view_buffer = function () {
@@ -77,10 +77,10 @@ window['orbital'] = window['orbital'] || {};
             return m("div", score);
         });
 
-        var undo = m("button", { onclick: undo_click }, "Undo");
-        var save = m("button", { onclick: save_click }, "Save");
+        var undo = m("button", {onclick: undo_click}, "Undo");
+        var save = m("button", {onclick: save_click}, "Save");
 
-        return m("div", { 'class': 'buffer' }, buffer.concat([undo, save]));
+        return m("div", {'class': 'buffer'}, buffer.concat([undo, save]));
     };
 
 })(window['orbital']);

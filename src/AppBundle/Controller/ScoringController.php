@@ -64,8 +64,20 @@ class ScoringController extends Controller
         /** @var int $index */
         $index = $params['index'];
 
-        //TODO check index (is it even needed?
-        //TODO check number of arrows < round arrows
+        $curr_arrow_count = $score->getArrows()->count();
+        if ($index != $curr_arrow_count) {
+            return JsonResponse::create([
+                'success' => false,
+                'message' => 'Index out of sync, try reloading the client.'
+            ]);
+        }
+
+        if ($curr_arrow_count + count($arrows) > $score->getRound()->getTotalArrows()) {
+            return JsonResponse::create([
+                'success' => false,
+                'message' => 'Attempting to add more arrows than this round has.'
+            ]);
+        }
 
         $em = $this->getDoctrine()->getManager();
         foreach ($arrows as $value) {
@@ -123,7 +135,15 @@ class ScoringController extends Controller
      */
     public function completeAction(Score $score)
     {
-        //TODO check all arrows are scored
+        $arrow_count = $score->getArrows()->count();
+        $total_arrows = $score->getRound()->getTotalArrows();
+
+        if ($arrow_count != $total_arrows) {
+            return JsonResponse::create([
+                'success' => false,
+                'message' => sprintf('Round is not complete (still %u arrows to go).', $total_arrows - $arrow_count)
+            ]);
+        }
 
         $em = $this->getDoctrine()->getManager();
         $score->setComplete(true);

@@ -11,9 +11,7 @@ window['orbital'] = window['orbital'] || {};
             return new RoundTarget(target);
         });
 
-        this.total_arrows = this.targets.reduce(function (a, b) {
-            return a + b.arrow_count();
-        }, 0);
+        this.total_arrows = m.prop(data.total_arrows);
 
         this.targetFromArrowIndex = function (index) {
             var i = 0;
