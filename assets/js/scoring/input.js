@@ -1,86 +1,84 @@
-'use strict';
+window.orbital = window.orbital || {};
+window.orbital.scoring = window.orbital.scoring || {};
 
-window['orbital'] = window['orbital'] || {};
+(function (scoring) {
+    'use strict';
 
-(function (global) {
-    var scoring = global['scoring'] = global['scoring'] || {};
-
-    var scoring_zone_data = {
+    var zoneData = {
         'metric': ['X', 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 'M']
     };
 
     scoring.input = {};
 
-    var score_click_factory = function (score) {
+    var scoreClickFactory = function (score) {
         return function () {
-            if (scoring.vm.arrow_index >= scoring.vm.round.total_arrows()) {
+            if (scoring.vm.arrowIndex >= scoring.vm.round.totalArrows()) {
                 return;
             }
 
-            scoring.vm.arrow_buffer.push(score);
-            scoring.vm.arrow_index++;
-        }
+            scoring.vm.arrowBuffer.push(score);
+            scoring.vm.arrowIndex += 1;
+        };
     };
-    var undo_click = function () {
-        scoring.vm.arrow_buffer.pop();
-        scoring.vm.arrow_index--;
+    var undoClick = function () {
+        scoring.vm.arrowBuffer.pop();
+        scoring.vm.arrowIndex -= 1;
     };
-    var save_click = function () {
-        scoring.vm.submit_buffer();
+    var saveClick = function () {
+        scoring.vm.submitBuffer();
     };
-    var complete_click = function () {
+    var completeClick = function () {
         scoring.vm.complete();
     };
 
     scoring.input.view = function () {
         var children = [];
 
-        if (scoring.vm.arrow_buffer.length > 0) {
-            children.push(scoring.input.view_buffer());
+        if (scoring.vm.arrowBuffer.length > 0) {
+            children.push(scoring.input.viewBuffer());
         }
-        children.push(scoring.input.view_buttons());
+        children.push(scoring.input.viewButtons());
 
         return m("div", {'class': 'input'}, children);
     };
-    scoring.input.view_buttons = function () {
-        var complete = scoring.vm.arrow_index >= scoring.vm.round.total_arrows();
+    scoring.input.viewButtons = function () {
+        var complete = scoring.vm.arrowIndex >= scoring.vm.round.totalArrows();
 
         if (complete) {
-            if (scoring.vm.arrow_buffer.length) {
+            if (scoring.vm.arrowBuffer.length) {
                 return;
             } else {
-                return scoring.input.view_accept();
+                return scoring.input.viewAccept();
             }
         }
 
-        var target = scoring.vm.round.targetFromArrowIndex(scoring.vm.arrow_index);
-        var scoring_zones = target.scoring_zones();
+        var target = scoring.vm.round.targetFromArrowIndex(scoring.vm.arrowIndex);
+        var scoringZones = target.scoringZones();
 
-        if (!scoring_zone_data[scoring_zones]) {
-            throw "Unsupported scoring_zone: " + scoring_zones;
+        if (!zoneData[scoringZones]) {
+            throw "Unsupported scoring_zone: " + scoringZones;
         }
 
-
-        var buttons = scoring_zone_data[scoring_zones].map(function (score) {
-            return m("button", {onclick: score_click_factory(score)}, score);
+        var buttons = zoneData[scoringZones].map(function (score) {
+            return m("button", {onclick: scoreClickFactory(score)}, score);
         });
 
         return m("div", {'class': 'buttons'}, buttons);
     };
-    scoring.input.view_accept = function () {
+    scoring.input.viewAccept = function () {
         return m("div", {'class': 'accept'}, [
-            m('button', {onclick: complete_click}, 'Sign & Complete')
+            m('button', {onclick: completeClick}, 'Sign & Complete')
         ]);
-    }
-    scoring.input.view_buffer = function () {
-        var buffer = scoring.vm.arrow_buffer.map(function (score) {
+    };
+    scoring.input.viewBuffer = function () {
+        var buffer = scoring.vm.arrowBuffer.map(function (score) {
             return m("div", score);
         });
 
-        var undo = m("button", {onclick: undo_click}, "Undo");
-        var save = m("button", {onclick: save_click}, "Save");
+        var undo = m("button", {onclick: undoClick}, "Undo");
+        var save = m("button", {onclick: saveClick}, "Save");
 
         return m("div", {'class': 'buffer'}, buffer.concat([undo, save]));
     };
 
-})(window['orbital']);
+})(window.orbital.scoring);

@@ -1,9 +1,8 @@
-'use strict';
+window.orbital = window.orbital || {};
+window.orbital.scoring = window.orbital.scoring || {};
 
-window['orbital'] = window['orbital'] || {};
-
-(function (global) {
-    var scoring = global['scoring'] = global['scoring'] || {};
+(function (scoring) {
+    'use strict';
 
     function Round(data) {
         this.name = m.prop(data.name);
@@ -11,13 +10,15 @@ window['orbital'] = window['orbital'] || {};
             return new RoundTarget(target);
         });
 
-        this.total_arrows = m.prop(data.total_arrows);
+        /*jshint camelcase: false */
+        this.totalArrows = m.prop(data.total_arrows);
+        /*jshint camelcase: true */
 
         this.targetFromArrowIndex = function (index) {
             var i = 0;
             while (index >= 0 && i < this.targets.length) {
                 var target = this.targets[i];
-                var arrows = target.arrow_count();
+                var arrows = target.arrowCount();
 
                 if (arrows > index) {
                     return target;
@@ -32,36 +33,40 @@ window['orbital'] = window['orbital'] || {};
     }
 
     function RoundTarget(data) {
-        this.scoring_zones = m.prop(data.scoring_zones);
+        /*jshint camelcase: false */
+
+        this.scoringZones = m.prop(data.scoring_zones);
         this.distance = m.prop(data.distance);
         this.target = m.prop(data.target);
-        this.arrow_count = m.prop(data.arrow_count);
-        this.end_size = m.prop(data.end_size);
+        this.arrowCount = m.prop(data.arrow_count);
+        this.endSize = m.prop(data.end_size);
+
+        /*jshint camelcase: true */
     }
 
     // model arrows
 
     scoring.vm = {
-        init: function (round, score_id, input, urls) {
+        init: function (round, scoreId, input, urls) {
             scoring.vm.urls = urls;
 
             scoring.vm.round = new Round(round);
 
             scoring.vm.input = input;
             // current arrow input
-            scoring.vm.arrow_index = 0;
+            scoring.vm.arrowIndex = 0;
             // hold arrows from input
-            scoring.vm.arrow_buffer = [];
+            scoring.vm.arrowBuffer = [];
 
             scoring.vm.arrows = [];
             scoring.vm.socket = io(urls['socket.io']);
-            scoring.vm.socket.on('arrows', scoring.vm.handle_arrows);
-            scoring.vm.socket.on('arrow', scoring.vm.handle_arrow);
+            scoring.vm.socket.on('arrows', scoring.vm.handleArrows);
+            scoring.vm.socket.on('arrow', scoring.vm.handleArrow);
 
-            scoring.vm.socket.emit('sub_score', score_id);
+            scoring.vm.socket.emit('sub_score', scoreId);
         },
 
-        get_arrow: function (index) {
+        getArrow: function (index) {
             var arrows = scoring.vm.arrows;
 
             if (arrows.length <= index) {
@@ -73,22 +78,21 @@ window['orbital'] = window['orbital'] || {};
             return arrows[index];
         },
 
-        submit_buffer: function () {
+        submitBuffer: function () {
             var vm = scoring.vm;
 
             m.request({
                 'method': 'POST',
-                'url': vm.urls['add'],
+                'url': vm.urls.add,
                 'data': {
-                    'index': vm.arrow_index - vm.arrow_buffer.length,
-                    'arrows': vm.arrow_buffer
+                    'index': vm.arrowIndex - vm.arrowBuffer.length,
+                    'arrows': vm.arrowBuffer
                 }
             }).then(function (data) {
                 if (data.success) {
-                    vm.arrow_buffer = [];
+                    vm.arrowBuffer = [];
                 } else {
                     //TODO handle unsuccessful response
-                    console.log(data);
                     throw "ERROR";
                 }
             });
@@ -98,21 +102,22 @@ window['orbital'] = window['orbital'] || {};
 
             m.request({
                 'method': 'POST',
-                'url': vm.urls['complete']
+                'url': vm.urls.complete
             }).then(function (data) {
                 if (data.success) {
                     document.location = data.url;
                 } else {
                     //TODO handle unsuccessful response
-                    console.log(data);
                     throw "ERROR";
                 }
             });
         },
 
-        handle_arrows: function (data) {
-            var arrows = data['arrows'];
-            var score_id = data['score_id'];
+        handleArrows: function (data) {
+            var arrows = data.arrows;
+            /*jshint camelcase: false */
+            var score_id = data.score_id;
+            /*jshint camelcase: true */
 
             //TODO check score_id
 
@@ -120,12 +125,14 @@ window['orbital'] = window['orbital'] || {};
             arrows.forEach(function (arrow) {
                 scoring.vm.arrows[arrow.number] = arrow;
             });
-            scoring.vm.arrow_index = arrows.length;
+            scoring.vm.arrowIndex = arrows.length;
             m.endComputation();
         },
-        handle_arrow: function (data) {
-            var arrow = data['arrow'];
-            var score_id = data['score_id'];
+        handleArrow: function (data) {
+            var arrow = data.arrow;
+            /*jshint camelcase: false */
+            var score_id = data.score_id;
+            /*jshint camelcase: true */
 
             //TODO check score_id
 
@@ -135,4 +142,4 @@ window['orbital'] = window['orbital'] || {};
 
         }
     };
-})(window['orbital']);
+})(window.orbital.scoring);

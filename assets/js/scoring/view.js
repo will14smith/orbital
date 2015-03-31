@@ -1,19 +1,18 @@
-'use strict';
+window.orbital = window.orbital || {};
+window.orbital.scoring = window.orbital.scoring || {};
 
-window['orbital'] = window['orbital'] || {};
-
-(function (global) {
-    var scoring = global['scoring'] = global['scoring'] || {};
+(function (scoring) {
+    'use strict';
 
     scoring.view = function () {
         var targets = scoring.vm.round.targets;
         var children = [];
 
-        var arrow_offset = 0;
+        var arrowOffset = 0;
         targets.forEach(function (element) {
-            var target = scoring.view_target(element, arrow_offset);
-            arrow_offset = target['arrow_end'];
-            children.push(target['view']);
+            var target = scoring.viewTarget(element, arrowOffset);
+            arrowOffset = target.arrowEndOffset;
+            children.push(target.view);
         });
 
         if (scoring.vm.input) {
@@ -24,7 +23,7 @@ window['orbital'] = window['orbital'] || {};
     };
 
     // render score
-    scoring.view_target = function (target, arrow_start) {
+    scoring.viewTarget = function (target, arrowStartOffset) {
         var headerText = target.distance().value + target.distance().unit + ' - ' +
             target.target().value + target.target().unit;
 
@@ -32,8 +31,8 @@ window['orbital'] = window['orbital'] || {};
         var ends = [];
         var endTotals = [];
 
-        var arrow_offset = 0;
-        var arrow_total = target.arrow_count();
+        var arrowSubOffset = 0;
+        var arrowTotal = target.arrowCount();
 
         var stats = {
             'hits': 0,
@@ -41,23 +40,23 @@ window['orbital'] = window['orbital'] || {};
             'total': 0
         };
 
-        while (arrow_offset < arrow_total) {
-            var end = scoring.view_end(target, arrow_start + arrow_offset);
+        while (arrowSubOffset < arrowTotal) {
+            var end = scoring.viewEnd(target, arrowStartOffset + arrowSubOffset);
 
-            ends.push(end['end']);
-            endTotals.push(end['total']);
+            ends.push(end.endView);
+            endTotals.push(end.totalView);
 
-            stats['hits'] += end['stats']['hits'];
-            stats['golds'] += end['stats']['golds'];
-            stats['total'] += end['stats']['total'];
+            stats.hits += end.stats.hits;
+            stats.golds += end.stats.golds;
+            stats.total += end.stats.total;
 
-            arrow_offset += target.end_size();
+            arrowSubOffset += target.endSize();
         }
 
         var footer = m("div", {'class': 'footer'}, [
-            m("div", [m("strong", "Hits"), m("span", stats['hits'])]),
-            m("div", [m("strong", "Golds"), m("span", stats['golds'])]),
-            m("div", [m("strong", "Total"), m("span", stats['total'])])
+            m("div", [m("strong", "Hits"), m("span", stats.hits)]),
+            m("div", [m("strong", "Golds"), m("span", stats.golds)]),
+            m("div", [m("strong", "Total"), m("span", stats.total)])
         ]);
 
 
@@ -70,12 +69,12 @@ window['orbital'] = window['orbital'] || {};
                 ]),
                 footer
             ]),
-            'arrow_end': arrow_start + arrow_offset
+            'arrowEndOffset': arrowStartOffset + arrowSubOffset
         };
     };
 
-    scoring.view_end = function (target, arrow_start) {
-        var end_size = target.end_size();
+    scoring.viewEnd = function (target, arrowStartOffset) {
+        var endSize = target.endSize();
 
         var arrows = [];
         var stats = {
@@ -84,35 +83,35 @@ window['orbital'] = window['orbital'] || {};
             'total': 0
         };
 
-        for (var arrow_offset = 0; arrow_offset < end_size; arrow_offset++) {
-            var arrow = scoring.view_arrow(target, arrow_start + arrow_offset, stats);
+        for (var arrowSubOffset = 0; arrowSubOffset < endSize; arrowSubOffset++) {
+            var arrow = scoring.viewArrow(target, arrowStartOffset + arrowSubOffset, stats);
 
             arrows.push(arrow);
         }
 
         return {
-            'end': m("div", {'class': 'end'}, arrows),
-            'total': m("div", {'class': 'endTotal'}, stats['total']),
+            'endView': m("div", {'class': 'end'}, arrows),
+            'totalView': m("div", {'class': 'endTotal'}, stats.total),
             'stats': stats
         };
     };
 
-    scoring.view_arrow = function (target, arrow_index, stats) {
-        var arrow = scoring.vm.get_arrow(arrow_index);
-        var zones = target.scoring_zones();
+    scoring.viewArrow = function (target, arrowIndex, stats) {
+        var arrow = scoring.vm.getArrow(arrowIndex);
+        var zones = target.scoringZones();
 
         var text, cls;
         if (arrow) {
-            var value = arrow['value'];
+            var value = arrow.value;
 
-            var score = scoring.zones.get_value(zones, value);
-            var gold = scoring.zones.is_gold(zones, value);
-            var hit = scoring.zones.is_hit(zones, value);
-            cls = scoring.zones.css_class(zones, value);
+            var score = scoring.zones.getValue(zones, value);
+            var gold = scoring.zones.isGold(zones, value);
+            var hit = scoring.zones.isHit(zones, value);
+            cls = scoring.zones.cssClass(zones, value);
 
-            stats['total'] += score;
-            stats['golds'] += gold ? 1 : 0;
-            stats['hits'] += hit ? 1 : 0;
+            stats.total += score;
+            stats.golds += gold ? 1 : 0;
+            stats.hits += hit ? 1 : 0;
 
             text = value;
         } else {
@@ -122,4 +121,4 @@ window['orbital'] = window['orbital'] || {};
 
         return m("div", {'class': 'arrow ' + cls}, text);
     };
-})(window['orbital']);
+})(window.orbital.scoring);
