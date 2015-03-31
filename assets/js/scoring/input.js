@@ -65,22 +65,22 @@ window['orbital'] = window['orbital'] || {};
             return m("button", { onclick: score_click_factory(score) }, score);
         });
 
-        return m("div", {/* TODO CLASS */}, buttons);
+        return m("div", { 'class': 'buttons' }, buttons);
     };
     scoring.input.view_accept = function() {
-        return m("div", {}, [
+        return m("div", { 'class': 'accept' }, [
             m('button', { onclick: complete_click }, 'Sign & Complete')
         ]);
     }
     scoring.input.view_buffer = function () {
         var buffer = scoring.vm.arrow_buffer.map(function (score) {
-            return m("div", {/* TODO CLASS */}, score);
+            return m("div", score);
         });
 
         var undo = m("button", { onclick: undo_click }, "Undo");
         var save = m("button", { onclick: save_click }, "Save");
 
-        return m("div", {/* TODO CLASS */}, buffer.concat([undo, save]));
+        return m("div", { 'class': 'buffer' }, buffer.concat([undo, save]));
     };
 
 })(window['orbital']);

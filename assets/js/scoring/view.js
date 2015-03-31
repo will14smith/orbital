@@ -101,13 +101,14 @@ window['orbital'] = window['orbital'] || {};
         var arrow = scoring.vm.get_arrow(arrow_index);
         var zones = target.scoring_zones();
 
-        var text;
+        var text, cls;
         if (arrow) {
             var value = arrow['value'];
 
             var score = scoring.zones.get_value(zones, value);
             var gold = scoring.zones.is_gold(zones, value);
             var hit = scoring.zones.is_hit(zones, value);
+            cls = scoring.zones.css_class(zones, value);
 
             stats['total'] += score;
             stats['golds'] += gold ? 1 : 0;
@@ -116,8 +117,9 @@ window['orbital'] = window['orbital'] || {};
             text = value;
         } else {
             text = "-";
+            cls = "blank"
         }
 
-        return m("div", {'class': 'arrow'}, text);
+        return m("div", {'class': 'arrow ' + cls}, text);
     };
 })(window['orbital']);

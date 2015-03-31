@@ -1,6 +1,50 @@
 $target-info-bg: #000;
 $target-info-fg: #fff;
 
+$yellow-color: #FFEB3B;
+$red-color: #F44336;
+$blue-color: #2196F3;
+$black-color: #212121;
+$white-color: #FAFAFA;
+
+@mixin scoring-button($color) {
+  background-color: $color;
+  width: 100%;
+
+  &:disabled {
+    background-color: desaturate($color, 20%);
+  }
+
+  &:hover {
+    background-color: darken($color, 20%);
+  }
+}
+
+
+.arrow {
+  &.yellow {
+     @include scoring-button($yellow-color);
+   }
+  &.red {
+    @include scoring-button($red-color);
+  }
+  &.blue {
+    @include scoring-button($blue-color);
+  }
+  &.black {
+    @include scoring-button($black-color);
+
+    color: $white-color;
+
+    &:hover {
+      color: $white-color;
+    }
+  }
+  &.white {
+    @include scoring-button($white-color);
+  }
+}
+
 .scoresheet {
   display: flex;
   flex-direction: column;
@@ -60,6 +104,48 @@ $target-info-fg: #fff;
         span {
 
         }
+      }
+    }
+  }
+
+  .input {
+    .buttons {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+
+      margin: $baseline-grid 0;
+
+      button {
+        flex: 1;
+
+        min-width: 48px;
+        padding: $baseline-grid;
+      }
+    }
+    .buffer {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+
+      margin: $baseline-grid 0;
+
+      button, div {
+        padding: $baseline-grid;
+      }
+      div:last-of-type {
+        flex: 1;
+      }
+    }
+    .accept {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+
+      margin: $baseline-grid 0;
+
+      button {
+        flex: 1;
       }
     }
   }

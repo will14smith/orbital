@@ -25,6 +25,16 @@ window['orbital'] = window['orbital'] || {};
         },
         is_hit: function(zone, score) {
             return scoring.zones.get_value(zone, score) > 0;
+        },
+
+        css_class: function(zone, score) {
+            var value = scoring.zones.get_value(zone, score);
+
+            if(value >= 9) return 'yellow';
+            if(value >= 7) return 'red';
+            if(value >= 5) return 'blue';
+            if(value >= 3) return 'black';
+            return 'white';
         }
     };
 
