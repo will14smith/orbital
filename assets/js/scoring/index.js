@@ -120,7 +120,7 @@ window['orbital'] = window['orbital'] || {};
 
             m.startComputation();
             arrows.forEach(function (arrow) {
-                scoring.vm.arrows.push(arrow)
+                scoring.vm.arrows[arrow.number] = arrow;
             });
             scoring.vm.arrow_index = arrows.length;
             m.endComputation();
@@ -132,7 +132,7 @@ window['orbital'] = window['orbital'] || {};
             //TODO check score_id
 
             m.startComputation();
-            scoring.vm.arrows.push(arrow);
+            scoring.vm.arrows[arrow.number] = arrow;
             m.endComputation();
 
         }
