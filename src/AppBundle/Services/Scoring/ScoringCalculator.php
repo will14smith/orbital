@@ -38,9 +38,11 @@ class ScoringCalculator
                 $calc = ZoneManager::get($target->getScoringZones());
             }
 
-            $total += $calc->getValue($arrows[$idx]);
-            $golds += $calc->isGold($arrows[$idx]) ? 1 : 0;
-            $hits += $calc->isHit($arrows[$idx]) ? 1 : 0;
+            $arrow = $arrows[$idx];
+
+            $total += $calc->getValue($arrow);
+            $golds += $calc->isGold($arrow) ? 1 : 0;
+            $hits += $calc->isHit($arrow) ? 1 : 0;
 
             $idx++;
             $local_idx++;

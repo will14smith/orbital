@@ -11,7 +11,7 @@ class ZoneManager {
     ];
 
     /**
-     * @param $name
+     * @param string $name
      *
      * @return ZoneCalculator
      * @throws \Exception

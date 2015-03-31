@@ -10,7 +10,7 @@
         <div>
             This score is not yet complete, click to view
             <a href="{{ url('score_live', { 'id': score.id }) }}">live scoring</a>
-            {% if is_granted('EDIT', score) %}
+            {% if is_granted('SCORE', score) %}
                 (or <em>you</em> can <a href="{{ url('score_input', { 'id': score.id }) }}">input scores</a>)
             {% endif %}
         </div>
@@ -57,11 +57,11 @@
 {% endblock %}
 
 {% block sidebar %}
-    {% if is_granted('EDIT', score) or is_granted('ROLE_ADMIN') %}
+    {% if is_granted('SCORE', score) or is_granted('EDIT', score) or is_granted('ROLE_ADMIN') %}
         <div class="widget">
             <h3 class="widget-title">Actions</h3>
             <ul>
-                {% if is_granted('EDIT', score) %}
+                {% if is_granted('SCORE', score) %}
                     <li><a href="{{ url('score_input', { 'id': score.id }) }}">Input Score</a></li>
                 {% endif %}
                 {% if is_granted('ACCEPT', score) %}

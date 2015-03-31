@@ -13,8 +13,7 @@ use Symfony\Component\HttpFoundation\Request;
 class ScoringController extends Controller
 {
     /**
-     * TODO proper permission
-     * @Security("is_granted('EDIT', score)")
+     * @Security("is_granted('SCORE', score)")
      * @Route("/score/{id}/input", name="score_input")
      *
      * @param Score $score
@@ -44,8 +43,7 @@ class ScoringController extends Controller
     }
 
     /**
-     * TODO proper permission
-     * @Security("is_granted('EDIT', score)")
+     * @Security("is_granted('SCORE', score)")
      * @Route("/score/{id}/arrows/add", name="score_data_arrows_add", methods={"POST"})
      *
      * @param Score $score
@@ -90,8 +88,7 @@ class ScoringController extends Controller
     }
 
     /**
-     * TODO proper permission
-     * @Security("has_role('ROLE_ADMIN')")
+     * @Security("is_granted('JUDGE', score)")
      * @Route("/score/{id}/arrows/amend", name="score_data_arrows_amend", methods={"POST"})
      *
      * @param Score $score
@@ -104,8 +101,7 @@ class ScoringController extends Controller
     }
 
     /**
-     * TODO proper permission
-     * @Security("has_role('ROLE_ADMIN')")
+     * @Security("is_granted('JUDGE', score)")
      * @Route("/score/{id}/arrows/remove", name="score_data_arrows_remove", methods={"POST"})
      *
      * @param Score $score
@@ -118,8 +114,7 @@ class ScoringController extends Controller
     }
 
     /**
-     * TODO proper permission
-     * @Security("is_granted('EDIT', score)")
+     * @Security("is_granted('SIGN', score)")
      * @Route("/score/{id}/complete", name="score_data_complete", methods={"POST"})
      *
      * @param Score $score
