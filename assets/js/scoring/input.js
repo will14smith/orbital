@@ -63,7 +63,7 @@ window.orbital.scoring = window.orbital.scoring || {};
             return m("button", {onclick: scoreClickFactory(score)}, score);
         });
 
-        return m("div", {'class': 'buttons'}, buttons);
+        return m("div", {'class': 'buttons btn-group'}, buttons);
     };
     scoring.input.viewAccept = function () {
         return m("div", {'class': 'accept'}, [
@@ -78,7 +78,9 @@ window.orbital.scoring = window.orbital.scoring || {};
         var undo = m("button", {onclick: undoClick}, "Undo");
         var save = m("button", {onclick: saveClick}, "Save");
 
-        return m("div", {'class': 'buffer'}, buffer.concat([undo, save]));
+        return m("div", {'class': 'buffer'}, buffer.concat([
+            m('div', { 'class': 'btn-group' }, [undo, save])])
+        );
     };
 
 })(window.orbital.scoring);

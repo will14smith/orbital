@@ -67,6 +67,9 @@ gulp.task('js', function () {
             .pipe(uglify())
             .pipe(rename(folder + '.min.js'))
             .pipe(gulp.dest('../web/js'))
+            .on("error", notify.onError(function (error) {
+                return "Error: " + error.message;
+            }))
     });
 
     return merge(tasks);

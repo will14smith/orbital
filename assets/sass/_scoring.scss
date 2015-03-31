@@ -133,8 +133,15 @@ $white-color: #FAFAFA;
       button, div {
         padding: $baseline-grid;
       }
-      div:last-of-type {
+      div {
+        line-height: 42px;
+      }
+      div:nth-last-child(2) {
         flex: 1;
+      }
+      div:last-child {
+        display: block;
+        line-height: inherit;
       }
     }
     .accept {

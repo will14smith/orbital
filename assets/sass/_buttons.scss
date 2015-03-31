@@ -1,0 +1,61 @@
+$button-palette: $primary-color-palette;
+
+$button-color: map-get($button-palette, '500');
+$button-color-disabled: map-get($foreground-color-palette, '700');
+$button-color-hover: map-get($button-palette, '700');
+
+$button-text-color: $primary-color-palette-contrast-color;
+$button-text-color-disabled: map-get($foreground-color-palette, '800');
+$button-text-color-hover: $primary-color-palette-contrast-color;
+
+$button-border-color: map-get($button-palette, '600');
+$button-border-color-disabled: map-get($foreground-color-palette, '800');
+$button-border-color-hover: map-get($button-palette, '700');
+
+input[type="submit"], button, input[type="button"] {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+
+  border-radius: 2px;
+
+  background-color: $button-color;
+  color: $button-text-color;
+  border: 1px solid $button-border-color;
+
+  text-transform: uppercase;
+
+  padding: $baseline-grid 2*$baseline-grid;
+
+  transition: box-shadow $swift-ease-out-duration $swift-ease-out-timing-function,
+              background-color $swift-ease-out-duration $swift-ease-out-timing-function;
+
+  &:active, &:focus {
+    @extend .md-shadow-bottom-z-2;
+  }
+  &:hover {
+    @extend .md-shadow-bottom-z-1;
+    background-color: $button-color-hover;
+    color: $button-text-color-hover;
+    border: 1px solid $button-border-color-hover;
+  }
+  &:disabled {
+    background-color: $button-color-disabled;
+    color: $button-text-color-disabled;
+    border: 1px solid $button-border-color-disabled;
+  }
+}
+
+.btn-group {
+  input[type="submit"], button, input[type="button"] {
+    border-radius: 0;
+    border-width: 1px 0 1px 1px;
+
+    &:first-child {
+      border-radius: 2px 0 0 2px;
+    }
+    &:last-child {
+      border-right-width: 1px;
+      border-radius: 0 2px 2px 0;
+    }
+  }
+}
