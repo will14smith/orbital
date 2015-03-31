@@ -29,17 +29,19 @@ class LiveScoringListener
             //TODO input/edit??
         ];
 
-        $this->client->send('arrow_added', $arrow_data);
+        $this->client->send('arrow_added', $arrow_data, true);
     }
 
     public function arrowUpdated(ScoreArrowEvent $event)
     {
         $arrow = $event->getArrow();
 
+        //TODO new format
+
         $this->client->send('arrow_updated', [
             'score' => $arrow->getScore()->getId(),
             'arrow' => $arrow->getNumber()
-        ]);
+        ], true);
     }
 
     public function arrowRemoved(ScoreArrowEvent $event)
@@ -49,6 +51,6 @@ class LiveScoringListener
         $this->client->send('arrow_removed', [
             'score' => $arrow->getScore()->getId(),
             'arrow' => $arrow->getNumber()
-        ]);
+        ], true);
     }
 }
