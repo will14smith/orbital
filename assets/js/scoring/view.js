@@ -106,8 +106,8 @@ window['orbital'] = window['orbital'] || {};
             var value = arrow['value'];
 
             var score = scoring.zones.get_value(zones, value);
-            var gold = scoring.zones.get_value(zones, value);
-            var hit = scoring.zones.get_value(zones, value);
+            var gold = scoring.zones.is_gold(zones, value);
+            var hit = scoring.zones.is_hit(zones, value);
 
             stats['total'] += score;
             stats['golds'] += gold ? 1 : 0;

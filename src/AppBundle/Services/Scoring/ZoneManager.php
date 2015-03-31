@@ -10,6 +10,12 @@ class ZoneManager {
         ScoreZones::METRIC => 'AppBundle\Services\Scoring\Zones\MetricCalculator'
     ];
 
+    /**
+     * @param $name
+     *
+     * @return ZoneCalculator
+     * @throws \Exception
+     */
     public static function get($name) {
         if(!array_key_exists($name, self::$zones)) {
             throw new \Exception("Unsupported zone");

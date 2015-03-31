@@ -2,6 +2,7 @@
 
 namespace AppBundle\Services\Scoring;
 
+use AppBundle\Entity\Score;
 use AppBundle\Services\Events\ScoreArrowEvent;
 use Doctrine\Bundle\DoctrineBundle\Registry;
 
@@ -19,18 +20,25 @@ class ScoringAggregationListener
 
     public function arrowAdded(ScoreArrowEvent $event)
     {
-        //TODO get round target...
-
-        //TODO update attach score (total, hits, golds)
+        $this->updateScore($event->getArrow()->getScore());
     }
 
     public function arrowUpdated(ScoreArrowEvent $event)
     {
-        throw new \Exception("Not Implemented");
+        $this->updateScore($event->getArrow()->getScore());
     }
 
     public function arrowRemoved(ScoreArrowEvent $event)
     {
-        throw new \Exception("Not Implemented");
+        $this->updateScore($event->getArrow()->getScore());
+    }
+
+    private function updateScore(Score $score)
+    {
+        $em = $this->doctrine->getManager();
+
+        ScoringCalculator::updateStats($score);
+
+        $em->flush();
     }
 }

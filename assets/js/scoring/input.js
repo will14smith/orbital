@@ -13,6 +13,10 @@ window['orbital'] = window['orbital'] || {};
 
     var score_click_factory = function (score) {
         return function () {
+            if(scoring.vm.arrow_index >= scoring.vm.round.total_arrows) {
+                return;
+            }
+
             scoring.vm.arrow_buffer.push(score);
             scoring.vm.arrow_index++;
         }
@@ -23,6 +27,9 @@ window['orbital'] = window['orbital'] || {};
     };
     var save_click = function() {
         scoring.vm.submit_buffer();
+    };
+    var complete_click = function() {
+        scoring.vm.complete();
     };
 
     scoring.input.view = function () {
@@ -36,6 +43,16 @@ window['orbital'] = window['orbital'] || {};
         return m("div", {'class': 'input'}, children);
     };
     scoring.input.view_buttons = function () {
+        var complete = scoring.vm.arrow_index >= scoring.vm.round.total_arrows;
+
+        if(complete) {
+            if(scoring.vm.arrow_buffer.length) {
+                return;
+            } else {
+                return scoring.input.view_accept();
+            }
+        }
+
         var target = scoring.vm.round.targetFromArrowIndex(scoring.vm.arrow_index);
         var scoring_zones = target.scoring_zones();
 
@@ -43,12 +60,18 @@ window['orbital'] = window['orbital'] || {};
             throw "Unsupported scoring_zone: " + scoring_zones;
         }
 
+
         var buttons = scoring_zone_data[scoring_zones].map(function (score) {
-            return m("button", {onclick: score_click_factory(score)}, score);
+            return m("button", { onclick: score_click_factory(score) }, score);
         });
 
         return m("div", {/* TODO CLASS */}, buttons);
     };
+    scoring.input.view_accept = function() {
+        return m("div", {}, [
+            m('button', { onclick: complete_click }, 'Sign & Complete')
+        ]);
+    }
     scoring.input.view_buffer = function () {
         var buffer = scoring.vm.arrow_buffer.map(function (score) {
             return m("div", {/* TODO CLASS */}, score);

@@ -14,18 +14,40 @@ use AppBundle\Services\Scoring\ZoneCalculator;
 
 class MetricCalculator implements ZoneCalculator
 {
+    /**
+     * @param ScoreArrow $arrow
+     *
+     * @return int
+     */
     function getValue(ScoreArrow $arrow)
     {
-        // TODO: Implement getValue() method.
+        $value = $arrow->getValue();
+
+        if($value == 'X') return 10;
+        if($value == 'M') return 0;
+
+        return intval($value);
     }
 
+    /**
+     * @param ScoreArrow $arrow
+     *
+     * @return bool
+     */
     function isHit(ScoreArrow $arrow)
     {
-        // TODO: Implement isHit() method.
+        return $arrow->getValue() != 'M';
     }
 
+    /**
+     * @param ScoreArrow $arrow
+     *
+     * @return bool
+     */
     function isGold(ScoreArrow $arrow)
     {
-        // TODO: Implement isGold() method.
+        //TODO is this correct?? (for all bow types)
+
+        return $this->getValue($arrow) >= 9;
     }
 }

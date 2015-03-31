@@ -11,6 +11,10 @@ window['orbital'] = window['orbital'] || {};
             return new RoundTarget(target);
         });
 
+        this.total_arrows = this.targets.reduce(function (a, b) {
+            return a + b.arrow_count();
+        }, 0);
+
         this.targetFromArrowIndex = function (index) {
             var i = 0;
             while (index >= 0 && i < this.targets.length) {
@@ -59,10 +63,10 @@ window['orbital'] = window['orbital'] || {};
             scoring.vm.socket.emit('sub_score', score_id);
         },
 
-        get_arrow: function(index) {
+        get_arrow: function (index) {
             var arrows = scoring.vm.arrows;
 
-            if(arrows.length <= index) {
+            if (arrows.length <= index) {
                 return null;
             }
 
@@ -81,8 +85,30 @@ window['orbital'] = window['orbital'] || {};
                     'index': vm.arrow_index - vm.arrow_buffer.length,
                     'arrows': vm.arrow_buffer
                 }
-            }).then(function () {
-                vm.arrow_buffer = [];
+            }).then(function (data) {
+                if (data.success) {
+                    vm.arrow_buffer = [];
+                } else {
+                    //TODO handle unsuccessful response
+                    console.log(data);
+                    throw "ERROR";
+                }
+            });
+        },
+        complete: function () {
+            var vm = scoring.vm;
+
+            m.request({
+                'method': 'POST',
+                'url': vm.urls['complete']
+            }).then(function (data) {
+                if (data.success) {
+                    document.location = data.url;
+                } else {
+                    //TODO handle unsuccessful response
+                    console.log(data);
+                    throw "ERROR";
+                }
             });
         },
 

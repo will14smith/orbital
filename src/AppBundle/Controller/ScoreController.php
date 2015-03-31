@@ -62,7 +62,7 @@ class ScoreController extends ProofController
                 $score->setBowtype($score->getPerson()->getBowtype());
             }
             // auto approve admin entered scores
-            if ($this->isGranted('ROLE_ADMIN')) {
+            if ($this->isGranted('ROLE_ADMIN') && $score->getComplete()) {
                 $score->accept();
             }
 
@@ -100,7 +100,7 @@ class ScoreController extends ProofController
             );
         }
 
-        if($score->getComplete()) {
+        if ($score->getComplete()) {
             $handicap = $this->get('orbital.handicap.calculate')->handicapForScore($score);
         } else {
             $handicap = null;
@@ -238,21 +238,21 @@ class ScoreController extends ProofController
         $data = $form->getData();
 
         if ($data->getScore() === null) {
-            if($data->getComplete()) {
+            if ($data->getComplete()) {
                 $score_form->get('score')->addError(new FormError('Score is required if completed.'));
             } else {
                 $data->setScore(0);
             }
         }
         if ($data->getHits() === null) {
-            if($data->getComplete()) {
+            if ($data->getComplete()) {
                 $score_form->get('hits')->addError(new FormError('Hits are required if completed.'));
             } else {
                 $data->setHits(0);
             }
         }
         if ($data->getGolds() === null) {
-            if($data->getComplete()) {
+            if ($data->getComplete()) {
                 $score_form->get('golds')->addError(new FormError('Golds are required if completed.'));
             } else {
                 $data->setGolds(0);

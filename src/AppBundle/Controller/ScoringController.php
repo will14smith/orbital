@@ -13,6 +13,7 @@ use Symfony\Component\HttpFoundation\Request;
 class ScoringController extends Controller
 {
     /**
+     * TODO proper permission
      * @Security("is_granted('EDIT', score)")
      * @Route("/score/{id}/input", name="score_input")
      *
@@ -43,6 +44,8 @@ class ScoringController extends Controller
     }
 
     /**
+     * TODO proper permission
+     * @Security("is_granted('EDIT', score)")
      * @Route("/score/{id}/arrows/add", name="score_data_arrows_add", methods={"POST"})
      *
      * @param Score $score
@@ -63,7 +66,8 @@ class ScoringController extends Controller
         /** @var int $index */
         $index = $params['index'];
 
-        //TODO check index
+        //TODO check index (is it even needed?
+        //TODO check number of arrows < round arrows
 
         $em = $this->getDoctrine()->getManager();
         foreach ($arrows as $value) {
@@ -86,6 +90,8 @@ class ScoringController extends Controller
     }
 
     /**
+     * TODO proper permission
+     * @Security("has_role('ROLE_ADMIN')")
      * @Route("/score/{id}/arrows/amend", name="score_data_arrows_amend", methods={"POST"})
      *
      * @param Score $score
@@ -98,6 +104,8 @@ class ScoringController extends Controller
     }
 
     /**
+     * TODO proper permission
+     * @Security("has_role('ROLE_ADMIN')")
      * @Route("/score/{id}/arrows/remove", name="score_data_arrows_remove", methods={"POST"})
      *
      * @param Score $score
@@ -110,6 +118,8 @@ class ScoringController extends Controller
     }
 
     /**
+     * TODO proper permission
+     * @Security("is_granted('EDIT', score)")
      * @Route("/score/{id}/complete", name="score_data_complete", methods={"POST"})
      *
      * @param Score $score
@@ -118,6 +128,14 @@ class ScoringController extends Controller
      */
     public function completeAction(Score $score)
     {
-        //TODO mark score as complete
+        //TODO check all arrows are scored
+
+        $em = $this->getDoctrine()->getManager();
+        $score->setComplete(true);
+        $em->flush();
+
+        return new JsonResponse([
+            'success' => true,
+            'url' => $this->generateUrl('score_detail', ['id' => $score->getId()])]);
     }
 }
