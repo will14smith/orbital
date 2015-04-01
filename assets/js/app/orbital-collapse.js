@@ -1,13 +1,13 @@
-'use strict';
-
 (function($) {
+    'use strict';
+
     $.fn.collapse = function(handle) {
         var $this = this;
 
         $this.hide();
 
         var $handle;
-        if(typeof handle == 'string') {
+        if(typeof handle === 'string') {
             $handle = $("<a />")
                 .attr('href', '#')
                 .text('Expand ' + handle);
@@ -21,7 +21,7 @@
 
             $handle.hide();
             $this.slideDown();
-        })
+        });
     };
 
     $(function() {

@@ -1,6 +1,5 @@
-'use strict';
-
 (function($) {
+    'use strict';
 
     $(function() {
         $('[icac-toggle]').each(function() {

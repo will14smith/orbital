@@ -1,6 +1,6 @@
-'use strict';
-
 (function ($) {
+    'use strict';
+
     $.fn.collection = function (name) {
         var $collectionHolder = this;
 
@@ -41,7 +41,7 @@
             $collectionHolder.data('index', index + 1);
 
             // Display the form in the page in an li, before the "Add a tag" link li
-            var $newFormDiv = $('<div />').append(newForm).input_connect();
+            var $newFormDiv = $('<div />').append(newForm).inputConnect();
             $newLinkLi.before($newFormDiv);
         }
     };
