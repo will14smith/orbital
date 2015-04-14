@@ -1,15 +1,23 @@
-var path = require('path');
-var express = require('express');
-var logger = require('morgan');
 var sql = require('./sql');
+var fs = require('fs');
 
-var app = express();
+var port = process.env.PORT || 3000;
 
-app.set('port', process.env.PORT || 3000);
-app.use(logger('dev'));
-console.log('Server has started on port: ' + app.get('port'));
+var options = {};
+if(process.env.SSL) {
+  options = {
+    key: fs.readFileSync('/etc/apache2/ssl/orbital.toxon.co.uk.key'),
+    cert: fs.readFileSync('/etc/apache2/ssl/orbital.toxon.co.uk.crt'),
+    ca: fs.readFileSync('/etc/apache2/ssl/sub.class1.server.ca.pem')
+  };
+}
 
-var io = require('socket.io').listen(app.listen(app.get('port')));
+var app = require('https').createServer(options);
+var io = require('socket.io').listen(app);
+
+app.listen(port, function() {
+  console.log("Listening on port", port)
+});
 
 io.sockets.on('connect', function (socket) {
     console.log('connected client ' + socket.id);
