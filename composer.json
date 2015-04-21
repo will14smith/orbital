@@ -1,5 +1,6 @@
 {
-  "name": "root/archery",
+  "name": "ICAC/orbital",
+  "description": "A web platform for managing archery data",
   "license": "proprietary",
   "type": "project",
   "autoload": {
