@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation\Response;
 class DefaultController extends Controller
 {
     /**
-     * @Route("/", name="homepage")
+     * @Route("/", name="homepage", methods={"GET"})
      */
     public function indexAction()
     {
@@ -21,7 +21,7 @@ class DefaultController extends Controller
 
     /**
      * @Security("has_role('ROLE_ADMIN')")
-     * @Route("/roundup", name="roundup")
+     * @Route("/roundup", name="roundup", methods={"GET", "POST"})
      * @param Request $request
      *
      * @return \Symfony\Component\HttpFoundation\Response

@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation\Request;
 class ClubController extends Controller
 {
     /**
-     * @Route("/clubs", name="club_list")
+     * @Route("/clubs", name="club_list", methods={"GET"})
      */
     public function indexAction()
     {
@@ -27,7 +27,7 @@ class ClubController extends Controller
 
     /**
      * @Security("has_role('ROLE_ADMIN')")
-     * @Route("/club/create", name="club_create")
+     * @Route("/club/create", name="club_create", methods={"GET", "POST"})
      * @param Request $request
      *
      * @return \Symfony\Component\HttpFoundation\Response
@@ -56,7 +56,7 @@ class ClubController extends Controller
     }
 
     /**
-     * @Route("/club/{id}", name="club_detail")
+     * @Route("/club/{id}", name="club_detail", methods={"GET"})
      *
      * @param int $id
      *
@@ -80,7 +80,7 @@ class ClubController extends Controller
 
     /**
      * @Security("has_role('ROLE_ADMIN')")
-     * @Route("/club/{id}/edit", name="club_edit")
+     * @Route("/club/{id}/edit", name="club_edit", methods={"GET", "POST"})
      *
      * @param int $id
      * @param Request $request
@@ -117,7 +117,7 @@ class ClubController extends Controller
 
     /**
      * @Security("has_role('ROLE_ADMIN')")
-     * @Route("/club/{id}/delete", name="club_delete")
+     * @Route("/club/{id}/delete", name="club_delete", methods={"GET", "POST"})
      *
      * @param int $id
      * @param Request $request
