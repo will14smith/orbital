@@ -51,6 +51,7 @@ class ScoreController extends ProofController
 
         $form->handleRequest($request);
         $this->validateScore($form);
+        //TODO don't need proof if not completed
         $this->handleProof($form_proof);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -131,6 +132,8 @@ class ScoreController extends ProofController
             );
         }
 
+        //TODO can't accept scores if not complete
+
         $confirm_proof = $this->confirmProof($request);
         if ($confirm_proof !== null) {
             return $this->render('score/proof_confirm.html.twig', [
@@ -164,6 +167,8 @@ class ScoreController extends ProofController
     public function editAction(Score $score, Request $request)
     {
         $em = $this->getDoctrine()->getManager();
+
+        //TODO if user: on complete we probably need proof
 
         $form = $this->createForm(new ScoreType(true), $score);
         $form_proof = $form->get('proof');
