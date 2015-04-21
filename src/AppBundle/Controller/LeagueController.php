@@ -300,7 +300,7 @@ class LeagueController extends ProofController
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function submitChallenge(League $league, Request $request)
+    public function submitChallengeAction(League $league, Request $request)
     {
         $lm = new LeagueMatch();
         $lm->setLeague($league);
@@ -346,7 +346,7 @@ class LeagueController extends ProofController
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function confirmChallenge($id, $match_id, Request $request)
+    public function confirmChallengeAction($id, $match_id, Request $request)
     {
         $em = $this->getDoctrine()->getManager();
         $lm = $em->getRepository('AppBundle:LeagueMatch')->find($match_id);
