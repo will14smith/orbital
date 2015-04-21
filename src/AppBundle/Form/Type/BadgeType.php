@@ -1,7 +1,6 @@
 <?php
 
-
-namespace AppBundle\Form;
+namespace AppBundle\Form\Type;
 
 use AppBundle\Services\Enum\BadgeCategory;
 use Symfony\Component\Form\AbstractType;

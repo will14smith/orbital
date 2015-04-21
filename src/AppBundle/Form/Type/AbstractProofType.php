@@ -1,13 +1,6 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: will_000
- * Date: 28/03/2015
- * Time: 00:38
- */
 
-namespace AppBundle\Form;
-
+namespace AppBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;

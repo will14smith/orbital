@@ -1,14 +1,12 @@
 <?php
 
-
 namespace AppBundle\Controller;
-
 
 use AppBundle\Entity\Record;
 use AppBundle\Entity\RecordHolder;
 use AppBundle\Entity\RecordHolderPerson;
-use AppBundle\Form\RecordHolderType;
-use AppBundle\Form\RecordType;
+use AppBundle\Form\Type\RecordHolderType;
+use AppBundle\Form\Type\RecordType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;

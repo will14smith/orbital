@@ -6,7 +6,7 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\League;
 use AppBundle\Entity\LeaguePerson;
-use AppBundle\Form\LeaguePersonType;
+use AppBundle\Form\Type\LeaguePersonType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;

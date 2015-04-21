@@ -1,12 +1,10 @@
 <?php
 
-
 namespace AppBundle\Controller;
 
-
 use AppBundle\Entity\Person;
-use AppBundle\Form\PersonType;
-use AppBundle\Form\ReassessType;
+use AppBundle\Form\Type\PersonType;
+use AppBundle\Form\Type\ReassessType;
 use AppBundle\Services\Importing\PersonImportParameters;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;

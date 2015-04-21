@@ -1,13 +1,11 @@
 <?php
 
-
 namespace AppBundle\Controller;
-
 
 use AppBundle\Entity\ProofEntity;
 use AppBundle\Entity\Score;
 use AppBundle\Entity\ScoreProof;
-use AppBundle\Form\ScoreType;
+use AppBundle\Form\Type\ScoreType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\Form\FormError;

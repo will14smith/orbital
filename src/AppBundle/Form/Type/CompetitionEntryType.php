@@ -1,7 +1,6 @@
 <?php
 
-
-namespace AppBundle\Form;
+namespace AppBundle\Form\Type;
 
 use AppBundle\Entity\Round;
 use AppBundle\Services\Enum\BowType;

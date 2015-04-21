@@ -1,13 +1,11 @@
 <?php
 
-
 namespace AppBundle\Controller;
-
 
 use AppBundle\Entity\Competition;
 use AppBundle\Entity\CompetitionEntry;
-use AppBundle\Form\CompetitionEntryType;
-use AppBundle\Form\CompetitionType;
+use AppBundle\Form\Type\CompetitionEntryType;
+use AppBundle\Form\Type\CompetitionType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;

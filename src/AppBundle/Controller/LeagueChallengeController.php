@@ -7,7 +7,7 @@ use AppBundle\Entity\League;
 use AppBundle\Entity\LeagueMatch;
 use AppBundle\Entity\LeagueMatchProof;
 use AppBundle\Entity\ProofEntity;
-use AppBundle\Form\LeagueMatchType;
+use AppBundle\Form\Type\LeagueMatchType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Request;

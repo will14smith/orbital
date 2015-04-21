@@ -1,15 +1,13 @@
 <?php
 
-
 namespace AppBundle\Controller;
-
 
 use AppBundle\Entity\Badge;
 use AppBundle\Entity\BadgeHolder;
 use AppBundle\Entity\BadgeHolderProof;
 use AppBundle\Entity\ProofEntity;
-use AppBundle\Form\BadgeHolderType;
-use AppBundle\Form\BadgeType;
+use AppBundle\Form\Type\BadgeHolderType;
+use AppBundle\Form\Type\BadgeType;
 use AppBundle\Services\Enum\BadgeState;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;

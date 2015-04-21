@@ -1,8 +1,6 @@
 <?php
 
-
-namespace AppBundle\Form;
-
+namespace AppBundle\Form\Type;
 
 use AppBundle\Services\Enum\ScoreZones;
 use AppBundle\Services\Enum\Unit;
