@@ -51,7 +51,7 @@ class HandicapCalculator
                 $this->average($calculator, $range, $target, $handicap);
         }
 
-        return $score;
+        return round($score);
     }
 
     /**
@@ -67,21 +67,28 @@ class HandicapCalculator
     {
         // use a binary search method
         $delta = 32;
-        $point = 50;
+        $handicap = 50;
 
+        $hc_min_score = 0;
         while ($delta >= 1) {
-            $point_score = $this->score($round, $compound, $point);
+            $hc_min_score = $this->score($round, $compound, $handicap);
 
-            if ($score < $point_score) {
-                $point += $delta;
-            } else if ($score > $point_score) {
-                $point -= $delta;
-            } else return $point;
+            if ($score < $hc_min_score) {
+                $handicap += $delta;
+            } else if ($score > $hc_min_score) {
+                $handicap -= $delta;
+            } else {
+                return $handicap;
+            }
 
             $delta /= 2;
         }
 
-        return $point;
+        // fix off by 1 error
+        $hc_min_score = $this->score($round, $compound, $handicap);
+
+        return $score < $hc_min_score ? $handicap + 1 : $handicap;
+
     }
 
     public function handicapForScore(Score $score)

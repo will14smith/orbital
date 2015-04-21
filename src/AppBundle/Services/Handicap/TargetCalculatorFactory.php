@@ -20,7 +20,7 @@ class TargetCalculatorFactory
     {
         switch ($roundTarget->getScoringZones()) {
             case ScoreZones::METRIC:
-                return new MetricTargetCalculatorInterface($compound);
+                return new MetricTargetCalculator($compound);
             default:
                 throw new \Exception("Failed to create target calculator");
         }
