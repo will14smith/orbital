@@ -16,7 +16,7 @@ use Symfony\Component\HttpFoundation\Request;
 class BadgeController extends ProofController
 {
     /**
-     * @Route("/badges", name="badge_list")
+     * @Route("/badges", name="badge_list", methods={"GET"})
      */
     public function indexAction()
     {
@@ -31,7 +31,7 @@ class BadgeController extends ProofController
 
     /**
      * @Security("has_role('ROLE_ADMIN')")
-     * @Route("/badge/create", name="badge_create")
+     * @Route("/badge/create", name="badge_create", methods={"GET", "POST"})
      *
      * @param Request $request
      *
@@ -62,7 +62,7 @@ class BadgeController extends ProofController
 
     /**
      * @Security("is_granted('IS_AUTHENTICATED_REMEMBERED')")
-     * @Route("/badge/claim", name="badge_award")
+     * @Route("/badge/claim", name="badge_award", methods={"GET", "POST"})
      *
      * @param Request $request
      *
@@ -111,7 +111,7 @@ class BadgeController extends ProofController
     }
 
     /**
-     * @Route("/badge/{id}", name="badge_detail")
+     * @Route("/badge/{id}", name="badge_detail", methods={"GET"})
      *
      * @param int $id
      *
@@ -135,7 +135,7 @@ class BadgeController extends ProofController
 
     /**
      * @Security("has_role('ROLE_ADMIN')")
-     * @Route("/badge/{id}/edit", name="badge_edit")
+     * @Route("/badge/{id}/edit", name="badge_edit", methods={"GET", "POST"})
      *
      * @param int $id
      * @param Request $request
@@ -171,7 +171,7 @@ class BadgeController extends ProofController
 
     /**
      * @Security("has_role('ROLE_ADMIN')")
-     * @Route("/badge/{id}/award/{award_id}", name="badge_award_edit")
+     * @Route("/badge/{id}/award/{award_id}", name="badge_award_edit", methods={"GET", "POST"})
      *
      * @param int $id
      * @param int $award_id
@@ -215,7 +215,7 @@ class BadgeController extends ProofController
 
     /**
      * @Security("has_role('ROLE_ADMIN')")
-     * @Route("/badge/{id}/award/{award_id}/state", name="badge_award_state")
+     * @Route("/badge/{id}/award/{award_id}/state", name="badge_award_state", methods={"GET", "POST"})
      *
      * @param int $id
      * @param int $award_id
@@ -274,7 +274,7 @@ class BadgeController extends ProofController
 
     /**
      * @Security("has_role('ROLE_ADMIN')")
-     * @Route("/badge/{id}/award/{award_id}/delete", name="badge_award_delete")
+     * @Route("/badge/{id}/award/{award_id}/delete", name="badge_award_delete", methods={"GET", "POST"})
      *
      * @param int $id
      * @param int $award_id
@@ -289,7 +289,7 @@ class BadgeController extends ProofController
 
     /**
      * @Security("has_role('ROLE_ADMIN')")
-     * @Route("/badge/{id}/delete", name="badge_delete")
+     * @Route("/badge/{id}/delete", name="badge_delete", methods={"GET", "POST"})
      *
      * @param int $id
      * @param Request $request

@@ -15,7 +15,7 @@ use Symfony\Component\HttpFoundation\Request;
 class RecordController extends Controller
 {
     /**
-     * @Route("/records", name="record_list")
+     * @Route("/records", name="record_list", methods={"GET"})
      */
     public function indexAction()
     {
@@ -30,7 +30,7 @@ class RecordController extends Controller
 
     /**
      * @Security("has_role('ROLE_ADMIN')")
-     * @Route("/record/create", name="record_create")
+     * @Route("/record/create", name="record_create", methods={"GET", "POST"})
      *
      * @param Request $request
      *
@@ -60,7 +60,7 @@ class RecordController extends Controller
     }
 
     /**
-     * @Route("/record/{id}", name="record_detail")
+     * @Route("/record/{id}", name="record_detail", methods={"GET"})
      *
      * @param int $id
      *
@@ -84,7 +84,7 @@ class RecordController extends Controller
 
     /**
      * @Security("has_role('ROLE_ADMIN')")
-     * @Route("/record/{id}/edit", name="record_edit")
+     * @Route("/record/{id}/edit", name="record_edit", methods={"GET", "POST"})
      *
      * @param int $id
      * @param Request $request
@@ -120,7 +120,7 @@ class RecordController extends Controller
 
     /**
      * @Security("has_role('ROLE_ADMIN')")
-     * @Route("/record/{id}/award", name="record_award")
+     * @Route("/record/{id}/award", name="record_award", methods={"GET", "POST"})
      *
      * @param int $id
      * @param Request $request
@@ -161,7 +161,7 @@ class RecordController extends Controller
 
     /**
      * @Security("has_role('ROLE_ADMIN')")
-     * @Route("/record/{id}/revoke", name="record_revoke")
+     * @Route("/record/{id}/revoke", name="record_revoke", methods={"GET", "POST"})
      *
      * @param int $id
      * @param Request $request
@@ -175,7 +175,7 @@ class RecordController extends Controller
 
     /**
      * @Security("has_role('ROLE_ADMIN')")
-     * @Route("/record/{id}/delete", name="record_delete")
+     * @Route("/record/{id}/delete", name="record_delete", methods={"GET", "POST"})
      *
      * @param int $id
      * @param Request $request

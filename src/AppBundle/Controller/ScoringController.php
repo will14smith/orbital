@@ -14,7 +14,7 @@ class ScoringController extends Controller
 {
     /**
      * @Security("is_granted('SCORE', score)")
-     * @Route("/score/{id}/input", name="score_input")
+     * @Route("/score/{id}/input", name="score_input", methods={"GET"})
      *
      * @param Score $score
      *
@@ -29,7 +29,7 @@ class ScoringController extends Controller
     }
 
     /**
-     * @Route("/score/{id}/live", name="score_live")
+     * @Route("/score/{id}/live", name="score_live", methods={"GET"})
      *
      * @param Score $score
      *

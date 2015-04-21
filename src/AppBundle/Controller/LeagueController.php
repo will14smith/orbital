@@ -14,7 +14,7 @@ use Symfony\Component\HttpFoundation\Request;
 class LeagueController extends Controller
 {
     /**
-     * @Route("/leagues", name="league_list")
+     * @Route("/leagues", name="league_list", methods={"GET"})
      */
     public function indexAction()
     {
@@ -29,7 +29,7 @@ class LeagueController extends Controller
 
     /**
      * @Security("has_role('ROLE_ADMIN')")
-     * @Route("/league/create", name="league_create")
+     * @Route("/league/create", name="league_create", methods={"GET", "POST"})
      * @param Request $request
      *
      * @return \Symfony\Component\HttpFoundation\Response
@@ -60,7 +60,7 @@ class LeagueController extends Controller
     }
 
     /**
-     * @Route("/league/{id}", name="league_detail")
+     * @Route("/league/{id}", name="league_detail", methods={"GET"})
      *
      * @param int $id
      *
@@ -84,7 +84,7 @@ class LeagueController extends Controller
 
     /**
      * @Security("has_role('ROLE_ADMIN')")
-     * @Route("/league/{id}/edit", name="league_edit")
+     * @Route("/league/{id}/edit", name="league_edit", methods={"GET", "POST"})
      *
      * @param int $id
      * @param Request $request
@@ -121,7 +121,8 @@ class LeagueController extends Controller
 
     /**
      * @Security("has_role('ROLE_ADMIN')")
-     * @Route("/league/{id}/init", name="league_init")
+     * TODO this should be POST
+     * @Route("/league/{id}/init", name="league_init", methods={"GET"})
      *
      * @param int $id
      *
@@ -149,7 +150,7 @@ class LeagueController extends Controller
 
     /**
      * @Security("has_role('ROLE_ADMIN')")
-     * @Route("/league/{id}/delete", name="league_delete")
+     * @Route("/league/{id}/delete", name="league_delete", methods={"GET", "POST"})
      *
      * @param int $id
      * @param Request $request

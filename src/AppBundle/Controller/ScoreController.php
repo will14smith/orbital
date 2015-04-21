@@ -15,7 +15,7 @@ use Symfony\Component\HttpFoundation\Request;
 class ScoreController extends ProofController
 {
     /**
-     * @Route("/scores", name="score_list")
+     * @Route("/scores", name="score_list", methods={"GET"})
      */
     public function indexAction()
     {
@@ -30,7 +30,7 @@ class ScoreController extends ProofController
 
     /**
      * @Security("is_granted('IS_AUTHENTICATED_REMEMBERED')")
-     * @Route("/score/create", name="score_create")
+     * @Route("/score/create", name="score_create", methods={"GET", "POST"})
      *
      * @param Request $request
      *
@@ -82,7 +82,7 @@ class ScoreController extends ProofController
     }
 
     /**
-     * @Route("/score/{id}", name="score_detail")
+     * @Route("/score/{id}", name="score_detail", methods={"GET"})
      *
      * @param int $id
      *
@@ -113,7 +113,7 @@ class ScoreController extends ProofController
 
     /**
      * @Security("has_role('ROLE_ADMIN')")
-     * @Route("/score/{id}/accept", name="score_accept")
+     * @Route("/score/{id}/accept", name="score_accept", methods={"GET", "POST"})
      *
      * @param int $id
      * @param Request $request
@@ -155,7 +155,7 @@ class ScoreController extends ProofController
 
     /**
      * @Security("is_granted('EDIT', score)")
-     * @Route("/score/{id}/edit", name="score_edit")
+     * @Route("/score/{id}/edit", name="score_edit", methods={"GET", "POST"})
      *
      * @param Score $score
      * @param Request $request
@@ -193,7 +193,7 @@ class ScoreController extends ProofController
 
     /**
      * @Security("is_granted('DELETE', score)")
-     * @Route("/score/{id}/delete", name="score_delete")
+     * @Route("/score/{id}/delete", name="score_delete", methods={"GET", "POST"})
      *
      * @param Score $score
      * @param Request $request

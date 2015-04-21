@@ -14,7 +14,7 @@ use Symfony\Component\HttpFoundation\Request;
 class PersonController extends Controller
 {
     /**
-     * @Route("/people", name="person_list")
+     * @Route("/people", name="person_list", methods={"GET"})
      */
     public function indexAction()
     {
@@ -29,7 +29,7 @@ class PersonController extends Controller
 
     /**
      * @Security("has_role('ROLE_ADMIN')")
-     * @Route("/person/import", name="person_import")
+     * @Route("/person/import", name="person_import", methods={"GET", "POST"})
      * @param Request $request
      *
      * @return \Symfony\Component\HttpFoundation\Response
@@ -57,7 +57,7 @@ class PersonController extends Controller
 
     /**
      * @Security("has_role('ROLE_ADMIN')")
-     * @Route("/person/create", name="person_create")
+     * @Route("/person/create", name="person_create", methods={"GET", "POST"})
      * @param Request $request
      *
      * @return \Symfony\Component\HttpFoundation\Response
@@ -86,7 +86,7 @@ class PersonController extends Controller
     }
 
     /**
-     * @Route("/person/{id}", name="person_detail")
+     * @Route("/person/{id}", name="person_detail", methods={"GET"})
      *
      * @param int $id
      *
@@ -132,7 +132,7 @@ class PersonController extends Controller
 
     /**
      * @Security("has_role('ROLE_ADMIN')")
-     * @Route("/person/{id}/edit", name="person_edit")
+     * @Route("/person/{id}/edit", name="person_edit", methods={"GET", "POST"})
      *
      * @param int $id
      * @param Request $request
@@ -169,7 +169,7 @@ class PersonController extends Controller
 
     /**
      * @Security("has_role('ROLE_ADMIN')")
-     * @Route("/person/{id}/reassess", name="person_handicap_reassess")
+     * @Route("/person/{id}/reassess", name="person_handicap_reassess", methods={"GET", "POST"})
      *
      * @param int $id
      * @param Request $request
@@ -207,7 +207,7 @@ class PersonController extends Controller
 
     /**
      * @Security("has_role('ROLE_ADMIN')")
-     * @Route("/person/{id}/delete", name="person_delete")
+     * @Route("/person/{id}/delete", name="person_delete", methods={"GET", "POST"})
      *
      * @param int $id
      * @param Request $request

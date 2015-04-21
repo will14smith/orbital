@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation\Request;
 class RoundController extends Controller
 {
     /**
-     * @Route("/rounds", name="round_list")
+     * @Route("/rounds", name="round_list", methods={"GET"})
      */
     public function indexAction()
     {
@@ -27,7 +27,7 @@ class RoundController extends Controller
 
     /**
      * @Security("has_role('ROLE_ADMIN')")
-     * @Route("/round/create", name="round_create")
+     * @Route("/round/create", name="round_create", methods={"GET", "POST"})
      * @param Request $request
      *
      * @return \Symfony\Component\HttpFoundation\Response
@@ -57,7 +57,7 @@ class RoundController extends Controller
     }
 
     /**
-     * @Route("/round/{id}", name="round_detail")
+     * @Route("/round/{id}", name="round_detail", methods={"GET"})
      * @param integer $id
      *
      * @return \Symfony\Component\HttpFoundation\Response
@@ -80,7 +80,7 @@ class RoundController extends Controller
 
     /**
      * @Security("has_role('ROLE_ADMIN')")
-     * @Route("/round/{id}/edit", name="round_edit")
+     * @Route("/round/{id}/edit", name="round_edit", methods={"GET", "POST"})
      *
      * @param integer $id
      * @param Request $request
@@ -117,7 +117,7 @@ class RoundController extends Controller
 
     /**
      * @Security("has_role('ROLE_ADMIN')")
-     * @Route("/round/{id}/delete", name="round_delete")
+     * @Route("/round/{id}/delete", name="round_delete", methods={"GET", "POST"})
      *
      * @param integer $id
      * @param Request $request

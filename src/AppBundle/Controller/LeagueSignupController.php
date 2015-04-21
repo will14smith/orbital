@@ -15,7 +15,7 @@ use Symfony\Component\HttpFoundation\Request;
 class LeagueSignupController extends Controller {
     /**
      * @Security("is_granted('SIGNUP', league)")
-     * @Route("/league/{id}/signup", name="league_signup")
+     * @Route("/league/{id}/signup", name="league_signup", methods={"GET", "POST"})
      *
      * @param League $league
      * @param Request $request
@@ -67,7 +67,7 @@ class LeagueSignupController extends Controller {
 
     /**
      * @Security("has_role('ROLE_ADMIN')")
-     * @Route("/league/{id}/signup/{signup_id}", name="league_signup_edit")
+     * @Route("/league/{id}/signup/{signup_id}", name="league_signup_edit", methods={"GET", "POST"})
      *
      * @param int $id
      * @param int $signup_id
@@ -109,7 +109,7 @@ class LeagueSignupController extends Controller {
 
     /**
      * @Security("has_role('ROLE_ADMIN')")
-     * @Route("/league/{id}/signup/{signup_id}/delete", name="league_signup_delete")
+     * @Route("/league/{id}/signup/{signup_id}/delete", name="league_signup_delete", methods={"GET", "POST"})
      *
      * @param int $id
      * @param int $signup_id

@@ -15,7 +15,7 @@ use Symfony\Component\HttpFoundation\Request;
 class LeagueChallengeController extends ProofController {
     /**
      * @Security("is_granted('SUBMIT', league)")
-     * @Route("/league/{id}/submit", name="league_submit")
+     * @Route("/league/{id}/submit", name="league_submit", methods={"GET", "POST"})
      *
      * @param League $league
      * @param Request $request
@@ -60,7 +60,7 @@ class LeagueChallengeController extends ProofController {
 
     /**
      * @Security("has_role('ROLE_ADMIN')")
-     * @Route("/league/{id}/match/{match_id}/accept", name="league_match_accept")
+     * @Route("/league/{id}/match/{match_id}/accept", name="league_match_accept", methods={"GET", "POST"})
      *
      * @param int $id
      * @param int $match_id
