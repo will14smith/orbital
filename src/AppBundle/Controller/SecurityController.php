@@ -8,7 +8,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 class SecurityController extends Controller
 {
     /**
-     * @Route("/login", name="login", methods={"GET", "POST"})
+     * @Route("/login", name="login", methods={"GET"})
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function loginAction()
