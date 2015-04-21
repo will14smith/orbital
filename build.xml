@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="Orbital" default="build-dev">
+    <target name="build" depends="offline, pull, composer, cache, migrate, warmup, assets, restart, online">
+        <echo message="Orbital Production Build"/>
+    </target>
+    <target name="build-dev" depends="composer, cache, migrate, assets-dev">
+        <echo message="Orbital Development Build"/>
+    </target>
+
+    <macrodef name="git">
+        <attribute name="command"/>
+        <attribute name="dir" default="${basedir}"/>
+        <element name="args" optional="true"/>
+        <sequential>
+            <echo message="git @{command}"/>
+            <exec executable="git" dir="@{dir}">
+                <arg value="@{command}"/>
+                <args/>
+            </exec>
+        </sequential>
+    </macrodef>
+    <macrodef name="symfony">
+        <attribute name="command"/>
+        <element name="args" optional="true"/>
+        <sequential>
+            <exec executable="${basedir}/app/console">
+                <arg value="@{command}"/>
+                <arg value="--no-interaction"/>
+                <args/>
+            </exec>
+        </sequential>
+    </macrodef>
+
+    <target name="offline" description="Enable maintainance mode">
+        <!-- TODO -->
+    </target>
+    <target name="online" description="Disable maintainance mode">
+        <!-- TODO -->
+    </target>
+
+    <target name="pull" description="Pull code from git repository">
+        <git command="pull">
+            <args>
+                <arg value="origin"/>
+                <arg value="master"/>
+            </args>
+        </git>
+    </target>
+
+    <target name="composer" description="Installing composer dependencies">
+        <exec executable="${basedir}/composer.phar">
+            <arg value="install"/>
+        </exec>
+    </target>
+
+    <target name="cache" description="Clear cache">
+        <symfony command="cache:clear">
+            <args>
+                <arg value="--env=dev"/>
+                <arg value="--no-warmup"/>
+            </args>
+        </symfony>
+        <symfony command="cache:clear">
+            <args>
+                <arg value="--env=prod"/>
+                <arg value="--no-debug"/>
+                <arg value="--no-warmup"/>
+            </args>
+        </symfony>
+    </target>
+    <target name="warmup" description="Warm up cache">
+        <symfony command="cache:warmup">
+            <args>
+                <arg value="--env=prod"/>
+                <arg value="--no-debug"/>
+            </args>
+        </symfony>
+    </target>
+
+    <target name="migrate" description="Migrate database to latest">
+        <symfony command="doctrine:migrations:migrate">
+            <args>
+                <arg value="--no-interaction"/>
+            </args>
+        </symfony>
+    </target>
+
+    <target name="assets" description="Build and minify assets" depends="assets-dev">
+        <!-- TODO: minify + bundle -->
+    </target>
+    <target name="assets-dev" description="Build assets" depends="npm, bower">
+        <exec executable="gulp" dir="${basedir}/assets">
+            <arg value="default"/>
+        </exec>
+    </target>
+    <target name="npm" description="Install npm packages">
+        <exec executable="npm" dir="${basedir}/assets">
+            <arg value="install"/>s
+        </exec>
+    </target>
+    <target name="bower" description="Install bower packers">
+        <exec executable="bower" dir="${basedir}/assets">
+            <arg value="install"/>
+            <arg value="--allow-root"/>
+        </exec>
+    </target>
+
+    <target name="restart" description="Restart all the services">
+        <!-- TODO: socket.io -->
+    </target>
+
+</project>
