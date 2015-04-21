@@ -3,9 +3,9 @@
 namespace AppBundle\Services\Leagues\Algorithms;
 
 use AppBundle\Entity\LeaguePerson;
-use AppBundle\Services\Leagues\LeagueAlgorithm;
+use AppBundle\Services\Leagues\LeagueAlgorithmInterface;
 
-class StealAlgorithm implements LeagueAlgorithm
+class StealAlgorithm implements LeagueAlgorithmInterface
 {
     use RandomInitialiserTrait {
         RandomInitialiserTrait::init as init_random;

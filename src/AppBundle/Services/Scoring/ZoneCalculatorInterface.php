@@ -4,7 +4,7 @@ namespace AppBundle\Services\Scoring;
 
 use AppBundle\Entity\ScoreArrow;
 
-interface ZoneCalculator
+interface ZoneCalculatorInterface
 {
     /**
      * @param ScoreArrow $arrow

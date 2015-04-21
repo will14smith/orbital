@@ -13,7 +13,7 @@ class ZoneManager {
     /**
      * @param string $name
      *
-     * @return ZoneCalculator
+     * @return ZoneCalculatorInterface
      * @throws \Exception
      */
     public static function get($name) {

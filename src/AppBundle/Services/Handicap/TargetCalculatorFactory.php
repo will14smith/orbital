@@ -13,14 +13,14 @@ class TargetCalculatorFactory
      * @param RoundTarget $roundTarget
      * @param boolean $compound
      *
-     * @return TargetCalculator
+     * @return TargetCalculatorInterface
      * @throws \Exception
      */
     public static function create(RoundTarget $roundTarget, $compound)
     {
         switch ($roundTarget->getScoringZones()) {
             case ScoreZones::METRIC:
-                return new MetricTargetCalculator($compound);
+                return new MetricTargetCalculatorInterface($compound);
             default:
                 throw new \Exception("Failed to create target calculator");
         }

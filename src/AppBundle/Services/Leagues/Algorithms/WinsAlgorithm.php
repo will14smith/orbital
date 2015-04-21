@@ -2,9 +2,9 @@
 
 namespace AppBundle\Services\Leagues\Algorithms;
 
-use AppBundle\Services\Leagues\LeagueAlgorithm;
+use AppBundle\Services\Leagues\LeagueAlgorithmInterface;
 
-class WinsAlgorithm implements LeagueAlgorithm {
+class WinsAlgorithm implements LeagueAlgorithmInterface {
     use RandomInitialiserTrait;
     use WinsScorerTrait;
 

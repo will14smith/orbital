@@ -3,9 +3,9 @@
 namespace AppBundle\Services\Scoring\Zones;
 
 use AppBundle\Entity\ScoreArrow;
-use AppBundle\Services\Scoring\ZoneCalculator;
+use AppBundle\Services\Scoring\ZoneCalculatorInterface;
 
-class MetricCalculator implements ZoneCalculator
+class MetricCalculator implements ZoneCalculatorInterface
 {
     /**
      * @param ScoreArrow $arrow

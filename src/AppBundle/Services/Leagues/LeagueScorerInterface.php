@@ -5,7 +5,7 @@ namespace AppBundle\Services\Leagues;
 
 use AppBundle\Entity\LeagueMatch;
 
-interface LeagueScorer {
+interface LeagueScorerInterface {
     /**
      * @param LeagueMatch $match
      *

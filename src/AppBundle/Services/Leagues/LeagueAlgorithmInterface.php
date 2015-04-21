@@ -2,7 +2,7 @@
 
 namespace AppBundle\Services\Leagues;
 
-interface LeagueAlgorithm extends LeagueInitialiser, LeagueScorer {
+interface LeagueAlgorithmInterface extends LeagueInitialiserInterface, LeagueScorerInterface {
     public function getKey();
     public function getName();
 }

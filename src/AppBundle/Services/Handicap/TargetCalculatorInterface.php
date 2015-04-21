@@ -4,7 +4,7 @@
 namespace AppBundle\Services\Handicap;
 
 
-interface TargetCalculator
+interface TargetCalculatorInterface
 {
     function calculate($sigma, $target);
 }

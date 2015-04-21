@@ -5,7 +5,7 @@ namespace AppBundle\Services\Leagues;
 
 use AppBundle\Entity\LeaguePerson;
 
-interface LeagueInitialiser {
+interface LeagueInitialiserInterface {
     /**
      * @param LeaguePerson[] $people
      *

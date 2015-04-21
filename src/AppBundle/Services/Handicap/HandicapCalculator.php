@@ -20,7 +20,7 @@ class HandicapCalculator
         return $pinhole * $f;
     }
 
-    private function average(TargetCalculator $calculator, $range, $target, $handicap)
+    private function average(TargetCalculatorInterface $calculator, $range, $target, $handicap)
     {
         $sigma = $this->sigma($range, $handicap);
 

@@ -4,7 +4,7 @@
 namespace AppBundle\Services\Handicap;
 
 
-class MetricTargetCalculator implements TargetCalculator
+class MetricTargetCalculator implements TargetCalculatorInterface
 {
     /**
      * @var boolean

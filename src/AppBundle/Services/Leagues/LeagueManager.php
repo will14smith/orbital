@@ -20,7 +20,7 @@ class LeagueManager
         $this->doctrine = $doctrine;
     }
 
-    public function addAlgorithm(LeagueAlgorithm $algorithm)
+    public function addAlgorithm(LeagueAlgorithmInterface $algorithm)
     {
         $key = $algorithm->getKey();
 
@@ -34,7 +34,7 @@ class LeagueManager
     /**
      * @param string $key
      *
-     * @return LeagueAlgorithm
+     * @return LeagueAlgorithmInterface
      * @throws \Exception if algo not found
      */
     public function getAlgorithm($key)
@@ -56,7 +56,7 @@ class LeagueManager
         $algos = [];
 
         foreach ($this->algos as $key => $class) {
-            /** @var LeagueAlgorithm $algo */
+            /** @var LeagueAlgorithmInterface $algo */
             $algo = new $class;
 
             $algos[$key] = $algo->getName();

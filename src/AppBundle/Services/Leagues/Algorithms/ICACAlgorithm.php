@@ -2,9 +2,9 @@
 
 namespace AppBundle\Services\Leagues\Algorithms;
 
-use AppBundle\Services\Leagues\LeagueAlgorithm;
+use AppBundle\Services\Leagues\LeagueAlgorithmInterface;
 
-class ICACAlgorithm implements LeagueAlgorithm
+class ICACAlgorithm implements LeagueAlgorithmInterface
 {
     use RandomInitialiserTrait;
     use ICACScorerTrait;
