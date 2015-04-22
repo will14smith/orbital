@@ -11,12 +11,12 @@
         </p>
     {% endif %}
 
-    {% include 'competition/_detail.html.twig' with { 'competition': competition } %}
+    {% include ':competition:_detail.html.twig' with { 'competition': competition } %}
 
     <h2>Entries</h2>
     <ul class="list">
         {% for entry in competition.entries %}
-            <li>{% include 'competition/_list_entry.html.twig' with { 'entry': entry, 'competition': competition } %}</li>
+            <li>{% include ':competition:_detail.html.twig' with { 'entry': entry, 'competition': competition } %}</li>
         {% else %}
             <li>
                 <span class="text">

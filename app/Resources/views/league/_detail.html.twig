@@ -1,0 +1,22 @@
+<dl>
+    <dt>Open Date</dt>
+    <dd>{{ league.openDate|date('d/m/Y H:i') }}</dd>
+    {% if league.closeDate %}
+        <dt>Close Date</dt>
+        <dd>{{ league.closeDate|date('d/m/Y H:i') }}</dd>
+    {% endif %}
+    <dt>Rounds</dt>
+    {% if league.rounds|length > 0 %}
+        <dd>
+            {% for round in league.rounds %}
+                <a href="{{ url('round_detail', { 'id': round.id }) }}">{{ round.name }}</a>
+                {% if not loop.last %}
+                    <span>,&nbsp;</span>
+                {% endif %}
+            {% endfor %}
+        </dd>
+    {% else %}
+        <dd>Any</dd>
+    {% endif %}
+    {# TODO gender/skill/bowtype limits #}
+</dl>

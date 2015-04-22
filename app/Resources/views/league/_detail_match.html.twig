@@ -1,0 +1,27 @@
+<span class="text shrink">
+    {{ match.dateChallenged|date('d/m/Y H:i') }}
+</span>
+<span class="text">
+    {% if match.accepted and match.result %}
+        <strong>{{ match.challenger }}</strong>
+        {% else %}
+            {{ match.challenger }}
+    {% endif %}
+</span>
+<span class="text">
+        {% if match.accepted and not match.result %}
+            <strong>{{ match.challengee }}</strong>
+        {% else %}
+            {{ match.challengee }}
+        {% endif %}
+</span>
+<span class="text shrink">
+    {{ match.round.name }}
+</span>
+{% if is_granted('ROLE_ADMIN') and not match.dateConfirmed %}
+    <span class="actions">
+        <a href="{{ url('league_match_accept', { 'id': league.id, 'match_id': match.id }) }}">
+            <i class="fa fa-check"></i>
+        </a>
+    </span>
+{% endif %}
