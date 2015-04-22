@@ -4,11 +4,12 @@ php:
   - 5.5
   - 5.6
   - hhvm
-  - nightly
 
 addons:
   code_climate:
     repo_token: 898149e74d4bf6bfd0ba331b38cc2d7f9aa01d582d594a821330937eeaf5e0b1
+
+install: composer install
 
 after_script:
   - vendor/codeclimate/php-test-reporter/composer/bin/test-reporter
