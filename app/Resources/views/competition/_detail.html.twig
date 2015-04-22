@@ -1,0 +1,21 @@
+<dl>
+    <dt>Location</dt>
+    <dd>{{ competition.location|default('Unknown') }}</dd>
+    <dt>Date</dt>
+    <dd>{{ competition.date|date('d/m/Y H:i') }}</dd>
+    <dt>Rounds</dt>
+    <dd>
+        {% for round in competition.rounds %}
+            <a href="{{ url('round_detail', { 'id': round.id }) }}">{{ round.name }}</a>
+            {% if not loop.last %}
+                <span>,&nbsp;</span>
+            {% endif %}
+        {% endfor %}
+    </dd>
+    {% if competition.bossCount and competition.targetCount %}
+        <dt>Total Spaces</dt>
+        <dd>{{ competition.totalSpaces }}</dd>
+        <dt>Spaces Left</dt>
+        <dd>{{ competition.freeSpaces }}</dd>
+    {% endif %}
+</dl>

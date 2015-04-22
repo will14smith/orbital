@@ -11,59 +11,12 @@
         </p>
     {% endif %}
 
-    <dl>
-        <dt>Location</dt>
-        <dd>{{ competition.location|default('Unknown') }}</dd>
-        <dt>Date</dt>
-        <dd>{{ competition.date|date('d/m/Y H:i') }}</dd>
-        <dt>Rounds</dt>
-        <dd>
-            {% for round in competition.rounds %}
-                <a href="{{ url('round_detail', { 'id': round.id }) }}">{{ round.name }}</a>
-                {% if not loop.last %}
-                    <span>,&nbsp;</span>
-                {% endif %}
-            {% endfor %}
-        </dd>
-        {% if competition.bossCount and competition.targetCount %}
-            <dt>Total Spaces</dt>
-            <dd>{{ competition.totalSpaces }}</dd>
-            <dt>Spaces Left</dt>
-            <dd>{{ competition.freeSpaces }}</dd>
-        {% endif %}
-    </dl>
+    {% include 'competition/_detail.html.twig' with { 'competition': competition } %}
 
     <h2>Entries</h2>
     <ul class="list">
         {% for entry in competition.entries %}
-            <li>
-                {% if entry.bossNumber and entry.targetNumber %}
-                    <span class="text shrink">{{ entry.bossNumber }}{{ entry.targetNumber|toLetter }}</span>
-                {% else %}
-                    <span class="text shrink">-</span>
-                {% endif %}
-                {% if entry.person %}
-                    <a href="{{ url('person_detail', { 'id': entry.person.id }) }}">
-                        {{ entry.person.name }}
-                    </a>
-                {% else %}
-                    <a href="{{ url('club_detail', { 'id': entry.club.id }) }}">
-                        <em>{{ entry.club.name }}</em>
-                    </a>
-                {% endif %}
-                {% if is_granted('ROLE_ADMIN') %}
-                    <span class="actions">
-                        {% if not entry.dateApproved %}
-                            <a href="{{ url('competition_entry_approve', { 'id': competition.id, 'entry_id': entry.id }) }}">
-                                <i class="fa fa-check"></i>
-                            </a>
-                        {% endif %}
-                        <a href="{{ url('competition_entry_edit', { 'id': competition.id, 'entry_id': entry.id }) }}">
-                            <i class="fa fa-pencil"></i>
-                        </a>
-                    </span>
-                {% endif %}
-            </li>
+            <li>{% include 'competition/_list_entry.html.twig' with { 'entry': entry, 'competition': competition } %}</li>
         {% else %}
             <li>
                 <span class="text">

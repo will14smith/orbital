@@ -1,0 +1,26 @@
+{% if entry.bossNumber and entry.targetNumber %}
+    <span class="text shrink">{{ entry.bossNumber }}{{ entry.targetNumber|toLetter }}</span>
+{% else %}
+    <span class="text shrink">-</span>
+{% endif %}
+{% if entry.person %}
+    <a href="{{ url('person_detail', { 'id': entry.person.id }) }}">
+        {{ entry.person.name }}
+    </a>
+{% else %}
+    <a href="{{ url('club_detail', { 'id': entry.club.id }) }}">
+        <em>{{ entry.club.name }}</em>
+    </a>
+{% endif %}
+{% if is_granted('ROLE_ADMIN') %}
+    <span class="actions">
+        {% if not entry.dateApproved %}
+            <a href="{{ url('competition_entry_approve', { 'id': competition.id, 'entry_id': entry.id }) }}">
+                <i class="fa fa-check"></i>
+            </a>
+        {% endif %}
+        <a href="{{ url('competition_entry_edit', { 'id': competition.id, 'entry_id': entry.id }) }}">
+            <i class="fa fa-pencil"></i>
+        </a>
+    </span>
+{% endif %}
