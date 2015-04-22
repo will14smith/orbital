@@ -147,9 +147,7 @@ class HandicapCalculatorTest extends \PHPUnit_Framework_TestCase
             $results[] = [$score[0], $score[1], $score[3], $score[2]];
             $results[] = [$score[0], $score[1], $score[3] - 1, $score[2] + 1];
         }
-
-        var_dump($results);
-
+        
         return $results;
     }
 

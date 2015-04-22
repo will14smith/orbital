@@ -9,7 +9,7 @@
 /composer.phar
 /vendor/
 /web/bundles/
-
+/build/
 /.idea/
 
 bower_components/
