@@ -11,5 +11,7 @@ addons:
 
 install: composer install
 
+script: phpunit --coverage-clover build/logs/clover.xml
+
 after_script:
   - vendor/codeclimate/php-test-reporter/composer/bin/test-reporter
