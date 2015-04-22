@@ -58,7 +58,7 @@ class HandicapManager
             $handicap->setScore($score);
         }
 
-        if ($new_hc < $old_hc->getHandicap() || !$old_hc) {
+        if (!$old_hc || $new_hc < $old_hc->getHandicap()) {
             $handicap->setPerson($person);
             $handicap->setDate(new \DateTime('now'));
             $handicap->setHandicap($new_hc);
@@ -83,7 +83,7 @@ class HandicapManager
         }, $scores);
 
         // initial handicap
-        $handicap = ($handicaps[0] + $handicaps[1] + $handicaps[2]) / 3;
+        $handicap = ceil(($handicaps[0] + $handicaps[1] + $handicaps[2]) / 3);
 
         // average it up for the remainder
         for ($i = 3; $i < count($handicaps); $i++) {
@@ -106,18 +106,13 @@ class HandicapManager
         }
 
         // take all scores since $start_date
-        /** @var QueryBuilder $score_query */
-        $score_query = $this->doctrine->getRepository('AppBundle:Score')
-            ->createQueryBuilder('s');
+        $scores = $this->doctrine->getRepository('AppBundle:Score')
+            ->getScoresByPersonBetween($person, $start_date, $end_date);
 
-        /** @var Score[] $scores */
-        $scores = $score_query
-            ->addSelect('s')
-            ->where('s.date_shot >= :start_date')
-            ->andWhere('s.date_shot <= :end_date')
-            ->setParameter('start_date', $start_date, Type::DATE)
-            ->setParameter('end_date', $end_date, Type::DATE)
-            ->getQuery()->getResult();
+        if(count($scores) < 3) {
+            //TODO log this?
+            return;
+        }
 
         // compute handicaps
         $handicaps = array_map(function ($score) {
@@ -127,7 +122,7 @@ class HandicapManager
         // take lowest 3 HC and average
         sort($handicaps);
         $hc_scores = array_slice($handicaps, 0, 3);
-        $hc = array_sum($hc_scores) / count($hc_scores);
+        $hc = ceil(array_sum($hc_scores) / count($hc_scores));
 
         $handicap = new PersonHandicap();
 

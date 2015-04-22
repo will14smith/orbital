@@ -10,7 +10,13 @@ abstract class BaseTestCase extends \PHPUnit_Framework_TestCase {
     }
 
     protected function getDoctrine() {
-        return $this->getMockBuilder('\Doctrine\Bundle\DoctrineBundle\Registry')->getMock();
+        $doctrine = $this->getMockBuilder('\Doctrine\Bundle\DoctrineBundle\Registry')->getMock();
+        $entityManager = $this->getMockBuilder('\Doctrine\Common\Persistence\ObjectManager')->getMock();
+
+        $doctrine->expects($this->any())
+            ->method('getManager')->willReturn($entityManager);
+
+        return $doctrine;
     }
     protected function getRepository($doctrine, $name, $type = null) {
         if($type === null) {
