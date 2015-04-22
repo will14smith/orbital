@@ -16,35 +16,8 @@
 
     <div id="secondary" flex-gt-md="25" role="complementary">
         {% block sidebar %}
-            <div class="widget">
-                {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
-                    <h3 class="widget-title">{{ app.user.displayName }}</h3>
-                    <ul>
-                        <li><a href="{{ url('person_detail', { 'id': app.user.id }) }}">View my Profile</a></li>
-                        <li><a href="{{ url('logout') }}">Logout</a></li>
-                    </ul>
-                {% else %}
-                    <h3 class="widget-title">Login</h3>
-
-                    <ul>
-                        <li><a href="{{ url('login') }}">Login</a></li>
-                        <li>TODO: A form</li>
-                    </ul>
-                {% endif %}
-            </div>
-
-            {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
-                <div class="widget">
-                    <h3 class="widget-title">Quick Tools</h3>
-                    <ul>
-                        {% if is_granted('ROLE_ADMIN') %}
-                            <li><a href="{{ url('roundup') }}">Roundup</a></li>
-                        {% endif %}
-                        <li><a href="{{ url('score_create') }}">Submit Score</a></li>
-                        <li><a href="{{ url('badge_award') }}">Claim Badge</a></li>
-                    </ul>
-                </div>
-            {% endif %}
+            {% include '_auth.html.twig' %}
+            {% include '_tools.html.twig' %}
         {% endblock %}
     </div>
 {% endblock %}

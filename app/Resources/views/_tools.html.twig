@@ -1,0 +1,12 @@
+{% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+    <div class="widget">
+        <h3 class="widget-title">Quick Tools</h3>
+        <ul>
+            {% if is_granted('ROLE_ADMIN') %}
+                <li><a href="{{ url('roundup') }}">Roundup</a></li>
+            {% endif %}
+            <li><a href="{{ url('score_create') }}">Submit Score</a></li>
+            <li><a href="{{ url('badge_award') }}">Claim Badge</a></li>
+        </ul>
+    </div>
+{% endif %}
