@@ -54,7 +54,7 @@ class HandicapListener
         if (!$score->getComplete()) {
             return false;
         }
-        if (!$score->getDateAccepted()) {
+        if (!$score->getDateAccepted() || $score->getDateAccepted() > new \DateTime('now')) {
             return false;
         }
 

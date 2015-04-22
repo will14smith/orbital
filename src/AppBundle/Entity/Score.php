@@ -321,16 +321,15 @@ class Score
     /**
      * Set date_accepted
      *
-     * @deprecated
-     *
      * @param \DateTime $dateAccepted
      *
      * @return Score
-     * @throws \Exception
      */
-    public function setDateAccepted($dateAccepted)
+    public function setDateAccepted(\DateTime $dateAccepted = null)
     {
-        throw new \Exception("this function does nothing...");
+        $this->date_accepted = $dateAccepted;
+
+        return $this;
     }
 
     /**
