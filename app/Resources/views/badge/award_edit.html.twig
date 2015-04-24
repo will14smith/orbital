@@ -1,4 +1,5 @@
 {% extends '::base_sidebar.html.twig' %}
+{% from ':macro:proof.html.twig' import display_proof %}
 
 {% block title %}
     Edit awarded Badge
@@ -7,7 +8,7 @@
     {{ form_start(form) }}
     {{ form_widget(form) }}
 
-    {% include '::proof.html.twig' with { 'proofs': holder.proof } only %}
+    {{ display_proof(holder.proof)  }}
 
     <input type="submit" value="Save"/>
     {{ form_end(form) }}

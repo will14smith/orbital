@@ -1,0 +1,17 @@
+{% import ':macro:display.html.twig' as display %}
+
+<ul class="list">
+    {% for record in records %}
+        {% set holder = record.recordHolder %}
+        <li>
+            <span class="text shrink">{{ holder.date|date('d/m/Y') }}</span>
+            {% if holder.dateBroken %}
+                <span class="text shrink">{{ holder.dateBroken|date('d/m/Y') }}</span>
+            {% else %}
+                <span class="text shrink">Current</span>
+            {% endif %}
+            {{ display.record(holder.record) }}
+            <span class="text shrink">{{ holder.score }}</span>
+        </li>
+    {% endfor %}
+</ul>

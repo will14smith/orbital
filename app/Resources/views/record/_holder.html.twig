@@ -1,0 +1,14 @@
+{% import ':macro:display.html.twig' as display %}
+
+{% for person in people %}
+    {{ display.person(person.person) }}
+    <span>&nbsp;-&nbsp;</span>
+    {% if person.score %}
+        {{ display.score(person.score) }}
+    {% else %}
+        {{ person.scoreValue }}
+    {% endif %}
+    {% if not loop.last %}
+        <span>,&nbsp;</span>
+    {% endif %}
+{% endfor %}

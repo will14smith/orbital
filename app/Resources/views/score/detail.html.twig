@@ -1,8 +1,9 @@
 {% extends 'base_sidebar.html.twig' %}
+{% import ':macro:display.html.twig' as display %}
+{% from ':macro:proof.html.twig' import display_proof %}
 
 {% block title %}
-    <a href="{{ url('person_detail', { 'id': score.person.id }) }}">{{ score.person.name }}</a> -
-    <a href="{{ url('round_detail', { 'id': score.round.id }) }}">{{ score.round.name }}</a>
+    {{ display.person(score.person) }} - {{ display.round(score.round) }}
 {% endblock %}
 
 {% block body %}
@@ -16,43 +17,10 @@
         </div>
     {% endif %}
 
-    <dl>
-        <dt>Date Shot</dt>
-        <dd>
-            {{ score.dateShot|date('d/m/Y H:i') }}
-            {% if score.competition %}
-                in Competition
-            {% endif %}
-            {% if not score.complete %}
-                (in progress)
-            {% endif %}
-        </dd>
-        <dt>Skill / Bow</dt>
-        <dd>
-            {{ score.skill|enum('skill') }} {{ score.bowtype|enum('bowtype') }}
-        </dd>
-        <dt>Score</dt>
-        <dd>{{ score.score }}</dd>
-        <dt>Golds</dt>
-        <dd>{{ score.golds }}</dd>
-        <dt>Hits</dt>
-        <dd>{{ score.hits }}</dd>
-        {% if score.complete %}
-            <dt>Handicap</dt>
-            <dd>{{ handicap }}</dd>
-            <dt>Date Accepted</dt>
-            <dd>
-                {% if score.dateAccepted %}
-                    accepted {{ score.dateAccepted|date('d/m/Y') }}
-                {% else %}
-                    not yet accepted
-                {% endif %}
-            </dd>
-        {% endif %}
-    </dl>
+    {% include ':score:_detail.html.twig' with { 'score': score, 'handicap': handicap } only %}
 
     {% if is_granted('ROLE_ADMIN') %}
-        {% include '::proof.html.twig' with { 'proofs': score.proof } only %}
+        {{ display_proof(score.proof) }}
     {% endif %}
 {% endblock %}
 

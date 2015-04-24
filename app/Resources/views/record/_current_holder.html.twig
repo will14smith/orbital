@@ -1,0 +1,20 @@
+{% import ':macro:display.html.twig' as display %}
+
+{% if holder %}
+    <div flex>
+        This record was set
+        on {{ holder.date|date('d/m/Y') }}
+        at {{ holder.location }}
+        and is held by
+        {% include ':record:_holder.html.twig' with { 'people': holder.people } only %}
+        {% if record.numHolders > 1 %}
+            <span>
+                with a total score of <strong>{{ holder.score }}</strong>
+            </span>
+        {% endif %}
+    </div>
+{% else %}
+    <p>
+        Nobody currently holds this record!
+    </p>
+{% endif %}

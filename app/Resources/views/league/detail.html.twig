@@ -11,47 +11,12 @@
         </p>
     {% endif %}
 
-    <dl>
-        <dt>Open Date</dt>
-        <dd>{{ league.openDate|date('d/m/Y H:i') }}</dd>
-        {% if league.closeDate %}
-            <dt>Close Date</dt>
-            <dd>{{ league.closeDate|date('d/m/Y H:i') }}</dd>
-        {% endif %}
-        <dt>Rounds</dt>
-        {% if league.rounds|length > 0 %}
-            <dd>
-                {% for round in league.rounds %}
-                    <a href="{{ url('round_detail', { 'id': round.id }) }}">{{ round.name }}</a>
-                    {% if not loop.last %}
-                        <span>,&nbsp;</span>
-                    {% endif %}
-                {% endfor %}
-            </dd>
-        {% else %}
-            <dd>Any</dd>
-        {% endif %}
-        {# TODO gender/skill/bowtype limits #}
-    </dl>
+    {% include ':league:_detail.html.twig' with { 'league': league } %}
 
     <h2>Standings</h2>
     <ul class="list">
         {% for person in league.people %}
-            <li>
-                <span class="text shrink">
-                    {{ loop.index }}
-                </span>
-                <span class="text">
-                    {{ person.person.name }} {#TODO link#}
-                </span>
-                <span class="text shrink">
-                    {# TODO green-up, red-down #}
-                    {{ person.initialPosition - loop.index }}
-                </span>
-                <span class="text shrink">
-                    {{ person.points }}
-                </span>
-            </li>
+            <li>{% include ':league:_detail_standing.html.twig' with { 'person': person, 'index': loop.index } %}</li>
         {% else %}
             <li><span class="text">Nobody has entered this league yet!</span></li>
         {% endfor %}
@@ -60,39 +25,9 @@
     <h2>Matches</h2>
     <ul class="list">
         {% for match in league.matches %}
-            <li>
-                <span class="text shrink">
-                    {{ match.dateChallenged|date('d/m/Y H:i') }}
-                </span>
-                <span class="text">
-                    {% if match.accepted and match.result %}
-                    <strong>
-                        {% endif %}
-                        {{ match.challenger }}
-                        {% if match.accepted and match.result %}
-                    </strong>
-                    {% endif %}
-                </span>
-                <span class="text">
-                    {% if match.accepted and not match.result %}
-                    <strong>
-                        {% endif %}
-                        {{ match.challengee }}
-                        {% if match.accepted and not match.result %}
-                    </strong>
-                    {% endif %}
-                </span>
-                <span class="text shrink">
-                    {{ match.round.name }}
-                </span>
-                {% if is_granted('ROLE_ADMIN') and not match.dateConfirmed %}
-                <span class="actions">
-                    <a href="{{ url('league_match_accept', { 'id': league.id, 'match_id': match.id }) }}">
-                        <i class="fa fa-check"></i>
-                    </a>
-                </span>
-                {% endif %}
-            </li>
+            <li>{% include ':league:_detail_match.html.twig' with { 'league': league, 'match': match } %}</li>
+        {% else %}
+            <li><span class="text">There have been no matches yet!</span></li>
         {% endfor %}
     </ul>
 {% endblock %}

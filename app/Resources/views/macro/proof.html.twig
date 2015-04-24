@@ -1,0 +1,32 @@
+{% macro display_proof(proofs, expand = true) %}
+    {% from ':macro:display.html.twig' import person %}
+    {% import _self as self %}
+    <div{% if expand and proofs|length > 0 %} orbital-collapse="Proof"{% endif %}>
+        <h2>Proof</h2>
+        <ul class="list">
+            {% for proof in proofs %}
+                <li>
+                    {{ self.display_item(proof) }}
+                    {{ person(proof.person, 'shrink') }}
+                </li>
+            {% else %}
+                <li><span class="text">There is no proof.</span></li>
+            {% endfor %}
+        </ul>
+    </div>
+{% endmacro %}
+
+{% macro display_item(proof) %}
+    {% if proof.notes %}
+        <span class="text">{{ proof.notes }}</span>
+    {% elseif proof.voucher %}
+        <span class="text shrink">Vouched for by</span>
+        <a href="{{ url('person_detail', {'id': proof.voucher.id}) }}" target="_blank">
+            {{ proof.voucher.name }}
+        </a>
+    {% else %}
+        <a href="{{ asset('uploads/' ~ proof.imageName) }}" target="_blank">
+            View Image
+        </a>
+    {% endif %}
+{% endmacro %}

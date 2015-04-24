@@ -1,0 +1,24 @@
+{% import ':macro:display.html.twig' as display %}
+
+{% if entry.bossNumber and entry.targetNumber %}
+    <span class="text shrink">{{ entry.bossNumber }}{{ entry.targetNumber|toLetter }}</span>
+{% else %}
+    <span class="text shrink">-</span>
+{% endif %}
+{% if entry.person %}
+    {{ display.person(entry.person) }}
+{% else %}
+    {{ display.club(entry.club, 'text-italic') }}
+{% endif %}
+{% if is_granted('ROLE_ADMIN') %}
+    <span class="actions">
+        {% if not entry.dateApproved %}
+            <a href="{{ url('competition_entry_approve', { 'id': competition.id, 'entry_id': entry.id }) }}">
+                <i class="fa fa-check"></i>
+            </a>
+        {% endif %}
+        <a href="{{ url('competition_entry_edit', { 'id': competition.id, 'entry_id': entry.id }) }}">
+            <i class="fa fa-pencil"></i>
+        </a>
+    </span>
+{% endif %}

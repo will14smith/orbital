@@ -1,4 +1,5 @@
 {% extends '::base_sidebar.html.twig' %}
+{% import ':macro:display.html.twig' as display %}
 
 {% block title %}
     {{ badge.name }}
@@ -15,9 +16,7 @@
             <li>
                 {# todo show state: unconfirmed, confirmed, awaiting delivery, done #}
                 <span class="text shrink">{{ holder.dateAwarded|date('d/m/Y') }}</span>
-                <a href="{{ url('person_detail', { 'id': holder.person.id }) }}">
-                    {{ holder.person }}
-                </a>
+                {{ display.person(holder.person) }}
                 {% if is_granted('ROLE_ADMIN') %}
                     <span class="actions">
                         {% include '::badge/state.html.twig' with { 'badge': holder } only %}

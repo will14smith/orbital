@@ -6,82 +6,16 @@
 
 {% block body %}
     {% set holder = record.currentHolder %}
-    {% if holder %}
-        <p>
-            This record was set
-            on {{ holder.date|date('d/m/Y') }}
-            at {{ holder.location }}
-            and is held by:
-        </p>
-        <ul class="list">
-            {% for person in holder.people %}
-                <li>
-                    <a href="{{ url('person_detail', {'id': person.person.id}) }}">{{ person.person.name }}</a>
-                    {% if person.score %}
-                        <a href="{{ url('score_detail', { 'id': person.score.id }) }}" class="shrink">
-                            {{ person.scoreValue }}
-                        </a>
-                    {% else %}
-                        <span class="text shrink">{{ person.scoreValue }}</span>
-                    {% endif %}
-                </li>
-            {% endfor %}
-            {% if record.numHolders > 1 %}
-                <li>
-                    <span class="text">Total</span>
-                    <span class="text shrink">{{ holder.score }}</span>
-                </li>
-            {% endif %}
-        </ul>
-    {% else %}
-        <p>
-            Nobody currently holds this record!
-        </p>
-    {% endif %}
 
-    <p>To break this record you must shoot a round that matches the following requirements:</p>
-    <ul class="list">
-        <li><span class="text">shoot a {{ record.round.name }} in a competition</span></li>
-        {% if record.skill == Enum.skill.novice %}
-            <li><span class="text">be a novice</span></li>
-        {% endif %}
-        {% if record.gender %}
-            <li><span class="text">be {{ record.gender|enum('gender') }}</span></li>
-        {% endif %}
-        {% if record.bowtype %}
-            <li><span class="text">shoot {{ record.bowtype|enum('bowtype') }}</span></li>
-        {% endif %}
-        {% if record.numHolders %}
-            <li><span class="text">shoot in a team of {{ record.numHolders }} (or fewer)</span></li>
-        {% endif %}
-    </ul>
+    {% include ':record:_current_holder.html.twig' with { 'record': record, 'holder': holder } only %}
+    {% include ':record:_requirements.html.twig' with { 'record': record } only %}
 
     {% if record.holders|length > 1 %}
         <h2>Past Holders</h2>
         <ul class="list">
             {% for holder in record.holders[1:] %}
                 <li>
-                    <span class="text shrink">{{ holder.date|date('d/m/Y') }}</span>
-                    <span class="text shrink">{{ holder.dateBroken|date('d/m/Y') }}</span>
-                    <span class="text">
-                        {% for person in holder.people %}
-                            <a href="{{ url('person_detail', {'id': person.person.id}) }}">{{ person.person.name }}</a>
-                            <span>&nbsp;-&nbsp;</span>
-                            {% if person.score %}
-                                <a href="{{ url('score_detail', { 'id': person.score.id }) }}" class="shrink">
-                                    {{ person.scoreValue }}
-                                </a>
-                            {% else %}
-                                {{ person.scoreValue }}
-                            {% endif %}
-                            {% if not loop.last %}
-                                <span>,&nbsp;</span>
-                            {% endif %}
-                        {% endfor %}
-                    </span>
-                    {% if record.numHolders > 1 %}
-                        <span class="text shrink">{{ holder.score }}</span>
-                    {% endif %}
+                    {% include ':record:_past_holder.html.twig' with { 'record': record, 'holder': holder } only %}
                 </li>
             {% endfor %}
         </ul>

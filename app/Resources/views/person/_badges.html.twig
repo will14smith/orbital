@@ -1,0 +1,15 @@
+{% import ':macro:display.html.twig' as display %}
+
+<ul class="list">
+    {% for badge in badges %}
+        <li>
+            <span class="text shrink">{{ badge.dateAwarded|date('d/m/Y') }}</span>
+            {{ display.badge(badge.badge) }}
+            {% include ':badge:state.html.twig' with { 'badge': badge } only %}
+        </li>
+    {% endfor %}
+    <li>
+        {# TODO accordian #}
+        <a href="#" class="text-muted">View all Badges</a>
+    </li>
+</ul>

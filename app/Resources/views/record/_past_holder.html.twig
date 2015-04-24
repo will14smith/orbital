@@ -1,0 +1,8 @@
+<span class="text shrink">{{ holder.date|date('d/m/Y') }}</span>
+<span class="text shrink">{{ holder.dateBroken|date('d/m/Y') }}</span>
+<span class="text">
+    {% include ':record:_holder.html.twig' with { 'people': holder.people } only %}
+</span>
+{% if record.numHolders > 1 %}
+    <span class="text shrink">{{ holder.score }}</span>
+{% endif %}

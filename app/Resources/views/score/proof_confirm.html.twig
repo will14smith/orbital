@@ -1,4 +1,6 @@
 {% extends '::base_sidebar.html.twig' %}
+{% import ':macro:display.html.twig' as display %}
+{% from ':macro:proof.html.twig' import display_proof %}
 
 {% block title %}
     Confirm Score
@@ -11,16 +13,16 @@
     </p>
     <dl>
         <dt>Person</dt>
-        <dd>{{ score.person.name }}</dd>
+        <dd>{{ display.person(score.person) }}</dd>
         <dt>Round</dt>
-        <dd>{{ score.round.name }}</dd>
+        <dd>{{ display.round(score.round) }}</dd>
         <dt>Score</dt>
         <dd>{{ score.score }}</dd>
         <dt>Date Shot</dt>
         <dd>{{ score.dateShot|date('d/m/Y') }}</dd>
     </dl>
 
-    {% include '::proof.html.twig' with { 'proofs': score.proof, 'expand': false } only %}
+    {{ display_proof(score.proof, false) }}
 
     <div>
         <input type="submit" value="Confirm"> | <a href="{{ url('score_detail', { id: score.id }) }}">Cancel</a>

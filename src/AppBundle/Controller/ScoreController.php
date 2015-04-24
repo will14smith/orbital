@@ -133,7 +133,7 @@ class ScoreController extends ProofController
         //TODO can't accept scores if not complete
 
         $confirm_proof = $this->confirmProof($request);
-        if ($confirm_proof !== null) {
+        if ($confirm_proof !== false) {
             return $this->render('score/proof_confirm.html.twig', [
                 'form' => $confirm_proof,
                 'score' => $score

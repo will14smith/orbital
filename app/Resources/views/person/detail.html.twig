@@ -8,121 +8,19 @@
 {% endblock %}
 
 {% block body %}
-    <dl>
-        {% if is_granted('ROLE_ADMIN') %}
-            {% if person.agbNumber %}
-                <dt class="admin">ArcheryGB #</dt>
-                <dd>{{ person.agbNumber }}</dd>
-            {% endif %}
-            {% if person.cid %}
-                <dt class="admin">CID</dt>
-                <dd>{{ person.cid }}</dd>
-            {% endif %}
-            {% if person.cuser %}
-                <dt class="admin">College username</dt>
-                <dd>{{ person.cuser }}</dd>
-            {% endif %}
-            {% if person.email %}
-                <dt class="admin">Email</dt>
-                <dd>
-                    <a href="mailto:{{ person.email|escape('html_attr') }}">
-                        {{ person.email }}
-                    </a>
-                </dd>
-            {% endif %}
-            {% if person.mobile %}
-                <dt class="admin">Mobile</dt>
-                <dd>{{ person.mobile }}</dd>
-            {% endif %}
-            {% if person.gender %}
-                <dt class="admin">Gender</dt>
-                <dd>{{ person.gender|enum('gender') }}</dd>
-            {% endif %}
-            {% if person.dateOfBirth %}
-                <dt class="admin">
-                    DoB
-                </dt>
-                <dd>{{ person.dateOfBirth|date('d/m/Y') }}</dd>
-            {% endif %}
-        {% endif %}
-        <dt>Skill</dt>
-        <dd>{{ person.skill|enum('skill') }}</dd>
-        {% if person.bowtype %}
-            <dt>Preferred style</dt>
-            <dd>{{ person.bowtype|enum('bowtype') }}</dd>
-        {% endif %}
-        <dt>Handicap</dt>
-        <dd>
-            {% if person.currentHandicap %}
-                {{ person.currentHandicap.handicap }}
-            {% else %}
-                None
-            {% endif %}
-        </dd>
-        <dt>Classification</dt>
-        <dd>
-            TODO
-        </dd>
-    </dl>
+    {% include ':person:_detail.html.twig' with { 'person': person } only %}
 
     <h2>Badges</h2>
-    <ul class="list">
-        {% for badge in badges %}
-            <li>
-                <span class="text shrink">{{ badge.dateAwarded|date('d/m/Y') }}</span>
-                <a href="{{ url('badge_detail', { 'id': badge.badge.id }) }}">{{ badge.badge.name }}</a>
-                {% include '::badge/state.html.twig' with { 'badge': badge } only %}
-            </li>
-        {% endfor %}
-        <li>
-            {# TODO accordian #}
-            <a href="#" class="text-muted">View all Badges</a>
-        </li>
-    </ul>
+    {% include ':person:_badges.html.twig' with { 'person': person, 'badges': badges } only %}
+
     <h2>Records</h2>
-    <ul class="list">
-        {% for record in records %}
-            {% set holder = record.recordHolder %}
-            <li>
-                <span class="text shrink">{{ holder.date|date('d/m/Y') }}</span>
-                {% if holder.dateBroken %}
-                    <span class="text shrink">{{ holder.dateBroken|date('d/m/Y') }}</span>
-                {% else %}
-                    <span class="text shrink">Current</span>
-                {% endif %}
-                <a href="{{ url('record_detail', { 'id': holder.record.id }) }}">
-                    {{ holder.record.displayName }}
-                </a>
-                <span class="text shrink">{{ holder.score }}</span>
-            </li>
-        {% endfor %}
-    </ul>
+    {% include ':person:_records.html.twig' with { 'person': person, 'records': records } only %}
+
     <h2>Recent Scores</h2>
-    <ul class="list">
-        {% for score in scores %}
-            <li>
-                <span class="text shrink">{{ score.dateShot|date('d/m/Y') }}</span>
-                {# NOTE: the round name links to the score... #}
-                <a href="{{ url('score_detail', { 'id': score.id }) }}">{{ score.round.name }}</a>
-                <span class="text shrink">{{ score.score }}</span>
-            </li>
-        {% endfor %}
-        <li>
-            {# TODO link to view all page (filter list?) #}
-            <a href="#" class="text-muted">View all Scores</a>
-        </li>
-    </ul>
+    {% include ':person:_scores.html.twig' with { 'scores': scores } only %}
+
     <h2>Personal Bests</h2>
-    <ul class="list">
-        {% for score in pbs %}
-            <li>
-                <span class="text shrink">{{ score.dateShot|date('d/m/Y') }}</span>
-                {# NOTE: the round name links to the score... #}
-                <a href="{{ url('score_detail', { 'id': score.id }) }}">{{ score.round.name }}</a>
-                <span class="text shrink">{{ score.score }}</span>
-            </li>
-        {% endfor %}
-    </ul>
+    {% include ':person:_scores.html.twig' with { 'scores': pbs, 'all': true } only %}
 {% endblock %}
 
 {% block sidebar %}
