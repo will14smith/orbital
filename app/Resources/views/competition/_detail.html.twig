@@ -1,3 +1,5 @@
+{% import ':macro:display.html.twig' as display %}
+
 <dl>
     <dt>Location</dt>
     <dd>{{ competition.location|default('Unknown') }}</dd>
@@ -6,7 +8,7 @@
     <dt>Rounds</dt>
     <dd>
         {% for round in competition.rounds %}
-            <a href="{{ url('round_detail', { 'id': round.id }) }}">{{ round.name }}</a>
+            {{ display.round(round) }}
             {% if not loop.last %}
                 <span>,&nbsp;</span>
             {% endif %}

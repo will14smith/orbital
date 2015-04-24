@@ -1,5 +1,7 @@
-<a href="{{ url('league_detail', { 'id': league.id }) }}">{{ league.name }}</a>
-{% if is_granted('ROLE_ADMIN') or is_granted('SIGNUP', league) or is_granted('SUBMIT', league) %}
+{% import ':macro:display.html.twig' as display %}
+
+{{ display.league(league) }}
+{% if is_granted('SIGNUP', league) or is_granted('SUBMIT', league) %}
     <span class="actions">
         {% if is_granted('SIGNUP', league) %}
             <a href="{{ url('league_signup', { 'id': league.id }) }}">

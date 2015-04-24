@@ -1,16 +1,14 @@
+{% import ':macro:display.html.twig' as display %}
+
 {% if entry.bossNumber and entry.targetNumber %}
     <span class="text shrink">{{ entry.bossNumber }}{{ entry.targetNumber|toLetter }}</span>
 {% else %}
     <span class="text shrink">-</span>
 {% endif %}
 {% if entry.person %}
-    <a href="{{ url('person_detail', { 'id': entry.person.id }) }}">
-        {{ entry.person.name }}
-    </a>
+    {{ display.person(entry.person) }}
 {% else %}
-    <a href="{{ url('club_detail', { 'id': entry.club.id }) }}">
-        <em>{{ entry.club.name }}</em>
-    </a>
+    {{ display.club(entry.club, 'text-italic') }}
 {% endif %}
 {% if is_granted('ROLE_ADMIN') %}
     <span class="actions">

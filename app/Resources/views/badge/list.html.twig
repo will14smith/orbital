@@ -1,4 +1,5 @@
 {% extends '::base_sidebar.html.twig' %}
+{% import ':macro:display.html.twig' as display %}
 
 {% block title %}
     Badges
@@ -8,9 +9,7 @@
     <ul class="list">
         {% for badge in badges %}
             <li>
-                <a href="{{ url('badge_detail', { 'id': badge.id }) }}">
-                    {{ badge.name }}
-                </a>
+                {{ display.badge(badge) }}
                 {% if is_granted('ROLE_ADMIN') %}
                     <span class="actions">
                         <a href="{{ url('badge_edit', { 'id': badge.id }) }}"><i class="fa fa-pencil"></i></a>

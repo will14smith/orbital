@@ -1,22 +1,16 @@
+{% import ':macro:display.html.twig' as display %}
+
 <span class="text shrink">
     {{ match.dateChallenged|date('d/m/Y H:i') }}
 </span>
 <span class="text">
-    {% if match.accepted and match.result %}
-        <strong>{{ match.challenger }}</strong>
-        {% else %}
-            {{ match.challenger }}
-    {% endif %}
+    {{ display.person(match.challenger.person, (match.accepted and match.result) ? 'text-strong' ) }}
 </span>
 <span class="text">
-        {% if match.accepted and not match.result %}
-            <strong>{{ match.challengee }}</strong>
-        {% else %}
-            {{ match.challengee }}
-        {% endif %}
+    {{ display.person(match.challengee.person, (match.accepted and not match.result) ? 'text-strong' ) }}
 </span>
 <span class="text shrink">
-    {{ match.round.name }}
+    {{ display.round(match.round) }}
 </span>
 {% if is_granted('ROLE_ADMIN') and not match.dateConfirmed %}
     <span class="actions">

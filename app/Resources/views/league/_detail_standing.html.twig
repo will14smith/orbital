@@ -1,8 +1,10 @@
+{% import ':macro:display.html.twig' as display %}
+
 <span class="text shrink">
     {{ index }}
 </span>
 <span class="text">
-    {{ person.person.name }} {#TODO link#}
+    {{ display.person(person.person) }}
 </span>
 <span class="text shrink">
     {# TODO green-up, red-down #}

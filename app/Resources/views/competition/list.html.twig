@@ -1,4 +1,5 @@
 {% extends '::base_sidebar.html.twig' %}
+{% import ':macro:display.html.twig' as display %}
 
 {% block title %}
     Competitions
@@ -8,8 +9,8 @@
     <ul class="list">
         {% for competition in competitions %}
             <li>
-                <a href="{{ url('competition_detail', { 'id': competition.id }) }}">{{ competition.name }}</a>
-                {% if is_granted('ROLE_ADMIN') or is_granted('ENTER', competition) %}
+                {{ display.competition(competition) }}
+                {% if is_granted('ENTER', competition) %}
                     <span class="actions">
                         {% if is_granted('ENTER', competition) %}
                             <a href="{{ url('competition_enter', { 'id': competition.id }) }}">

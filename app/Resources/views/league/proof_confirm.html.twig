@@ -1,4 +1,6 @@
 {% extends '::base_sidebar.html.twig' %}
+{% import ':macro:display.html.twig' as display %}
+{% from ':macro:proof.html.twig' import display_proof %}
 
 {% block title %}
     Confirm League Match Claim
@@ -11,20 +13,20 @@
     </p>
     <dl>
         <dt>Challenger</dt>
-        <dd>{{ match.challenger }}</dd>
+        <dd>{{ display.person(match.challenger) }}</dd>
         <dt>Challengee</dt>
-        <dd>{{ match.challengee  }}</dd>
+        <dd>{{ display.person(match.challengee) }}</dd>
         <dt>Accepted</dt>
         <dd>{{ match.accepted ? 'Yes' : 'No' }}</dd>
         {% if match.accepted %}
             <dt>Winner</dt>
-            <dd>{{ match.winner }}</dd>
+            <dd>{{ display.person(match.winner) }}</dd>
         {% endif %}
         <dt>Date Challenged</dt>
         <dd>{{ match.dateChallenged|date('d/m/Y') }}</dd>
     </dl>
 
-    {% include '::proof.html.twig' with { 'proofs': match.proofs, 'expand': false } only %}
+    {{ display_proof(match.proofs, false) }}
 
     <div>
         <input type="submit" value="Confirm"> | <a href="{{ url('league_detail', { id: match.league.id }) }}">Cancel</a>

@@ -1,9 +1,10 @@
 {% extends '::base_sidebar.html.twig' %}
+{% import ':macro:display.html.twig' as display %}
 
 {% block title %}
     Live Scoring for
-    <a href="{{ url('person_detail', { 'id': score.person.id }) }}">{{ score.person.name }}</a> -
-    <a href="{{ url('round_detail', { 'id': score.round.id }) }}">{{ score.round.name }}</a>
+    {{ display.person(score.person) }}
+    {{ display.round(score.round) }}
 {% endblock %}
 
 {% block body %}

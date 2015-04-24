@@ -16,7 +16,7 @@
     <h2>Entries</h2>
     <ul class="list">
         {% for entry in competition.entries %}
-            <li>{% include ':competition:_detail.html.twig' with { 'entry': entry, 'competition': competition } %}</li>
+            <li>{% include ':competition:_detail_entry.html.twig' with { 'entry': entry, 'competition': competition } %}</li>
         {% else %}
             <li>
                 <span class="text">
@@ -28,7 +28,7 @@
 {% endblock %}
 
 {% block sidebar %}
-    {% if is_granted('ROLE_ADMIN') or is_granted('ENTER', competition) %}
+    {% if is_granted('ENTER', competition) %}
         <div class="widget">
             <h3 class="widget-title">Actions</h3>
             <ul>

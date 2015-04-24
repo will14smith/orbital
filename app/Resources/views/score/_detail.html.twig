@@ -1,0 +1,34 @@
+<dl>
+    <dt>Date Shot</dt>
+    <dd>
+        {{ score.dateShot|date('d/m/Y H:i') }}
+        {% if score.competition %}
+            in Competition
+        {% endif %}
+        {% if not score.complete %}
+            (in progress)
+        {% endif %}
+    </dd>
+    <dt>Skill / Bow</dt>
+    <dd>
+        {{ score.skill|enum('skill') }} {{ score.bowtype|enum('bowtype') }}
+    </dd>
+    <dt>Score</dt>
+    <dd>{{ score.score }}</dd>
+    <dt>Golds</dt>
+    <dd>{{ score.golds }}</dd>
+    <dt>Hits</dt>
+    <dd>{{ score.hits }}</dd>
+    {% if score.complete %}
+        <dt>Handicap</dt>
+        <dd>{{ handicap }}</dd>
+        <dt>Date Accepted</dt>
+        <dd>
+            {% if score.dateAccepted %}
+                accepted {{ score.dateAccepted|date('d/m/Y') }}
+            {% else %}
+                not yet accepted
+            {% endif %}
+        </dd>
+    {% endif %}
+</dl>

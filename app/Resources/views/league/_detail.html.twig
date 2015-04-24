@@ -1,3 +1,5 @@
+{% import ':macro:display.html.twig' as display %}
+
 <dl>
     <dt>Open Date</dt>
     <dd>{{ league.openDate|date('d/m/Y H:i') }}</dd>
@@ -9,7 +11,7 @@
     {% if league.rounds|length > 0 %}
         <dd>
             {% for round in league.rounds %}
-                <a href="{{ url('round_detail', { 'id': round.id }) }}">{{ round.name }}</a>
+                {{ display.round(round) }}
                 {% if not loop.last %}
                     <span>,&nbsp;</span>
                 {% endif %}

@@ -1,4 +1,5 @@
 {% extends '::base_sidebar.html.twig' %}
+{% import ':macro:display.html.twig' as display %}
 
 {% block title %}
     Delete Person from League
@@ -6,7 +7,7 @@
 
 {% block body %}
     <form method="post" action="{{ url('league_signup_delete', { id: league.id, signup_id: person.id }) }}">
-        <p>Are you sure you want to remove {{ person.person.name }} from {{ league.name }}?</p>
+        <p>Are you sure you want to remove {{ display.person(person.person) }} from {{ display.league(league) }}?</p>
         <input type="submit" value="Yes"> | <a href="{{ url('league_detail', { id: league.id }) }}">No</a>
     </form>
 {% endblock %}

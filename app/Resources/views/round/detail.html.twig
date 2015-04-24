@@ -1,4 +1,5 @@
 {% extends 'base_sidebar.html.twig' %}
+{% import ':macro:display.html.twig' as display %}
 
 {% block title %}
     {{ round.name }}
@@ -21,7 +22,7 @@
         <ul class="list">
             {% for record in round.records %}
                 <li>
-                    <a href="{{ url('record_detail', { 'id': record.id }) }}">{{ record.displayName }}</a>
+                    {{ display.record(record) }}
                     {% if record.currentHolder %}
                         <span class="text shrink">{{ record.currentHolder.score }}</span>
                     {% else %}

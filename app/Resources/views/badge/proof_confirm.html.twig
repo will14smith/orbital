@@ -1,4 +1,6 @@
 {% extends '::base_sidebar.html.twig' %}
+{% import ':macro:display.html.twig' as display %}
+{% from ':macro:proof.html.twig' import display_proof %}
 
 {% block title %}
     Confirm Badge Claim
@@ -11,14 +13,14 @@
     </p>
     <dl>
         <dt>Badge</dt>
-        <dd>{{ badge.badge.name }}</dd>
+        <dd>{{ display.badge(badge.badge) }}</dd>
         <dt>Person</dt>
-        <dd>{{ badge.person.name }}</dd>
+        <dd>{{ display.person(badge.person) }}</dd>
         <dt>Date Claimed</dt>
         <dd>{{ badge.dateAwarded|date('d/m/Y') }}</dd>
     </dl>
 
-    {% include '::proof.html.twig' with { 'proofs': badge.proof, 'expand': false } only %}
+    {{ display_proof(badge.proof, false) }}
 
     <div>
         <input type="submit" value="Confirm"> | <a href="{{ url('badge_detail', { id: badge.badge.id }) }}">Cancel</a>

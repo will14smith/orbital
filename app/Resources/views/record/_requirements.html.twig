@@ -1,0 +1,18 @@
+{% import ':macro:display.html.twig' as display %}
+
+<p>To break this record you must shoot a round that matches the following requirements:</p>
+<ul class="list">
+    <li><span class="text">shoot a&nbsp;{{ display.round(record.round) }}&nbsp;in a competition</span></li>
+    {% if record.skill == Enum.skill.novice %}
+        <li><span class="text">be a novice</span></li>
+    {% endif %}
+    {% if record.gender %}
+        <li><span class="text">be {{ record.gender|enum('gender') }}</span></li>
+    {% endif %}
+    {% if record.bowtype %}
+        <li><span class="text">shoot {{ record.bowtype|enum('bowtype') }}</span></li>
+    {% endif %}
+    {% if record.numHolders %}
+        <li><span class="text">shoot in a team of {{ record.numHolders }} (or fewer)</span></li>
+    {% endif %}
+</ul>
