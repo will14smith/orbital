@@ -9,11 +9,6 @@ use AppBundle\Tests\Services\BaseTestCase;
 
 class HandicapInitialiserTraitTest extends BaseTestCase
 {
-    public function test()
-    {
-        // init - 2 people (no hc, 1 hc, 2 hc, same hc)
-    }
-
     private function getPerson($hc = null)
     {
         $leaguePerson = new LeaguePerson();
