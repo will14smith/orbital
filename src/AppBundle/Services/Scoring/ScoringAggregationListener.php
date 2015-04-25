@@ -37,7 +37,8 @@ class ScoringAggregationListener
     {
         $em = $this->doctrine->getManager();
 
-        ScoringCalculator::updateStats($score);
+        $stats = ScoringCalculator::getScore($score);
+        $stats->applyToScore($score);
 
         $em->flush();
     }

@@ -1,8 +1,6 @@
 <?php
 
-
 namespace AppBundle\Tests\Services\Handicap;
-
 
 use AppBundle\Entity\Score;
 use AppBundle\Services\Events\ScoreEvent;
