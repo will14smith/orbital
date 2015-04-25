@@ -10,11 +10,10 @@ use AppBundle\Entity\ScoreArrow;
 class ScoringCalculator
 {
     /**
-     * Updates the score object (doesn't persist)
-     *
      * @param Score $score
+     * @return ScoringResult
      */
-    public static function updateStats(Score &$score)
+    public static function getScore(Score $score)
     {
         $arrows = $score->getArrows();
 
@@ -22,13 +21,13 @@ class ScoringCalculator
         $targets = $round->getTargets();
 
         $mappedTargets = self::getArrowsByTarget($targets, $arrows);
-        $results = array_map(function(TargetArrows $mappedTarget) {
+        $results = array_map(function (TargetArrows $mappedTarget) {
             return self::mapArrowsToResult($mappedTarget->getTarget(), $mappedTarget->getArrows());
         }, $mappedTargets);
 
-        return array_reduce($results, function($acc, $x) {
-           return self::reduceScoringResults($acc, $x);
-        }, new ScoringResult(0, 0, 0));
+        return array_reduce($results, function ($acc, $x) {
+            return ScoringResult::add($acc, $x);
+        }, new ScoringResult(0, 0, 0, 0));
     }
 
     /**
@@ -38,15 +37,20 @@ class ScoringCalculator
      */
     public static function getArrowsByTarget($targets, $arrows)
     {
+        if($targets === null) {
+            throw new \InvalidArgumentException();
+        }
+        if($arrows === null) {
+            throw new \InvalidArgumentException();
+        }
+
         $result = [];
 
-        $offset = 0;
         foreach ($targets as $target) {
             $count = $target->getArrowCount();
-            $arrows = array_slice($arrows, $offset, $count);
-            $offset += $count;
+            $slice = array_splice($arrows, 0, $count);
 
-            $result[] = new TargetArrows($target, $arrows);
+            $result[] = new TargetArrows($target, $slice);
         }
 
         return $result;
@@ -57,7 +61,7 @@ class ScoringCalculator
      * @param ScoreArrow[] $arrows
      * @return ScoringResult
      */
-    public static function mapArrowsToResult($target, $arrows)
+    public static function mapArrowsToResult(RoundTarget $target, array $arrows)
     {
         $calc = ZoneManager::get($target->getScoringZones());
 
@@ -65,25 +69,16 @@ class ScoringCalculator
         $golds = 0;
         $hits = 0;
 
-        foreach ($arrows as $arrow) {
+        $count = min($target->getArrowCount(), count($arrows));
+
+        for($i = 0; $i < $count; $i++) {
+            $arrow = $arrows[$i];
+
             $total += $calc->getValue($arrow);
             $golds += $calc->isGold($arrow) ? 1 : 0;
             $hits += $calc->isHit($arrow) ? 1 : 0;
         }
 
-        return new ScoringResult($total, $golds, $hits);
-    }
-
-    /**
-     * @param ScoringResult $a
-     * @param ScoringResult $b
-     * @return ScoringResult
-     */
-    public static function reduceScoringResults(ScoringResult $a, ScoringResult $b) {
-        $total = $a->getTotal() + $b->getTotal();
-        $golds = $a->getGolds() + $b->getGolds();
-        $hits = $a->getHits() + $b->getHits();
-
-        return new ScoringResult($total, $golds, $hits);
+        return new ScoringResult($total, $golds, $hits, $count);
     }
 }

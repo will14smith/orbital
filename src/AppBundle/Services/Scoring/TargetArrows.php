@@ -14,10 +14,10 @@ class TargetArrows {
     private $arrows;
 
     public function __construct($target, $arrows) {
-        if($target == null) {
+        if($target === null) {
             throw new \InvalidArgumentException();
         }
-        if($arrows == null) {
+        if($arrows === null) {
             throw new \InvalidArgumentException();
         }
 
