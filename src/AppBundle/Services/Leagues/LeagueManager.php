@@ -8,10 +8,9 @@ use Doctrine\Bundle\DoctrineBundle\Registry;
 
 class LeagueManager
 {
+    /** @var LeagueAlgorithmInterface[] */
     private $algos = [];
-    /**
-     * @var Registry
-     */
+    /** @var Registry */
     private $doctrine;
 
     public function __construct(Registry $doctrine)
@@ -43,9 +42,7 @@ class LeagueManager
             throw new \Exception(sprintf('Unable to find league algorithm by name "%s"', $key));
         }
 
-        $class = $this->algos[$key];
-
-        return new $class;
+        return $this->algos[$key];
     }
 
     /**
@@ -55,10 +52,8 @@ class LeagueManager
     {
         $algos = [];
 
-        foreach ($this->algos as $key => $class) {
+        foreach ($this->algos as $key => $algo) {
             /** @var LeagueAlgorithmInterface $algo */
-            $algo = new $class;
-
             $algos[$key] = $algo->getName();
         }
 

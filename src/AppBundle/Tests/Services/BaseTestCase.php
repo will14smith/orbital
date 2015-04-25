@@ -10,14 +10,21 @@ abstract class BaseTestCase extends \PHPUnit_Framework_TestCase {
     }
 
     /**
-     * @return \PHPUnit_Framework_MockObject_MockObject|\Doctrine\Bundle\DoctrineBundle\Registry
+     * @param int $flushCount
+     *
+     * @return \Doctrine\Bundle\DoctrineBundle\Registry|\PHPUnit_Framework_MockObject_MockObject
      */
-    protected function getDoctrine() {
+    protected function getDoctrine($flushCount = null) {
         $doctrine = $this->getMockBuilder('\Doctrine\Bundle\DoctrineBundle\Registry')->getMock();
         $entityManager = $this->getMockBuilder('\Doctrine\Common\Persistence\ObjectManager')->getMock();
 
         $doctrine->expects($this->any())
             ->method('getManager')->willReturn($entityManager);
+
+        if($flushCount !== null) {
+            $entityManager->expects($this->exactly($flushCount))
+                ->method('flush');
+        }
 
         return $doctrine;
     }
