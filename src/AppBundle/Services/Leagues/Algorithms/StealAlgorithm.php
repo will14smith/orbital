@@ -8,9 +8,15 @@ use AppBundle\Services\Leagues\LeagueAlgorithmInterface;
 class StealAlgorithm implements LeagueAlgorithmInterface
 {
     use RandomInitialiserTrait {
-        RandomInitialiserTrait::init as init_random;
+        RandomInitialiserTrait::init as randomInit;
     }
     use StealScorerTrait;
+
+    private $initialPoints;
+
+    public function __construct($initialPoints) {
+        $this->initialPoints = intval($initialPoints);
+    }
 
     public function getKey()
     {
@@ -28,11 +34,10 @@ class StealAlgorithm implements LeagueAlgorithmInterface
      */
     function init(array $people)
     {
-        $people = $this->init_random($people);
+        $people = $this->randomInit($people);
 
         foreach($people as $person) {
-            //TODO make configurable
-            $person->setPoints(100);
+            $person->setPoints($this->initialPoints);
         }
 
         return $people;

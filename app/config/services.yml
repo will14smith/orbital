@@ -67,6 +67,7 @@ services:
           - { name: orbital.league.algo }
     orbital.league.algo.steal:
         class: AppBundle\Services\Leagues\Algorithms\StealAlgorithm
+        arguments: ["100"]
         public: false
         tags:
           - { name: orbital.league.algo }
