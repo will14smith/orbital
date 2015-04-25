@@ -482,7 +482,7 @@ class Score
     /**
      * Get arrows
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection|ScoreArrow[]
      */
     public function getArrows()
     {
