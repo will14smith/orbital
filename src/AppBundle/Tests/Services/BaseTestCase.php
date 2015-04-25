@@ -9,6 +9,9 @@ abstract class BaseTestCase extends \PHPUnit_Framework_TestCase {
             ->disableProxyingToOriginalMethods();
     }
 
+    /**
+     * @return \PHPUnit_Framework_MockObject_MockObject|\Doctrine\Bundle\DoctrineBundle\Registry
+     */
     protected function getDoctrine() {
         $doctrine = $this->getMockBuilder('\Doctrine\Bundle\DoctrineBundle\Registry')->getMock();
         $entityManager = $this->getMockBuilder('\Doctrine\Common\Persistence\ObjectManager')->getMock();
@@ -18,7 +21,7 @@ abstract class BaseTestCase extends \PHPUnit_Framework_TestCase {
 
         return $doctrine;
     }
-    protected function getRepository($doctrine, $name, $type = null) {
+    protected function getRepository(\PHPUnit_Framework_MockObject_MockObject $doctrine, $name, $type = null) {
         if($type === null) {
             $type = '\Doctrine\ORM\EntityRepository';
         } else if($type === true) {
