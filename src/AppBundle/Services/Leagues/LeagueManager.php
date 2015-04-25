@@ -74,21 +74,26 @@ class LeagueManager
     {
         $em = $this->doctrine->getManager();
 
+        $this->updateMatch($match);
+
+        $em->flush();
+    }
+
+    /**
+     * @param LeagueMatch $match
+     * @throws \Exception
+     */
+    public function updateMatch(LeagueMatch $match)
+    {
         $league = $match->getLeague();
         $winner = $match->getWinner();
         $loser = $match->getLoser();
 
         $algo = $this->getAlgorithm($league->getAlgoName());
 
-        list($dp_w, $dp_l) = $algo->score($match);
+        list($deltaWinner, $deltaLoser) = $algo->score($match);
 
-        if ($dp_w != 0) {
-            $winner->setPoints($winner->getPoints() + $dp_w);
-        }
-        if ($dp_l != 0) {
-            $loser->setPoints($loser->getPoints() + $dp_l);
-        }
-
-        $em->flush();
+        $winner->setPoints($winner->getPoints() + $deltaWinner);
+        $loser->setPoints($loser->getPoints() + $deltaLoser);
     }
 }
