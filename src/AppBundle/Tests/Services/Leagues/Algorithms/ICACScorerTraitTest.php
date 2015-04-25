@@ -6,9 +6,9 @@ namespace AppBundle\Tests\Services\Leagues\Algorithms;
 
 use AppBundle\Entity\LeagueMatch;
 use AppBundle\Entity\LeaguePerson;
-use AppBundle\Tests\Services\BaseTestCase;
+use AppBundle\Tests\Services\ServiceTestCase;
 
-class ICACScorerTraitTest extends BaseTestCase {
+class ICACScorerTraitTest extends ServiceTestCase {
     /**
      * @dataProvider icacScoreData
      */

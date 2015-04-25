@@ -5,9 +5,9 @@ namespace AppBundle\Tests\Services\Leagues\Algorithms;
 use AppBundle\Entity\LeaguePerson;
 use AppBundle\Entity\Person;
 use AppBundle\Entity\PersonHandicap;
-use AppBundle\Tests\Services\BaseTestCase;
+use AppBundle\Tests\Services\ServiceTestCase;
 
-abstract class InitialiserTestCase extends BaseTestCase
+abstract class InitialiserTestCase extends ServiceTestCase
 {
     /**
      * @param int $hc

@@ -12,9 +12,9 @@ use AppBundle\Services\Enum\ScoreZones;
 use AppBundle\Services\Enum\Unit;
 use AppBundle\Services\Handicap\HandicapCalculator;
 use AppBundle\Services\Handicap\HandicapManager;
-use AppBundle\Tests\Services\BaseTestCase;
+use AppBundle\Tests\Services\ServiceTestCase;
 
-class HandicapManagerTest extends BaseTestCase
+class HandicapManagerTest extends ServiceTestCase
 {
     private function getRound()
     {

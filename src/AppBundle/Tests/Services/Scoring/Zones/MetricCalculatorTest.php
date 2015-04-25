@@ -6,9 +6,9 @@ namespace AppBundle\Tests\Services\Scoring\Zones;
 
 use AppBundle\Entity\ScoreArrow;
 use AppBundle\Services\Scoring\Zones\MetricCalculator;
-use AppBundle\Tests\Services\BaseTestCase;
+use AppBundle\Tests\Services\ServiceTestCase;
 
-class MetricCalculatorTest extends BaseTestCase {
+class MetricCalculatorTest extends ServiceTestCase {
     /**
      * @dataProvider validScores
      */

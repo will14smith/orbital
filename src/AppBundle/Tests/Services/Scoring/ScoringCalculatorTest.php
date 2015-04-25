@@ -10,9 +10,9 @@ use AppBundle\Entity\Score;
 use AppBundle\Entity\ScoreArrow;
 use AppBundle\Services\Enum\ScoreZones;
 use AppBundle\Services\Scoring\ScoringCalculator;
-use AppBundle\Tests\Services\BaseTestCase;
+use AppBundle\Tests\Services\ServiceTestCase;
 
-class ScoringCalculatorTest extends BaseTestCase
+class ScoringCalculatorTest extends ServiceTestCase
 {
     /**
      * @dataProvider getArrowsByTargetData

@@ -2,7 +2,7 @@
 
 namespace AppBundle\Tests\Services;
 
-abstract class BaseTestCase extends \PHPUnit_Framework_TestCase {
+abstract class ServiceTestCase extends \PHPUnit_Framework_TestCase {
     public function getMockBuilder($name) {
         return parent::getMockBuilder($name)
             ->disableOriginalConstructor()
