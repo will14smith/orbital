@@ -2,30 +2,8 @@
 
 namespace AppBundle\Tests\Services\Leagues\Algorithms;
 
-use AppBundle\Entity\LeaguePerson;
-use AppBundle\Entity\Person;
-use AppBundle\Entity\PersonHandicap;
-use AppBundle\Tests\Services\BaseTestCase;
-
-class HandicapInitialiserTraitTest extends BaseTestCase
+class HandicapInitialiserTraitTest extends InitialiserTestCase
 {
-    private function getPerson($hc = null)
-    {
-        $leaguePerson = new LeaguePerson();
-        $person = new Person();
-
-        if($hc !== null) {
-            $handicap = new PersonHandicap();
-            $handicap->setHandicap($hc);
-
-            $person->addHandicap($handicap);
-        }
-
-        $leaguePerson->setPerson($person);
-
-        return $leaguePerson;
-    }
-
     public function testNoPeople()
     {
         $trait = new HandicapInitialiserTraitStub();
