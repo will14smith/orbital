@@ -11,9 +11,7 @@ addons:
 
 install: composer install
 
-before_script:
-  - sed -i -e 's/host:.*/host: travis/' app/config/config_test.yml
-  - sed -i -e 's/password:.*/password: ~/' app/config/config_test.yml
+before_script: ./.travis.pre-script.sh
 
 script: phpunit --coverage-clover build/logs/clover.xml
 
