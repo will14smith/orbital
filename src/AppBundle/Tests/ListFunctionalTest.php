@@ -1,15 +1,16 @@
 <?php
 
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+namespace AppBundle\Tests;
 
-class ApplicationAvailabilityFunctionalTest extends WebTestCase
+class ListFunctionalTest extends FunctionalWebTestCase
 {
     /**
      * @dataProvider publicUrls
      */
     public function testPageIsSuccessful($url)
     {
-        $client = self::createClient();
+        $client = $this->getClient();
+
         $client->request('GET', $url);
 
         $this->assertTrue($client->getResponse()->isSuccessful());
