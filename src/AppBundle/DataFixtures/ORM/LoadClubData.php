@@ -27,8 +27,8 @@ class LoadClubData extends AbstractFixture implements OrderedFixtureInterface
         $club2 = new Club();
         $club2->setName("Club 2");
 
-        $this->setReference("club-1", $club1);
-        $this->setReference("club-2", $club2);
+        $this->addReference("club-1", $club1);
+        $this->addReference("club-2", $club2);
 
         $manager->persist($club1);
         $manager->persist($club2);

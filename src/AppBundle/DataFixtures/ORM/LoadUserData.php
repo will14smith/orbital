@@ -33,6 +33,9 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface
         $user->setClub($this->getReference('club-1'));
         $this->init($user);
 
+        $this->addReference('person-admin', $admin);
+        $this->addReference('person-user', $user);
+
         $manager->persist($admin);
         $manager->persist($user);
 

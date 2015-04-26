@@ -61,6 +61,9 @@ class LoadRoundData extends AbstractFixture implements OrderedFixtureInterface
         $round2->addTarget($target2);
         $round2->addTarget($target3);
 
+        $this->addReference('round-1', $round1);
+        $this->addReference('round-2', $round1);
+
         $manager->persist($round1);
         $manager->persist($round2);
 
