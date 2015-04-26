@@ -31,7 +31,7 @@ class DetailFunctionalTest extends FunctionalWebTestCase
             ['/record/1'],
             ['/competition/1'],
             ['/league/1'],
-            //['/score/1'],
+            ['/score/1'],
         ];
     }
 }
