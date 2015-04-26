@@ -11,7 +11,7 @@ addons:
 
 install: composer install
 
-before_script: ./travis.pre-script.sh
+before_script: ./travis-pre-script.sh
 
 script: phpunit --coverage-clover build/logs/clover.xml
 
