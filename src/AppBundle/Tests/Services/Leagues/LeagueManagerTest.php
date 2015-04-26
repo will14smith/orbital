@@ -8,9 +8,9 @@ use AppBundle\Entity\LeaguePerson;
 use AppBundle\Services\Events\LeagueMatchEvent;
 use AppBundle\Services\Leagues\LeagueListener;
 use AppBundle\Services\Leagues\LeagueManager;
-use AppBundle\Tests\Services\BaseTestCase;
+use AppBundle\Tests\Services\ServiceTestCase;
 
-class LeagueManagerTest extends BaseTestCase
+class LeagueManagerTest extends ServiceTestCase
 {
     private function getMatch()
     {

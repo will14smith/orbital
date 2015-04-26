@@ -48,7 +48,7 @@ class LeagueManager
     /**
      * @return array key => name
      */
-    public function getAlgorithms()
+    public function getAlgorithmNames()
     {
         $algos = [];
 

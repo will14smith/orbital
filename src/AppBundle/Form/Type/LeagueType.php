@@ -30,7 +30,7 @@ class LeagueType extends AbstractType
                 'required' => false
             ])
             ->add('algo_name', 'choice', [
-                'choices' => $this->leagueManager->getAlgorithms(),
+                'choices' => $this->leagueManager->getAlgorithmNames(),
                 'required' => false
             ])
             #region LIMIT

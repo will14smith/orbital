@@ -6,9 +6,9 @@ use AppBundle\Entity\League;
 use AppBundle\Entity\LeagueMatch;
 use AppBundle\Services\Events\LeagueMatchEvent;
 use AppBundle\Services\Leagues\LeagueListener;
-use AppBundle\Tests\Services\BaseTestCase;
+use AppBundle\Tests\Services\ServiceTestCase;
 
-class LeagueListenerTest extends BaseTestCase {
+class LeagueListenerTest extends ServiceTestCase {
     private function getListener($count) {
         $manager = $this->getMockBuilder('\AppBundle\Services\Leagues\LeagueManager')->getMock();
 
