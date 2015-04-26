@@ -27,7 +27,7 @@ class FunctionalWebTestCase extends WebTestCase
 
     protected function runCommand($command)
     {
-        $command = sprintf('%s', $command);
+        $command = sprintf('%s --no-interaction', $command);
 
         return self::getApplication()->run(new StringInput($command));
     }
