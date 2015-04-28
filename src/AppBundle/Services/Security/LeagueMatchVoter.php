@@ -2,10 +2,8 @@
 
 namespace AppBundle\Services\Security;
 
-use AppBundle\Entity\League;
 use AppBundle\Entity\LeagueMatch;
 use AppBundle\Entity\Person;
-use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 
 class LeagueMatchVoter extends BaseVoter

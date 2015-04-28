@@ -1,14 +1,13 @@
 <?php
 
-
 namespace AppBundle\Services\Security;
-
 
 use AppBundle\Entity\Person;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 
-abstract class BaseVoter implements VoterInterface {
+abstract class BaseVoter implements VoterInterface
+{
     protected $attributes = [];
     protected $class = '';
 
