@@ -340,6 +340,27 @@ class LeagueMatch
         return !$this->getResult() ? $this->getChallenger() : $this->getChallengee();
     }
 
+    /*
+     * @return bool false doesn't mean no...
+     */
+    public function challengerWon() {
+        if (!$this->getAccepted()) {
+            return false;
+        }
+
+        return $this->getResult();
+    }
+    /*
+     * @return bool false doesn't mean no...
+     */
+    public function challengeeWon() {
+        if (!$this->getAccepted()) {
+            return false;
+        }
+
+        return !$this->getResult();
+    }
+
     /**
      * Set round
      *

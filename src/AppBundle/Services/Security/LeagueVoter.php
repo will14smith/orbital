@@ -27,13 +27,13 @@ class LeagueVoter implements VoterInterface
         return $supportedClass === $class || is_subclass_of($class, $supportedClass);
     }
 
-    public function vote(TokenInterface $token, $league, array $attributes)
+    public function vote(TokenInterface $token, $match, array $attributes)
     {
-        if (!$this->supportsClass(get_class($league))) {
+        if (!$this->supportsClass(get_class($match))) {
             return VoterInterface::ACCESS_ABSTAIN;
         }
 
-        /** @var League $league */
+        /** @var League $match */
 
         if (count($attributes) != 1) {
             throw new \InvalidArgumentException('Only one attribute is allowed');
@@ -50,12 +50,12 @@ class LeagueVoter implements VoterInterface
 
         switch ($attributes[0]) {
             case self::SIGNUP:
-                if($league->canSignup($user) && !$league->isSignedUp($user)) {
+                if($match->canSignup($user) && !$match->isSignedUp($user)) {
                     return VoterInterface::ACCESS_GRANTED;
                 }
                 break;
             case self::SUBMIT:
-                if($league->isSignedUp($user)) {
+                if($match->isSignedUp($user)) {
                     return VoterInterface::ACCESS_GRANTED;
                 }
                 break;
