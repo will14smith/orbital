@@ -1,0 +1,15 @@
+{% from ':person:_detail.html.twig' import field %}
+
+{% if is_granted('ROLE_ADMIN') %}
+    {{ field('ArcheryGB #', person.agbNumber, true) }}
+    {{ field('CID', person.cid, true) }}
+    {{ field('College username', person.cuser, true) }}
+    {{ field('Email', person.email, true) }}
+    {{ field('Mobile', person.mobile, true) }}
+    {% if person.gender %}
+        {{ field('Gender', person.gender|enum('gender'), true) }}
+    {% endif %}
+    {% if person.dateOfBirth %}
+        {{ field('DoB', person.dateOfBirth|date('d/m/Y'), true) }}
+    {% endif %}
+{% endif %}
