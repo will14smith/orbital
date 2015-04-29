@@ -5,6 +5,7 @@
     {% endif %}
 
 {% endmacro %}
+{% from _self import field %}
 
 <dl>
     {% if is_granted('ROLE_ADMIN') %}
