@@ -1,45 +1,28 @@
+{% macro field(title, value, admin=false) %}
+    {% if value %}
+        <dt{% if admin %} class="admin"{% endif %}>{{ title }}</dt>
+        <dd>{{ value }}</dd>
+    {% endif %}
+
+{% endmacro %}
+
 <dl>
     {% if is_granted('ROLE_ADMIN') %}
-        {% if person.agbNumber %}
-            <dt class="admin">ArcheryGB #</dt>
-            <dd>{{ person.agbNumber }}</dd>
-        {% endif %}
-        {% if person.cid %}
-            <dt class="admin">CID</dt>
-            <dd>{{ person.cid }}</dd>
-        {% endif %}
-        {% if person.cuser %}
-            <dt class="admin">College username</dt>
-            <dd>{{ person.cuser }}</dd>
-        {% endif %}
-        {% if person.email %}
-            <dt class="admin">Email</dt>
-            <dd>
-                <a href="mailto:{{ person.email|escape('html_attr') }}">
-                    {{ person.email }}
-                </a>
-            </dd>
-        {% endif %}
-        {% if person.mobile %}
-            <dt class="admin">Mobile</dt>
-            <dd>{{ person.mobile }}</dd>
-        {% endif %}
+        {{ field('ArcheryGB #', person.agbNumber, true) }}
+        {{ field('CID', person.cid, true) }}
+        {{ field('College username', person.cuser, true) }}
+        {{ field('Email', person.email, true) }}
+        {{ field('Mobile', person.mobile, true) }}
         {% if person.gender %}
-            <dt class="admin">Gender</dt>
-            <dd>{{ person.gender|enum('gender') }}</dd>
+            {{ field('Gender', person.gender|enum('gender'), true) }}
         {% endif %}
         {% if person.dateOfBirth %}
-            <dt class="admin">
-                DoB
-            </dt>
-            <dd>{{ person.dateOfBirth|date('d/m/Y') }}</dd>
+            {{ field('DoB', person.dateOfBirth|date('d/m/Y'), true) }}
         {% endif %}
     {% endif %}
-    <dt>Skill</dt>
-    <dd>{{ person.skill|enum('skill') }}</dd>
+    {{ field('Skill', person.skill|enum('skill')) }}
     {% if person.bowtype %}
-        <dt>Preferred style</dt>
-        <dd>{{ person.bowtype|enum('bowtype') }}</dd>
+        {{ field('Preferred bow type', person.bowtype|enum('bowtype')) }}
     {% endif %}
     <dt>Handicap</dt>
     <dd>

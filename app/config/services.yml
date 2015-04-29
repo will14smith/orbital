@@ -141,4 +141,10 @@ services:
         public: false
         tags:
             - { name: twig.extension }
+    orbital.twig.security:
+        class: AppBundle\Services\Twig\SecurityExtension
+        arguments: ["@security.authorization_checker"]
+        public: false
+        tags:
+            - { name: twig.extension }
 
