@@ -77,12 +77,13 @@ class HandicapManager
         $handicaps = array_map(function ($score) {
             return $this->calculator->handicapForScore($score);
         }, $scores);
+        $handicapCount = count($handicaps);
 
         // initial handicap
         $handicap = ceil(($handicaps[0] + $handicaps[1] + $handicaps[2]) / 3);
 
         // average it up for the remainder
-        for ($i = 3; $i < count($handicaps); $i++) {
+        for ($i = 3; $i < $handicapCount; $i++) {
             $new_hc = ceil(($handicaps[$i] + $handicap) / 2);
             if ($new_hc < $handicap) {
                 $handicap = $new_hc;
