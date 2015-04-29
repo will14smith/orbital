@@ -1,0 +1,17 @@
+{% extends '::base_sidebar.html.twig' %}
+
+{% block title %}
+    Init League
+{% endblock %}
+{% block body %}
+    {{ form_start(form) }}
+
+    <p>
+        Are you sure you want to initialise '{{ league.name }}'?
+    </p>
+
+    <div>
+        <input type="submit" value="Confirm"> | <a href="{{ url('league_detail', { id: league.id }) }}">Cancel</a>
+    </div>
+    {{ form_end(form) }}
+{% endblock %}
