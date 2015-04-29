@@ -226,7 +226,6 @@ class PersonController extends Controller
         }
 
         if ($request->isMethod("POST")) {
-            //TODO probably shouldn't ever delete people...
             $em->remove($person);
             $em->flush();
 

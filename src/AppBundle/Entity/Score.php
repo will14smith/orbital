@@ -21,7 +21,6 @@ class Score
     protected $id;
 
     /**
-     * TODO Inverse
      * @ORM\ManyToOne(targetEntity="Person")
      */
     protected $person;

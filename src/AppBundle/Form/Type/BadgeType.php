@@ -14,7 +14,7 @@ class BadgeType extends AbstractType
         $builder
             ->add('name')
             ->add('description', 'textarea')
-            ->add('algo_name')// TODO ENUM
+            ->add('algo_name')
             ->add('category', 'choice', [
                 'choices' => BadgeCategory::$choices
             ])

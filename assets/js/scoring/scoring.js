@@ -18,8 +18,6 @@ window.orbital.scoring = window.orbital.scoring || {};
             return zoneData[score];
         },
         isGold: function (zone, score) {
-            //TODO is this correct for compound?
-
             return scoring.zones.getValue(zone, score) >= 9;
         },
         isHit: function (zone, score) {

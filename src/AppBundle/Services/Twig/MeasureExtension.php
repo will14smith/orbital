@@ -32,7 +32,6 @@ class MeasureExtension extends \Twig_Extension
             $unit = Unit::$choices[$unit];
 
             if ($value != 1) {
-                //TODO proper pluralisation
                 $unit .= 's';
             }
         }

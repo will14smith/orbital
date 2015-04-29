@@ -31,8 +31,6 @@ class PersonImporter
         foreach ($people as $person) {
             $new_count += $this->insert($person);
         }
-
-        //TODO return?
     }
 
     private function parse(\SplFileObject $reader)
@@ -131,7 +129,6 @@ class PersonImporter
             $person->setCuser($data['Login']);
         }
 
-        //TODO UTF-8 names get truncated
         $name = $data['First Name'] . ' ' . $data['Surname'];
         $person->setName($name);
 
@@ -159,8 +156,6 @@ class PersonImporter
             $em->persist($person);
             // if we cared about performance we could share the em...
             $em->flush();
-        } else {
-            //TODO is there anything to update?
         }
 
         return !$current_person;

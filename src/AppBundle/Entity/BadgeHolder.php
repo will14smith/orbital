@@ -26,7 +26,6 @@ class BadgeHolder
     protected $badge;
 
     /**
-     * TODO inverse
      * @ORM\ManyToOne(targetEntity="Person")
      */
     protected $person;

@@ -34,7 +34,6 @@ function convertArrow(arrow) {
         'score_id': arrow['score_id'],
         'number': arrow['number'],
         'value': arrow['value']
-        //TODO input/edit??
     };
 }
 

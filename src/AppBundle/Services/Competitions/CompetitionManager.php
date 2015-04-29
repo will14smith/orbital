@@ -20,7 +20,6 @@ class CompetitionManager
 
     public function assignTargets(Competition $competition)
     {
-        //TODO make strategy pattern
         $em = $this->doctrine->getManager();
 
         $target = 1;

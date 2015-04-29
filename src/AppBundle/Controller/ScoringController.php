@@ -109,7 +109,7 @@ class ScoringController extends Controller
      */
     public function amendAction(Score $score)
     {
-        //TODO amend arrows
+        throw new \Exception("NOT IMPLEMENTED");
     }
 
     /**
@@ -122,7 +122,7 @@ class ScoringController extends Controller
      */
     public function removeAction(Score $score)
     {
-        //TODO remove arrows
+        throw new \Exception("NOT IMPLEMENTED");
     }
 
     /**

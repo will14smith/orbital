@@ -108,8 +108,6 @@ class PamAuthenticator implements SimpleFormAuthenticatorInterface
         $user->setSkill(Skill::NOVICE);
         $user->setAdmin(false);
 
-        //TODO generate dummy password?
-
         $em->persist($user);
         $em->flush();
 

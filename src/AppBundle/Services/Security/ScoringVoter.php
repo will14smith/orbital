@@ -29,18 +29,15 @@ class ScoringVoter extends BaseVoter
 
         switch ($permission) {
             case SecurityAction::JUDGE:
-                //TODO handle judges in competition
 
                 break;
             case SecurityAction::SCORE:
-                //TODO handle delegated scorers, non-self scoring, etc...
                 if ($score->getPerson()->getId() == $user->getId()) {
                     return VoterInterface::ACCESS_GRANTED;
                 }
 
                 break;
             case SecurityAction::SIGN:
-                //TODO might need scorer signature too?
                 if ($score->getPerson()->getId() == $user->getId()) {
                     return VoterInterface::ACCESS_GRANTED;
                 }

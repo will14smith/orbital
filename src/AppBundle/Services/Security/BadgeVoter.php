@@ -28,7 +28,6 @@ class BadgeVoter extends BaseVoter
                     return VoterInterface::ACCESS_GRANTED;
                 }
 
-                //TODO has user been awarded this badge yet?
                 return VoterInterface::ACCESS_GRANTED;
 
                 break;

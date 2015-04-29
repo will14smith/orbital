@@ -41,7 +41,6 @@ class EnumExtension extends \Twig_Extension
 
     public function enum_filter($value, $enum)
     {
-        //TODO check exists?
         return $this->getGlobals()['Enum'][$enum][$value];
     }
 

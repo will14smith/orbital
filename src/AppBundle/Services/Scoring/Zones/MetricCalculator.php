@@ -45,8 +45,6 @@ class MetricCalculator implements ZoneCalculatorInterface
      */
     function isGold(ScoreArrow $arrow)
     {
-        //TODO is this correct?? (for all bow types)
-
         return $this->getValue($arrow) == 10;
     }
 }

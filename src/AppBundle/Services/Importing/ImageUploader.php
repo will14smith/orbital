@@ -27,8 +27,6 @@ class ImageUploader
         $raw_img = file_get_contents($file->getRealPath());
         $img = imagecreatefromstring($raw_img);
 
-        //TODO processing?
-
         $uniq_time = explode(' ', microtime());
 
         $file_name = $uniq_time[1] . substr($uniq_time[0], 2) . '.jpg';

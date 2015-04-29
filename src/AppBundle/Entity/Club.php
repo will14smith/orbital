@@ -32,7 +32,6 @@ class Club
     /**
      * @ORM\Column(type="string", nullable=true)
      */
-    //TODO might need multiple...
     protected $email;
 
     /**

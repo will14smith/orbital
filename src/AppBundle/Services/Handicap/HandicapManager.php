@@ -110,7 +110,6 @@ class HandicapManager
             ->getScoresByPersonBetween($person, $start_date, $end_date);
 
         if(count($scores) < 3) {
-            //TODO log this?
             return;
         }
 
