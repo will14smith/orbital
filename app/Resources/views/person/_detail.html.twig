@@ -8,19 +8,7 @@
 {% from _self import field %}
 
 <dl>
-    {% if is_granted('ROLE_ADMIN') %}
-        {{ field('ArcheryGB #', person.agbNumber, true) }}
-        {{ field('CID', person.cid, true) }}
-        {{ field('College username', person.cuser, true) }}
-        {{ field('Email', person.email, true) }}
-        {{ field('Mobile', person.mobile, true) }}
-        {% if person.gender %}
-            {{ field('Gender', person.gender|enum('gender'), true) }}
-        {% endif %}
-        {% if person.dateOfBirth %}
-            {{ field('DoB', person.dateOfBirth|date('d/m/Y'), true) }}
-        {% endif %}
-    {% endif %}
+    {% include ':person:_detail_admin.html.twig' with { 'person': person } only %}
     {{ field('Skill', person.skill|enum('skill')) }}
     {% if person.bowtype %}
         {{ field('Preferred bow type', person.bowtype|enum('bowtype')) }}
@@ -38,3 +26,4 @@
         TODO
     </dd>
 </dl>
+
