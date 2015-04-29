@@ -98,10 +98,10 @@ class HandicapManager
 
     public function reassess(Person $person, $start_date = null, $end_date = null)
     {
-        if ($start_date == null) {
+        if ($start_date === null) {
             $start_date = new \DateTime('1 year ago');
         }
-        if ($end_date == null) {
+        if ($end_date === null) {
             $end_date = new \DateTime('now');
         }
 
