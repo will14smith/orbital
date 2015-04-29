@@ -2,13 +2,12 @@
 
 namespace AppBundle\Services\Leagues\Algorithms;
 
-use AppBundle\Entity\LeaguePerson;
 
 trait RandomInitialiserTrait {
     /**
-     * @param LeaguePerson[] $people
+     * @param \AppBundle\Entity\LeaguePerson[] $people
      *
-     * @return LeaguePerson[]
+     * @return \AppBundle\Entity\LeaguePerson[]
      */
     public function init(array $people) {
         shuffle($people);

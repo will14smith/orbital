@@ -1,16 +1,12 @@
 <?php
 
-
 namespace AppBundle\Services\Handicap;
-
 
 use AppBundle\Entity\Person;
 use AppBundle\Entity\PersonHandicap;
 use AppBundle\Entity\Score;
 use AppBundle\Services\Enum\HandicapType;
 use Doctrine\Bundle\DoctrineBundle\Registry;
-use Doctrine\DBAL\Types\Type;
-use Doctrine\ORM\QueryBuilder;
 
 class HandicapManager
 {
