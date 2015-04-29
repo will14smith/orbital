@@ -606,4 +606,9 @@ class Person implements UserInterface
 
         return $this->name;
     }
+
+    public function isAdmin()
+    {
+        return in_array('ROLE_ADMIN', $this->getRoles());
+    }
 }

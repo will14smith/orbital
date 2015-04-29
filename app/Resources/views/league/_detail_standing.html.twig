@@ -1,15 +1,17 @@
 {% import ':macro:display.html.twig' as display %}
 
-<span class="text shrink">
-    {{ index }}
-</span>
-<span class="text">
-    {{ display.person(person.person) }}
-</span>
-<span class="text shrink">
-    {# TODO green-up, red-down #}
-    {{ person.initialPosition - index }}
-</span>
-<span class="text shrink">
-    {{ person.points }}
-</span>
+<ul class="list">
+    {% for person in people %}
+        <li>
+            <span class="text shrink">{{ loop.index }}</span>
+            <span class="text">{{ display.person(person.person) }}</span>
+            <span class="text shrink">
+                {# TODO green-up, red-down #}
+                {{ person.initialPosition - loop.index }}
+            </span>
+            <span class="text shrink">{{ person.points }}</span>
+        </li>
+    {% else %}
+        <li><span class="text">Nobody has entered this league yet!</span></li>
+    {% endfor %}
+</ul>

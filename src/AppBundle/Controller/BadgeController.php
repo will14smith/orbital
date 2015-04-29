@@ -83,7 +83,6 @@ class BadgeController extends ProofController
         }
 
         $is_admin = $this->isGranted('ROLE_ADMIN');
-
         if ($is_admin) {
             $badgeHolder->setDateConfirmed(new \DateTime('now'));
         }

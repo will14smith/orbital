@@ -5,35 +5,17 @@
 {% endblock %}
 
 {% block body %}
-    {% if league.description|trim %}
-        <p>
-            {{ league.description }}
-        </p>
-    {% endif %}
-
     {% include ':league:_detail.html.twig' with { 'league': league } %}
 
     <h2>Standings</h2>
-    <ul class="list">
-        {% for person in league.people %}
-            <li>{% include ':league:_detail_standing.html.twig' with { 'person': person, 'index': loop.index } %}</li>
-        {% else %}
-            <li><span class="text">Nobody has entered this league yet!</span></li>
-        {% endfor %}
-    </ul>
+    {% include ':league:_detail_standing.html.twig' with { 'people': league.people } only %}
 
     <h2>Matches</h2>
-    <ul class="list">
-        {% for match in league.matches %}
-            <li>{% include ':league:_detail_match.html.twig' with { 'league': league, 'match': match } %}</li>
-        {% else %}
-            <li><span class="text">There have been no matches yet!</span></li>
-        {% endfor %}
-    </ul>
+    {% include ':league:_detail_match.html.twig' with { 'league': league, 'matches': league.matches } only %}
 {% endblock %}
 
 {% block sidebar %}
-    {% if is_granted('ROLE_ADMIN')  or is_granted('SIGNUP', league) or is_granted('SUBMIT', league) %}
+    {% if is_granted('SIGNUP', league) or is_granted('SUBMIT', league) %}
         <div class="widget">
             <h3 class="widget-title">Actions</h3>
             <ul>

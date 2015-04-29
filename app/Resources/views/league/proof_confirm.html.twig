@@ -13,14 +13,14 @@
     </p>
     <dl>
         <dt>Challenger</dt>
-        <dd>{{ display.person(match.challenger) }}</dd>
+        <dd>{{ display.leaguePerson(match.challenger) }}</dd>
         <dt>Challengee</dt>
-        <dd>{{ display.person(match.challengee) }}</dd>
+        <dd>{{ display.leaguePerson(match.challengee) }}</dd>
         <dt>Accepted</dt>
         <dd>{{ match.accepted ? 'Yes' : 'No' }}</dd>
         {% if match.accepted %}
             <dt>Winner</dt>
-            <dd>{{ display.person(match.winner) }}</dd>
+            <dd>{{ display.leaguePerson(match.winner) }}</dd>
         {% endif %}
         <dt>Date Challenged</dt>
         <dd>{{ match.dateChallenged|date('d/m/Y') }}</dd>

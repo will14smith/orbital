@@ -99,6 +99,11 @@ services:
       public: false
       tags:
         - { name: security.voter }
+    orbital.security.league_match_voter:
+      class: AppBundle\Services\Security\LeagueMatchVoter
+      public: false
+      tags:
+        - { name: security.voter }
     orbital.security.score_voter:
         class: AppBundle\Services\Security\ScoreVoter
         public: false
@@ -133,6 +138,12 @@ services:
             - { name: twig.extension }
     orbital.twig.measure:
         class: AppBundle\Services\Twig\MeasureExtension
+        public: false
+        tags:
+            - { name: twig.extension }
+    orbital.twig.security:
+        class: AppBundle\Services\Twig\SecurityExtension
+        arguments: ["@security.authorization_checker"]
         public: false
         tags:
             - { name: twig.extension }

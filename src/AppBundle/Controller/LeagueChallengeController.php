@@ -8,6 +8,7 @@ use AppBundle\Entity\LeagueMatch;
 use AppBundle\Entity\LeagueMatchProof;
 use AppBundle\Entity\ProofEntity;
 use AppBundle\Form\Type\LeagueMatchType;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Request;
@@ -59,44 +60,40 @@ class LeagueChallengeController extends ProofController {
     }
 
     /**
-     * @Security("has_role('ROLE_ADMIN')")
+     * @Security("is_granted('ACCEPT', leagueMatch)")
      * @Route("/league/{id}/match/{match_id}/accept", name="league_match_accept", methods={"GET", "POST"})
+     * @ParamConverter("leagueMatch", options={"id" = "match_id"})
      *
-     * @param int $id
-     * @param int $match_id
+     * @param League $league
+     * @param LeagueMatch $leagueMatch
      * @param Request $request
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function confirmChallengeAction($id, $match_id, Request $request)
+    public function confirmChallengeAction(League $league, LeagueMatch $leagueMatch, Request $request)
     {
         $em = $this->getDoctrine()->getManager();
-        $lm = $em->getRepository('AppBundle:LeagueMatch')->find($match_id);
-        if (!$lm) {
+
+        if ($leagueMatch->getLeague()->getId() != $league->getId()) {
             throw $this->createNotFoundException(
-                'No league-match found for id ' . $match_id
-            );
-        }
-        if ($lm->getLeague()->getId() != $id) {
-            throw $this->createNotFoundException(
-                'No league found for id ' . $id
+                'No league found for id ' . $league->getId()
             );
         }
 
         $confirm_proof = $this->confirmProof($request);
         if ($confirm_proof !== false) {
-            return $this->render('', [
+            return $this->render(':league:proof_confirm.html.twig', [
                 'form' => $confirm_proof,
-                'match' => $lm
+                'match' => $leagueMatch
             ]);
         }
 
-        $lm->setDateConfirmed(new \DateTime('now'));
+        $leagueMatch->setDateConfirmed(new \DateTime('now'));
         $em->flush();
 
         return $this->redirectToRoute(
             'league_detail',
-            ['id' => $lm->getLeague()->getId()]
+            ['id' => $league->getId()]
         );
     }
 

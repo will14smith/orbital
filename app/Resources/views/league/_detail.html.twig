@@ -1,5 +1,11 @@
 {% import ':macro:display.html.twig' as display %}
 
+{% if league.description|trim %}
+    <p>
+        {{ league.description }}
+    </p>
+{% endif %}
+
 <dl>
     <dt>Open Date</dt>
     <dd>{{ league.openDate|date('d/m/Y H:i') }}</dd>
