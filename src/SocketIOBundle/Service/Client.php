@@ -42,6 +42,11 @@ class Client
         }
     }
 
+    public function isClosed()
+    {
+        return $this->closed;
+    }
+
     public function close()
     {
         $this->closed = true;
