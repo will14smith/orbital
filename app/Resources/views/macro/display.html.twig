@@ -37,6 +37,10 @@
     {% import _self as self %}
     {{ self.entity_link(url('league_detail', { 'id': league.id }), league.name, class) }}
 {% endmacro %}
+{% macro leaguePerson(leaguePerson, class="") %}
+    {% import _self as self %}
+    {{ self.person(leaguePerson.person, class) }}
+{% endmacro %}
 
 {% macro entity_link(url, text, class="") %}
     <a href="{{ url }}"{% if class|length > 0 %} class="{{ class }}"{% endif %}>{{ text }}</a>

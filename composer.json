@@ -1,5 +1,5 @@
 {
-  "name": "ICAC/orbital",
+  "name": "icac/orbital",
   "description": "A web platform for managing archery data",
   "license": "proprietary",
   "type": "project",
@@ -26,11 +26,13 @@
     "doctrine/doctrine-migrations-bundle": "2.1.*@dev",
     "knplabs/knp-snappy-bundle": "dev-master",
     "wisembly/elephant.io": "~3.0",
+    "hackzilla/barcode-bundle": "1.4.1",
     "phpunit/phpunit": "4.6.4"
   },
   "require-dev": {
     "sensio/generator-bundle": "~2.3",
-    "codeclimate/php-test-reporter": "0.1.*"
+    "codeclimate/php-test-reporter": "0.1.*",
+    "doctrine/doctrine-fixtures-bundle": "2.2.*"
   },
   "scripts": {
     "post-root-package-install": [

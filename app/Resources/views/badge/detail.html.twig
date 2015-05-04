@@ -14,7 +14,6 @@
     <ul class="list">
         {% for holder in badge.holders %}
             <li>
-                {# todo show state: unconfirmed, confirmed, awaiting delivery, done #}
                 <span class="text shrink">{{ holder.dateAwarded|date('d/m/Y') }}</span>
                 {{ display.person(holder.person) }}
                 {% if is_granted('ROLE_ADMIN') %}
@@ -27,7 +26,6 @@
                             <i class="fa fa-trash-o"></i>
                         </a>
                     </span>
-                    {# todo quick state change #}
                 {% endif %}
             </li>
         {% else %}

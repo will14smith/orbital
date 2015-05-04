@@ -7,16 +7,6 @@
 {% endblock %}
 
 {% block body %}
-    {% if not score.complete %}
-        <div>
-            This score is not yet complete, click to view
-            <a href="{{ url('score_live', { 'id': score.id }) }}">live scoring</a>
-            {% if is_granted('SCORE', score) %}
-                (or <em>you</em> can <a href="{{ url('score_input', { 'id': score.id }) }}">input scores</a>)
-            {% endif %}
-        </div>
-    {% endif %}
-
     {% include ':score:_detail.html.twig' with { 'score': score, 'handicap': handicap } only %}
 
     {% if is_granted('ROLE_ADMIN') %}
@@ -25,7 +15,7 @@
 {% endblock %}
 
 {% block sidebar %}
-    {% if is_granted('SCORE', score) or is_granted('EDIT', score) or is_granted('ROLE_ADMIN') %}
+    {% if is_granted_any(['SCORE', 'EDIT', 'ACCEPT', 'ROLE_ADMIN'], score) %}
         <div class="widget">
             <h3 class="widget-title">Actions</h3>
             <ul>

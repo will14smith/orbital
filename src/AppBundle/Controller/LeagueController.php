@@ -121,14 +121,14 @@ class LeagueController extends Controller
 
     /**
      * @Security("has_role('ROLE_ADMIN')")
-     * TODO this should be POST
-     * @Route("/league/{id}/init", name="league_init", methods={"GET"})
+     * @Route("/league/{id}/init", name="league_init", methods={"GET", "POST"})
      *
      * @param int $id
+     * @param Request $request
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function initAction($id)
+    public function initAction($id, Request $request)
     {
         $em = $this->getDoctrine()->getManager();
         $league = $em->getRepository('AppBundle:League')->find($id);
@@ -138,13 +138,23 @@ class LeagueController extends Controller
             );
         }
 
-        $algo = $this->get('orbital.league.manager')->getAlgorithm($league->getAlgoName());
+        $form = $this->createFormBuilder()->getForm();
+        $form->handleRequest($request);
 
-        $algo->init($league->getPeople()->toArray());
-        $em->flush();
+        if ($form->isSubmitted() && $form->isValid()) {
+            $algo = $this->get('orbital.league.manager')->getAlgorithm($league->getAlgoName());
 
-        return $this->redirectToRoute('league_detail', [
-            'id' => $league->getId()
+            $algo->init($league->getPeople()->toArray());
+            $em->flush();
+
+            return $this->redirectToRoute('league_detail', [
+                'id' => $league->getId()
+            ]);
+        }
+
+        return $this->render('league/init.html.twig', [
+            'form' => $form->createView(),
+            'league' => $league
         ]);
     }
 

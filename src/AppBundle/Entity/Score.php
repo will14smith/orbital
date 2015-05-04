@@ -21,7 +21,6 @@ class Score
     protected $id;
 
     /**
-     * TODO Inverse
      * @ORM\ManyToOne(targetEntity="Person")
      */
     protected $person;
@@ -482,7 +481,7 @@ class Score
     /**
      * Get arrows
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection|ScoreArrow[]
      */
     public function getArrows()
     {

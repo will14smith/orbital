@@ -39,15 +39,15 @@ class CompetitionEntry
     protected $round;
 
     /**
-     * @ORM\Column(type="string", nullable=true)
+     * @ORM\Column(type="string")
      */
     protected $bowtype;
     /**
-     * @ORM\Column(type="string", nullable=true)
+     * @ORM\Column(type="string")
      */
     protected $skill;
     /**
-     * @ORM\Column(type="string", nullable=true)
+     * @ORM\Column(type="string")
      */
     protected $gender;
 

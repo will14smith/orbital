@@ -43,7 +43,6 @@ io.sockets.on('connect', function (socket) {
                 'arrow': arrow
             });
     });
-    //TODO arrow_updated, arrow_removed
 
     // misc handlers
     socket.on('disconnect', function () {

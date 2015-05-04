@@ -19,7 +19,13 @@ class MetricCalculator implements ZoneCalculatorInterface
         if($value == 'X') return 10;
         if($value == 'M') return 0;
 
-        return intval($value);
+        $int = intval($value);
+
+        if($int < 1 || $int > 10) {
+            throw new \InvalidArgumentException();
+        }
+
+        return $int;
     }
 
     /**
@@ -29,7 +35,7 @@ class MetricCalculator implements ZoneCalculatorInterface
      */
     function isHit(ScoreArrow $arrow)
     {
-        return $arrow->getValue() != 'M';
+        return $this->getValue($arrow) > 0;
     }
 
     /**
@@ -39,8 +45,6 @@ class MetricCalculator implements ZoneCalculatorInterface
      */
     function isGold(ScoreArrow $arrow)
     {
-        //TODO is this correct?? (for all bow types)
-
-        return $this->getValue($arrow) >= 9;
+        return $this->getValue($arrow) == 10;
     }
 }

@@ -79,7 +79,6 @@ class CompetitionController extends Controller
 
     /**
      * @Security("has_role('ROLE_ADMIN')")
-     * TODO should be POST
      * @Route("/competition/{id}/assign", name="competition_assign", methods={"GET"})
      *
      * @param int $id

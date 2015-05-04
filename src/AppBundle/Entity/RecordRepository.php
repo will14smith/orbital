@@ -13,8 +13,6 @@ class RecordRepository extends EntityRepository
 
         $current_holder = $record->getCurrentHolder();
         if ($current_holder) {
-            //TODO check the new holder breaks the record
-
             $current_holder->setDateBroken($new_holder->getDate());
         }
 

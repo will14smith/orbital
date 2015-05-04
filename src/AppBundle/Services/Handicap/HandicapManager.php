@@ -1,16 +1,12 @@
 <?php
 
-
 namespace AppBundle\Services\Handicap;
-
 
 use AppBundle\Entity\Person;
 use AppBundle\Entity\PersonHandicap;
 use AppBundle\Entity\Score;
 use AppBundle\Services\Enum\HandicapType;
 use Doctrine\Bundle\DoctrineBundle\Registry;
-use Doctrine\DBAL\Types\Type;
-use Doctrine\ORM\QueryBuilder;
 
 class HandicapManager
 {
@@ -81,12 +77,13 @@ class HandicapManager
         $handicaps = array_map(function ($score) {
             return $this->calculator->handicapForScore($score);
         }, $scores);
+        $handicapCount = count($handicaps);
 
         // initial handicap
         $handicap = ceil(($handicaps[0] + $handicaps[1] + $handicaps[2]) / 3);
 
         // average it up for the remainder
-        for ($i = 3; $i < count($handicaps); $i++) {
+        for ($i = 3; $i < $handicapCount; $i++) {
             $new_hc = ceil(($handicaps[$i] + $handicap) / 2);
             if ($new_hc < $handicap) {
                 $handicap = $new_hc;
@@ -98,10 +95,10 @@ class HandicapManager
 
     public function reassess(Person $person, $start_date = null, $end_date = null)
     {
-        if ($start_date == null) {
+        if ($start_date === null) {
             $start_date = new \DateTime('1 year ago');
         }
-        if ($end_date == null) {
+        if ($end_date === null) {
             $end_date = new \DateTime('now');
         }
 
@@ -110,7 +107,6 @@ class HandicapManager
             ->getScoresByPersonBetween($person, $start_date, $end_date);
 
         if(count($scores) < 3) {
-            //TODO log this?
             return;
         }
 

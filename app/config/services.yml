@@ -67,6 +67,7 @@ services:
           - { name: orbital.league.algo }
     orbital.league.algo.steal:
         class: AppBundle\Services\Leagues\Algorithms\StealAlgorithm
+        arguments: ["100"]
         public: false
         tags:
           - { name: orbital.league.algo }
@@ -95,6 +96,11 @@ services:
           - { name: security.voter }
     orbital.security.league_voter:
       class: AppBundle\Services\Security\LeagueVoter
+      public: false
+      tags:
+        - { name: security.voter }
+    orbital.security.league_match_voter:
+      class: AppBundle\Services\Security\LeagueMatchVoter
       public: false
       tags:
         - { name: security.voter }
@@ -135,3 +141,16 @@ services:
         public: false
         tags:
             - { name: twig.extension }
+    orbital.twig.barcode:
+        class: AppBundle\Services\Twig\BarcodeExtension
+        arguments: ["@service_container"]
+        public: false
+        tags:
+            - { name: twig.extension }
+    orbital.twig.security:
+        class: AppBundle\Services\Twig\SecurityExtension
+        arguments: ["@security.authorization_checker"]
+        public: false
+        tags:
+            - { name: twig.extension }
+

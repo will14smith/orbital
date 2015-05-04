@@ -1,21 +1,32 @@
 {% import ':macro:display.html.twig' as display %}
 
-<span class="text shrink">
-    {{ match.dateChallenged|date('d/m/Y H:i') }}
-</span>
-<span class="text">
-    {{ display.person(match.challenger.person, (match.accepted and match.result) ? 'text-strong' ) }}
-</span>
-<span class="text">
-    {{ display.person(match.challengee.person, (match.accepted and not match.result) ? 'text-strong' ) }}
-</span>
-<span class="text shrink">
-    {{ display.round(match.round) }}
-</span>
-{% if is_granted('ROLE_ADMIN') and not match.dateConfirmed %}
-    <span class="actions">
-        <a href="{{ url('league_match_accept', { 'id': league.id, 'match_id': match.id }) }}">
-            <i class="fa fa-check"></i>
-        </a>
-    </span>
-{% endif %}
+
+<ul class="list">
+    {% for match in matches %}
+        <li>
+            <span class="text shrink">
+                {{ match.dateChallenged|date('d/m/Y H:i') }}
+            </span>
+            <span class="text">
+                {{ display.person(match.challenger.person, match.challengerWon ? 'text-strong' ) }}
+            </span>
+            <span class="text">
+                {{ display.person(match.challengee.person, match.challengeeWon ? 'text-strong' ) }}
+            </span>
+            <span class="text shrink">
+                {{ display.round(match.round) }}
+            </span>
+            {% if is_granted('ACCEPT', match) %}
+                <span class="actions">
+                    <a href="{{ url('league_match_accept', { 'id': league.id, 'match_id': match.id }) }}">
+                        <i class="fa fa-check"></i>
+                    </a>
+                </span>
+            {% endif %}
+        </li>
+    {% else %}
+        <li><span class="text">There have been no matches yet!</span></li>
+    {% endfor %}
+</ul>
+
+

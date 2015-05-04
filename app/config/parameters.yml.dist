@@ -21,3 +21,4 @@ parameters:
 
     wkhtmltopdf_path: /usr/local/bin/wkhtmltopdf
     socketio_url: http://localhost:3000
+

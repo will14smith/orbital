@@ -1,15 +1,13 @@
 <?php
 
-
 namespace AppBundle\Tests\Services\Handicap;
-
 
 use AppBundle\Entity\Score;
 use AppBundle\Services\Events\ScoreEvent;
 use AppBundle\Services\Handicap\HandicapListener;
-use AppBundle\Tests\Services\BaseTestCase;
+use AppBundle\Tests\Services\ServiceTestCase;
 
-class HandicapListenerTest extends BaseTestCase
+class HandicapListenerTest extends ServiceTestCase
 {
     private function createManager() {
         return $this->getMockBuilder('\AppBundle\Services\Handicap\HandicapManager')->getMock();

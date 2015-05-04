@@ -139,7 +139,8 @@ class RecordController extends Controller
 
         $recordHolder = new RecordHolder();
 
-        for ($i = 0; $i < $record->getNumHolders(); $i++) {
+        $numHolders = $record->getNumHolders();
+        for ($i = 0; $i < $numHolders; $i++) {
             $recordHolder->addPerson(new RecordHolderPerson());
         }
         $form = $this->createForm(new RecordHolderType(), $recordHolder);

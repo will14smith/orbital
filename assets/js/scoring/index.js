@@ -73,8 +73,6 @@ window.orbital.scoring = window.orbital.scoring || {};
                 return null;
             }
 
-            //TODO return arrows in buffer?
-
             return arrows[index];
         },
 
@@ -92,7 +90,6 @@ window.orbital.scoring = window.orbital.scoring || {};
                 if (data.success) {
                     vm.arrowBuffer = [];
                 } else {
-                    //TODO handle unsuccessful response
                     throw "ERROR";
                 }
             });
@@ -107,7 +104,6 @@ window.orbital.scoring = window.orbital.scoring || {};
                 if (data.success) {
                     document.location = data.url;
                 } else {
-                    //TODO handle unsuccessful response
                     throw "ERROR";
                 }
             });
@@ -118,8 +114,6 @@ window.orbital.scoring = window.orbital.scoring || {};
             /*jshint camelcase: false */
             var score_id = data.score_id;
             /*jshint camelcase: true */
-
-            //TODO check score_id
 
             m.startComputation();
             arrows.forEach(function (arrow) {
@@ -133,8 +127,6 @@ window.orbital.scoring = window.orbital.scoring || {};
             /*jshint camelcase: false */
             var score_id = data.score_id;
             /*jshint camelcase: true */
-
-            //TODO check score_id
 
             m.startComputation();
             scoring.vm.arrows[arrow.number] = arrow;
