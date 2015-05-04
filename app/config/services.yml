@@ -141,6 +141,12 @@ services:
         public: false
         tags:
             - { name: twig.extension }
+    orbital.twig.barcode:
+        class: AppBundle\Services\Twig\BarcodeExtension
+        arguments: ["@service_container"]
+        public: false
+        tags:
+            - { name: twig.extension }
     orbital.twig.security:
         class: AppBundle\Services\Twig\SecurityExtension
         arguments: ["@security.authorization_checker"]

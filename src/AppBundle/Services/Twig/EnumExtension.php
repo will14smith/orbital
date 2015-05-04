@@ -1,8 +1,6 @@
 <?php
 
-
 namespace AppBundle\Services\Twig;
-
 
 use AppBundle\Services\Enum\BadgeCategory;
 use AppBundle\Services\Enum\BadgeState;
@@ -33,7 +31,7 @@ class EnumExtension extends \Twig_Extension
     private function process_enum_global($enum)
     {
         array_walk($enum, function (&$v, $k) {
-            $v = $k;
+            // $v = $k;
         });
 
         return $enum;

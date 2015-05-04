@@ -6,10 +6,14 @@
     <meta name="viewport" content="width=device-width">
 
     {% block stylesheets %}
-        <link rel="stylesheet" href="{{ asset('css/app.css') }}"/>
+        <link rel="stylesheet" href="{{ asset('css/pdf.css', absolute=true) }}"/>
     {% endblock %}
 </head>
 <body>
-<h1>{% block title %}ICAC{% endblock %}</h1>
+<header>
+{% block title %}<h1>ICAC</h1>{% endblock %}
+</header>
+<article>
 {% block content %}{% endblock %}
+</article>
 </body>

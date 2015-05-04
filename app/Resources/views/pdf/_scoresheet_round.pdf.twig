@@ -1,0 +1,43 @@
+{% for target in round.targets %}
+    <table>
+        <tr>
+            <td class="marker-tl"></td>
+            <td class="text-center">
+                Distance: {{ target.distanceValue }}{{ target.distanceUnit }}
+            </td>
+            <td class="marker-tr"></td>
+        </tr>
+    </table>
+
+    {# basic algo for the moment: display 2 ends... #}
+    {% set endCount = target.arrowCount / target.endSize %}
+
+    <table class="bordered weak">
+        {% for x in 1..(endCount / 2)|round(0, 'ceil') %}
+            <tr>
+                {% for z in 1..target.endSize - 1 %}
+                    <td>&nbsp;</td>
+                {% endfor %}
+                <td class="strong-r">&nbsp;</td>
+                {% if (2 * x) - 1 < endCount %}
+                    {% for z in 1..target.endSize %}
+                        <td>&nbsp;</td>
+                    {% endfor %}
+                {% else %}
+                    <td colspan="{{ target.endSize }}">&nbsp;</td>
+                {% endif %}
+            </tr>
+        {% endfor %}
+    </table>
+
+    <table style="margin-top: 0.25cm">
+        <tr>
+            <td class="marker-bl"></td>
+            <td class="text-center">
+                {{ target.id | barcode }}
+            </td>
+            <td class="marker-br"></td>
+        </tr>
+    </table>
+
+{% endfor %}

@@ -97,3 +97,6 @@ knp_snappy:
 socket_io:
     connection: "%socketio_url%"
     version: 1.x
+
+parameters:
+  hackzilla_barcode.class: BarcodeBundle\Utility\Barcode
