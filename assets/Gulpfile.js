@@ -26,7 +26,7 @@ gulp.task('images', function () {
 });
 
 gulp.task('css', function () {
-    return sass('./sass/app.scss', {
+    return sass('./sass/', {
         style: 'compressed',
         compass: true,
         loadPath: [

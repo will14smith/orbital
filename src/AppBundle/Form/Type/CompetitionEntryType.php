@@ -38,7 +38,7 @@ class CompetitionEntryType extends AbstractType
                 ->add('club')
                 ->add('person');
 
-            $archer = $builder->create('scores', 'form', ['mapped' => false, 'label' => false, 'attr' => ['orbital-collapse' => 'Archery Info']]);
+            $archer = $builder->create('scores', 'form', ['inherit_data' => true, 'label' => false, 'attr' => ['orbital-collapse' => 'Archery Info']]);
         } else {
             $archer = $builder;
         }

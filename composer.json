@@ -26,6 +26,7 @@
     "doctrine/doctrine-migrations-bundle": "2.1.*@dev",
     "knplabs/knp-snappy-bundle": "dev-master",
     "wisembly/elephant.io": "~3.0",
+    "hackzilla/barcode-bundle": "1.4.1",
     "phpunit/phpunit": "4.6.4"
   },
   "require-dev": {
