@@ -4,6 +4,9 @@ namespace AppBundle\DataFixtures\ORM;
 
 use AppBundle\Entity\Competition;
 use AppBundle\Entity\CompetitionEntry;
+use AppBundle\Services\Enum\BowType;
+use AppBundle\Services\Enum\Gender;
+use AppBundle\Services\Enum\Skill;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -30,6 +33,9 @@ class LoadCompetitionData extends AbstractFixture implements OrderedFixtureInter
 
         $entry = new CompetitionEntry();
         $entry->setPerson($this->getReference('person-user'));
+        $entry->setSkill(Skill::SENIOR);
+        $entry->setBowtype(BowType::RECURVE);
+        $entry->setGender(Gender::MALE);
 
         $competition1->addEntry($entry);
 
