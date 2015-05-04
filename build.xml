@@ -36,6 +36,11 @@
     </target>
     <target name="online" description="Disable maintainance mode">
         <!-- TODO -->
+        <exec executable="chmod">
+          <arg value="-R"/>
+          <arg value="777"/>
+          <arg value="app/cache/"/>
+        </exec>
     </target>
 
     <target name="pull" description="Pull code from git repository">
@@ -95,7 +100,7 @@
     </target>
     <target name="npm" description="Install npm packages">
         <exec executable="npm" dir="${basedir}/assets">
-            <arg value="install"/>s
+            <arg value="install"/>
         </exec>
     </target>
     <target name="bower" description="Install bower packers">
