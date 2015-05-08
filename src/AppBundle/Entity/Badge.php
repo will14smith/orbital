@@ -49,6 +49,11 @@ class Badge
     protected $holders;
 
     /**
+     * @ORM\Column(type="string", nullable=true)
+     */
+    protected $image_name;
+
+    /**
      * Constructor
      */
     public function __construct()
@@ -223,5 +228,28 @@ class Badge
     public function __toString()
     {
         return $this->name;
+    }
+
+    /**
+     * Set image_name
+     *
+     * @param string $imageName
+     * @return Badge
+     */
+    public function setImageName($imageName)
+    {
+        $this->image_name = $imageName;
+
+        return $this;
+    }
+
+    /**
+     * Get image_name
+     *
+     * @return string 
+     */
+    public function getImageName()
+    {
+        return $this->image_name;
     }
 }
