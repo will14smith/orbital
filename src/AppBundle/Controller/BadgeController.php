@@ -11,6 +11,7 @@ use AppBundle\Form\Type\BadgeType;
 use AppBundle\Services\Enum\BadgeState;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
 
 class BadgeController extends ProofController
@@ -24,9 +25,12 @@ class BadgeController extends ProofController
 
         $badges = $badgeRepository->findAll();
 
-        return $this->render('badge/list.html.twig', [
-            'badges' => $badges
-        ]);
+        return $this->render(
+            'badge/list.html.twig',
+            [
+                'badges' => $badges
+            ]
+        );
     }
 
     /**
@@ -45,6 +49,7 @@ class BadgeController extends ProofController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $this->updateImage($form, $badge);
             $em = $this->getDoctrine()->getManager();
             $em->persist($badge);
             $em->flush();
@@ -55,9 +60,12 @@ class BadgeController extends ProofController
             );
         }
 
-        return $this->render('badge/create.html.twig', [
-            'form' => $form->createView(),
-        ]);
+        return $this->render(
+            'badge/create.html.twig',
+            [
+                'form' => $form->createView(),
+            ]
+        );
     }
 
     /**
@@ -104,9 +112,12 @@ class BadgeController extends ProofController
             );
         }
 
-        return $this->render('badge/award.html.twig', [
-            'form' => $form->createView(),
-        ]);
+        return $this->render(
+            'badge/award.html.twig',
+            [
+                'form' => $form->createView(),
+            ]
+        );
     }
 
     /**
@@ -123,13 +134,16 @@ class BadgeController extends ProofController
         $badge = $badgeRepository->find($id);
         if (!$badge) {
             throw $this->createNotFoundException(
-                'No badge found for id ' . $id
+                'No badge found for id '.$id
             );
         }
 
-        return $this->render('badge/detail.html.twig', [
-            'badge' => $badge
-        ]);
+        return $this->render(
+            'badge/detail.html.twig',
+            [
+                'badge' => $badge
+            ]
+        );
     }
 
     /**
@@ -147,7 +161,7 @@ class BadgeController extends ProofController
         $badge = $em->getRepository('AppBundle:Badge')->find($id);
         if (!$badge) {
             throw $this->createNotFoundException(
-                'No badge found for id ' . $id
+                'No badge found for id '.$id
             );
         }
 
@@ -155,6 +169,7 @@ class BadgeController extends ProofController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $this->updateImage($form, $badge);
             $em->flush();
 
             return $this->redirectToRoute(
@@ -163,9 +178,12 @@ class BadgeController extends ProofController
             );
         }
 
-        return $this->render('badge/edit.html.twig', [
-            'form' => $form->createView(),
-        ]);
+        return $this->render(
+            'badge/edit.html.twig',
+            [
+                'form' => $form->createView(),
+            ]
+        );
     }
 
     /**
@@ -184,13 +202,13 @@ class BadgeController extends ProofController
         $badgeHolder = $em->getRepository('AppBundle:BadgeHolder')->find($award_id);
         if (!$badgeHolder) {
             throw $this->createNotFoundException(
-                'No badge-holder found for id ' . $award_id
+                'No badge-holder found for id '.$award_id
             );
         }
 
         if ($id != $badgeHolder->getBadge()->getId()) {
             throw $this->createNotFoundException(
-                'Badge-holder ' . $award_id . ' not associated with badge ' . $id
+                'Badge-holder '.$award_id.' not associated with badge '.$id
             );
         }
 
@@ -206,10 +224,13 @@ class BadgeController extends ProofController
             );
         }
 
-        return $this->render('badge/award_edit.html.twig', [
-            'form' => $form->createView(),
-            'holder' => $badgeHolder,
-        ]);
+        return $this->render(
+            'badge/award_edit.html.twig',
+            [
+                'form' => $form->createView(),
+                'holder' => $badgeHolder,
+            ]
+        );
     }
 
     /**
@@ -229,13 +250,13 @@ class BadgeController extends ProofController
         $badge_holder = $em->getRepository('AppBundle:BadgeHolder')->find($award_id);
         if (!$badge_holder) {
             throw $this->createNotFoundException(
-                'No badge-holder found for id ' . $award_id
+                'No badge-holder found for id '.$award_id
             );
         }
 
         if ($id != $badge_holder->getBadge()->getId()) {
             throw $this->createNotFoundException(
-                'Badge-holder ' . $award_id . ' not associated with badge ' . $id
+                'Badge-holder '.$award_id.' not associated with badge '.$id
             );
         }
 
@@ -243,10 +264,13 @@ class BadgeController extends ProofController
             case BadgeState::UNCONFIRMED:
                 $confirm_proof = $this->confirmProof($request);
                 if ($confirm_proof !== false) {
-                    return $this->render('badge/proof_confirm.html.twig', [
-                        'form' => $confirm_proof,
-                        'badge' => $badge_holder
-                    ]);
+                    return $this->render(
+                        'badge/proof_confirm.html.twig',
+                        [
+                            'form' => $confirm_proof,
+                            'badge' => $badge_holder
+                        ]
+                    );
                 }
 
                 $badge_holder->setDateConfirmed(new \DateTime('now'));
@@ -261,13 +285,19 @@ class BadgeController extends ProofController
         $em->flush();
 
         if ($request->query->get('person')) {
-            return $this->redirectToRoute('person_detail', [
-                'id' => $badge_holder->getPerson()->getId()
-            ]);
+            return $this->redirectToRoute(
+                'person_detail',
+                [
+                    'id' => $badge_holder->getPerson()->getId()
+                ]
+            );
         } else {
-            return $this->redirectToRoute('badge_detail', [
-                'id' => $badge_holder->getBadge()->getId()
-            ]);
+            return $this->redirectToRoute(
+                'badge_detail',
+                [
+                    'id' => $badge_holder->getBadge()->getId()
+                ]
+            );
         }
     }
 
@@ -302,7 +332,7 @@ class BadgeController extends ProofController
 
         if (!$badge) {
             throw $this->createNotFoundException(
-                'No badge found for id ' . $id
+                'No badge found for id '.$id
             );
         }
 
@@ -313,9 +343,12 @@ class BadgeController extends ProofController
             return $this->redirectToRoute('badge_list');
         }
 
-        return $this->render('badge/delete.html.twig', [
-            'badge' => $badge
-        ]);
+        return $this->render(
+            'badge/delete.html.twig',
+            [
+                'badge' => $badge
+            ]
+        );
     }
 
     /**
@@ -329,5 +362,17 @@ class BadgeController extends ProofController
         $proof->setBadgeHolder($object);
 
         return $proof;
+    }
+
+    private function updateImage(Form $form, Badge $badge)
+    {
+        $image = $form->get('image')->getData();
+        if($image === null) {
+            return;
+        }
+
+        $importPath = $this->get('orbital.image_importer')->persist($image);
+
+        $badge->setImageName($importPath);
     }
 }

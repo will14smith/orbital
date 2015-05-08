@@ -6,6 +6,9 @@
 {% endblock %}
 
 {% block body %}
+    {% if badge.imageName %}
+        <img src="{{ asset('uploads/' ~ badge.imageName) }}" alt="{{ badge.name }}"/>
+    {% endif %}
     <p>
         {{ badge.description }}
     </p>
