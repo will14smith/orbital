@@ -23,7 +23,5 @@
             <li><a href="{{ url('logout') }}" flex>Logout</a></li>
         </ul>
     </li>
-{% else %}
-    <li{% if hide_login %} hide-gt-md{% endif %}><a href="{{ url('login') }}" flex>Login</a></li>
     {% endif %}
 </ul>
