@@ -16,48 +16,42 @@
     <script src="{{ asset('js/head.js') }}"></script>
 </head>
 <body>
-<header class="page-header">
-    <div class="" layout="row" layout-align="start end">
-        <a href="{{ url('homepage') }}" flex>
+<header id="page-header">
+    <div class="main-header-bar">
+        <a href="{{ url('homepage') }}" class="logo">
             <img src="{{ asset('images/logo-2.png') }}" alt="ORBITAL">
         </a>
-        <button class="menu-toggle" icac-toggle="#menu-main-menu">
+        <button class="menu-toggle" icac-toggle="#main-menu">
             <span></span>
             <span></span>
             <span></span>
         </button>
     </div>
-    <nav>
+
+    <nav id="main-menu">
         {% include '_nav.html.twig' %}
     </nav>
 </header>
 
-<main id="content" layout="column" layout-gt-md="row">
-    {% block content %}
-        <div id="primary" flex-gt-md="75">
-            {% set _title_block = block('title') %}
-            {% if _title_block is not empty %}
-                <h1 class="page-title">{{ _title_block|trim|raw }}</h1>
-            {% endif %}
-            <div class="card">
-                {% block body %}
+<main id="content">
+    {% set _title_block = block('title') %}
+    {% if _title_block is not empty %}
+        <h1 class="page-title">{{ _title_block|trim|raw }}</h1>
+    {% endif %}
+    <div class="card">
+        {% block body %}
 
-                {% endblock %}
-            </div>
-        </div>
-
-        <div id="secondary" flex-gt-md="25" role="complementary">
-            {% block sidebar %}
-                {% include '_auth.html.twig' %}
-                {% include '_tools.html.twig' %}
-            {% endblock %}
-        </div>
-    {% endblock %}
+        {% endblock %}
+    </div>
 </main>
 
-<footer class="page-footer">
-    Footer!
-</footer>
+<div id="side-menu" role="complementary">
+    <h1>Sidebar</h1>
+    {% block sidebar %}
+        {% include '_auth.html.twig' %}
+        {% include '_tools.html.twig' %}
+    {% endblock %}
+</div>
 
 {% block javascripts %}
     <script src="{{ asset('js/app.js') }}"></script>

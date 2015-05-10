@@ -1,0 +1,69 @@
+// default: show logo, hide menu + sidebar with js toggle
+#page-header {
+  .main-header-bar {
+    padding: 2px 2px 0;
+
+    text-align: center;
+    .logo img {
+      height: 48px;
+    }
+  }
+}
+
+#main-menu {
+  ul {
+    margin: 0;
+    padding: 0;
+  }
+}
+
+// large screen: display static 3 column (menu, body, sidebar)
+@media(min-width: $layout-breakpoint-md) {
+  body {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+
+  #page-header {
+    width: 260px + $layout-gutter-width;
+    padding: $layout-gutter-width / 2;
+
+    .main-header-bar {
+      text-align: left;
+    }
+
+    .menu-toggle {
+      display: none;
+    }
+
+  }
+
+  #content {
+    flex: 1;
+    padding: $layout-gutter-width / 2;
+
+    background: #fff;
+
+
+    .page-title {
+      text-align: center;
+
+      margin-top: 0;
+      line-height: 65px;
+      font-size: 48px;
+    }
+  }
+
+  #side-menu {
+    width: 260px + $layout-gutter-width;
+    padding: $layout-gutter-width / 2;
+
+    h1 {
+      font-size: 36px;
+      margin-top: 12px;
+
+      color: #ccc;
+    }
+  }
+}

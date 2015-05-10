@@ -60,12 +60,8 @@ a {
   text-align: center;
 }
 
-// header
-header.page-header {
-  @import "menu";
-}
-
-@import "menu-collapse";
+@import "layout";
+@import "menu";
 
 // content
 #primary {
