@@ -15,7 +15,7 @@ class ScoringCalculator
      */
     public static function getScore(Score $score)
     {
-        $arrows = $score->getArrows();
+        $arrows = $score->getArrows()->toArray();
 
         $round = $score->getRound();
         $targets = $round->getTargets();
