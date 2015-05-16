@@ -1,32 +1,31 @@
 {% import ':macro:display.html.twig' as display %}
 
-
-<ul class="list">
+<table>
     {% for match in matches %}
-        <li>
-            <span class="text shrink">
+        <tr>
+            <td class="shrink">
                 {{ match.dateChallenged|date('d/m/Y H:i') }}
-            </span>
-            <span class="text">
+            </td>
+            <td>
                 {{ display.person(match.challenger.person, match.challengerWon ? 'text-strong' ) }}
-            </span>
-            <span class="text">
+            </td>
+            <td>
                 {{ display.person(match.challengee.person, match.challengeeWon ? 'text-strong' ) }}
-            </span>
-            <span class="text shrink">
+            </td>
+            <td class="shrink">
                 {{ display.round(match.round) }}
-            </span>
+            </td>
             {% if is_granted('ACCEPT', match) %}
-                <span class="actions">
+                <td class="actions">
                     <a href="{{ url('league_match_accept', { 'id': league.id, 'match_id': match.id }) }}">
                         <i class="fa fa-check"></i>
                     </a>
-                </span>
+                </td>
             {% endif %}
-        </li>
+        </tr>
     {% else %}
-        <li><span class="text">There have been no matches yet!</span></li>
+        <tr><td>There have been no matches yet!</td></tr>
     {% endfor %}
-</ul>
+</table>
 
 

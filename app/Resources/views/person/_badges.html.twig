@@ -1,14 +1,16 @@
 {% import ':macro:display.html.twig' as display %}
 
-<ul class="list">
+<table>
     {% for badge in badges %}
-        <li>
-            <span class="text shrink">{{ badge.dateAwarded|date('d/m/Y') }}</span>
-            {{ display.badge(badge.badge) }}
-            {% include ':badge:state.html.twig' with { 'badge': badge } only %}
-        </li>
+        <tr>
+            <td class="text shrink">{{ badge.dateAwarded|date('d/m/Y') }}</td>
+            <td>{{ display.badge(badge.badge) }}</td>
+            {% if badge.state != Enum.badgestate.delivered %}
+            <td class="actions">{% include ':badge:state.html.twig' with { 'badge': badge } only %}</td>
+            {% endif %}
+        </tr>
     {% endfor %}
-    <li>
-        <a href="#" class="text-muted">View all Badges</a>
-    </li>
-</ul>
+    <tr>
+        <td colspan="3"><a href="#" class="text-muted">View all Badges</a></td>
+    </tr>
+</table>

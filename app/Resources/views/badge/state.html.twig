@@ -7,6 +7,8 @@
             <i class="fa fa-magic" title="Mark as Made"></i>
         {% elseif state == Enum.badgestate.made %}
             <i class="fa fa-car" title="Mark as Delivered"></i>
+        {% else %}
+            {{ state }}
         {% endif %}
     </a>
 {% endif %}

@@ -1,3 +1,30 @@
+$table-border-color: map-get($color-grey, '300');
+
+table {
+  width: 100%;
+
+  tr {
+    border-top: 1px solid $table-border-color;
+    &:first-child {
+      border-top: none;
+    }
+
+    td {
+      padding: $baseline-grid;
+
+      border-left: 1px solid $table-border-color;
+      &:first-child {
+        border-left: none;
+      }
+    }
+
+    td.shrink, td.actions {
+      width: 1%;
+      white-space: nowrap;
+    }
+  }
+}
+
 .list {
   list-style-type: none;
   margin: 0;

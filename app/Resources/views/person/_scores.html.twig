@@ -1,13 +1,13 @@
-<ul class="list">
+<table>
     {% for score in scores %}
-        <li>
-            <span class="text shrink">{{ score.dateShot|date('d/m/Y') }}</span>
+        <tr>
+            <td class="shrink">{{ score.dateShot|date('d/m/Y') }}</td>
             {# NOTE: the round name links to the score... #}
-            <a href="{{ url('score_detail', { 'id': score.id }) }}">{{ score.round.name }}</a>
-            <span class="text shrink">{{ score.score }}</span>
-        </li>
+            <td><a href="{{ url('score_detail', { 'id': score.id }) }}">{{ score.round.name }}</a></td>
+            <td class="shrink">{{ score.score }}</td>
+        </tr>
     {% endfor %}
-    <li>
-        <a href="#" class="text-muted">View all Scores</a>
-    </li>
-</ul>
+    <tr>
+        <td colspan="3"><a href="#" class="text-muted">View all Scores</a></td>
+    </tr>
+</table>

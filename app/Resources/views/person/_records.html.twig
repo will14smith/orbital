@@ -1,17 +1,17 @@
 {% import ':macro:display.html.twig' as display %}
 
-<ul class="list">
+<table>
     {% for record in records %}
         {% set holder = record.recordHolder %}
-        <li>
-            <span class="text shrink">{{ holder.date|date('d/m/Y') }}</span>
+        <tr>
+            <td class="shrink">{{ holder.date|date('d/m/Y') }}</td>
             {% if holder.dateBroken %}
-                <span class="text shrink">{{ holder.dateBroken|date('d/m/Y') }}</span>
+                <td class="shrink">{{ holder.dateBroken|date('d/m/Y') }}</td>
             {% else %}
-                <span class="text shrink">Current</span>
+                <td class="shrink">Current</td>
             {% endif %}
-            {{ display.record(holder.record) }}
-            <span class="text shrink">{{ holder.score }}</span>
-        </li>
+            <td>{{ display.record(holder.record) }}</td>
+            <td class="shrink">{{ holder.score }}</td>
+        </tr>
     {% endfor %}
-</ul>
+</table>
