@@ -50,7 +50,6 @@ dl {
   margin-top: 0;
 
   dt, dd {
-    display: inline-flex;
     margin: 0;
     padding: $baseline-grid;
 
@@ -68,6 +67,10 @@ dl {
   }
 
   @media (min-width: $layout-breakpoint-sm) {
+    dt, dd {
+      display: inline-block;
+    }
+
     dt {
       width: 33%;
       font-weight: normal;

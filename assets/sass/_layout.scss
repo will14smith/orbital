@@ -17,6 +17,14 @@
   }
 }
 
+.page-title {
+  padding: 0 $layout-gutter-width / 2;
+}
+
+.card {
+  padding: $layout-gutter-width / 2;
+}
+
 // large screen: display static 3 column (menu, body, sidebar)
 @media(min-width: $layout-breakpoint-md) {
   body {
