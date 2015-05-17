@@ -1,4 +1,4 @@
-{% extends 'base_sidebar.html.twig' %}
+{% extends 'base.html.twig' %}
 {% import ':macro:display.html.twig' as display %}
 
 {% block title %}
@@ -6,31 +6,30 @@
 {% endblock %}
 
 {% block body %}
-    <ul class="list">
+    <table>
         {% for target in round.targets %}
-            <li>
-                <span class="text">{{ target|measure('distance') }}</span>
-                <span class="text">{{ target|measure('target') }}</span>
-                <span class="text">{{ target.arrowCount }} arrows total</span>
-                <span class="text">in ends of {{ target.endSize }} arrows</span>
-            </li>
+            <tr>
+                <td>{{ target|measure('distance') }}</td>
+                <td>{{ target|measure('target') }}</td>
+                <td>{{ target.arrowCount }} arrows total in ends of {{ target.endSize }} arrows</td>
+            </tr>
         {% endfor %}
-    </ul>
+    </table>
 
-    {% if round.records %}
+    {% if round.records|length %}
         <h2>Records</h2>
-        <ul class="list">
+        <table>
             {% for record in round.records %}
-                <li>
-                    {{ display.record(record) }}
+                <tr>
+                    <td>{{ display.record(record) }}</td>
                     {% if record.currentHolder %}
-                        <span class="text shrink">{{ record.currentHolder.score }}</span>
+                        <td class="shrink">{{ record.currentHolder.score }}</td>
                     {% else %}
-                        <span class="text shrink">Not broken</span>
+                        <td class="shrink">Not broken</td>
                     {% endif %}
-                </li>
+                </tr>
             {% endfor %}
-        </ul>
+        </table>
     {% endif %}
 {% endblock %}
 

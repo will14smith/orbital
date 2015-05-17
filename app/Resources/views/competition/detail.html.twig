@@ -1,4 +1,4 @@
-{% extends 'base_sidebar.html.twig' %}
+{% extends 'base.html.twig' %}
 
 {% block title %}
     {{ competition.name }}
@@ -14,17 +14,15 @@
     {% include ':competition:_detail.html.twig' with { 'competition': competition } %}
 
     <h2>Entries</h2>
-    <ul class="list">
+    <table>
         {% for entry in competition.entries %}
-            <li>{% include ':competition:_detail_entry.html.twig' with { 'entry': entry, 'competition': competition } %}</li>
+            <tr>{% include ':competition:_detail_entry.html.twig' with { 'entry': entry, 'competition': competition } %}</tr>
         {% else %}
-            <li>
-                <span class="text">
-                    There are no entries :(
-                </span>
-            </li>
+            <tr>
+                <td>There are no entries :(</td>
+            </tr>
         {% endfor %}
-    </ul>
+    </table>
 {% endblock %}
 
 {% block sidebar %}

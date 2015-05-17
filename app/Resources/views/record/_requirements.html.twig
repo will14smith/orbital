@@ -12,7 +12,7 @@
     {% if record.bowtype %}
         <li><span class="text">shoot {{ record.bowtype|enum('bowtype') }}</span></li>
     {% endif %}
-    {% if record.numHolders %}
+    {% if record.numHolders > 1 %}
         <li><span class="text">shoot in a team of {{ record.numHolders }} (or fewer)</span></li>
     {% endif %}
 </ul>

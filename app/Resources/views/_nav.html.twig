@@ -1,29 +1,19 @@
-{# menu #}
-{# current-menu-item #}
-{# menu-item-has-children #}
-{# sub-menu #}
-
-{% set hide_login = hide_login|default(false) %}
-
-<ul id="menu-main-menu" class="menu" layout="row">
-    <li><a href="{{ url('homepage') }}" flex>Home</a></li>
-    <li><a href="{{ url('round_list') }}" flex>Rounds</a></li>
-    <li><a href="{{ url('club_list') }}" flex>Clubs</a></li>
-    <li><a href="{{ url('person_list') }}" flex>People</a></li>
-    <li><a href="{{ url('record_list') }}" flex>Records</a></li>
-    <li><a href="{{ url('league_list') }}" flex>Leagues</a></li>
-    <li><a href="{{ url('competition_list') }}" flex>Competitions</a></li>
-    <li><a href="{{ url('score_list') }}" flex>Scores</a></li>
-    <li><a href="{{ url('badge_list') }}" flex>Badges</a></li>
+<ul class="menu">
+    <li><a href="{{ url('round_list') }}">Rounds</a></li>
+    <li><a href="{{ url('club_list') }}">Clubs</a></li>
+    <li><a href="{{ url('person_list') }}">People</a></li>
+    <li><a href="{{ url('record_list') }}">Records</a></li>
+    <li><a href="{{ url('league_list') }}">Leagues</a></li>
+    <li><a href="{{ url('competition_list') }}">Competitions</a></li>
+    <li><a href="{{ url('score_list') }}">Scores</a></li>
+    <li><a href="{{ url('badge_list') }}">Badges</a></li>
     {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
-    <li class="menu-item-has-children"{% if hide_login %} hide-gt-md{% endif %}>
-        <a href="#" flex>{{ app.user.displayName }}</a>
+    <li class="menu-item-has-children">
+        <a href="#">{{ app.user.displayName }}</a>
         <ul class="sub-menu">
-            <li><a href="{{ url('person_detail', { 'id': app.user.id }) }}" flex>View my Profile</a></li>
-            <li><a href="{{ url('logout') }}" flex>Logout</a></li>
+            <li><a href="{{ url('person_detail', { 'id': app.user.id }) }}">View my Profile</a></li>
+            <li><a href="{{ url('logout') }}">Logout</a></li>
         </ul>
     </li>
-{% else %}
-    <li{% if hide_login %} hide-gt-md{% endif %}><a href="{{ url('login') }}" flex>Login</a></li>
     {% endif %}
 </ul>

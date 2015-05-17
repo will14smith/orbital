@@ -1,4 +1,4 @@
-{% extends '::base_sidebar.html.twig' %}
+{% extends '::base.html.twig' %}
 
 {% block title %}
     {{ record.displayName }}
@@ -12,13 +12,13 @@
 
     {% if record.holders|length > 1 %}
         <h2>Past Holders</h2>
-        <ul class="list">
+        <table>
             {% for holder in record.holders[1:] %}
-                <li>
+                <tr>
                     {% include ':record:_past_holder.html.twig' with { 'record': record, 'holder': holder } only %}
-                </li>
+                </tr>
             {% endfor %}
-        </ul>
+        </table>
     {% endif %}
 {% endblock %}
 

@@ -35,20 +35,21 @@ class CompetitionEntryController extends Controller {
             $entry->setPerson($this->getUser());
         }
 
-        if ($entry->getPerson()) {
-            if (!$entry->getGender()) {
-                $entry->setGender($entry->getPerson()->getGender());
-            }
-            if (!$entry->getSkill()) {
-                $entry->setSkill($entry->getPerson()->getSkill());
-            }
-            if (!$entry->getBowtype()) {
-                $entry->setBowtype($entry->getPerson()->getBowtype());
-            }
-        }
-
         $form = $this->createForm(new CompetitionEntryType($is_admin, $competition->getRounds()), $entry);
         $form->handleRequest($request);
+
+        $entryPerson = $entry->getPerson();
+        if ($entryPerson) {
+            if (!$entry->getGender()) {
+                $entry->setGender($entryPerson->getGender());
+            }
+            if (!$entry->getSkill()) {
+                $entry->setSkill($entryPerson->getSkill());
+            }
+            if (!$entry->getBowtype()) {
+                $entry->setBowtype($entryPerson->getBowtype());
+            }
+        }
 
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
