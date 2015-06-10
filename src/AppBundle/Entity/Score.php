@@ -418,6 +418,7 @@ class Score
      */
     public function __construct()
     {
+        $this->arrows = new ArrayCollection();
         $this->proof = new ArrayCollection();
     }
 
