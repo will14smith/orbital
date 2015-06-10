@@ -13,7 +13,6 @@
         <link rel="stylesheet" href="{{ asset('css/app.css') }}"/>
     {% endblock %}
     <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}"/>
-    <script src="{{ asset('js/head.js') }}"></script>
 </head>
 <body>
 <header id="page-header">
@@ -54,6 +53,8 @@
 </div>
 
 {% block javascripts %}
+    <script src="{{ asset('js/vendors.js') }}"></script>
+    <script src="{{ asset('js/head.js') }}"></script>
     <script src="{{ asset('js/app.js') }}"></script>
 {% endblock %}
 </body>
