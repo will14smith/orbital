@@ -16,12 +16,34 @@ class ScoreController extends ProofController
 {
     /**
      * @Route("/scores", name="score_list", methods={"GET"})
+     *
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function indexAction()
+    public function indexAction(Request $request)
     {
         $scoreRepository = $this->getDoctrine()->getRepository("AppBundle:Score");
 
-        $scores = $scoreRepository->findAll();
+        switch($request->query->get('filter', 'all')) {
+            case 'mine':
+                $query = $scoreRepository->findByPerson($this->getUser()->getId());
+                break;
+            case 'person':
+                $query = $scoreRepository->findByPerson($request->query->get('person'));
+                break;
+            case 'competition':
+                $query = $scoreRepository->findByCompetition(true);
+                break;
+            case 'unapproved':
+                $query = $scoreRepository->findByApproval(false);
+                break;
+            default:
+                $query = $scoreRepository->findAll();
+                break;
+        }
+
+        $paginator  = $this->get('knp_paginator');
+        $scores = $paginator->paginate($query, $request->query->getInt('page', 1));
 
         return $this->render('score/list.html.twig', [
             'scores' => $scores

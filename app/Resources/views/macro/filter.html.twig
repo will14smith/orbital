@@ -1,0 +1,6 @@
+{% macro filter_link(text, filterName) %}
+    <a{% if app.request.get('filter') == filterName %} class="text-strong"{% endif %}
+        href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')|merge(app.request.query.all|merge({'filter': filterName }))) }}">
+        {{ text }}
+    </a>
+{% endmacro %}
