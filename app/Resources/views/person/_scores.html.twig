@@ -1,7 +1,7 @@
 <table>
     {% for score in scores %}
         <tr>
-            <td class="shrink">{{ score.dateShot|date('d/m/Y') }}</td>
+            <td class="shrink">{{ score.dateShot|date('Y-m-d') }}</td>
             {# NOTE: the round name links to the score... #}
             <td><a href="{{ url('score_detail', { 'id': score.id }) }}">{{ score.round.name }}</a></td>
             <td class="shrink">{{ score.score }}</td>
