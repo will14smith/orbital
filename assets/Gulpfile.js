@@ -15,7 +15,7 @@ gulp.task('bower', function () {
         .pipe(gulp.dest('./bower_components'));
 });
 
-gulp.task('icons', function () {
+gulp.task('icons', ['bower'], function () {
     return gulp.src('./bower_components/fontawesome/fonts/**.*')
         .pipe(gulp.dest('../web/fonts'));
 });
@@ -25,7 +25,7 @@ gulp.task('images', function () {
         .pipe(gulp.dest('../web/images'));
 });
 
-gulp.task('css', function () {
+gulp.task('css', ['bower', 'icons'], function () {
     return sass('./sass/', {
         style: 'compressed',
         compass: true,
@@ -43,16 +43,37 @@ gulp.task('css', function () {
 })
 ;
 
-gulp.task('js', function () {
+function processJsFiles(files, folder) {
+    return gulp.src(files)
+        .pipe(concat(folder + '.js'))
+        .pipe(gulp.dest('../web/js'))
+        .pipe(uglify())
+        .pipe(rename(folder + '.min.js'))
+        .pipe(gulp.dest('../web/js'))
+        .on("error", notify.onError(function (error) {
+            return "Error: " + error.message;
+        }));
+}
+
+gulp.task('js:vendors', ['bower'], function() {
+    return processJsFiles([
+        './bower_components/modernizr/modernizr.js',
+        './bower_components/jquery/dist/jquery.js',
+        './bower_components/socket.io-client/socket.io.js',
+        './bower_components/mithril/mithril.js'
+    ], 'vendors');
+});
+
+gulp.task('js:app', function () {
     var folders = {
         'head': ['modernizr*.js', 'jquery-*.js'],
         'app': [],
         'scoring': ['mithril.js']
     };
 
+
     var tasks = Object.keys(folders).map(function (value) {
         var folder = value;
-
         var paths = [];
 
         folders[value].forEach(function(file) {
@@ -61,25 +82,19 @@ gulp.task('js', function () {
 
         paths.push(path.join('js', folder, '/**/*.js'));
 
-        return gulp.src(paths)
-            .pipe(concat(folder + '.js'))
-            .pipe(gulp.dest('../web/js'))
-            .pipe(uglify())
-            .pipe(rename(folder + '.min.js'))
-            .pipe(gulp.dest('../web/js'))
-            .on("error", notify.onError(function (error) {
-                return "Error: " + error.message;
-            }))
+        return processJsFiles(paths, folder);
     });
 
     return merge(tasks);
 });
 
-gulp.task('watch', function () {
+gulp.task('js', ['js:vendors', 'js:app']);
+
+gulp.task('watch', ['images', 'css', 'js'], function () {
     gulp.watch('./images/**/*', ['images']);
     gulp.watch('./sass/**/*.scss', ['css']);
-    gulp.watch('./js/**/*.js', ['js']);
+    gulp.watch('./js/**/*.js', ['js:app']);
 });
 
-gulp.task('default', ['bower', 'icons', 'images', 'css', 'js']);
+gulp.task('default', ['images', 'css', 'js']);
 
