@@ -2,25 +2,27 @@
     'use strict';
 
     $.fn.collapse = function(handle) {
-        var $this = this;
+        return this.each(function() {
+            var $this = $(this);
 
-        $this.hide();
+            $this.hide();
 
-        var $handle;
-        if(typeof handle === 'string') {
-            $handle = $("<a />")
-                .attr('href', '#')
-                .text('Expand ' + handle);
-            $this.after($handle);
-        } else {
-            $handle = $(handle);
-        }
+            var $handle;
+            if (typeof handle === 'string') {
+                $handle = $("<a />")
+                    .attr('href', '#')
+                    .text('Expand ' + handle);
+                $this.after($handle);
+            } else {
+                $handle = $(handle);
+            }
 
-        $handle.click(function (e) {
-            e.preventDefault();
+            $handle.click(function (e) {
+                e.preventDefault();
 
-            $handle.hide();
-            $this.slideDown();
+                $handle.hide();
+                $this.slideDown();
+            });
         });
     };
 

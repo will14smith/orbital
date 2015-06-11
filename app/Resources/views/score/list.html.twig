@@ -42,7 +42,7 @@
 {% block sidebar %}
     {% from ':macro:filter.html.twig' import filter_link %}
 
-    <div class="widget">
+    <div class="widget" id="filter-collapse">
         <h3 class="widget-title">Filter</h3>
         <ul>
             <li>{{ filter_link('All', 'all') }}</li>
@@ -71,4 +71,16 @@
     {% endif %}
 
     {{ parent() }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    {% if not app.request.get('page') and not app.request.get('filter') %}
+        <script>
+            $(function () {
+                $("#filter-collapse").collapse('Filter / Sort');
+            });
+        </script>
+    {% endif %}
 {% endblock %}
