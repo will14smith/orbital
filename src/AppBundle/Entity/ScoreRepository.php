@@ -36,7 +36,7 @@ class ScoreRepository extends EntityRepository
         $score_query = $this->createQueryBuilder('s');
 
         return $score_query
-            ->where('s.person >= :person_id')
+            ->where('s.person = :person_id')
             ->andWhere('s.date_shot >= :start_date')
             ->andWhere('s.date_shot <= :end_date')
 
@@ -46,5 +46,32 @@ class ScoreRepository extends EntityRepository
 
             ->getQuery()
             ->getResult();
+    }
+
+    public function findAll()
+    {
+        return $this->createQueryBuilder("s");
+    }
+    public function findByPerson($personId)
+    {
+        return $this->findAll()
+            ->where('s.person = :person_id')
+            ->setParameter('person_id', $personId);
+    }
+    public function findByCompetition($value)
+    {
+        return $this->findAll()
+            ->where('s.competition = :value')
+            ->setParameter('value', $value);
+    }
+    public function findByApproval($value)
+    {
+        $q = $this->findAll();
+
+        if(!$value) {
+            return $q->where('s.date_accepted IS NULL');
+        } else {
+            return $q->where('s.date_accepted IS NOT NULL');
+        }
     }
 }

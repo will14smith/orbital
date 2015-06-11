@@ -9,7 +9,7 @@
         {% for score in scores %}
             <li>
                 <a href="{{ url('score_detail', { 'id': score.id }) }}">
-                    {{ score.dateShot|date('d/m/Y H:i') }} -
+                    {{ score.dateShot|date('Y-m-d') }} -
                     {{ score.person.name }} -
                     {{ score.round.name }} -
                     {{ score.score }}
@@ -32,9 +32,35 @@
             <li>No Scores :(</li>
         {% endfor %}
     </ul>
+
+    <div class="navigation">
+        {{ knp_pagination_render(scores) }}
+    </div>
+
 {% endblock %}
 
 {% block sidebar %}
+    {% from ':macro:filter.html.twig' import filter_link %}
+
+    <div class="widget" id="filter-collapse">
+        <h3 class="widget-title">Filter</h3>
+        <ul>
+            <li>{{ filter_link('All', 'all') }}</li>
+            {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+                <li>{{ filter_link('Mine', 'mine') }}</li>
+            {% endif %}
+            <li>{{ filter_link('Competition', 'competition') }}</li>
+            {% if is_granted('ROLE_ADMIN') %}
+                <li>{{ filter_link('Unapproved', 'unapproved') }}</li>
+            {% endif %}
+        </ul>
+        <h3 class="widget-title">Sort</h3>
+        <ul>
+            <li{% if scores.isSorted('s.date_shot') %} class="text-strong"{% endif %}>{{ knp_pagination_sortable(scores, 'Date Shot', 's.date_shot') }}</li>
+            <li{% if scores.isSorted('s.score') %} class="text-strong"{% endif %}>{{ knp_pagination_sortable(scores, 'Score', 's.score') }}</li>
+        </ul>
+    </div>
+
     {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
         <div class="widget">
             <h3 class="widget-title">Actions</h3>
@@ -45,4 +71,16 @@
     {% endif %}
 
     {{ parent() }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    {% if not app.request.get('page') and not app.request.get('filter') %}
+        <script>
+            $(function () {
+                $("#filter-collapse").collapse('Filter / Sort');
+            });
+        </script>
+    {% endif %}
 {% endblock %}

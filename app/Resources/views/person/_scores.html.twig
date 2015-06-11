@@ -1,13 +1,15 @@
 <table>
     {% for score in scores %}
         <tr>
-            <td class="shrink">{{ score.dateShot|date('d/m/Y') }}</td>
+            <td class="shrink">{{ score.dateShot|date('Y-m-d') }}</td>
             {# NOTE: the round name links to the score... #}
             <td><a href="{{ url('score_detail', { 'id': score.id }) }}">{{ score.round.name }}</a></td>
             <td class="shrink">{{ score.score }}</td>
         </tr>
     {% endfor %}
+    {% if person is defined %}
     <tr>
-        <td colspan="3"><a href="#" class="text-muted">View all Scores</a></td>
+        <td colspan="3"><a href="{{ url('score_list', { 'filter': 'person', 'person': person.id }) }}" class="text-muted">View all Scores</a></td>
     </tr>
+    {% endif %}
 </table>

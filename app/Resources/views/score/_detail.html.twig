@@ -12,7 +12,7 @@
 <dl>
     <dt>Date Shot</dt>
     <dd>
-        {{ score.dateShot|date('d/m/Y H:i') }}
+        {{ score.dateShot|date('Y-m-d') }}
         {% if score.competition %}
             in Competition
         {% endif %}
