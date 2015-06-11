@@ -1,0 +1,25 @@
+.pagination {
+  text-align: center;
+
+  a {
+    padding: $baseline-grid/2 2*$baseline-grid;
+
+    border: 1px solid map-get($color-grey, '500');
+    border-radius: 2px;
+
+    &:hover {
+      color: $button-text-color-hover;
+      background-color: $button-color-hover;
+      border-color: $button-border-color-hover;
+    }
+  }
+
+  a {
+    color: map-get($color-grey, '500');
+  }
+
+  .current {
+    padding: $baseline-grid 2*$baseline-grid;
+    font-weight: bold;
+  }
+}
