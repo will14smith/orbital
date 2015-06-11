@@ -7,7 +7,9 @@
             <td class="shrink">{{ score.score }}</td>
         </tr>
     {% endfor %}
+    {% if person is defined %}
     <tr>
-        <td colspan="3"><a href="#" class="text-muted">View all Scores</a></td>
+        <td colspan="3"><a href="{{ url('score_list', { 'filter': 'person', 'person': person.id }) }}" class="text-muted">View all Scores</a></td>
     </tr>
+    {% endif %}
 </table>

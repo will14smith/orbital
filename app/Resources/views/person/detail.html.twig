@@ -17,7 +17,7 @@
     {% include ':person:_records.html.twig' with { 'person': person, 'records': records } only %}
 
     <h2>Recent Scores</h2>
-    {% include ':person:_scores.html.twig' with { 'scores': scores } only %}
+    {% include ':person:_scores.html.twig' with { 'person': person, 'scores': scores } only %}
 
     <h2>Personal Bests</h2>
     {% include ':person:_scores.html.twig' with { 'scores': pbs, 'all': true } only %}
