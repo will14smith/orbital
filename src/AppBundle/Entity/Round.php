@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 use JsonSerializable;
 
 /**
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="AppBundle\Entity\RoundRepository")
  * @ORM\Table(name="round")
  */
 class Round implements JsonSerializable
