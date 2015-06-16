@@ -37,6 +37,11 @@ class Round implements JsonSerializable
     protected $targets;
 
     /**
+     * @ORM\Column(type="boolean")
+     */
+    protected $indoor;
+
+    /**
      * @ORM\OneToMany(targetEntity="Record", mappedBy="round")
      */
     protected $records;
@@ -196,5 +201,28 @@ class Round implements JsonSerializable
     public function getCategory()
     {
         return $this->category;
+    }
+
+    /**
+     * Set indoor
+     *
+     * @param boolean $indoor
+     * @return Round
+     */
+    public function setIndoor($indoor)
+    {
+        $this->indoor = $indoor;
+    
+        return $this;
+    }
+
+    /**
+     * Get indoor
+     *
+     * @return boolean 
+     */
+    public function getIndoor()
+    {
+        return $this->indoor;
     }
 }
