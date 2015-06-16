@@ -6,12 +6,24 @@
 {% endblock %}
 
 {% block body %}
+    <h2>
+        {% if round.indoor %}
+            Indoor - {{ round.category.name }}
+        {% else %}
+            Outdoor - {{ round.category.name }}
+        {% endif %}
+    </h2>
+
     <table>
         {% for target in round.targets %}
             <tr>
                 <td>{{ target|measure('distance') }}</td>
                 <td>{{ target|measure('target') }}</td>
                 <td>{{ target.arrowCount }} arrows total in ends of {{ target.endSize }} arrows</td>
+            </tr>
+        {% else %}
+            <tr colspan="3">
+                There don't seem to be targets in the round.
             </tr>
         {% endfor %}
     </table>
