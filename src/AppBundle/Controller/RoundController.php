@@ -18,10 +18,11 @@ class RoundController extends Controller
     {
         $roundRepository = $this->getDoctrine()->getRepository("AppBundle:Round");
 
-        $rounds = $roundRepository->findAll();
+        $rounds = $roundRepository->findAllGrouped();
 
         return $this->render('round/list.html.twig', [
-            'rounds' => $rounds
+            'groupedRounds' => $rounds[0],
+            'categories' => $rounds[1],
         ]);
     }
 

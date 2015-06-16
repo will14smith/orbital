@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 use JsonSerializable;
 
 /**
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="AppBundle\Entity\RoundRepository")
  * @ORM\Table(name="round")
  */
 class Round implements JsonSerializable
@@ -21,6 +21,11 @@ class Round implements JsonSerializable
     protected $id;
 
     /**
+     * @ORM\ManyToOne(targetEntity="RoundCategory", inversedBy="rounds")
+     */
+    protected $category;
+
+    /**
      * @ORM\Column(type="string", length=200)
      */
     protected $name;
@@ -30,6 +35,11 @@ class Round implements JsonSerializable
      * @ORM\OrderBy({"id": "ASC"})
      */
     protected $targets;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    protected $indoor;
 
     /**
      * @ORM\OneToMany(targetEntity="Record", mappedBy="round")
@@ -168,5 +178,51 @@ class Round implements JsonSerializable
             'total_arrows' => $this->getTotalArrows(),
             'targets' => $targets,
         ];
+    }
+
+    /**
+     * Set category
+     *
+     * @param \AppBundle\Entity\RoundCategory $category
+     * @return Round
+     */
+    public function setCategory(\AppBundle\Entity\RoundCategory $category = null)
+    {
+        $this->category = $category;
+    
+        return $this;
+    }
+
+    /**
+     * Get category
+     *
+     * @return \AppBundle\Entity\RoundCategory 
+     */
+    public function getCategory()
+    {
+        return $this->category;
+    }
+
+    /**
+     * Set indoor
+     *
+     * @param boolean $indoor
+     * @return Round
+     */
+    public function setIndoor($indoor)
+    {
+        $this->indoor = $indoor;
+    
+        return $this;
+    }
+
+    /**
+     * Get indoor
+     *
+     * @return boolean 
+     */
+    public function getIndoor()
+    {
+        return $this->indoor;
     }
 }

@@ -6,21 +6,34 @@
 {% endblock %}
 
 {% block body %}
-    <ul class="list">
-        {% for round in rounds %}
-            <li>
-                {{ display.round(round) }}
-                {% if is_granted('ROLE_ADMIN') %}
-                   <span class="actions">
-                        <a href="{{ url('round_edit', { 'id': round.id }) }}"><i class="fa fa-pencil"></i></a>
-                        <a href="{{ url('round_delete', { 'id': round.id }) }}"><i class="fa fa-trash-o"></i></a>
-                    </span>
+    {% for indoor, group in groupedRounds %}
+        {% for categoryId, rounds in group %}
+            <h2>
+                {% if indoor %}
+                    Indoor - {{ categories[categoryId].name }}
+                {% else %}
+                    Outdoor - {{ categories[categoryId].name }}
                 {% endif %}
-            </li>
-        {% else %}
-            <li>No Rounds :(</li>
+            </h2>
+
+            <ul class="list">
+                {% for round in rounds %}
+                    <li>
+                        {{ display.round(round) }}
+                        {% if is_granted('ROLE_ADMIN') %}
+                            <span class="actions">
+                                <a href="{{ url('round_edit', { 'id': round.id }) }}"><i class="fa fa-pencil"></i></a>
+                                <a href="{{ url('round_delete', { 'id': round.id }) }}"><i
+                                            class="fa fa-trash-o"></i></a>
+                            </span>
+                        {% endif %}
+                    </li>
+                {% endfor %}
+            </ul>
         {% endfor %}
-    </ul>
+    {% else %}
+        <li>No Rounds :(</li>
+    {% endfor %}
 {% endblock %}
 
 {% block sidebar %}

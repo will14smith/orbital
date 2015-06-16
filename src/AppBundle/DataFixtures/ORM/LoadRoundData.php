@@ -13,10 +13,10 @@ use AppBundle\Services\Enum\Unit;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
+use Proxies\__CG__\AppBundle\Entity\RoundCategory;
 
 class LoadRoundData extends AbstractFixture implements OrderedFixtureInterface
 {
-
     /**
      * Load data fixtures with the passed EntityManager
      *
@@ -24,11 +24,23 @@ class LoadRoundData extends AbstractFixture implements OrderedFixtureInterface
      */
     public function load(ObjectManager $manager)
     {
+        $category = new RoundCategory();
+        $category->setName("Category");
+
+        $this->addReference('round-category-1', $category);
+        $manager->persist($category);
+
+        $manager->flush();
+
         $round1 = new Round();
         $round1->setName("Round 1");
+        $round1->setCategory($category);
+        $round1->setIndoor(false);
 
         $round2 = new Round();
         $round2->setName("Round 2");
+        $round2->setCategory($category);
+        $round2->setIndoor(true);
 
         $target1 = new RoundTarget();
         $target1->setArrowCount(60);
