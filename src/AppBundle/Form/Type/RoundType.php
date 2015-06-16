@@ -12,6 +12,10 @@ class RoundType extends AbstractType
     {
         $builder
             ->add('name')
+            ->add('category')
+            ->add('indoor', 'checkbox', [
+                'required' => false
+            ])
             ->add('targets', 'collection', [
                 'type' => new RoundTargetType(),
                 'allow_add' => true,

@@ -100,4 +100,8 @@ class RoundCategory
     {
         return $this->rounds;
     }
+
+    public function __toString() {
+        return $this->name;
+    }
 }
