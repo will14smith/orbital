@@ -21,6 +21,11 @@ class Round implements JsonSerializable
     protected $id;
 
     /**
+     * @ORM\ManyToOne(targetEntity="RoundCategory", inversedBy="rounds")
+     */
+    protected $category;
+
+    /**
      * @ORM\Column(type="string", length=200)
      */
     protected $name;
@@ -168,5 +173,28 @@ class Round implements JsonSerializable
             'total_arrows' => $this->getTotalArrows(),
             'targets' => $targets,
         ];
+    }
+
+    /**
+     * Set category
+     *
+     * @param \AppBundle\Entity\RoundCategory $category
+     * @return Round
+     */
+    public function setCategory(\AppBundle\Entity\RoundCategory $category = null)
+    {
+        $this->category = $category;
+    
+        return $this;
+    }
+
+    /**
+     * Get category
+     *
+     * @return \AppBundle\Entity\RoundCategory 
+     */
+    public function getCategory()
+    {
+        return $this->category;
     }
 }
