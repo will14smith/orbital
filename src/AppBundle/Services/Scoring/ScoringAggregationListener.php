@@ -20,7 +20,15 @@ class ScoringAggregationListener
 
     public function arrowAdded(ScoreArrowEvent $event)
     {
-        $this->updateScore($event->getArrow()->getScore());
+        $arrow = $event->getArrow();
+        $score = $arrow->getScore();
+
+        // HACK: the arrow can sometimes be out-of-sync with its score
+        if(!$score->getArrows()->contains($arrow)) {
+            $score->getArrows()->add($arrow);
+        }
+
+        $this->updateScore($score);
     }
 
     public function arrowUpdated(ScoreArrowEvent $event)
