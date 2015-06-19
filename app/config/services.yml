@@ -49,6 +49,11 @@ services:
             - { name: kernel.event_listener, event: 'orbital.events.score_create', method: score_create }
             - { name: kernel.event_listener, event: 'orbital.events.score_update', method: score_update }
 
+# approvals
+    orbital.approval.manager:
+        class: AppBundle\Services\Approvals\ApprovalQueueManager
+        arguments: []
+
 # leagues
     orbital.league.manager:
         class: AppBundle\Services\Leagues\LeagueManager
