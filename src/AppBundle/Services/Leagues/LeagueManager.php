@@ -2,7 +2,6 @@
 
 namespace AppBundle\Services\Leagues;
 
-
 use AppBundle\Entity\LeagueMatch;
 use Doctrine\Bundle\DoctrineBundle\Registry;
 
@@ -15,7 +14,6 @@ class LeagueManager
 
     public function __construct(Registry $doctrine)
     {
-
         $this->doctrine = $doctrine;
     }
 
