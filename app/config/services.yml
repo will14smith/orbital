@@ -52,7 +52,17 @@ services:
 # approvals
     orbital.approval.manager:
         class: AppBundle\Services\Approvals\ApprovalQueueManager
-        arguments: []
+        arguments: ["@doctrine", "@router"]
+    orbital.approval.providers.score:
+        class: AppBundle\Services\Approvals\Providers\ScoreApprovalProvider
+        public: false
+        tags:
+          - { name: orbital.approval.provider }
+    orbital.approval.providers.badge:
+        class: AppBundle\Services\Approvals\Providers\BadgeApprovalProvider
+        public: false
+        tags:
+          - { name: orbital.approval.provider }
 
 # leagues
     orbital.league.manager:
