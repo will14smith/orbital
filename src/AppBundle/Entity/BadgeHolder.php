@@ -267,4 +267,8 @@ class BadgeHolder
     {
         return $this->proof;
     }
+
+    public function __toString() {
+        return $this->getBadge() . ' - ' . $this->getPerson();
+    }
 }

@@ -19,4 +19,10 @@ class BadgeHolderRepository extends EntityRepository
 
         return $q->getQuery()->getResult();
     }
+
+    public function findByIncomplete()
+    {
+        return $this->createQueryBuilder('b')
+            ->where('b.date_delivered IS NULL');
+    }
 }

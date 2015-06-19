@@ -1,0 +1,21 @@
+{% extends '::base.html.twig' %}
+{% import ':macro:display.html.twig' as display %}
+
+{% block title %}
+    Approval Queue
+{% endblock %}
+
+{% block body %}
+    <ul class="list">
+        {% for item in items %}
+            <li>
+                <a href="{{ item.url }}">{{ item.name }}</a>
+                {# TODO use type+data to render custom stuff #}
+            </li>
+        {% else %}
+            <li>
+                <span class="text">Yeah! You've got nothing to do =D</span>
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock %}
