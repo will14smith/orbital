@@ -20,11 +20,11 @@ class HandicapCalculator
         return $pinhole * $f;
     }
 
-    private function average(TargetCalculatorInterface $calculator, $range, $target, $handicap)
+    private function average(TargetCalculatorInterface $calculator, $range, $targetDiameter, $handicap)
     {
         $sigma = $this->sigma($range, $handicap);
 
-        return $calculator->calculate($sigma, $target);
+        return $calculator->calculate($sigma, $targetDiameter);
     }
 
     /**
@@ -43,12 +43,12 @@ class HandicapCalculator
 
         foreach ($round->getTargets() as $rt) {
             $range = Unit::convert($rt->getDistanceValue(), $rt->getDistanceUnit(), Unit::METER);
-            $target = Unit::convert($rt->getTargetValue(), $rt->getTargetUnit(), Unit::CENTIMETER);
+            $targetDiameter = Unit::convert($rt->getTargetValue(), $rt->getTargetUnit(), Unit::CENTIMETER);
 
             $calculator = TargetCalculatorFactory::create($rt, $compound);
 
             $score += $rt->getArrowCount() *
-                $this->average($calculator, $range, $target, $handicap);
+                $this->average($calculator, $range, $targetDiameter, $handicap);
         }
 
         return round($score);
@@ -88,7 +88,6 @@ class HandicapCalculator
         $hc_min_score = $this->score($round, $compound, $handicap);
 
         return $score < $hc_min_score ? $handicap + 1 : $handicap;
-
     }
 
     public function handicapForScore(Score $score)

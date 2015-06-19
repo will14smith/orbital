@@ -1,8 +1,8 @@
 <?php
 
+namespace AppBundle\Services\Handicap\Calculators;
 
-namespace AppBundle\Services\Handicap;
-
+use AppBundle\Services\Handicap\TargetCalculatorInterface;
 
 class MetricTargetCalculator implements TargetCalculatorInterface
 {
@@ -20,14 +20,14 @@ class MetricTargetCalculator implements TargetCalculatorInterface
         $this->compound = $compound;
     }
 
-    public function calculate($sigma, $target)
+    public function calculate($sigma, $targetDiameter)
     {
         $sum = 0;
 
         $sigma_sq = pow($sigma, 2);
 
         if ($this->compound) {
-            $x = pow($target / 40 + 0.357, 2);
+            $x = pow($targetDiameter / 40 + 0.357, 2);
             $sum = exp(-$x / $sigma_sq);
 
             $start = 2;
@@ -36,7 +36,7 @@ class MetricTargetCalculator implements TargetCalculatorInterface
         }
 
         for ($n = $start; $n <= 10; $n++) {
-            $x = pow($n * $target / 20 + 0.357, 2);
+            $x = pow($n * $targetDiameter / 20 + 0.357, 2);
 
             $sum += exp(-$x / $sigma_sq);
         }
