@@ -69,6 +69,11 @@ services:
         public: false
         tags:
           - { name: orbital.approval.provider }
+    orbital.approval.providers.record:
+        class: AppBundle\Services\Approvals\Providers\RecordApprovalProvider
+        public: false
+        tags:
+          - { name: orbital.approval.provider }
 
 # leagues
     orbital.league.manager:
