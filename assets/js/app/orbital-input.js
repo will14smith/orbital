@@ -7,7 +7,8 @@
 
         if ($this.prop("tagName") === 'SELECT'
             || $this.prop("tagName") === 'DIV'
-            || $this.attr('type') === 'file') {
+            || $this.attr('type') === 'file'
+            || $this.attr('type') === 'radio') {
 
             $this.addClass('with-value');
             return;

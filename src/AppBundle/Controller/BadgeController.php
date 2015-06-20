@@ -5,6 +5,7 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\Badge;
 use AppBundle\Entity\BadgeHolder;
 use AppBundle\Entity\BadgeHolderProof;
+use AppBundle\Entity\BadgeSheet;
 use AppBundle\Entity\ProofEntity;
 use AppBundle\Form\Type\BadgeHolderType;
 use AppBundle\Form\Type\BadgeType;
@@ -80,6 +81,33 @@ class BadgeController extends ProofController
 
             return $this->render('badge/sheet.html.twig', ['badges' => $badges]);
         }
+    }
+
+    /**
+     * @Security("has_role('ROLE_ADMIN')")
+     * @Route("/badges/sheet/mark", name="badge_sheet_mark", methods={"POST"})
+     *
+     * @param Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function sheetMarkAction(Request $request)
+    {
+        $sheetId = intval($request->request->get('sheet_id'));
+        $markType = intval($request->request->get('mark_type'));
+
+        $badgeSheetRepository = $this->getDoctrine()->getRepository("AppBundle:BadgeSheet");
+        $sheet = $badgeSheetRepository->find($sheetId);
+
+        if (!$sheet) {
+            throw $this->createNotFoundException(
+                'No badge sheet found for id ' . $sheetId
+            );
+        }
+
+        $badgeSheetRepository->mark($sheet, $markType);
+
+        return $this->redirectToRoute('badge_list');
     }
 
     /**
