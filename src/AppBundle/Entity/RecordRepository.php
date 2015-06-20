@@ -8,32 +8,6 @@ use Doctrine\ORM\EntityRepository;
 
 class RecordRepository extends EntityRepository
 {
-    public function award(Record $record, RecordHolder $new_holder)
-    {
-        $em = $this->getEntityManager();
-
-        if($new_holder->getDateConfirmed() != null) {
-            $current_holder = $record->getCurrentHolder();
-            if ($current_holder) {
-                $current_holder->setDateBroken($new_holder->getDate());
-            }
-        }
-
-        $new_holder->setRecord($record);
-
-        $total = 0;
-        foreach ($new_holder->getPeople() as $person) {
-            $total += $person->getScoreValue();
-
-            $person->setRecordHolder($new_holder);
-            $em->persist($person);
-        }
-        $new_holder->setScore($total);
-
-        $em->persist($new_holder);
-        $em->flush();
-    }
-
     /**
      * @param int $person_id
      *
