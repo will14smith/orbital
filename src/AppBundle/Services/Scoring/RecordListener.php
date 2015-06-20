@@ -56,8 +56,8 @@ class RecordListener
                 $em->persist($person);
             }
             $em->persist($holder);
-
-            $em->flush();
         }
+
+        $em->flush();
     }
 }
