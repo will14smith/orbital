@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use AppBundle\Services\Enum\Skill;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\ORM\EntityRepository;
 
@@ -84,6 +85,31 @@ class RecordRepository extends EntityRepository
             ->orderBy('rh.date', 'DESC')
             ->setParameter('start_date', $start_date, Type::DATETIME)
             ->setParameter('end_date', $end_date, Type::DATETIME);
+
+        return $q->getQuery()->getResult();
+    }
+
+    /**
+     * @param Score $score
+     *
+     * @return Record[]
+     */
+    public function getPossibleRecordsBroken(Score $score)
+    {
+        $q = $this->createQueryBuilder('q')
+            ->where('q.round = :round')
+            ->setParameter('round', $score->getRound());
+
+        if($score->getSkill() != Skill::NOVICE) {
+            $q = $q->andWhere('q.skill = :skill')
+                   ->setParameter('skill', Skill::SENIOR);
+        }
+
+        $q = $q->andWhere('q.bowtype IS NULL OR q.bowtype = :bowtype')
+            ->setParameter('bowtype', $score->getBowtype());
+
+        $q = $q->andWhere('q.gender IS NULL OR q.gender = :gender')
+            ->setParameter('gender', $score->getPerson()->getGender());
 
         return $q->getQuery()->getResult();
     }
