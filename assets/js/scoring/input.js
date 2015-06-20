@@ -10,6 +10,50 @@ window.orbital.scoring = window.orbital.scoring || {};
 
     scoring.input = {};
 
+    function setupKeyboard() {
+        var addArrowToBuffer = function (score) {
+            scoring.vm.addToBuffer(score);
+        };
+
+        window.addEventListener('keydown', function (e) {
+            m.startComputation();
+
+            if (e.keyCode >= 49 && e.keyCode <= 57) {
+                addArrowToBuffer(e.keyCode - 48);
+            } else if (e.keyCode == 48) {
+                addArrowToBuffer(10);
+            } else if (e.keyCode >= 97 && e.keyCode <= 105) {
+                addArrowToBuffer(e.keyCode - 96);
+            } else if (e.keyCode == 96) {
+                addArrowToBuffer(10);
+            } else if (e.keyCode == 77) {
+                addArrowToBuffer('M');
+            } else if (e.keyCode == 88) {
+                addArrowToBuffer('X');
+            } else if (e.keyCode == 8) {
+                if (scoring.vm.arrowBuffer.length) {
+                    e.preventDefault();
+
+                    scoring.vm.removeFromBuffer();
+                }
+            } else if (e.keyCode == 13) {
+                if (scoring.vm.arrowBuffer.length) {
+                    scoring.vm.submitBuffer();
+                }
+            } else {
+                console.log(e.keyCode);
+            }
+
+            m.endComputation();
+        });
+    }
+
+    scoring.input.init = function() {
+        if(scoring.vm.input) {
+            setupKeyboard();
+        }
+    }
+
     var scoreClickFactory = function (score) {
         return function () {
             scoring.vm.addToBuffer(score);

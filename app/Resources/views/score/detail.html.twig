@@ -9,6 +9,10 @@
 {% block body %}
     {% include ':score:_detail.html.twig' with { 'score': score, 'handicap': handicap } only %}
 
+    {% if score.complete and score.arrows.count() > 0 %}
+        <div id="scoring_app"></div>
+    {% endif %}
+
     {% if is_granted('ROLE_ADMIN') %}
         {{ display_proof(score.proof) }}
     {% endif %}
@@ -36,4 +40,31 @@
     {% endif %}
 
     {{ parent() }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {% if score.complete and score.arrows.count() > 0 %}
+        <script src="{{ socketio_url }}/socket.io/socket.io.js"></script>
+        <script src="{{ asset('js/scoring.js') }}"></script>
+        <script>
+            'use strict';
+
+            (function (app) {
+                var round = {{ score.round|json_encode|raw }};
+                var score_id = {{ score.id }};
+
+                m.module($("#scoring_app")[0], {
+                    controller: function () {
+                        var urls = {
+                            'socket.io': '{{ socketio_url }}'
+                        };
+
+                        app.vm.init(round, score_id, false, urls);
+                    },
+                    view: app.view
+                });
+            })(window['orbital']['scoring']);
+        </script>
+    {% endif %}
 {% endblock %}

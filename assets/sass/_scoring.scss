@@ -1,5 +1,6 @@
-$target-info-bg: #000;
-$target-info-fg: #fff;
+$target-info-bg: transparent;
+$target-info-border: map-get($color-grey, '300');
+$target-info-fg: #000;
 
 $yellow-color: #FFEB3B;
 $red-color: #F44336;
@@ -19,7 +20,6 @@ $white-color: #FAFAFA;
     background-color: darken($color, 20%);
   }
 }
-
 
 .arrow {
   &.yellow {
@@ -49,10 +49,36 @@ $white-color: #FAFAFA;
   display: flex;
   flex-direction: column;
 
-  .target {
+  @media(min-width: $layout-breakpoint-md) {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
 
+  .target {
     text-align: center;
-    border-left: 1px solid $target-info-bg;
+
+    border: 1px solid $target-info-border;
+    border-top-style: none;
+    &:first-child {
+      border-top-style: solid;
+    }
+
+    @media(min-width: $layout-breakpoint-md) {
+      width: 50%;
+      padding: $baseline-grid;
+
+      border-top-style: none;
+      &:first-child, &:nth-child(2) {
+        border-top-style: solid;
+      }
+      &:nth-child(2n) {
+        border-left-style: none;
+      }
+
+
+    }
+
+
 
     .header {
       background-color: $target-info-bg;
@@ -134,6 +160,7 @@ $white-color: #FAFAFA;
         padding: $baseline-grid;
       }
       div {
+        text-align: left;
         line-height: 42px;
       }
       div:nth-last-child(2) {
