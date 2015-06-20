@@ -157,6 +157,11 @@ services:
         public: false
         tags:
             - { name: twig.extension }
+    orbital.twig.constant:
+        class: AppBundle\Services\Twig\ConstantExtension
+        public: false
+        tags:
+            - { name: twig.extension }
     orbital.twig.letter:
         class: AppBundle\Services\Twig\LetterExtension
         public: false
