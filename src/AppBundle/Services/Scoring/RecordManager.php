@@ -96,7 +96,7 @@ class RecordManager
     public static function getCurrentHolder(Record $record)
     {
         $filtered = self::getConfirmedHolders($record)->filter(function (RecordHolder $holder) {
-            return $holder->getDateBroken() == null;
+            return $holder->getDateBroken() === null;
         });
 
         $count = $filtered->count();
@@ -118,7 +118,7 @@ class RecordManager
     public static function getConfirmedHolders(Record $record)
     {
         return $record->getAllHolders()->filter(function (RecordHolder $holder) {
-            return $holder->getDateConfirmed() != null;
+            return $holder->getDateConfirmed() !== null;
         });
     }
 
@@ -130,7 +130,7 @@ class RecordManager
     public static function getUnconfirmedHolders(Record $record)
     {
         return $record->getAllHolders()->filter(function (RecordHolder $holder) {
-            return $holder->getDateConfirmed() == null;
+            return $holder->getDateConfirmed() === null;
         });
     }
 }
