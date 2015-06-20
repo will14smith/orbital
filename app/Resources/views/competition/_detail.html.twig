@@ -4,7 +4,7 @@
     <dt>Location</dt>
     <dd>{{ competition.location|default('Unknown') }}</dd>
     <dt>Date</dt>
-    <dd>{{ competition.date|date('d/m/Y H:i') }}</dd>
+    <dd>{{ competition.date|date(DATETIME_FORMAT) }}</dd>
     <dt>Rounds</dt>
     <dd>
         {% for round in competition.rounds %}

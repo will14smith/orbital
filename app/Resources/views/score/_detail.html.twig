@@ -12,7 +12,7 @@
 <dl>
     <dt>Date Shot</dt>
     <dd>
-        {{ score.dateShot|date('Y-m-d') }}
+        {{ score.dateShot|date(DATE_FORMAT) }}
         {% if score.competition %}
             in Competition
         {% endif %}
@@ -36,7 +36,7 @@
         <dt>Date Accepted</dt>
         <dd>
             {% if score.dateAccepted %}
-                accepted {{ score.dateAccepted|date('d/m/Y') }}
+                accepted {{ score.dateAccepted|date(DATE_FORMAT) }}
             {% else %}
                 not yet accepted
             {% endif %}

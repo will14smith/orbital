@@ -1,4 +1,4 @@
-<td class="shrink">{{ holder.date|date('d/m/Y') }}</td>
+<td class="shrink">{{ holder.date|date(DATE_FORMAT) }}</td>
 <td>
     {% include ':record:_holder.html.twig' with { 'people': holder.people } only %}
 </td>

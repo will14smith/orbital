@@ -6,7 +6,7 @@
         <div style="border: 1px solid black; width: 5cm; height: 5cm; display: inline-block">IMAGE</div>
         <div>{{ badge.badge.name }}</div>
         <div>{{ badge.person.name }}</div>
-        <div>{{ badge.dateAwarded|date('Y-M-d') }}</div>
+        <div>{{ badge.dateAwarded|date(DATE_FORMAT) }}</div>
 
         <div>{{ badge.id | barcode }}</div>
     </div>

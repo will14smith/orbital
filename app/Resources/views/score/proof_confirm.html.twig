@@ -19,7 +19,7 @@
         <dt>Score</dt>
         <dd>{{ score.score }}</dd>
         <dt>Date Shot</dt>
-        <dd>{{ score.dateShot|date('d/m/Y') }}</dd>
+        <dd>{{ score.dateShot|date(DATE_FORMAT) }}</dd>
     </dl>
 
     {{ display_proof(score.proof, false) }}

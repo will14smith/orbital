@@ -17,7 +17,7 @@
     <ul class="list">
         {% for holder in badge.holders %}
             <li>
-                <span class="text shrink">{{ holder.dateAwarded|date('d/m/Y') }}</span>
+                <span class="text shrink">{{ holder.dateAwarded|date(DATE_FORMAT) }}</span>
                 {{ display.person(holder.person) }}
                 {% if is_granted('ROLE_ADMIN') %}
                     <span class="actions">

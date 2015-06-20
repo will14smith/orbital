@@ -8,10 +8,10 @@
 
 <dl>
     <dt>Open Date</dt>
-    <dd>{{ league.openDate|date('d/m/Y H:i') }}</dd>
+    <dd>{{ league.openDate|date(DATETIME_FORMAT) }}</dd>
     {% if league.closeDate %}
         <dt>Close Date</dt>
-        <dd>{{ league.closeDate|date('d/m/Y H:i') }}</dd>
+        <dd>{{ league.closeDate|date(DATETIME_FORMAT) }}</dd>
     {% endif %}
     <dt>Rounds</dt>
     {% if league.rounds|length > 0 %}

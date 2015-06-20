@@ -3,7 +3,7 @@
 {% if holder %}
     <div flex>
         This record was set
-        on {{ holder.date|date('d/m/Y') }}
+        on {{ holder.date|date(DATE_FORMAT) }}
         at {{ holder.location }}
         and is held by
         {% include ':record:_holder.html.twig' with { 'people': holder.people } only %}

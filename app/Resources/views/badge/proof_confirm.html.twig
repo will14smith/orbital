@@ -17,7 +17,7 @@
         <dt>Person</dt>
         <dd>{{ display.person(badge.person) }}</dd>
         <dt>Date Claimed</dt>
-        <dd>{{ badge.dateAwarded|date('d/m/Y') }}</dd>
+        <dd>{{ badge.dateAwarded|date(DATE_FORMAT) }}</dd>
     </dl>
 
     {{ display_proof(badge.proof, false) }}

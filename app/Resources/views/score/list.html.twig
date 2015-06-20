@@ -9,7 +9,7 @@
         {% for score in scores %}
             <li>
                 <a href="{{ url('score_detail', { 'id': score.id }) }}">
-                    {{ score.dateShot|date('Y-m-d') }} -
+                    {{ score.dateShot|date(DATE_FORMAT) }} -
                     {{ score.person.name }} -
                     {{ score.round.name }} -
                     {{ score.score }}
