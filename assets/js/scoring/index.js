@@ -64,6 +64,8 @@ window.orbital.scoring = window.orbital.scoring || {};
             scoring.vm.socket.on('arrow', scoring.vm.handleArrow);
 
             scoring.vm.socket.emit('sub_score', scoreId);
+
+            scoring.input.init();
         },
 
         getArrow: function (index) {

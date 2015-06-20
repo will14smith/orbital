@@ -11,11 +11,13 @@ window.orbital.scoring = window.orbital.scoring || {};
         var arrowOffset = 0;
         targets.forEach(function (element) {
             var target = scoring.viewTarget(element, arrowOffset);
-            arrowOffset = target.arrowEndOffset;
             children.push(target.view);
+
+            arrowOffset = target.arrowEndOffset;
         });
 
-        if (scoring.vm.input) {
+        var currentArrowCount = scoring.vm.arrows.length;
+        if(scoring.vm.input && currentArrowCount >= arrowOffset) {
             children.push(scoring.input.view());
         }
 
@@ -59,16 +61,23 @@ window.orbital.scoring = window.orbital.scoring || {};
             m("div", [m("strong", "Total"), m("span", stats.total)])
         ]);
 
+        var children = [
+            header,
+            m("div", {'class': 'scores'}, [
+                m("div", {'class': 'ends'}, ends),
+                m("div", {'class': 'endTotals'}, endTotals)
+            ]),
+            footer
+        ];
+
+        var currentArrowCount = scoring.vm.arrows.length;
+        if(scoring.vm.input && arrowStartOffset <= currentArrowCount && currentArrowCount < arrowStartOffset + arrowSubOffset) {
+            children.push(scoring.input.view());
+        }
+
 
         return {
-            'view': m("div", {class: 'target'}, [
-                header,
-                m("div", {'class': 'scores'}, [
-                    m("div", {'class': 'ends'}, ends),
-                    m("div", {'class': 'endTotals'}, endTotals)
-                ]),
-                footer
-            ]),
+            'view': m("div", {class: 'target'}, children),
             'arrowEndOffset': arrowStartOffset + arrowSubOffset
         };
     };
