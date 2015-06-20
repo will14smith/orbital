@@ -1,0 +1,12 @@
+<td class="shrink">{{ holder.date|date('d/m/Y') }}</td>
+<td>
+    {% include ':record:_holder.html.twig' with { 'people': holder.people } only %}
+</td>
+{% if record.numHolders > 1 %}
+    <td class="shrink">{{ holder.score }}</td>
+{% endif %}
+<td class="actions">
+    <a class="shrink" href="{{ url('record_holder_confirm', { 'record_id': holder.record.id, 'holder_id': holder.id }) }}">
+        <i class="fa fa-check" title="Confirm"></i>
+    </a>
+</td>

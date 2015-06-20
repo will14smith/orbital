@@ -10,6 +10,18 @@
     {% include ':record:_current_holder.html.twig' with { 'record': record, 'holder': holder } only %}
     {% include ':record:_requirements.html.twig' with { 'record': record } only %}
 
+    {% if is_granted('ROLE_ADMIN') and record.unconfirmedHolders|length > 0 %}
+        <h2>Unconfirmed Holders</h2>
+        <table>
+            {% for holder in record.unconfirmedHolders %}
+                <tr>
+                    {% include ':record:_unconfirmed_holder.html.twig' with { 'record': record, 'holder': holder } only %}
+                </tr>
+            {% endfor %}
+        </table>
+    {% endif %}
+
+
     {% if record.holders|length > 1 %}
         <h2>Past Holders</h2>
         <table>

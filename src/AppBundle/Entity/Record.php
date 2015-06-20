@@ -213,11 +213,35 @@ class Record
     }
 
     /**
-     * Get holders
+     * Get confirmed holders
      *
      * @return \Doctrine\Common\Collections\Collection|RecordHolder[]
      */
     public function getHolders()
+    {
+        return $this->holders->filter(function(RecordHolder $item) {
+            return $item->getDateConfirmed() != null;
+        });
+    }
+
+    /**
+     * Get unconfirmed holders
+     *
+     * @return \Doctrine\Common\Collections\Collection|RecordHolder[]
+     */
+    public function getUnconfirmedHolders()
+    {
+        return $this->holders->filter(function(RecordHolder $item) {
+            return $item->getDateConfirmed() == null;
+        });
+    }
+
+    /**
+     * Get all holders
+     *
+     * @return \Doctrine\Common\Collections\Collection|RecordHolder[]
+     */
+    public function getAllHolders()
     {
         return $this->holders;
     }

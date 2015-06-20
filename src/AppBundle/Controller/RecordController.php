@@ -3,9 +3,6 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Record;
-use AppBundle\Entity\RecordHolder;
-use AppBundle\Entity\RecordHolderPerson;
-use AppBundle\Form\Type\RecordHolderType;
 use AppBundle\Form\Type\RecordType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -116,62 +113,6 @@ class RecordController extends Controller
         return $this->render('record/edit.html.twig', [
             'form' => $form->createView(),
         ]);
-    }
-
-    /**
-     * @Security("has_role('ROLE_ADMIN')")
-     * @Route("/record/{id}/award", name="record_award", methods={"GET", "POST"})
-     *
-     * @param int $id
-     * @param Request $request
-     *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
-     */
-    public function awardAction($id, Request $request)
-    {
-        $record_repository = $this->getDoctrine()->getRepository('AppBundle:Record');
-        $record = $record_repository->find($id);
-        if (!$record) {
-            throw $this->createNotFoundException(
-                'No record found for id ' . $id
-            );
-        }
-
-        $recordHolder = new RecordHolder();
-
-        $numHolders = $record->getNumHolders();
-        for ($i = 0; $i < $numHolders; $i++) {
-            $recordHolder->addPerson(new RecordHolderPerson());
-        }
-        $form = $this->createForm(new RecordHolderType(), $recordHolder);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $record_repository->award($record, $recordHolder);
-
-            return $this->redirectToRoute(
-                'record_detail',
-                ['id' => $record->getId()]
-            );
-        }
-
-        return $this->render('record/award.html.twig', [
-            'form' => $form->createView(),
-        ]);
-    }
-
-    /**
-     * @Security("has_role('ROLE_ADMIN')")
-     * @Route("/record/{id}/revoke", name="record_revoke", methods={"GET", "POST"})
-     *
-     * @param int $id
-     * @param Request $request
-     *
-     * @throws \Exception
-     */
-    public function revokeAction($id, Request $request)
-    {
-        throw new \Exception("NOT IMPLEMENTED");
     }
 
     /**

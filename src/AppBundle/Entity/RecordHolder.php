@@ -43,6 +43,11 @@ class RecordHolder
     protected $date_broken;
 
     /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    protected $date_confirmed;
+
+    /**
      * @ORM\OneToMany(targetEntity="RecordHolderPerson", mappedBy="record_holder")
      */
     protected $people;
@@ -217,5 +222,28 @@ class RecordHolder
     public function getDateBroken()
     {
         return $this->date_broken;
+    }
+
+    /**
+     * Set date_confirmed
+     *
+     * @param \DateTime $dateConfirmed
+     * @return RecordHolder
+     */
+    public function setDateConfirmed($dateConfirmed)
+    {
+        $this->date_confirmed = $dateConfirmed;
+    
+        return $this;
+    }
+
+    /**
+     * Get date_confirmed
+     *
+     * @return \DateTime 
+     */
+    public function getDateConfirmed()
+    {
+        return $this->date_confirmed;
     }
 }
