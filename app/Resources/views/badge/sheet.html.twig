@@ -1,0 +1,43 @@
+{% extends '::base.html.twig' %}
+
+{% block title %}
+    Generate Badge Sheet
+{% endblock %}
+
+{% block body %}
+    <form action="{{ url("badge_sheet") }}" method="get">
+        <div class="form-row">
+            <label for="badge"> Select the badges to include </label>
+            <select multiple id="badge" name="badge[]" class="form-input">
+                {% for badge in badges %}
+                    <option value="{{ badge.id }}" selected>{{ badge.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <button type="submit">Generate</button>
+    </form>
+
+
+    <h2>Mark sheet</h2>
+
+    <form action="{{ url("badge_sheet_mark") }}" method="post">
+        <div class="form-row">
+            <input type="text" id="sheet_id" name="sheet_id" required="required" class="form-input">
+            <label for="sheet_id" class="required">Sheet Id</label>
+        </div>
+        <div layout="row">
+            <div class="form-row">
+                <input type="radio" id="mark_type_made" name="mark_type" class="form-input" checked="checked" value="0">
+                <label for="mark_type_made">Made</label>
+            </div>
+            <div class="form-row">
+                <input type="radio" id="mark_type_delivered" name="mark_type" class="form-input" value="1">
+                <label for="mark_type_delivered">Delivered</label>
+            </div>
+        </div>
+
+        <button type="submit">Mark</button>
+    </form>
+
+{% endblock %}
