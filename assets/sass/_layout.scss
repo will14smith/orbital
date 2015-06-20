@@ -33,12 +33,17 @@
     flex-wrap: wrap;
   }
 
-  #page-header {
-    width: 260px + $layout-gutter-width;
+  #page-header, #side-menu {
+    width: 180px + $layout-gutter-width;
     padding: $layout-gutter-width / 2;
+  }
 
+  #page-header {
     .main-header-bar {
       text-align: left;
+      .logo img {
+        height: 32px;
+      }
     }
 
     .menu-toggle {
@@ -53,7 +58,6 @@
 
     background: #fff;
 
-
     .page-title {
       text-align: center;
 
@@ -64,14 +68,24 @@
   }
 
   #side-menu {
-    width: 260px + $layout-gutter-width;
-    padding: $layout-gutter-width / 2;
-
     h1 {
       font-size: 36px;
       margin-top: 12px;
 
       color: #ccc;
+    }
+  }
+}
+
+@media(min-width: $layout-breakpoint-lg) {
+  #page-header, #side-menu {
+    width: 260px + $layout-gutter-width;
+    padding: $layout-gutter-width / 2;
+  }
+
+  #page-header {
+    .main-header-bar .logo img {
+      height: 48px;
     }
   }
 }
