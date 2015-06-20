@@ -46,15 +46,20 @@ class BadgeController extends ProofController
     {
         $badges = $request->get('badge', []);
 
-        if(is_array($badges) && count($badges) > 0) {
-            $badgeHolderRepository = $this->getDoctrine()->getRepository("AppBundle:BadgeHolder");
+        $doctrine = $this->getDoctrine();
+
+        if (is_array($badges) && count($badges) > 0) {
+            $badgeHolderRepository = $doctrine->getRepository("AppBundle:BadgeHolder");
             $badges = $badgeHolderRepository->findBy([
                 'badge' => $badges,
                 'date_made' => null
             ]);
 
-            // TODO build badge_sheet
-            $sheet = ['id' => 1, 'date' => new \DateTime()];
+            $em = $doctrine->getManager();
+            $sheet = new BadgeSheet($badges);
+
+            $em->persist($sheet);
+            $em->flush();
 
             $html = $this->renderView('pdf/badge_sheet.pdf.twig', [
                 'badges' => $badges,
@@ -70,7 +75,7 @@ class BadgeController extends ProofController
                 ]
             );
         } else {
-            $badgeRepository = $this->getDoctrine()->getRepository("AppBundle:Badge");
+            $badgeRepository = $doctrine->getRepository("AppBundle:Badge");
             $badges = $badgeRepository->findAll();
 
             return $this->render('badge/sheet.html.twig', ['badges' => $badges]);
