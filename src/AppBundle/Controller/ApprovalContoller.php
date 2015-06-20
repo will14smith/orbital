@@ -12,7 +12,7 @@ class ApprovalContoller extends Controller
      * @Security("has_role('ROLE_ADMIN')")
      * @Route("/approvals", name="approvals")
      */
-    public function actionList()
+    public function listAction()
     {
         $items = $this->get('orbital.approval.manager')->getItems();
 
