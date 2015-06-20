@@ -30,6 +30,12 @@ services:
             - { name: kernel.event_listener, event: 'orbital.events.score_arrow_create', method: arrowAdded }
             - { name: kernel.event_listener, event: 'orbital.events.score_arrow_update', method: arrowUpdated }
             - { name: kernel.event_listener, event: 'orbital.events.score_arrow_remove', method: arrowRemoved }
+    orbital.scoring.record_listener:
+        class: AppBundle\Services\Scoring\RecordListener
+        arguments: ["@doctrine"]
+        tags:
+            - { name: kernel.event_listener, event: 'orbital.events.score_create', method: handleScore }
+            - { name: kernel.event_listener, event: 'orbital.events.score_update', method: handleScore }
 
 # competitions
     orbital.competition.manager:
