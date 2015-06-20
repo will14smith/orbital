@@ -405,8 +405,8 @@ class Score
 
     public function __toString()
     {
-        return sprintf('%s - %s - %s - %i',
-            $this->getDateShot()->format('d/m/Y H:i'),
+        return sprintf('%s - %s - %s - %d',
+            $this->getDateShot()->format('Y-m-d'),
             $this->getPerson()->getName(),
             $this->getRound()->getName(),
             $this->getScore()
