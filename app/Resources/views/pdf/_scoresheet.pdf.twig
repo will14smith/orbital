@@ -2,11 +2,11 @@
     <tr>
         <td style="width: 50%" class="text-left">
             {% if entry.person %}
-                {{ entry.person.name }} -
+                {{ entry.person.name }}
                 {% if entry.club %}
-                    {{ entry.club.name }}
-                {% else %}
-                    {{ entry.person.club.name }}
+                    - {{ entry.club.name }}
+                {% elseif entry.person.club %}
+                    - {{ entry.person.club.name }}
                 {% endif %}
             {% else %}
                 <div class="entry text-right">
