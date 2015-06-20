@@ -12,17 +12,11 @@ window.orbital.scoring = window.orbital.scoring || {};
 
     var scoreClickFactory = function (score) {
         return function () {
-            if (scoring.vm.arrowIndex >= scoring.vm.round.totalArrows()) {
-                return;
-            }
-
-            scoring.vm.arrowBuffer.push(score);
-            scoring.vm.arrowIndex += 1;
+            scoring.vm.addToBuffer(score);
         };
     };
     var undoClick = function () {
-        scoring.vm.arrowBuffer.pop();
-        scoring.vm.arrowIndex -= 1;
+        scoring.vm.removeFromBuffer();
     };
     var saveClick = function () {
         scoring.vm.submitBuffer();

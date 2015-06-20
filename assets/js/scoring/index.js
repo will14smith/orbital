@@ -76,6 +76,23 @@ window.orbital.scoring = window.orbital.scoring || {};
             return arrows[index];
         },
 
+        addToBuffer: function(score) {
+            if (scoring.vm.arrowIndex >= scoring.vm.round.totalArrows()) {
+                return;
+            }
+
+            scoring.vm.arrowBuffer.push(score);
+            scoring.vm.arrowIndex += 1;
+        },
+        removeFromBuffer: function() {
+            if(scoring.vm.arrowIndex == 0) {
+                return;
+            }
+
+            scoring.vm.arrowBuffer.pop();
+            scoring.vm.arrowIndex -= 1;
+        },
+
         submitBuffer: function () {
             var vm = scoring.vm;
 
