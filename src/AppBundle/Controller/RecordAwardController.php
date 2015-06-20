@@ -2,10 +2,10 @@
 
 namespace AppBundle\Controller;
 
-use AppBundle\Entity\Record;
 use AppBundle\Entity\RecordHolder;
 use AppBundle\Entity\RecordHolderPerson;
 use AppBundle\Form\Type\RecordHolderType;
+use AppBundle\Services\Scoring\RecordManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -24,7 +24,8 @@ class RecordAwardController extends Controller
      */
     public function awardAction($id, Request $request)
     {
-        $record_repository = $this->getDoctrine()->getRepository('AppBundle:Record');
+        $em = $this->getDoctrine()->getManager();
+        $record_repository = $em->getRepository('AppBundle:Record');
         $record = $record_repository->find($id);
         if (!$record) {
             throw $this->createNotFoundException(
@@ -32,17 +33,25 @@ class RecordAwardController extends Controller
             );
         }
 
-        $recordHolder = new RecordHolder();
+        $holder = new RecordHolder();
 
         $numHolders = $record->getNumHolders();
         for ($i = 0; $i < $numHolders; $i++) {
-            $recordHolder->addPerson(new RecordHolderPerson());
+            $holder->addPerson(new RecordHolderPerson());
         }
-        $form = $this->createForm(new RecordHolderType(), $recordHolder);
+        $form = $this->createForm(new RecordHolderType(), $holder);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $record_repository->award($record, $recordHolder);
+            RecordManager::syncHolder($holder);
+            RecordManager::approveHolder($record, $holder);
+
+            foreach($holder->getPeople() as $person) {
+                $em->persist($person);
+            }
+            $em->persist($holder);
+
+            $em->flush();
 
             return $this->redirectToRoute(
                 'record_detail',
@@ -73,12 +82,7 @@ class RecordAwardController extends Controller
 
         $record = $holder->getRecord();
 
-        $current_holder = $record->getCurrentHolder();
-        if ($current_holder) {
-            $current_holder->setDateBroken($holder->getDate());
-        }
-
-        $holder->setDateConfirmed(new \DateTime());
+        RecordManager::approveHolder($record, $holder);
 
         $em->flush();
 

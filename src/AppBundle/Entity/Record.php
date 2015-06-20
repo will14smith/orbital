@@ -6,6 +6,7 @@ namespace AppBundle\Entity;
 use AppBundle\Services\Enum\BowType;
 use AppBundle\Services\Enum\Gender;
 use AppBundle\Services\Enum\Skill;
+use AppBundle\Services\Scoring\RecordManager;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -219,9 +220,7 @@ class Record
      */
     public function getHolders()
     {
-        return $this->holders->filter(function(RecordHolder $item) {
-            return $item->getDateConfirmed() != null;
-        });
+        return RecordManager::getConfirmedHolders($this);
     }
 
     /**
@@ -231,9 +230,7 @@ class Record
      */
     public function getUnconfirmedHolders()
     {
-        return $this->holders->filter(function(RecordHolder $item) {
-            return $item->getDateConfirmed() == null;
-        });
+        return RecordManager::getUnconfirmedHolders($this);
     }
 
     /**
@@ -251,8 +248,7 @@ class Record
      */
     public function getCurrentHolder()
     {
-        // the array is ordered by date then score, exactly what we want
-        return $this->getHolders()->first();
+        return RecordManager::getCurrentHolder($this);
     }
 
     /**

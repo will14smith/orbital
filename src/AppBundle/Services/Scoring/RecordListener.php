@@ -31,7 +31,9 @@ class RecordListener
 
     private function checkForRecord(Score $score)
     {
-        $recordRepository = $this->doctrine->getRepository('AppBundle:Record');
+        $em = $this->doctrine->getManager();
+
+        $recordRepository = $em->getRepository('AppBundle:Record');
 
         // find all matching records
         $records = $recordRepository->getPossibleRecordsBroken($score);
@@ -42,50 +44,20 @@ class RecordListener
                 continue;
             }
 
-            // is it better?
-            $currentHolder = $record->getCurrentHolder();
+            $holder = RecordManager::createHolder($record, [$score]);
 
-            if ($currentHolder && $currentHolder->getScore() >= $score->getScore()) {
+            // is it better?
+            if (!RecordManager::beatsRecord($record, $holder)) {
                 continue;
             }
 
             // yes: add new UNCONFIRMED record
-            $newHolder = $this->createHolder([$score]);
+            foreach ($holder->getPeople() as $person) {
+                $em->persist($person);
+            }
+            $em->persist($holder);
 
-            $recordRepository->award($record, $newHolder);
+            $em->flush();
         }
-    }
-
-    /**
-     * @param Score[] $scores
-     * @return RecordHolder
-     */
-    private function createHolder(array $scores)
-    {
-        $newHolder = new RecordHolder();
-
-        $newHolder->setLocation('?');
-        $newHolder->setDate($scores[0]->getDateShot());
-
-        foreach ($scores as $score) {
-            $newHolder->addPerson($this->createHolderPerson($score));
-        }
-
-        return $newHolder;
-    }
-
-    /**
-     * @param Score $score
-     * @return RecordHolderPerson
-     */
-    private function createHolderPerson(Score $score)
-    {
-        $newHolderPerson = new RecordHolderPerson();
-
-        $newHolderPerson->setPerson($score->getPerson());
-        $newHolderPerson->setScore($score);
-        $newHolderPerson->setScoreValue($score->getScore());
-
-        return $newHolderPerson;
     }
 }
