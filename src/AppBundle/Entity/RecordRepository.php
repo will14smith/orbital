@@ -11,9 +11,11 @@ class RecordRepository extends EntityRepository
     {
         $em = $this->getEntityManager();
 
-        $current_holder = $record->getCurrentHolder();
-        if ($current_holder) {
-            $current_holder->setDateBroken($new_holder->getDate());
+        if($new_holder->getDateConfirmed() != null) {
+            $current_holder = $record->getCurrentHolder();
+            if ($current_holder) {
+                $current_holder->setDateBroken($new_holder->getDate());
+            }
         }
 
         $new_holder->setRecord($record);

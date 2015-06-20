@@ -15,7 +15,7 @@
 
 {% macro score(score, class="") %}
     {% import _self as self %}
-    {{ self.entity_link(url('score_detail', { 'id': score.id }), score.value, class) }}
+    {{ self.entity_link(url('score_detail', { 'id': score.id }), score.score, class) }}
 {% endmacro %}
 
 {% macro badge(badge, class="") %}
