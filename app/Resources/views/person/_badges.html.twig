@@ -3,7 +3,7 @@
 <table>
     {% for badge in badges %}
         <tr>
-            <td class="text shrink">{{ badge.dateAwarded|date('d/m/Y') }}</td>
+            <td class="text shrink">{{ badge.dateAwarded|date(DATE_FORMAT) }}</td>
             <td>{{ display.badge(badge.badge) }}</td>
             {% if badge.state != Enum.badgestate.delivered %}
             <td class="actions">{% include ':badge:state.html.twig' with { 'badge': badge } only %}</td>

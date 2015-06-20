@@ -2,7 +2,7 @@
 
 {% block title %}
     <h1>{{ competition.name }}</h1>
-    <h2>{{ competition.date|date('d-M-Y H:i') }}</h2>
+    <h2>{{ competition.date|date(DATETIME_FORMAT) }}</h2>
 {% endblock %}
 
 {% block content %}

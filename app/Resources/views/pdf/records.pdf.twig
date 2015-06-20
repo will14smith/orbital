@@ -2,9 +2,9 @@
 {% for record in records %}
     <h3>{{ record.record.displayName }}
         {% spaceless %}
-            <span>({{ record.date|date('d/m/Y') }}</span>
+            <span>({{ record.date|date(DATE_FORMAT) }}</span>
             {% if record.dateBroken %}
-                <span> - {{ record.dateBroken|date('d/m/Y') }}</span>
+                <span> - {{ record.dateBroken|date(DATE_FORMAT) }}</span>
             {% endif %}
             <span>)</span>
         {% endspaceless %}

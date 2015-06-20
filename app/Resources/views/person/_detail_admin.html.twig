@@ -10,6 +10,6 @@
         {{ field('Gender', person.gender|enum('gender'), true) }}
     {% endif %}
     {% if person.dateOfBirth %}
-        {{ field('DoB', person.dateOfBirth|date('d/m/Y'), true) }}
+        {{ field('DoB', person.dateOfBirth|date(DATE_FORMAT), true) }}
     {% endif %}
 {% endif %}

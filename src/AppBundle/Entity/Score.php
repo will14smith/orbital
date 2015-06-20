@@ -3,6 +3,7 @@
 
 namespace AppBundle\Entity;
 
+use AppBundle\Constants;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -406,7 +407,7 @@ class Score
     public function __toString()
     {
         return sprintf('%s - %s - %s - %d',
-            $this->getDateShot()->format('Y-m-d'),
+            $this->getDateShot()->format(Constants::DATE_FORMAT),
             $this->getPerson()->getName(),
             $this->getRound()->getName(),
             $this->getScore()

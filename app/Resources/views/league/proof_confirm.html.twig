@@ -23,7 +23,7 @@
             <dd>{{ display.leaguePerson(match.winner) }}</dd>
         {% endif %}
         <dt>Date Challenged</dt>
-        <dd>{{ match.dateChallenged|date('d/m/Y') }}</dd>
+        <dd>{{ match.dateChallenged|date(DATE_FORMAT) }}</dd>
     </dl>
 
     {{ display_proof(match.proofs, false) }}
