@@ -13,6 +13,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class BadgeController extends ProofController
 {
@@ -31,6 +32,49 @@ class BadgeController extends ProofController
                 'badges' => $badges
             ]
         );
+    }
+
+    /**
+     * @Security("has_role('ROLE_ADMIN')")
+     * @Route("/badges/sheet", name="badge_sheet", methods={"GET"})
+     *
+     * @param Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function sheetAction(Request $request)
+    {
+        $badges = $request->get('badge', []);
+
+        if(is_array($badges) && count($badges) > 0) {
+            $badgeHolderRepository = $this->getDoctrine()->getRepository("AppBundle:BadgeHolder");
+            $badges = $badgeHolderRepository->findBy([
+                'badge' => $badges,
+                'date_made' => null
+            ]);
+
+            // TODO build badge_sheet
+            $sheet = ['id' => 1, 'date' => new \DateTime()];
+
+            $html = $this->renderView('pdf/badge_sheet.pdf.twig', [
+                'badges' => $badges,
+                'sheet' => $sheet
+            ]);
+
+            $footer = $this->renderView('pdf/_badge_sheet_footer.pdf.twig', ['sheet' => $sheet]);
+
+            $options = ['footer-html' => $footer];
+
+            return new Response($this->get('knp_snappy.pdf')->getOutputFromHtml($html, $options), 200, [
+                    'Content-Type' => 'application/pdf'
+                ]
+            );
+        } else {
+            $badgeRepository = $this->getDoctrine()->getRepository("AppBundle:Badge");
+            $badges = $badgeRepository->findAll();
+
+            return $this->render('badge/sheet.html.twig', ['badges' => $badges]);
+        }
     }
 
     /**
