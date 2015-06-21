@@ -18,6 +18,11 @@ class CompetitionSessionEntry
     protected $id;
 
     /**
+     * @ORM\Column(type="datetime")
+     */
+    protected $date_entered;
+
+    /**
      * Could be null if reserved for club
      *
      * @ORM\ManyToOne(targetEntity="Person")
@@ -358,5 +363,28 @@ class CompetitionSessionEntry
     public function getScore()
     {
         return $this->score;
+    }
+
+    /**
+     * Set date_entered
+     *
+     * @param \DateTime $dateEntered
+     * @return CompetitionSessionEntry
+     */
+    public function setDateEntered($dateEntered)
+    {
+        $this->date_entered = $dateEntered;
+    
+        return $this;
+    }
+
+    /**
+     * Get date_entered
+     *
+     * @return \DateTime 
+     */
+    public function getDateEntered()
+    {
+        return $this->date_entered;
     }
 }

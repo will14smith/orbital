@@ -4,6 +4,7 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Competition;
 use AppBundle\Form\Type\CompetitionType;
+use AppBundle\Services\Competitions\CompetitionManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -100,6 +101,25 @@ class CompetitionController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $competition->close();
+        $em->flush();
+
+        return $this->redirectToRoute('competition_detail', ['id' => $competition->getId()]);
+    }
+
+    /**
+     * @Security("has_role('ROLE_ADMIN')")
+     * @Route("/competition/{id}/assign_targets", name="competition_assign_targets", methods={"GET"})
+     *
+     * @param Competition $competition
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function assignTargetsAction(Competition $competition)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        CompetitionManager::assignTargets($competition);
+
         $em->flush();
 
         return $this->redirectToRoute('competition_detail', ['id' => $competition->getId()]);

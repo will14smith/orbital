@@ -85,6 +85,7 @@
                 {% else %}
                     <li><a href="{{ url('competition_open', { 'id': competition.id }) }}">Open Entries</a></li>
                 {% endif %}
+                <li><a href="{{ url('competition_assign_targets', { 'id': competition.id }) }}">Assign Targets</a></li>
                 <li><a href="{{ url('competition_edit', { 'id': competition.id }) }}">Edit</a></li>
                 <li><a href="{{ url('competition_delete', { 'id': competition.id }) }}">Delete</a></li>
             </ul>

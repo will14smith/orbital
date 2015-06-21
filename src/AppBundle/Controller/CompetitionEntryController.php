@@ -29,6 +29,7 @@ class CompetitionEntryController extends Controller
 
         $entry = new CompetitionSessionEntry();
         $entry->setSession($session);
+        $entry->setDateEntered(new \DateTime());
 
         $admin = $this->getUser()->isAdmin();
         if (!$admin) {

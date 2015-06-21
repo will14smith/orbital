@@ -251,4 +251,30 @@ class Competition
     public function __toString() {
         return $this->name;
     }
+
+    /**
+     * Set entryOpen
+     *
+     * @param \DateTime $entryOpen
+     * @return Competition
+     */
+    public function setEntryOpen($entryOpen)
+    {
+        $this->entryOpen = $entryOpen;
+    
+        return $this;
+    }
+
+    /**
+     * Set entryClose
+     *
+     * @param \DateTime $entryClose
+     * @return Competition
+     */
+    public function setEntryClose($entryClose)
+    {
+        $this->entryClose = $entryClose;
+    
+        return $this;
+    }
 }

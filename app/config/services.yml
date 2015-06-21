@@ -37,11 +37,6 @@ services:
             - { name: kernel.event_listener, event: 'orbital.events.score_create', method: handleScore }
             - { name: kernel.event_listener, event: 'orbital.events.score_update', method: handleScore }
 
-# competitions
-    orbital.competition.manager:
-        class: AppBundle\Services\Competitions\CompetitionManager
-        arguments: ["@doctrine"]
-
 # handicaps
     orbital.handicap.calculate:
         class: AppBundle\Services\Handicap\HandicapCalculator

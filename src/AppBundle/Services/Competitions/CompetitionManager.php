@@ -2,6 +2,7 @@
 
 namespace AppBundle\Services\Competitions;
 
+use AppBundle\Entity\Competition;
 use AppBundle\Entity\CompetitionSession;
 use AppBundle\Entity\Person;
 use Doctrine\Bundle\DoctrineBundle\Registry;
@@ -58,8 +59,10 @@ class CompetitionManager
         return self::getTotalSpaces($session) - $session->getEntries()->count();
     }
 
-    public function assignTargets()
+    public static function assignTargets(Competition $competition)
     {
-        throw new \Exception("Not Implemented");
+        $calculator = new TargetAssignmentCalculator($competition);
+
+        $calculator->calculate();
     }
 }

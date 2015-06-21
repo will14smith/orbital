@@ -58,6 +58,7 @@ class CompetitionEntryType extends AbstractType
         if ($this->admin) {
             $builder
                 ->add($archer)
+                ->add('date_entered')
                 ->add('boss_number')
                 ->add('target_number');
         }
