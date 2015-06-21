@@ -31,6 +31,15 @@ class Competition
     protected $location;
 
     /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    protected $entryOpen;
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    protected $entryClose;
+
+    /**
      * @ORM\Column(type="boolean")
      */
     protected $hosted;
@@ -180,5 +189,62 @@ class Competition
     public function getSessions()
     {
         return $this->sessions;
+    }
+
+    /**
+     * Get entryOpen
+     *
+     * @return \DateTime 
+     */
+    public function getEntryOpen()
+    {
+        return $this->entryOpen;
+    }
+
+    /**
+     * Get entryClose
+     *
+     * @return \DateTime 
+     */
+    public function getEntryClose()
+    {
+        return $this->entryClose;
+    }
+
+    public function isOpen() {
+        if($this->entryOpen === null) {
+            return false;
+        }
+
+        $now = new \DateTime();
+
+        if($this->entryOpen > $now) {
+            return false;
+        }
+
+        if($this->entryClose === null) {
+            return true;
+        }
+
+        return $this->entryClose >= $now;
+    }
+
+    public function open(\DateTime $date = null) {
+        if($date === null) {
+            $date = new \DateTime();
+        }
+
+        $this->entryOpen = $date;
+        $this->entryClose = null;
+    }
+    public function close(\DateTime $date = null) {
+        if($date === null) {
+            $date = new \DateTime();
+        }
+
+        if($this->entryOpen === null) {
+            $this->entryOpen = $date;
+        }
+        $this->entryClose = $date;
     }
 }

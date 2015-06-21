@@ -20,13 +20,15 @@
     </dl>
 
     {% if is_granted('ROLE_ADMIN') %}
-        <h2>Sessions <small><a href="#">Add</a></small></h2>
+        <h2>Sessions
+            <small><a href="#">Add</a></small>
+        </h2>
     {% else %}
         <h2>Sessions</h2>
     {% endif %}
     {% for session in competition.sessions %}
         <h3>{{ session.startDate|date(DATETIME_FORMAT) }}</h3>
-        {% else %}
+    {% else %}
         <h3>There are no sessions!</h3>
     {% endfor %}
 {% endblock %}
@@ -36,6 +38,11 @@
         <div class="widget">
             <h3 class="widget-title">Actions</h3>
             <ul>
+                {% if competition.isOpen() %}
+                    <li><a href="{{ url('competition_close', { 'id': competition.id }) }}">Close Entries</a></li>
+                {% else %}
+                    <li><a href="{{ url('competition_open', { 'id': competition.id }) }}">Open Entries</a></li>
+                {% endif %}
                 <li><a href="{{ url('competition_edit', { 'id': competition.id }) }}">Edit</a></li>
                 <li><a href="{{ url('competition_delete', { 'id': competition.id }) }}">Delete</a></li>
             </ul>
