@@ -1,8 +1,14 @@
 (function ($) {
     'use strict';
 
-    $.fn.collection = function (name) {
+    $.fn.collection = function (name, options) {
+        options = $.extend({
+            addCallback: function() { }
+        }, options);
+
         var $collectionHolder = this;
+
+
 
         // setup an "add a tag" link
         var $addLink = $('<a href="#">Add a ' + name + '</a>');
@@ -43,6 +49,8 @@
             // Display the form in the page in an li, before the "Add a tag" link li
             var $newFormDiv = $('<div />').append(newForm).inputConnect();
             $newLinkLi.before($newFormDiv);
+
+            options.addCallback($newFormDiv);
         }
     };
 })(jQuery);

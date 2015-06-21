@@ -175,7 +175,7 @@ class Competition
     /**
      * Get sessions
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection|CompetitionSession[]
      */
     public function getSessions()
     {

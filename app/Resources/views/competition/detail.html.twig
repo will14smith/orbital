@@ -2,6 +2,9 @@
 
 {% block title %}
     {{ competition.name }}
+    {% if not competition.hosted %}
+        <small> - Info Only</small>
+    {% endif %}
 {% endblock %}
 
 {% block body %}
@@ -11,46 +14,32 @@
         </p>
     {% endif %}
 
-    {% include ':competition:_detail.html.twig' with { 'competition': competition } %}
+    <dl>
+        <dt>Location</dt>
+        <dd>{{ competition.location|default('Unknown') }}</dd>
+    </dl>
 
-    <h2>Entries</h2>
-    <table>
-        {% for entry in competition.entries %}
-            <tr>{% include ':competition:_detail_entry.html.twig' with { 'entry': entry, 'competition': competition } %}</tr>
+    {% if is_granted('ROLE_ADMIN') %}
+        <h2>Sessions <small><a href="#">Add</a></small></h2>
+    {% else %}
+        <h2>Sessions</h2>
+    {% endif %}
+    {% for session in competition.sessions %}
+        <h3>{{ session.startDate|date(DATETIME_FORMAT) }}</h3>
         {% else %}
-            <tr>
-                <td>There are no entries :(</td>
-            </tr>
-        {% endfor %}
-    </table>
+        <h3>There are no sessions!</h3>
+    {% endfor %}
 {% endblock %}
 
 {% block sidebar %}
-    {% if is_granted('ENTER', competition) %}
+    {% if is_granted('ROLE_ADMIN') %}
         <div class="widget">
             <h3 class="widget-title">Actions</h3>
             <ul>
-                {% if is_granted('ENTER', competition) %}
-                    <li><a href="{{ url('competition_enter', { 'id': competition.id }) }}"> Enter </a></li>
-                {% endif %}
-                {% if is_granted('ROLE_ADMIN') %}
-                    <li><a href="{{ url('competition_assign', { 'id': competition.id }) }}">Assign Targets</a></li>
-                    <li><a href="{{ url('competition_edit', { 'id': competition.id }) }}">Edit</a></li>
-                    <li><a href="{{ url('competition_delete', { 'id': competition.id }) }}">Delete</a></li>
-                {% endif %}
+                <li><a href="{{ url('competition_edit', { 'id': competition.id }) }}">Edit</a></li>
+                <li><a href="{{ url('competition_delete', { 'id': competition.id }) }}">Delete</a></li>
             </ul>
         </div>
     {% endif %}
-    {% if is_granted('ROLE_ADMIN') %}
-        <div class="widget">
-            <h3 class="widget-title">Documents</h3>
-            <ul>
-                <li><a href="{{ url('competition_targetlist', { 'id': competition.id }) }}">Target list</a></li>
-                <li><a href="{{ url('competition_scoresheets', { 'id': competition.id }) }}">Score sheets</a></li>
-                <li><a href="#">Running slips</a></li>
-            </ul>
-        </div>
-    {% endif %}
-
     {{ parent() }}
 {% endblock %}
