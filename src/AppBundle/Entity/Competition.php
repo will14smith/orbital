@@ -18,7 +18,7 @@ class Competition
     protected $id;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", nullable=true)
      */
     protected $name;
     /**
@@ -26,54 +26,31 @@ class Competition
      */
     protected $description;
     /**
-     * @ORM\Column(type="boolean")
-     */
-    protected $info_only;
-    /**
      * @ORM\Column(type="string", nullable=true)
      */
     protected $location;
-    /**
-     * @ORM\Column(type="datetime")
-     */
-    protected $date;
 
     /**
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(type="boolean")
      */
-    protected $boss_count;
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
-    protected $target_count = 4;
+    protected $hosted;
 
     /**
-     * @ORM\OneToMany(targetEntity="CompetitionEntry", mappedBy="competition")
+     * @ORM\OneToMany(targetEntity="CompetitionSession", mappedBy="competition")
      */
-    protected $entries;
-
-    /**
-     * @ORM\ManyToMany(targetEntity="Round")
-     * @ORM\JoinTable(name="competition_round",
-     *      joinColumns={@ORM\JoinColumn(name="competition_id", referencedColumnName="id")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="round_id", referencedColumnName="id")}
-     *      )
-     */
-    protected $rounds;
-
+    protected $sessions;
     /**
      * Constructor
      */
     public function __construct()
     {
-        $this->entries = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->rounds = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->sessions = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
      * Get id
      *
-     * @return integer
+     * @return integer 
      */
     public function getId()
     {
@@ -84,20 +61,19 @@ class Competition
      * Set name
      *
      * @param string $name
-     *
      * @return Competition
      */
     public function setName($name)
     {
         $this->name = $name;
-
+    
         return $this;
     }
 
     /**
      * Get name
      *
-     * @return string
+     * @return string 
      */
     public function getName()
     {
@@ -108,20 +84,19 @@ class Competition
      * Set description
      *
      * @param string $description
-     *
      * @return Competition
      */
     public function setDescription($description)
     {
         $this->description = $description;
-
+    
         return $this;
     }
 
     /**
      * Get description
      *
-     * @return string
+     * @return string 
      */
     public function getDescription()
     {
@@ -129,47 +104,22 @@ class Competition
     }
 
     /**
-     * Set info_only
-     *
-     * @param boolean $infoOnly
-     *
-     * @return Competition
-     */
-    public function setInfoOnly($infoOnly)
-    {
-        $this->info_only = $infoOnly;
-
-        return $this;
-    }
-
-    /**
-     * Get info_only
-     *
-     * @return boolean
-     */
-    public function getInfoOnly()
-    {
-        return $this->info_only;
-    }
-
-    /**
      * Set location
      *
      * @param string $location
-     *
      * @return Competition
      */
     public function setLocation($location)
     {
         $this->location = $location;
-
+    
         return $this;
     }
 
     /**
      * Get location
      *
-     * @return string
+     * @return string 
      */
     public function getLocation()
     {
@@ -177,166 +127,58 @@ class Competition
     }
 
     /**
-     * Set date
+     * Set hosted
      *
-     * @param \DateTime $date
-     *
+     * @param boolean $hosted
      * @return Competition
      */
-    public function setDate($date)
+    public function setHosted($hosted)
     {
-        $this->date = $date;
-
+        $this->hosted = $hosted;
+    
         return $this;
     }
 
     /**
-     * Get date
+     * Get hosted
      *
-     * @return \DateTime
+     * @return boolean 
      */
-    public function getDate()
+    public function getHosted()
     {
-        return $this->date;
+        return $this->hosted;
     }
 
     /**
-     * Set boss_count
+     * Add sessions
      *
-     * @param integer $bossCount
-     *
+     * @param \AppBundle\Entity\CompetitionSession $sessions
      * @return Competition
      */
-    public function setBossCount($bossCount)
+    public function addSession(\AppBundle\Entity\CompetitionSession $sessions)
     {
-        $this->boss_count = $bossCount;
-
+        $this->sessions[] = $sessions;
+    
         return $this;
     }
 
     /**
-     * Get boss_count
+     * Remove sessions
      *
-     * @return integer
+     * @param \AppBundle\Entity\CompetitionSession $sessions
      */
-    public function getBossCount()
+    public function removeSession(\AppBundle\Entity\CompetitionSession $sessions)
     {
-        return $this->boss_count;
+        $this->sessions->removeElement($sessions);
     }
 
     /**
-     * Set target_count
+     * Get sessions
      *
-     * @param integer $targetCount
-     *
-     * @return Competition
+     * @return \Doctrine\Common\Collections\Collection 
      */
-    public function setTargetCount($targetCount)
+    public function getSessions()
     {
-        $this->target_count = $targetCount;
-
-        return $this;
-    }
-
-    /**
-     * Get target_count
-     *
-     * @return integer
-     */
-    public function getTargetCount()
-    {
-        return $this->target_count;
-    }
-
-    /**
-     * Add entries
-     *
-     * @param \AppBundle\Entity\CompetitionEntry $entries
-     *
-     * @return Competition
-     */
-    public function addEntry(\AppBundle\Entity\CompetitionEntry $entries)
-    {
-        $this->entries[] = $entries;
-
-        return $this;
-    }
-
-    /**
-     * Remove entries
-     *
-     * @param \AppBundle\Entity\CompetitionEntry $entries
-     */
-    public function removeEntry(\AppBundle\Entity\CompetitionEntry $entries)
-    {
-        $this->entries->removeElement($entries);
-    }
-
-    /**
-     * Get entries
-     *
-     * @return \Doctrine\Common\Collections\Collection|CompetitionEntry[]
-     */
-    public function getEntries()
-    {
-        return $this->entries;
-    }
-
-    /**
-     * Add rounds
-     *
-     * @param \AppBundle\Entity\Round $rounds
-     *
-     * @return Competition
-     */
-    public function addRound(\AppBundle\Entity\Round $rounds)
-    {
-        $this->rounds[] = $rounds;
-
-        return $this;
-    }
-
-    /**
-     * Remove rounds
-     *
-     * @param \AppBundle\Entity\Round $rounds
-     */
-    public function removeRound(\AppBundle\Entity\Round $rounds)
-    {
-        $this->rounds->removeElement($rounds);
-    }
-
-    /**
-     * Get rounds
-     *
-     * @return \Doctrine\Common\Collections\Collection|Round[]
-     */
-    public function getRounds()
-    {
-        return $this->rounds;
-    }
-
-    /**
-     * @return int
-     */
-    public function getTotalSpaces()
-    {
-        return $this->getTargetCount() * $this->getBossCount();
-    }
-
-    /**
-     * @return int
-     */
-    public function getFreeSpaces()
-    {
-        return $this->getTotalSpaces() - $this->getEntries()->count();
-    }
-
-    public function hasEntered(Person $user)
-    {
-        return $this->getEntries()->exists(function($_, CompetitionEntry $entry) use ($user) {
-            $person = $entry->getPerson();
-            return $person && $person->getId() == $user->getId();
-        });
+        return $this->sessions;
     }
 }

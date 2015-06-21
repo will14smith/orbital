@@ -5,7 +5,7 @@ namespace AppBundle\Controller;
 
 
 use AppBundle\Entity\Competition;
-use AppBundle\Entity\CompetitionEntry;
+use AppBundle\Entity\CompetitionSessionEntry;
 use AppBundle\Form\Type\CompetitionEntryType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -24,7 +24,7 @@ class CompetitionEntryController extends Controller {
      */
     public function enterAction(Competition $competition, Request $request)
     {
-        $entry = new CompetitionEntry();
+        $entry = new CompetitionSessionEntry();
         $entry->setCompetition($competition);
 
         $is_admin = $this->isGranted('ROLE_ADMIN');
