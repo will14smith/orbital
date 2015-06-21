@@ -2,7 +2,8 @@
 
 namespace AppBundle\Services\Competitions;
 
-use AppBundle\Entity\Competition;
+use AppBundle\Entity\CompetitionSession;
+use AppBundle\Entity\Person;
 use Doctrine\Bundle\DoctrineBundle\Registry;
 
 class CompetitionManager
@@ -18,24 +19,47 @@ class CompetitionManager
         $this->doctrine = $doctrine;
     }
 
-    public function assignTargets(Competition $competition)
+    /**
+     * @param CompetitionSession $session
+     * @param Person $person
+     *
+     * @return bool
+     */
+    public static function hasEntered(CompetitionSession $session, Person $person)
     {
-        $em = $this->doctrine->getManager();
-
-        $target = 1;
-        $boss = 1;
-
-        foreach ($competition->getEntries() as $entry) {
-            $entry->setBossNumber($boss);
-            $entry->setTargetNumber($target);
-
-            $boss++;
-            if ($boss > $competition->getBossCount()) {
-                $boss = 1;
-                $target++;
+        foreach($session->getEntries() as $entry) {
+            if($entry->getId() === $person->getId()) {
+                return true;
             }
         }
 
-        $em->flush();
+        return false;
+    }
+
+    /**
+     * @param CompetitionSession $session
+     *
+     * @return int
+     */
+    public static function getTotalSpaces(CompetitionSession $session)
+    {
+        return $session->getBossCount()
+        * $session->getTargetCount()
+        * $session->getDetailCount();
+    }
+
+    /**
+     * @param CompetitionSession $session
+     *
+     * @return int
+     */
+    public static function getFreeSpaces(CompetitionSession $session)
+    {
+        return self::getTotalSpaces($session) - $session->getEntries()->count();
+    }
+
+    public function assignTargets()
+    {
+        throw new \Exception("Not Implemented");
     }
 }

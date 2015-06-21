@@ -2,25 +2,27 @@
 
 namespace AppBundle\Services\Security;
 
-use AppBundle\Entity\Competition;
+use AppBundle\Entity\CompetitionSession;
 use AppBundle\Entity\Person;
+use AppBundle\Services\Competitions\CompetitionManager;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 
-class CompetitionVoter extends BaseVoter
+class CompetitionSessionVoter extends BaseVoter
 {
     protected $attributes = [SecurityAction::ENTER];
-    protected $class = 'AppBundle\Entity\Competition';
+    protected $class = 'AppBundle\Entity\CompetitionSession';
 
     /**
      * @inheritDoc
      */
-    protected function voteInternal(Person $user, $competition, $permission)
+    protected function voteInternal(Person $user, $session, $permission)
     {
-        /** @var Competition $competition */
+        /** @var CompetitionSession $session */
+        $competition = $session->getCompetition();
 
         switch ($permission) {
             case SecurityAction::ENTER:
-                if ($competition->getInfoOnly()) {
+                if (!$competition->getHosted()) {
                     return VoterInterface::ACCESS_DENIED;
                 }
 
@@ -28,11 +30,15 @@ class CompetitionVoter extends BaseVoter
                     return VoterInterface::ACCESS_GRANTED;
                 }
 
-                if ($competition->hasEntered($user)) {
+                if (!$competition->isOpen()) {
                     return VoterInterface::ACCESS_DENIED;
                 }
 
-                if ($competition->getFreeSpaces() > 0) {
+                if (CompetitionManager::hasEntered($session, $user)) {
+                    return VoterInterface::ACCESS_DENIED;
+                }
+
+                if (CompetitionManager::getFreeSpaces($session) > 0) {
                     return VoterInterface::ACCESS_GRANTED;
                 }
 

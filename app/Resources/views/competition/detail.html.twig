@@ -1,4 +1,5 @@
 {% extends 'base.html.twig' %}
+{% import ':macro:display.html.twig' as display %}
 
 {% block title %}
     {{ competition.name }}
@@ -30,15 +31,45 @@
     {% for session in competition.sessions %}
         <h3>
             {{ session.startTime|date(DATETIME_FORMAT) }}
-            {% if is_granted('ROLE_ADMIN') %}
+            {% if is_granted('ROLE_ADMIN') or is_granted('ENTER', session) %}
                 <small>
-                    <a href="{{ url('competition_session_edit', { 'competition_id': competition.id, 'id': session.id }) }}">Edit</a>,
-                    <a href="{{ url('competition_session_delete', { 'competition_id': competition.id, 'id': session.id }) }}">Delete</a>
+                    {% if is_granted('ROLE_ADMIN') %}
+                        {% if is_granted('ENTER', session) %}
+                            <a href="{{ url('competition_enter', { 'competition_id': competition.id, 'session_id': session.id }) }}">Enter</a>,
+                        {% endif %}
+                        <a href="{{ url('competition_session_edit', { 'competition_id': competition.id, 'id': session.id }) }}">Edit</a>,
+                        <a href="{{ url('competition_session_delete', { 'competition_id': competition.id, 'id': session.id }) }}">Delete</a>
+                    {% elseif is_granted('ENTER', session) %}
+                        <a href="{{ url('competition_enter', { 'competition_id': competition.id, 'session_id': session.id }) }}">Enter</a>
+                    {% endif %}
                 </small>
             {% endif %}
         </h3>
 
-        {# TODO show rounds, entries, etc #}
+        <dl>
+            <dt>Rounds</dt>
+            <dd>
+                {% for round in session.rounds %}
+                    {{ display.round(round.round) }}
+                    {% if not loop.last %},{% endif %}
+                {% endfor %}
+            </dd>
+            <dt>Spaces</dt>
+            <dd>
+                X left out of Y
+            </dd>
+        </dl>
+
+        <table>
+            {% for entry in session.entries %}
+                <tr>{% include ':competition:_detail_entry.html.twig' with { 'entry': entry, 'session': session } %}</tr>
+            {% else %}
+                <tr>
+                    <td>There are no entries :(</td>
+                </tr>
+            {% endfor %}
+        </table>
+
     {% else %}
         <h3>There are no sessions!</h3>
     {% endfor %}

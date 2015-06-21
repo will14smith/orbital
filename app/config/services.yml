@@ -115,8 +115,8 @@ services:
         public: false
         tags:
           - { name: security.voter }
-    orbital.security.competition_voter:
-        class: AppBundle\Services\Security\CompetitionVoter
+    orbital.security.competition_session_voter:
+        class: AppBundle\Services\Security\CompetitionSessionVoter
         public: false
         tags:
           - { name: security.voter }

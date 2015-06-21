@@ -249,7 +249,7 @@ class CompetitionSession
     /**
      * Get entries
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection|CompetitionSessionEntry[]
      */
     public function getEntries()
     {
