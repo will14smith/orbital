@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Controller\Traits\ProofControllerTrait;
 use AppBundle\Entity\Badge;
 use AppBundle\Entity\BadgeHolder;
 use AppBundle\Entity\BadgeHolderProof;
@@ -10,10 +11,13 @@ use AppBundle\Form\Type\BadgeHolderType;
 use AppBundle\Services\Enum\BadgeState;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
-class BadgeAwardController extends ProofController
+class BadgeAwardController extends Controller
 {
+    use ProofControllerTrait;
+
     /**
      * @Security("is_granted('IS_AUTHENTICATED_REMEMBERED')")
      * @Route("/badge/claim", name="badge_award", methods={"GET", "POST"})

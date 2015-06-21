@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Controller\Traits\PdfRenderTrait;
 use AppBundle\Entity\Competition;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -11,27 +12,21 @@ use Symfony\Component\HttpFoundation\Response;
 
 class CompetitionDocumentController extends Controller
 {
+    use PdfRenderTrait;
+
     /**
      * @Security("has_role('ROLE_ADMIN')")
      * @Route("/competition/{id}/scoresheets", name="competition_scoresheets", methods={"GET"})
      *
      * @param Competition $competition
+     * @param Request $request
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
     public function scoreSheetAction(Competition $competition, Request $request)
     {
-        $html = $this->renderView('pdf/scoresheets.pdf.twig', [
+        return $this->renderPdf('pdf/scoresheets.pdf.twig', [
             'competition' => $competition
         ]);
-
-        if($request->query->has('plain')) {
-            return new Response($html);
-        }
-
-        return new Response($this->get('knp_snappy.pdf')->getOutputFromHtml($html), 200, [
-                'Content-Type' => 'application/pdf'
-            ]
-        );
     }
 }

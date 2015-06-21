@@ -3,6 +3,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Controller\Traits\ProofControllerTrait;
 use AppBundle\Entity\League;
 use AppBundle\Entity\LeagueMatch;
 use AppBundle\Entity\LeagueMatchProof;
@@ -11,9 +12,12 @@ use AppBundle\Form\Type\LeagueMatchType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
-class LeagueChallengeController extends ProofController {
+class LeagueChallengeController extends Controller {
+    use ProofControllerTrait;
+
     /**
      * @Security("is_granted('SUBMIT', league)")
      * @Route("/league/{id}/submit", name="league_submit", methods={"GET", "POST"})
