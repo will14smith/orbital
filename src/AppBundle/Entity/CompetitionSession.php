@@ -216,7 +216,7 @@ class CompetitionSession
     /**
      * Get rounds
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection|CompetitionSessionRound[]
      */
     public function getRounds()
     {

@@ -19,15 +19,26 @@
         <dd>{{ competition.location|default('Unknown') }}</dd>
     </dl>
 
-    {% if is_granted('ROLE_ADMIN') %}
-        <h2>Sessions
-            <small><a href="#">Add</a></small>
-        </h2>
-    {% else %}
-        <h2>Sessions</h2>
-    {% endif %}
+    <h2>
+        Sessions
+        {% if is_granted('ROLE_ADMIN') %}
+            <small>
+                <a href="{{ url('competition_session_create', { 'competition_id': competition.id }) }}">Add</a>
+            </small>
+        {% endif %}
+    </h2>
     {% for session in competition.sessions %}
-        <h3>{{ session.startDate|date(DATETIME_FORMAT) }}</h3>
+        <h3>
+            {{ session.startTime|date(DATETIME_FORMAT) }}
+            {% if is_granted('ROLE_ADMIN') %}
+                <small>
+                    <a href="{{ url('competition_session_edit', { 'competition_id': competition.id, 'id': session.id }) }}">Edit</a>,
+                    <a href="{{ url('competition_session_delete', { 'competition_id': competition.id, 'id': session.id }) }}">Delete</a>
+                </small>
+            {% endif %}
+        </h3>
+
+        {# TODO show rounds, entries, etc #}
     {% else %}
         <h3>There are no sessions!</h3>
     {% endfor %}

@@ -18,6 +18,7 @@ class CompetitionSessionType extends AbstractType
             ->add('rounds', 'collection', [
                 'type' => new CompetitionSessionRoundType(),
                 'allow_add' => true,
+                'allow_delete' => true,
                 'by_reference' => false,
             ]);
     }

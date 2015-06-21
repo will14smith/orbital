@@ -2,35 +2,41 @@
     'use strict';
 
     $.fn.collection = function (name, options) {
-        options = $.extend({
-            addCallback: function() { }
+        options = $.extend({}, {
+            allowAdd: true,
+            allowRemove: false
         }, options);
 
         var $collectionHolder = this;
 
+        if (options.allowAdd) {
+            // setup an "add a tag" link
+            var $addLink = $('<a href="#">Add a ' + name + '</a>');
+            var $newLinkDiv = $('<div />').append($addLink);
 
+            // add the "add a tag" anchor and li to the tags ul
+            $collectionHolder.append($newLinkDiv);
 
-        // setup an "add a tag" link
-        var $addLink = $('<a href="#">Add a ' + name + '</a>');
-        var $newLinkDiv = $('<div />').append($addLink);
+            // count the current form inputs we have (e.g. 2), use that as the new
+            // index when inserting a new item (e.g. 2)
+            $collectionHolder.data('index', $collectionHolder.find(':input').length);
 
-        // add the "add a tag" anchor and li to the tags ul
-        $collectionHolder.append($newLinkDiv);
+            $addLink.on('click', function (e) {
+                // prevent the link from creating a "#" on the URL
+                e.preventDefault();
 
-        // count the current form inputs we have (e.g. 2), use that as the new
-        // index when inserting a new item (e.g. 2)
-        $collectionHolder.data('index', $collectionHolder.find(':input').length);
+                // add a new tag form (see next code block)
+                addTagForm($collectionHolder, $newLinkDiv);
+            });
+        }
 
-        $addLink.on('click', function (e) {
-            // prevent the link from creating a "#" on the URL
-            e.preventDefault();
+        if (options.allowRemove) {
+            $collectionHolder.find('div div.form-row').each(function () {
+                addTagFormDeleteLink($(this));
+            });
+        }
 
-            // add a new tag form (see next code block)
-            addTagForm($collectionHolder, $newLinkDiv);
-        });
-
-
-        function addTagForm($collectionHolder, $newLinkLi) {
+        function addTagForm($collectionHolder, $newLink) {
             // Get the data-prototype explained earlier
             var prototype = $collectionHolder.data('prototype');
 
@@ -48,9 +54,25 @@
 
             // Display the form in the page in an li, before the "Add a tag" link li
             var $newFormDiv = $('<div />').append(newForm).inputConnect();
-            $newLinkLi.before($newFormDiv);
+            $newLink.before($newFormDiv);
 
-            options.addCallback($newFormDiv);
+            if (options.allowRemove) {
+                addTagFormDeleteLink($newFormDiv);
+            }
+        }
+
+        function addTagFormDeleteLink($el) {
+            var $removeLink = $('<a href="#">Remove</a>');
+
+            $removeLink.on('click', function(e) {
+                e.preventDefault();
+
+                // remove the li for the tag form
+                $el.remove();
+                $removeLink.remove();
+            });
+
+            $el.after($("<div />").append($removeLink));
         }
     };
 })(jQuery);
