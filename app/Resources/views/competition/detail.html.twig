@@ -45,7 +45,7 @@
         <div class="widget">
             <h3 class="widget-title">Documents</h3>
             <ul>
-                <li><a href="#">Target list</a></li>
+                <li><a href="{{ url('competition_targetlist', { 'id': competition.id }) }}">Target list</a></li>
                 <li><a href="{{ url('competition_scoresheets', { 'id': competition.id }) }}">Score sheets</a></li>
                 <li><a href="#">Running slips</a></li>
             </ul>
