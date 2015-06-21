@@ -15,7 +15,7 @@
 {% if is_granted('ROLE_ADMIN') %}
     <td class="actions">
         {% if not entry.dateApproved %}
-            <a href="#">
+            <a href="{{ url('competition_entry_approve', { 'competition_id': session.competition.id, 'session_id': session.id, 'id': entry.id }) }}">
                 <i class="fa fa-check"></i>
             </a>
         {% elseif not entry.registered %}

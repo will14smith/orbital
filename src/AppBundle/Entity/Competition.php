@@ -247,4 +247,8 @@ class Competition
         }
         $this->entryClose = $date;
     }
+
+    public function __toString() {
+        return $this->name;
+    }
 }

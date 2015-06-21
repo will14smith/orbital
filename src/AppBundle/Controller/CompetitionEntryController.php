@@ -64,4 +64,22 @@ class CompetitionEntryController extends Controller
         ]);
     }
 
+    /**
+     * @Security("is_granted('ENTER', entry.getSession())")
+     * @Route("/competition/{competition_id}/session/{session_id}/approve/{id}", name="competition_entry_approve", methods={"GET"})
+     *
+     * @param CompetitionSessionEntry $entry
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function approveAction(CompetitionSessionEntry $entry)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $entry->setDateApproved(new \DateTime());
+        $em->flush();
+
+        return $this->redirectToRoute('competition_detail', [
+            'id' => $entry->getSession()->getCompetition()->getId()
+        ]);
+    }
 }
