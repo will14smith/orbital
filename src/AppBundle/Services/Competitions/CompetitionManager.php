@@ -4,6 +4,7 @@ namespace AppBundle\Services\Competitions;
 
 use AppBundle\Entity\Competition;
 use AppBundle\Entity\CompetitionSession;
+use AppBundle\Entity\CompetitionSessionEntry;
 use AppBundle\Entity\Person;
 use Doctrine\Bundle\DoctrineBundle\Registry;
 
@@ -51,12 +52,23 @@ class CompetitionManager
 
     /**
      * @param CompetitionSession $session
+     * @return int
+     */
+    public static function getFilledSpaces(CompetitionSession $session)
+    {
+        return $session->getEntries()->filter(function(CompetitionSessionEntry $entry) {
+            return $entry->getDateApproved() !== null;
+        })->count();
+    }
+
+    /**
+     * @param CompetitionSession $session
      *
      * @return int
      */
     public static function getFreeSpaces(CompetitionSession $session)
     {
-        return self::getTotalSpaces($session) - $session->getEntries()->count();
+        return self::getTotalSpaces($session) - self::getFilledSpaces($session);
     }
 
     public static function assignTargets(Competition $competition)
