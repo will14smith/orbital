@@ -2,18 +2,22 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Controller\Traits\ProofControllerTrait;
 use AppBundle\Entity\ProofEntity;
 use AppBundle\Entity\Score;
 use AppBundle\Entity\ScoreProof;
 use AppBundle\Form\Type\ScoreType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 
-class ScoreController extends ProofController
+class ScoreController extends Controller
 {
+    use ProofControllerTrait;
+
     /**
      * @Route("/scores", name="score_list", methods={"GET"})
      *

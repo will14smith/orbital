@@ -1,22 +1,23 @@
 <?php
 
-namespace AppBundle\Controller;
+namespace AppBundle\Controller\Traits;
 
 use AppBundle\Entity\ProofEntity;
+use Doctrine\Bundle\DoctrineBundle\Registry;
 use Doctrine\Common\Persistence\ObjectManager;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 
-abstract class ProofController extends Controller
+trait ProofControllerTrait
 {
     /**
      * @param $object
      *
      * @return ProofEntity
      */
-    protected abstract function createProof($object);
+    abstract protected function createProof($object);
 
     protected function handleProof(FormInterface $form)
     {
@@ -100,4 +101,31 @@ abstract class ProofController extends Controller
 
         return $form->createView();
     }
+
+    /**
+     * @param mixed $attributes
+     * @param mixed $object
+     * @return bool
+     */
+    abstract protected function isGranted($attributes, $object = null);
+    /**
+     * @return mixed
+     */
+    abstract public function getUser();
+    /**
+     * @param string $id
+     * @return object
+     */
+    abstract public function get($id);
+    /**
+     * @return Registry
+     */
+    abstract public function getDoctrine();
+    /**
+     * @param mixed $data
+     * @param array $options
+     *
+     * @return FormBuilder
+     */
+    abstract public function createFormBuilder($data = null, array $options = []);
 }

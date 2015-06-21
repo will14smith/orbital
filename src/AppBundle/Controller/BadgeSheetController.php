@@ -2,14 +2,16 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Controller\Traits\PdfRenderTrait;
 use AppBundle\Entity\BadgeSheet;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 
 class BadgeSheetController extends Controller {
+    use PdfRenderTrait;
+
     /**
      * @Security("has_role('ROLE_ADMIN')")
      * @Route("/badges/sheet", name="badge_sheet", methods={"GET"})
@@ -37,19 +39,12 @@ class BadgeSheetController extends Controller {
             $em->persist($sheet);
             $em->flush();
 
-            $html = $this->renderView('pdf/badge_sheet.pdf.twig', [
-                'badges' => $badges,
-                'sheet' => $sheet
-            ]);
-
             $footer = $this->renderView('pdf/_badge_sheet_footer.pdf.twig', ['sheet' => $sheet]);
 
-            $options = ['footer-html' => $footer];
-
-            return new Response($this->get('knp_snappy.pdf')->getOutputFromHtml($html, $options), 200, [
-                    'Content-Type' => 'application/pdf'
-                ]
-            );
+            return $this->renderPdf('pdf/badge_sheet.pdf.twig', [
+                'badges' => $badges,
+                'sheet' => $sheet
+            ], ['footer-html' => $footer]);
         } else {
             $badgeRepository = $doctrine->getRepository("AppBundle:Badge");
             $badges = $badgeRepository->findAll();
