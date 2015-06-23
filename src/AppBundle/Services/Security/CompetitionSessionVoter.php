@@ -9,7 +9,12 @@ use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 
 class CompetitionSessionVoter extends BaseVoter
 {
-    protected $attributes = [SecurityAction::ENTER];
+    protected $attributes = [
+        SecurityAction::ENTER,
+        SecurityAction::START,
+        SecurityAction::END,
+        SecurityAction::SCORE
+    ];
     protected $class = 'AppBundle\Entity\CompetitionSession';
 
     /**
@@ -20,12 +25,12 @@ class CompetitionSessionVoter extends BaseVoter
         /** @var CompetitionSession $session */
         $competition = $session->getCompetition();
 
+        if (!$competition->getHosted()) {
+            return VoterInterface::ACCESS_DENIED;
+        }
+
         switch ($permission) {
             case SecurityAction::ENTER:
-                if (!$competition->getHosted()) {
-                    return VoterInterface::ACCESS_DENIED;
-                }
-
                 if ($user->isAdmin()) {
                     return VoterInterface::ACCESS_GRANTED;
                 }
@@ -43,6 +48,40 @@ class CompetitionSessionVoter extends BaseVoter
                 }
 
                 break;
+            case SecurityAction::START:
+                if (!$user->isAdmin()) {
+                    return VoterInterface::ACCESS_DENIED;
+                }
+
+                if ($competition->isOpen()) {
+                    return VoterInterface::ACCESS_DENIED;
+                }
+
+                if ($session->isStarted()) {
+                    return VoterInterface::ACCESS_DENIED;
+                }
+
+                return VoterInterface::ACCESS_GRANTED;
+            case SecurityAction::SCORE:
+                if (!$user->isAdmin()) {
+                    return VoterInterface::ACCESS_DENIED;
+                }
+
+                if (!$session->isStarted()) {
+                    return VoterInterface::ACCESS_DENIED;
+                }
+
+                return VoterInterface::ACCESS_GRANTED;
+            case SecurityAction::END:
+                if (!$user->isAdmin()) {
+                    return VoterInterface::ACCESS_DENIED;
+                }
+
+                if (!$session->isStarted()) {
+                    return VoterInterface::ACCESS_DENIED;
+                }
+
+                return VoterInterface::ACCESS_GRANTED;
         }
 
         return VoterInterface::ACCESS_DENIED;

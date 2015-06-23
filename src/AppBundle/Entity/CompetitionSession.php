@@ -23,9 +23,22 @@ class CompetitionSession
     protected $competition;
 
     /**
+     * The planned start time
+     *
      * @ORM\Column(type="datetime")
      */
     protected $startTime;
+
+    /**
+     * The time the session actually started
+     *
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    protected $actualStartTime;
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    protected $actualEndTime;
 
     /**
      * Number of bosses available
@@ -254,5 +267,59 @@ class CompetitionSession
     public function getEntries()
     {
         return $this->entries;
+    }
+
+    /**
+     * Set actualStartTime
+     *
+     * @param \DateTime $actualStartTime
+     * @return CompetitionSession
+     */
+    public function setActualStartTime($actualStartTime)
+    {
+        $this->actualStartTime = $actualStartTime;
+    
+        return $this;
+    }
+
+    /**
+     * Get actualStartTime
+     *
+     * @return \DateTime 
+     */
+    public function getActualStartTime()
+    {
+        return $this->actualStartTime;
+    }
+
+    /**
+     * Set actualEndTime
+     *
+     * @param \DateTime $actualEndTime
+     * @return CompetitionSession
+     */
+    public function setActualEndTime($actualEndTime)
+    {
+        $this->actualEndTime = $actualEndTime;
+    
+        return $this;
+    }
+
+    /**
+     * Get actualEndTime
+     *
+     * @return \DateTime 
+     */
+    public function getActualEndTime()
+    {
+        return $this->actualEndTime;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isStarted()
+    {
+        return $this->actualStartTime !== null && $this->actualEndTime === null;
     }
 }
