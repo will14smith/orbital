@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use AppBundle\Services\Competitions\CompetitionManager;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -321,5 +322,18 @@ class CompetitionSession
     public function isStarted()
     {
         return $this->actualStartTime !== null && $this->actualEndTime === null;
+    }
+
+    /**
+     * @return int
+     */
+    public function getTotalSpaces(){
+        return CompetitionManager::getTotalSpaces($this);
+    }
+    /**
+     * @return int
+     */
+    public function getFreeSpaces(){
+        return CompetitionManager::getFreeSpaces($this);
     }
 }
