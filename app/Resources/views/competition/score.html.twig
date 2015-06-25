@@ -1,0 +1,10 @@
+{% extends 'base.html.twig' %}
+{% import ':macro:display.html.twig' as display %}
+
+{% block title %}
+    {{ session.competition.name }} - {{ session.startTime | date(DATETIME_FORMAT) }}
+{% endblock %}
+
+{% block body %}
+    <div id="scoring_app"></div>
+{% endblock %}

@@ -36,7 +36,7 @@ class CompetitionScoringController extends Controller
 
     /**
      * @Security("is_granted('SCORE', session)")
-     * @Route("/competition/{competition_id}/session/{session_id}/score", name="competition_session_score", methods={"GET", "POST"})
+     * @Route("/competition/{competition_id}/session/{session_id}/score", name="competition_session_score", methods={"GET"})
      * @ParamConverter("session", class="AppBundle:CompetitionSession", options={"id" = "session_id"})
      *
      * @param CompetitionSession $session
@@ -45,7 +45,9 @@ class CompetitionScoringController extends Controller
      */
     public function scoreAction(CompetitionSession $session)
     {
-        throw new \Exception("Not Implemented");
+        return $this->render('competition/score.html.twig', [
+            'session' => $session
+        ]);
     }
 
     /**
