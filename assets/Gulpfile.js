@@ -66,9 +66,9 @@ gulp.task('js:vendors', ['bower'], function() {
 
 gulp.task('js:app', function () {
     var folders = {
-        'head': ['modernizr*.js', 'jquery-*.js'],
+        'head': [],
         'app': [],
-        'scoring': ['mithril.js']
+        'scoring': []
     };
 
 

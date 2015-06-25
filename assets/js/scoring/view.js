@@ -18,7 +18,7 @@ window.orbital.scoring = window.orbital.scoring || {};
 
         var currentArrowCount = scoring.vm.arrows.length;
         if(scoring.vm.input && currentArrowCount >= arrowOffset) {
-            children.push(scoring.input.view());
+            children.push(scoring.input.view(scoring.vm.inputController));
         }
 
         return m("div", {'class': 'scoresheet'}, children);
@@ -72,9 +72,8 @@ window.orbital.scoring = window.orbital.scoring || {};
 
         var currentArrowCount = scoring.vm.arrows.length;
         if(scoring.vm.input && arrowStartOffset <= currentArrowCount && currentArrowCount < arrowStartOffset + arrowSubOffset) {
-            children.push(scoring.input.view());
+            children.push(scoring.input.view(scoring.vm.inputController));
         }
-
 
         return {
             'view': m("div", {class: 'target'}, children),
