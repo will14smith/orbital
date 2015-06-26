@@ -53,9 +53,26 @@ class CompetitionScoringController extends Controller
             $rounds[$round->getId()] = $round;
         }
 
+        $targets = [];
+        foreach($session->getEntries() as $entry) {
+            $bossNumber = $entry->getBossNumber();
+            $targetNumber = $entry->getTargetNumber();
+
+            if(!$bossNumber || !$targetNumber) {
+                continue;
+            }
+
+            if(!isset($targets[$bossNumber])) {
+                $targets[$bossNumber] = [];
+            }
+
+            $targets[$bossNumber][$targetNumber] = $entry->getRound()->getId();
+        }
+
         return $this->render('competition/score.html.twig', [
             'session' => $session,
-            'rounds' => $rounds
+            'rounds' => $rounds,
+            'targets' => $targets
         ]);
     }
 
