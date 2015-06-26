@@ -40,8 +40,7 @@ gulp.task('css', ['bower', 'icons'], function () {
         }))
         .pipe(autoprefixer())
         .pipe(gulp.dest('../web/css'));
-})
-;
+});
 
 function processJsFiles(files, folder) {
     return gulp.src(files)

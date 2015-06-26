@@ -92,22 +92,24 @@ window.orbital.scoring = window.orbital.scoring || {};
         };
 
         for (var arrowSubOffset = 0; arrowSubOffset < endSize; arrowSubOffset++) {
-            var arrow = scoring.viewArrow(target, arrowStartOffset + arrowSubOffset, stats);
+            var arrow = scoring.viewArrow(scoring.vm.getArrow(arrowStartOffset + arrowSubOffset), target.scoringZones(), stats);
 
             arrows.push(arrow);
         }
 
+        var arrowIndex = scoring.vm.arrowIndex;
+        var isActive = scoring.vm.input && arrowStartOffset <= arrowIndex && arrowIndex < arrowStartOffset + arrowSubOffset;
+        var otherClasses = '';
+        if(isActive) otherClasses = ' active';
+
         return {
-            'endView': m("div", {'class': 'end'}, arrows),
-            'totalView': m("div", {'class': 'endTotal'}, stats.total),
+            'endView': m("div", {'class': 'end' + otherClasses}, arrows),
+            'totalView': m("div", {'class': 'endTotal' + otherClasses}, stats.total),
             'stats': stats
         };
     };
 
-    scoring.viewArrow = function (target, arrowIndex, stats) {
-        var arrow = scoring.vm.getArrow(arrowIndex);
-        var zones = target.scoringZones();
-
+    scoring.viewArrow = function (arrow, zones, stats) {
         var text, cls;
         if (arrow) {
             var value = arrow.value;

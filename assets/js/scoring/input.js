@@ -21,7 +21,7 @@ window.orbital.scoring = window.orbital.scoring || {};
         this.submitBuffer = function() { options.submitBuffer(this.buffer); };
 
         if(options.keyboard) {
-            setupKeyboard(this);
+            this.unbindKeyboard = setupKeyboard(this);
         }
     };
 
@@ -30,7 +30,7 @@ window.orbital.scoring = window.orbital.scoring || {};
             controller.addArrow(score);
         };
 
-        window.addEventListener('keydown', function (e) {
+        var keydownFn = function (e) {
             m.startComputation();
 
             if (e.keyCode >= 49 && e.keyCode <= 57) { addArrowToBuffer(e.keyCode - 48); }
@@ -48,7 +48,13 @@ window.orbital.scoring = window.orbital.scoring || {};
             }
 
             m.endComputation();
-        });
+        };
+
+        window.addEventListener('keydown', keydownFn);
+
+        return function() {
+            window.removeEventListener('keydown', keydownFn);
+        }
     }
 
     var scoreClickFactory = function (controller, score) {

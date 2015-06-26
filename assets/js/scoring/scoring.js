@@ -96,7 +96,14 @@ window.orbital.scoring = window.orbital.scoring || {};
             /*jshint camelcase: true */
 
             m.startComputation();
-            scoring.vm.arrows[arrow.number] = arrow;
+
+            if(arrow === null) {
+                console.error('arrow deletion not implemented');
+            } else {
+                scoring.vm.arrows[arrow.number] = arrow;
+                scoring.vm.arrowIndex = Math.max(arrow.number + 1, scoring.vm.arrowIndex);
+            }
+
             m.endComputation();
         }
     };

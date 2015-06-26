@@ -2,6 +2,8 @@ $target-info-bg: transparent;
 $target-info-border: map-get($color-grey, '300');
 $target-info-fg: #000;
 
+$scoring-active-color: #f2f2f2;
+
 $yellow-color: #FFEB3B;
 $red-color: #F44336;
 $blue-color: #2196F3;
@@ -100,6 +102,10 @@ $white-color: #FAFAFA;
             flex: 1;
             padding: $baseline-grid;
           }
+
+          &.active {
+            background: $scoring-active-color;
+          }
         }
       }
       .endTotals {
@@ -108,6 +114,10 @@ $white-color: #FAFAFA;
           color: $target-info-fg;
 
           padding: $baseline-grid;
+
+          &.active {
+            background: $scoring-active-color;
+          }
         }
       }
     }
