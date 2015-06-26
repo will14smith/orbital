@@ -4,6 +4,7 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Competition;
 use AppBundle\Entity\CompetitionSession;
+use AppBundle\Entity\CompetitionSessionRound;
 use AppBundle\Form\Type\CompetitionSessionType;
 use AppBundle\Services\Competitions\CompetitionManager;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -45,8 +46,16 @@ class CompetitionScoringController extends Controller
      */
     public function scoreAction(CompetitionSession $session)
     {
+        $rounds = [];
+        foreach($session->getRounds() as $sessionRound) {
+            $round = $sessionRound->getRound();
+
+            $rounds[$round->getId()] = $round;
+        }
+
         return $this->render('competition/score.html.twig', [
-            'session' => $session
+            'session' => $session,
+            'rounds' => $rounds
         ]);
     }
 

@@ -108,16 +108,15 @@ $white-color: #FAFAFA;
           }
         }
       }
-      .endTotals {
-        .endTotal {
-          background-color: $target-info-bg;
-          color: $target-info-fg;
 
-          padding: $baseline-grid;
+      .endTotal {
+        background-color: $target-info-bg;
+        color: $target-info-fg;
 
-          &.active {
-            background: $scoring-active-color;
-          }
+        padding: $baseline-grid;
+
+        &.active {
+          background: $scoring-active-color;
         }
       }
     }
