@@ -74,7 +74,7 @@ class CompetitionSessionEntry
      */
     protected $registered;
     /**
-     * @ORM\OneToOne(targetEntity="Score")
+     * @ORM\OneToOne(targetEntity="Score", inversedBy="competition_entry")
      * @ORM\JoinColumn(name="score_id", referencedColumnName="id")
      **/
     protected $score;
