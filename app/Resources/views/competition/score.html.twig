@@ -23,7 +23,15 @@
 
             m.module($("#scoring_app")[0], {
                 controller: function() {
-                    return new competition.controller({rounds: rounds, targets: targets});
+                    return new competition.controller({
+                        sessionId: '{{ session.id }}',
+                        rounds: rounds,
+                        targets: targets,
+
+                        urls: {
+                            'socket.io': '{{ socketio_url }}'
+                        }
+                    });
                 },
                 view: competition.view
             });

@@ -43,43 +43,119 @@ window.orbital.competition = window.orbital.competition || {};
                 controller.selectedBoss = bossNumber;
                 controller.selectedTarget = targetNumber;
             }
+
+            controller.socket.emit('comp_session_select', controller.sessionId, controller.selectedBoss, controller.selectedTarget);
         }
     }
 
+    function processArrows(arrows) {
+        return arrows.map(function (arrow) {
+            return {value: arrow};
+        });
+    }
+
+    // session_id = '...'
+    // urls = { 'socket.io': '...' };
     // rounds = [{ id: round }]
     // targets = [{ boss: [{ target: roundId }] }]
-    competition.controller = function (options) {
-        this.rounds = options.rounds;
-        this.targets = options.targets;
+    function Controller(options) {
+        this.sessionId = options.sessionId;
         this.bufferSize = options.bufferSize || 12;
 
+        this.rounds = options.rounds;
+        this.targets = options.targets;
         this.targetBuffers = setupTargetBuffers(this.targets);
-
-        this.submitBuffer = function (buffer) {
-            //TODO push to socketio
-            for (var i in buffer) {
-                this.targetBuffers[this.selectedBoss][this.selectedTarget].push({
-                    value: buffer[i]
-                });
-            }
-
-            buffer.splice(0, buffer.length);
-        };
 
         this.selectedBoss = null;
         this.selectedTarget = null;
 
-        this.buffer = [];
         this.input = new scoring.input({
-            buffer: this.buffer,
             submitBuffer: this.submitBuffer.bind(this),
             keyboard: true
         });
 
-        //TODO bind to socketio
+        this.setupSocketIO(options);
+    }
+
+    competition.controller = Controller;
+
+    Controller.prototype.setupSocketIO = function (options) {
+        this.socket = io(options.urls['socket.io']);
+
+        var _this = this;
+        this.socket.on('comp_session_update', function (data) {
+            _this.handleUpdate(data);
+        });
+        this.socket.on('comp_session', function (data) {
+            _this.handle(data);
+        });
+
+        this.socket.emit('comp_session_sub', this.sessionId);
     };
+
+    Controller.prototype.submitBuffer = function (buffer) {
+        this.socket.emit('comp_session_add', this.sessionId, this.selectedBoss, this.selectedTarget, buffer);
+
+        buffer.splice(0, buffer.length);
+    };
+    Controller.prototype.flushBuffers = function () {
+        var buffers = this.targetBuffers;
+        this.socket.emit('comp_session_clear', this.sessionId);
+
+        //TODO ajax the buffers to save them
+    };
+
+    Controller.prototype.handleUpdate = function (data) {
+        if (data.sessionId !== this.sessionId) {
+            return;
+        }
+
+        // currently only processing target buffers
+        if (!('targets' in data)) {
+            return;
+        }
+
+        m.startComputation();
+
+        var buffers = this.targetBuffers;
+
+        for (var boss in data.targets) {
+            if (!data.targets.hasOwnProperty(boss)) {
+                continue;
+            }
+
+            var bossTargets = data.targets[boss];
+
+            for (var target in bossTargets) {
+                if (!bossTargets.hasOwnProperty(target)) {
+                    continue;
+                }
+
+                buffers[boss][target] = processArrows(bossTargets[target]);
+            }
+        }
+
+        m.endComputation();
+    };
+    Controller.prototype.handle = function (data) {
+        if (data.sessionId !== this.sessionId) {
+            return;
+        }
+
+        m.startComputation();
+
+        // currently only processing target buffers
+        this.targetBuffers = setupTargetBuffers(this.targets);
+        this.handleUpdate(data);
+
+        m.endComputation();
+    };
+
+    // view
     competition.view = function (controller) {
         var children = [];
+
+        children.push(competition.viewFlush(controller));
 
         for (var bossNumber in controller.targets) {
             if (!controller.targets.hasOwnProperty(bossNumber)) {
@@ -92,10 +168,19 @@ window.orbital.competition = window.orbital.competition || {};
 
         return m('div', {'class': 'scoresheet'}, children);
     };
+    competition.viewFlush = function (controller) {
+        return m("div", {'class': 'flush'}, [
+            m('button', {
+                onclick: function () {
+                    controller.flushBuffers();
+                }
+            }, 'Flush arrow buffer')
+        ]);
+    };
     competition.viewBoss = function (controller, boss, bossNumber) {
         var children = [];
 
-        for(var targetNumber in boss) {
+        for (var targetNumber in boss) {
             if (!boss.hasOwnProperty(targetNumber)) {
                 continue;
             }

@@ -56,6 +56,13 @@ $white-color: #FAFAFA;
     flex-wrap: wrap;
   }
 
+  .flush {
+    width: 100%;
+    text-align: center;
+
+    margin-bottom: $baseline-grid;
+  }
+
   .target {
     text-align: center;
 
@@ -76,11 +83,7 @@ $white-color: #FAFAFA;
       &:nth-child(2n) {
         border-left-style: none;
       }
-
-
     }
-
-
 
     .header {
       background-color: $target-info-bg;
