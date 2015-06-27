@@ -6,14 +6,14 @@ window.orbital.competition = window.orbital.competition || {};
     'use strict';
 
     function setupTargetBuffers(targets) {
-        var buffers = [];
+        var buffers = {};
 
         for (var bossNumber in targets) {
             if (!targets.hasOwnProperty(bossNumber)) {
                 continue;
             }
 
-            buffers[bossNumber] = [];
+            buffers[bossNumber] = {};
 
             var bossTargets = targets[bossNumber];
             for (var targetNumber in bossTargets) {
@@ -27,7 +27,6 @@ window.orbital.competition = window.orbital.competition || {};
                 } else {
                     buffers[bossNumber][targetNumber] = [];
                 }
-
             }
         }
 
@@ -46,12 +45,6 @@ window.orbital.competition = window.orbital.competition || {};
 
             controller.socket.emit('comp_session_select', controller.sessionId, controller.selectedBoss, controller.selectedTarget);
         }
-    }
-
-    function processArrows(arrows) {
-        return arrows.map(function (arrow) {
-            return {value: arrow};
-        });
     }
 
     // session_id = '...'
@@ -74,13 +67,14 @@ window.orbital.competition = window.orbital.competition || {};
             keyboard: true
         });
 
-        this.setupSocketIO(options);
+        this.urls = options.urls;
+        this.setupSocketIO();
     }
 
     competition.controller = Controller;
 
-    Controller.prototype.setupSocketIO = function (options) {
-        this.socket = io(options.urls['socket.io']);
+    Controller.prototype.setupSocketIO = function () {
+        this.socket = io(this.urls['socket.io']);
 
         var _this = this;
         this.socket.on('comp_session_update', function (data) {
@@ -102,7 +96,18 @@ window.orbital.competition = window.orbital.competition || {};
         var buffers = this.targetBuffers;
         this.socket.emit('comp_session_clear', this.sessionId);
 
-        //TODO ajax the buffers to save them
+        m.request({
+            method: 'POST',
+            url: this.urls.flush,
+            data: buffers
+        }).then(function (data) {
+            console.log('flush response', data);
+
+            if (!data.success) {
+                throw "ERROR";
+            }
+        });
+
     };
 
     Controller.prototype.handleUpdate = function (data) {
@@ -131,7 +136,7 @@ window.orbital.competition = window.orbital.competition || {};
                     continue;
                 }
 
-                buffers[boss][target] = processArrows(bossTargets[target]);
+                buffers[boss][target] = bossTargets[target];
             }
         }
 
@@ -155,8 +160,6 @@ window.orbital.competition = window.orbital.competition || {};
     competition.view = function (controller) {
         var children = [];
 
-        children.push(competition.viewFlush(controller));
-
         for (var bossNumber in controller.targets) {
             if (!controller.targets.hasOwnProperty(bossNumber)) {
                 continue;
@@ -166,7 +169,10 @@ window.orbital.competition = window.orbital.competition || {};
             children.push(competition.viewBoss(controller, boss, +bossNumber));
         }
 
-        return m('div', {'class': 'scoresheet'}, children);
+        return [
+            competition.viewFlush(controller),
+            m('div', {'class': 'scoresheet'}, children)
+        ];
     };
     competition.viewFlush = function (controller) {
         return m("div", {'class': 'flush'}, [
@@ -212,7 +218,9 @@ window.orbital.competition = window.orbital.competition || {};
 
         var arrows = [];
         for (var i = 0; i < controller.bufferSize; i++) {
-            arrows.push(scoring.viewArrow(targetBuffer[i], 'metric', stats));
+            var arrow = targetBuffer[i] ? { value: targetBuffer[i] } : void 0;
+
+            arrows.push(scoring.viewArrow(arrow, 'metric', stats));
         }
 
         var isActive = bossNumber === controller.selectedBoss && targetNumber === controller.selectedTarget;

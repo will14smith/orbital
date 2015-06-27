@@ -7,6 +7,7 @@ use AppBundle\Entity\CompetitionSession;
 use AppBundle\Entity\CompetitionSessionEntry;
 use AppBundle\Entity\Person;
 use AppBundle\Entity\Score;
+use AppBundle\Entity\ScoreArrow;
 use Doctrine\Bundle\DoctrineBundle\Registry;
 use Doctrine\Common\Persistence\ObjectManager;
 
@@ -31,8 +32,8 @@ class CompetitionManager
      */
     public static function hasEntered(CompetitionSession $session, Person $person)
     {
-        foreach($session->getEntries() as $entry) {
-            if($entry->getId() === $person->getId()) {
+        foreach ($session->getEntries() as $entry) {
+            if ($entry->getId() === $person->getId()) {
                 return true;
             }
         }
@@ -58,7 +59,7 @@ class CompetitionManager
      */
     public static function getFilledSpaces(CompetitionSession $session)
     {
-        return $session->getEntries()->filter(function(CompetitionSessionEntry $entry) {
+        return $session->getEntries()->filter(function (CompetitionSessionEntry $entry) {
             return $entry->getDateApproved() !== null;
         })->count();
     }
@@ -85,8 +86,8 @@ class CompetitionManager
         $session->setActualStartTime(new \DateTime());
         $session->setActualEndTime(null);
 
-        foreach($session->getEntries() as $entry) {
-            if($entry->getScore() === null) {
+        foreach ($session->getEntries() as $entry) {
+            if ($entry->getScore() === null) {
                 $score = self::createScore($entry);
 
                 $entry->setScore($score);
@@ -117,5 +118,74 @@ class CompetitionManager
         $score->setDateShot($entry->getSession()->getActualStartTime());
 
         return $score;
+    }
+
+    /**
+     * @param ObjectManager $em
+     * @param Person $user
+     * @param CompetitionSession $session
+     * @param array $flushData
+     * @return array
+     */
+    public static function handleFlush(ObjectManager $em, Person $user, CompetitionSession $session, $flushData)
+    {
+        $rejected = [];
+
+        $entries = $session->getEntries();
+
+        // loop through all bosses in $flushData
+        foreach ($flushData as $bossNumber => $boss) {
+            // loop through all targets in boss
+            foreach ($boss as $targetNumber => $arrows) {
+                // if entry || score is missing => add to rejected data
+                $filteredEntries = $entries->filter(function (CompetitionSessionEntry $e) use ($bossNumber, $targetNumber) {
+                    return $e->getBossNumber() === $bossNumber
+                        && $e->getTargetNumber() === $targetNumber;
+                });
+                if ($filteredEntries->count() === 0) {
+                    $rejected[] = [
+                        'boss' => $bossNumber,
+                        'target' => $targetNumber,
+                        'arrows' => $arrows,
+                        'message' => 'No entry found on target'
+                    ];
+                    continue;
+                }
+
+                /** @var CompetitionSessionEntry $entry */
+                $entry = $filteredEntries->first();
+                $score = $entry->getScore();
+
+                if ($score === null) {
+                    $rejected[] = [
+                        'boss' => $bossNumber,
+                        'target' => $targetNumber,
+                        'arrows' => $arrows,
+                        'message' => 'Entry has no associated score (have you started?)'
+                    ];
+                    continue;
+                }
+
+                //TODO if score is full => add to rejected data
+
+                // else add arrows to score
+                $index = $score->getArrows()->count();
+
+                foreach ($arrows as $arrowScore) {
+                    $arrow = new ScoreArrow();
+
+                    $arrow->setScore($score);
+                    $arrow->setNumber($index++);
+                    $arrow->setValue($arrowScore);
+
+                    $arrow->setInputBy($user);
+                    $arrow->setInputTime(new \DateTime('now'));
+
+                    $em->persist($arrow);
+                }
+            }
+        }
+
+        return $rejected;
     }
 }

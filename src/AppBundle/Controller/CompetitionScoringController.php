@@ -2,16 +2,13 @@
 
 namespace AppBundle\Controller;
 
-use AppBundle\Entity\Competition;
 use AppBundle\Entity\CompetitionSession;
-use AppBundle\Entity\CompetitionSessionRound;
-use AppBundle\Form\Type\CompetitionSessionType;
 use AppBundle\Services\Competitions\CompetitionManager;
-use Doctrine\Common\Collections\ArrayCollection;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -47,22 +44,22 @@ class CompetitionScoringController extends Controller
     public function scoreAction(CompetitionSession $session)
     {
         $rounds = [];
-        foreach($session->getRounds() as $sessionRound) {
+        foreach ($session->getRounds() as $sessionRound) {
             $round = $sessionRound->getRound();
 
             $rounds[$round->getId()] = $round;
         }
 
         $targets = [];
-        foreach($session->getEntries() as $entry) {
+        foreach ($session->getEntries() as $entry) {
             $bossNumber = $entry->getBossNumber();
             $targetNumber = $entry->getTargetNumber();
 
-            if(!$bossNumber || !$targetNumber) {
+            if (!$bossNumber || !$targetNumber) {
                 continue;
             }
 
-            if(!isset($targets[$bossNumber])) {
+            if (!isset($targets[$bossNumber])) {
                 $targets[$bossNumber] = [];
             }
 
@@ -74,6 +71,38 @@ class CompetitionScoringController extends Controller
             'rounds' => $rounds,
             'targets' => $targets
         ]);
+    }
+
+    /**
+     * @Security("is_granted('SCORE', session)")
+     * @Route("/competition/{competition_id}/session/{session_id}/flush", name="competition_session_flush", methods={"POST"})
+     * @ParamConverter("session", class="AppBundle:CompetitionSession", options={"id" = "session_id"})
+     *
+     * @param CompetitionSession $session
+     * @param Request $request
+     *
+     * @return Response
+     */
+    public function flushAction(CompetitionSession $session, Request $request)
+    {
+        $params = [];
+        $content = $request->getContent();
+        if (!empty($content)) {
+            $params = json_decode($content, true); // 2nd param to get as array
+        }
+
+        $em = $this->getDoctrine()->getManager();
+        $rejectedData = CompetitionManager::handleFlush($em, $this->getUser(), $session, $params);
+        $em->flush();
+
+        if (count($rejectedData) > 0) {
+            return JsonResponse::create([
+                'success' => false,
+                'rejected' => $rejectedData
+            ]);
+        }
+
+        return JsonResponse::create(['success' => true]);
     }
 
     /**

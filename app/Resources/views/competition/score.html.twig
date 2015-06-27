@@ -29,7 +29,8 @@
                         targets: targets,
 
                         urls: {
-                            'socket.io': '{{ socketio_url }}'
+                            'socket.io': '{{ socketio_url }}',
+                            'flush': '{{ url('competition_session_flush', { 'competition_id': session.competition.id, 'session_id': session.id }) }}'
                         }
                     });
                 },
