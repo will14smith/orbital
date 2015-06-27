@@ -20,11 +20,16 @@ class CompetitionResultsManager
     /**
      * @param Competition $competition
      * @param CompetitionSession $session
+     * @param array $filter
      *
      * @return CompetitionResult[]
      */
-    public function getResults(Competition $competition, CompetitionSession $session = null)
+    public function getResults(Competition $competition, CompetitionSession $session = null, array $filter = [])
     {
+        if(array_key_exists('team', $filter) && $filter['team']) {
+            throw new \Exception("TODO implement results for teams.");
+        }
+
         $entryRepository = $this->doctrine->getRepository('AppBundle:CompetitionSessionEntry');
 
         if ($session === null) {
@@ -33,10 +38,19 @@ class CompetitionResultsManager
             $qb = $entryRepository->findBySession($session);
         }
 
-        $qb->join('e.score', 'score')
+        $qb = $qb->join('e.score', 'score')
             ->orderBy('score.score', 'DESC')
             ->addOrderBy('score.golds', 'DESC')
             ->addOrderBy('score.hits', 'DESC');
+
+        if(array_key_exists('gender', $filter) && $filter['gender'] !== null) {
+            $qb = $qb->andWhere('e.gender = :gender')
+                ->setParameter('gender', $filter['gender']);
+        }
+        if(array_key_exists('skill', $filter) && $filter['skill'] !== null) {
+            $qb = $qb->andWhere('e.skill = :skill')
+                ->setParameter('skill', $filter['skill']);
+        }
 
         /** @var CompetitionSessionEntry[] $dbResults */
         $dbResults = $qb->getQuery()->getResult();

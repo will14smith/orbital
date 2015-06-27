@@ -3,6 +3,8 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Competition;
+use AppBundle\Services\Enum\Gender;
+use AppBundle\Services\Enum\Skill;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -26,14 +28,44 @@ class CompetitionResultsController extends Controller
             $session = $sessionRepository->find(intval($request->query->get('session'), 10));
         }
 
+        $teamFilter = $request->query->get('team') === 'true';
+        $genderFilter = $this->getFilter($request, 'gender', array_keys(Gender::$choices));
+        $skillFilter = $this->getFilter($request, 'skill', array_keys(Skill::$choices));
+
         $results = $this->get('orbital.competition.result_manager')
-            //TODO pass more filters
-            ->getResults($competition, $session);
+            ->getResults($competition, $session, [
+                'team' => $teamFilter,
+                'gender' => $genderFilter,
+                'skill' => $skillFilter
+            ]);
 
         return $this->render('competition/results.html.twig', [
             'results' => $results,
             'competition' => $competition,
             'session' => $session
         ]);
+    }
+
+    /**
+     * @param Request $request
+     * @param string $key
+     * @param string[] $allowedValues
+     *
+     * @return string
+     */
+    private function getFilter(Request $request, $key, array $allowedValues)
+    {
+        $value = $request->query->get($key);
+        if($value === null) {
+            return null;
+        }
+
+        $value = strtolower($value);
+        if(!in_array($value, $allowedValues)) {
+            return null;
+        }
+
+        return $value;
+
     }
 }
