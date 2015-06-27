@@ -1,18 +1,32 @@
 {% extends '::base.html.twig' %}
 {% import ':macro:display.html.twig' as display %}
+{% from ':macro:filter.html.twig' import link %}
+
+{% macro filter(f, t, v) %}
+
+{% endmacro %}
 
 {% block title %}
-    {% if not session %}
-        {{ display.competition(competition) }} - Results
-    {% else %}
-        {{ display.competition(competition) }} - {{ session.startTime|date(DATETIME_FORMAT) }} - Results
-    {% endif %}
+    {{ display.competition(competition) }} - Results
 {% endblock %}
 
 {% block body %}
     <div>
         <h3>Filter Results</h3>
-        [ All / Session ] [ Team / Ind ] [ Male / Female ] [ Senior / Novice ]
+
+        <div>
+            [ {{ link('team', 'true', 'Team') }} / {{ link('team', null, 'Ind') }} ]
+            [ {{ link('gender', 'male', 'Male') }} / {{ link('gender', 'female', 'Female') }} ]
+            [ {{ link('skill', 'senior', 'Senior') }} / {{ link('skill', 'novice', 'Novice') }} ]
+        </div>
+        <div>
+            [
+            {% for session in competition.sessions %}
+                {{ link('session', session.id, session.startTime|date(DATETIME_FORMAT)) }}
+                {% if not loop.last %}/{% endif %}
+            {% endfor %}
+            ]
+        </div>
     </div>
 
     <table>
