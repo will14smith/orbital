@@ -1,0 +1,48 @@
+{% extends '::base.html.twig' %}
+{% import ':macro:display.html.twig' as display %}
+
+{% block title %}
+    {% if not session %}
+        {{ display.competition(competition) }} - Results
+    {% else %}
+        {{ display.competition(competition) }} - {{ session.startTime|date(DATETIME_FORMAT) }} - Results
+    {% endif %}
+{% endblock %}
+
+{% block body %}
+    <div>
+        <h3>Filter Results</h3>
+        [ All / Session ] [ Team / Ind ] [ Male / Female ] [ Senior / Novice ]
+    </div>
+
+    <table>
+        {% set lastPosition = 0 %}
+
+        {% for result in results %}
+            <tr>
+                <td class="shrink">
+                    {% if result.position != lastPosition %}
+                        {{ result.position }}
+                    {% endif %}
+                </td>
+                <td>{{ display.person(result.person) }}</td>
+                <td>{{ display.club(result.club) }}</td>
+                <td class="shrink">
+                    <a href="{{ url('score_detail', { 'id': result.score.id }) }}">
+                        {% if result.highPrecision %}
+                            {{ result.score.score }} ({{ result.score.golds }}G, {{ result.score.hits }}H)
+                        {% else %}
+                            {{ result.score.score }}
+                        {% endif %}
+                    </a>
+                </td>
+            </tr>
+
+            {% set lastPosition = result.position %}
+        {% else %}
+            <tr>
+                <td>No results</td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}
