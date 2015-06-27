@@ -8,23 +8,30 @@
     {% endif %}
 </td>
 {% if entry.person %}
-    <td>{{ display.person(entry.person) }}</td>
+    <td>{{ display.person(entry.person) }} - {{ display.club(entry.club) }}</td>
 {% else %}
     <td>{{ display.club(entry.club, 'text-italic') }}</td>
 {% endif %}
-{% if is_granted('ROLE_ADMIN') %}
+{% if is_granted('ROLE_ADMIN') or entry.score %}
     <td class="actions">
-        {% if not entry.dateApproved %}
-            <a href="{{ url('competition_entry_approve', { 'competition_id': session.competition.id, 'session_id': session.id, 'id': entry.id }) }}">
-                <i class="fa fa-check"></i>
-            </a>
-        {% elseif not entry.registered %}
-            <a href="#">
-                <i class="fa fa-sign-in"></i>
+        {% if entry.score %}
+            <a href="{{ url('score_detail', { 'id': entry.score.id }) }}">
+                <i class="fa fa-file-excel-o"></i>
             </a>
         {% endif %}
-        <a href="#">
-            <i class="fa fa-pencil"></i>
-        </a>
+        {% if is_granted('ROLE_ADMIN') %}
+            {% if not entry.dateApproved %}
+                <a href="{{ url('competition_entry_approve', { 'competition_id': session.competition.id, 'session_id': session.id, 'id': entry.id }) }}">
+                    <i class="fa fa-check"></i>
+                </a>
+            {% elseif not entry.registered %}
+                <a href="#">
+                    <i class="fa fa-sign-in"></i>
+                </a>
+            {% endif %}
+            <a href="#">
+                <i class="fa fa-pencil"></i>
+            </a>
+        {% endif %}
     </td>
 {% endif %}

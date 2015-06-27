@@ -116,6 +116,10 @@ class CompetitionScoringController extends Controller
      */
     public function endAction(CompetitionSession $session)
     {
-        throw new \Exception("Not Implemented");
+        $em = $this->getDoctrine()->getManager();
+
+        CompetitionManager::endSession($em, $session);
+
+        return $this->redirectToRoute('competition_detail', ['id' => $session->getCompetition()->getId()]);
     }
 }

@@ -31,6 +31,10 @@ class CompetitionSessionVoter extends BaseVoter
 
         switch ($permission) {
             case SecurityAction::ENTER:
+                if($session->isFinished()) {
+                    return VoterInterface::ACCESS_DENIED;
+                }
+
                 if ($user->isAdmin()) {
                     return VoterInterface::ACCESS_GRANTED;
                 }

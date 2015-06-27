@@ -323,6 +323,13 @@ class CompetitionSession
     {
         return $this->actualStartTime !== null && $this->actualEndTime === null;
     }
+    /**
+     * @return bool
+     */
+    public function isFinished()
+    {
+        return $this->actualEndTime !== null;
+    }
 
     /**
      * @return int

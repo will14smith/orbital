@@ -2,7 +2,7 @@
 {% import ':macro:display.html.twig' as display %}
 
 {% block title %}
-    {{ session.competition.name }} - {{ session.startTime | date(DATETIME_FORMAT) }}
+    {{ display.competition(session.competition) }} - {{ session.startTime | date(DATETIME_FORMAT) }}
 {% endblock %}
 
 {% block body %}

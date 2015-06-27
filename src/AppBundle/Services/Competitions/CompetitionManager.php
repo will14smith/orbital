@@ -97,6 +97,12 @@ class CompetitionManager
 
         $em->flush();
     }
+    public static function endSession(ObjectManager $em, CompetitionSession $session)
+    {
+        $session->setActualEndTime(new \DateTime());
+
+        $em->flush();
+    }
 
     private static function createScore(CompetitionSessionEntry $entry)
     {
