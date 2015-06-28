@@ -19,10 +19,10 @@
             [ {{ link('gender', Enum.gender.male, 'Male') }} / {{ link('gender', Enum.gender.female, 'Female') }} ]
             [ {{ link('skill', Enum.skill.senior, 'Senior') }} / {{ link('skill', Enum.skill.novice, 'Novice') }} ]
             [ {{ arrayLink('bowtype', Enum.bowtype.recurve, 'Recurve') }}
-                , {{ arrayLink('bowtype', Enum.bowtype.barebow, 'Barebow') }}
-                , {{ arrayLink('bowtype', Enum.bowtype.longbow, 'Longbow') }}
-                , {{ arrayLink('bowtype', Enum.bowtype.traditional, 'Traditional') }}
-                , {{ arrayLink('bowtype', Enum.bowtype.compound, 'Compound') }} ]
+            , {{ arrayLink('bowtype', Enum.bowtype.barebow, 'Barebow') }}
+            , {{ arrayLink('bowtype', Enum.bowtype.longbow, 'Longbow') }}
+            , {{ arrayLink('bowtype', Enum.bowtype.traditional, 'Traditional') }}
+            , {{ arrayLink('bowtype', Enum.bowtype.compound, 'Compound') }} ]
         </div>
         <div>
             [
@@ -44,18 +44,34 @@
                         {{ result.position }}
                     {% endif %}
                 </td>
-                <td>{{ display.person(result.person) }}</td>
+                {% if not result.team %}
+                    <td>{{ display.person(result.person) }}</td>
+                {% endif %}
                 <td>{{ display.club(result.club) }}</td>
                 <td class="shrink">
-                    <a href="{{ url('score_detail', { 'id': result.score.id }) }}">
-                        {% if result.highPrecision %}
-                            {{ result.score.score }} ({{ result.score.golds }}G, {{ result.score.hits }}H)
-                        {% else %}
-                            {{ result.score.score }}
-                        {% endif %}
-                    </a>
+                    {% include 'competition/_result_score.html.twig' with { 'result': result } only %}
                 </td>
             </tr>
+
+
+
+            {% if result.team %}
+                <tr>
+                    <td></td>
+                    <td colspan="2">
+                        <table>
+                            {% for subResult in result.results %}
+                                <tr>
+                                    <td>{{ display.person(subResult.person) }}</td>
+                                    <td class="shrink">
+                                        {% include 'competition/_result_score.html.twig' with { 'result': subResult } only %}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </table>
+                    </td>
+                </tr>
+            {% endif %}
 
             {% set lastPosition = result.position %}
         {% else %}

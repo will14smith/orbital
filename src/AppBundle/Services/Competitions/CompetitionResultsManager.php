@@ -5,6 +5,7 @@ namespace AppBundle\Services\Competitions;
 use AppBundle\Entity\Competition;
 use AppBundle\Entity\CompetitionSession;
 use AppBundle\Entity\CompetitionSessionEntry;
+use AppBundle\Services\Enum\Skill;
 use Doctrine\Bundle\DoctrineBundle\Registry;
 
 class CompetitionResultsManager
@@ -22,14 +23,73 @@ class CompetitionResultsManager
      * @param CompetitionSession $session
      * @param array $filter
      *
-     * @return CompetitionResult[]
+     * @return ICompetitionResult[]
      */
     public function getResults(Competition $competition, CompetitionSession $session = null, array $filter = [])
     {
-        if(array_key_exists('team', $filter) && $filter['team']) {
-            throw new \Exception("TODO implement results for teams.");
+        if (array_key_exists('team', $filter) && $filter['team']) {
+            $results = $this->getTeamEntries($competition, $session, $filter);
+        } else {
+            $results = $this->getEntries($competition, $session, $filter);
         }
 
+        $position = 1;
+
+        $count = count($results);
+        for ($i = 0; $i < $count; $i++) {
+            $result = $results[$i];
+            $prevResult = $i > 0 ? $results[$i - 1] : null;
+            $nextResult = $i + 1 < $count ? $results[$i + 1] : null;
+
+            $this->calculateResult($result, $position, $prevResult, $nextResult);
+        }
+
+        return $results;
+    }
+
+    private function calculateResult(ICompetitionResult $result, &$position,
+                                     ICompetitionResult $prevResult = null, ICompetitionResult $nextResult = null)
+    {
+        // next has same score (all metrics)
+        $draw = false;
+        // prev / next has same score (other metrics differ)
+        $highPrecision = false;
+
+        if ($nextResult !== null) {
+            if ($result->getScoreValue() === $nextResult->getScoreValue()) {
+                $highPrecision = true;
+
+                if ($result->getGolds() === $nextResult->getGolds()
+                    && $result->getHits() === $nextResult->getHits()
+                ) {
+                    $draw = true;
+                }
+            }
+        }
+        if ($prevResult !== null) {
+            if ($result->getScoreValue() === $prevResult->getScoreValue()) {
+                $highPrecision = true;
+            }
+        }
+
+        $result->setPosition($position);
+        $result->setHighPrecision($highPrecision);
+
+        if (!$draw) {
+            $position++;
+        }
+    }
+
+    /**
+     * @param Competition $competition
+     * @param CompetitionSession $session
+     * @param array $filter
+     * @param bool $team
+     *
+     * @return IndividualResult[]
+     */
+    private function getEntries(Competition $competition, CompetitionSession $session = null, array $filter = [], $team = false)
+    {
         $entryRepository = $this->doctrine->getRepository('AppBundle:CompetitionSessionEntry');
 
         if ($session === null) {
@@ -43,74 +103,69 @@ class CompetitionResultsManager
             ->addOrderBy('score.golds', 'DESC')
             ->addOrderBy('score.hits', 'DESC');
 
-        if(array_key_exists('gender', $filter) && $filter['gender'] !== null) {
+        if (array_key_exists('gender', $filter) && $filter['gender'] !== null) {
             $qb = $qb->andWhere('e.gender = :gender')
                 ->setParameter('gender', $filter['gender']);
         }
-        if(array_key_exists('skill', $filter) && $filter['skill'] !== null) {
-            $qb = $qb->andWhere('e.skill = :skill')
-                ->setParameter('skill', $filter['skill']);
+        if (array_key_exists('skill', $filter) && $filter['skill'] !== null) {
+            // senior teams can include novices.
+            if (!$team || $filter['skill'] === Skill::NOVICE) {
+                $qb = $qb->andWhere('e.skill = :skill')
+                    ->setParameter('skill', $filter['skill']);
+            }
         }
-        if(array_key_exists('bowtype', $filter) && $filter['bowtype'] !== null && count($filter['bowtype']) > 0) {
+        if (array_key_exists('bowtype', $filter) && $filter['bowtype'] !== null && count($filter['bowtype']) > 0) {
             $qb = $qb->andWhere('e.bowtype IN (:bowtypes)')
                 ->setParameter('bowtypes', $filter['bowtype']);
         }
 
-        /** @var CompetitionSessionEntry[] $dbResults */
-        $dbResults = $qb->getQuery()->getResult();
-        $results = [];
+        $entries = $qb->getQuery()->getResult();
 
-        $position = 1;
-
-        $count = count($dbResults);
-        for ($i = 0; $i < $count; $i++) {
-            $result = $dbResults[$i];
-            $prevResult = $i > 0 ? $dbResults[$i - 1] : null;
-            $nextResult = $i + 1 < $count ? $dbResults[$i + 1] : null;
-
-            $results[] = $this->buildResult($result, $position, $prevResult, $nextResult);
-        }
-
-        return $results;
+        return array_map(function (CompetitionSessionEntry $entry) {
+            return new IndividualResult($entry);
+        }, $entries);
     }
 
-    private function buildResult(CompetitionSessionEntry $dbResult, &$position,
-                                 CompetitionSessionEntry $dbPrevious = null, CompetitionSessionEntry $dbNext = null)
+    /**
+     * @param Competition $competition
+     * @param CompetitionSession $session
+     * @param array $filter
+     *
+     * @return TeamResult[]
+     */
+    private function getTeamEntries(Competition $competition, CompetitionSession $session = null, array $filter = [])
     {
-        $score = $dbResult->getScore();
+        $indEntries = $this->getEntries($competition, $session, $filter, true);
 
-        // next has same score (all metrics)
-        $draw = false;
-        // prev / next has same score
-        $highPrecision = false;
+        //TODO
+        $teamSize = 3;
 
-        if ($dbNext !== null) {
-            $nextScore = $dbNext->getScore();
+        // aggregate ind results
+        $teams = [];
 
-            if ($score->getScore() === $nextScore->getScore()) {
-                $highPrecision = true;
+        foreach ($indEntries as $entry) {
+            $key = $entry->getClub()->getId();
 
-                if ($score->getGolds() === $nextScore->getGolds()
-                    && $score->getHits() === $nextScore->getHits()
-                ) {
-                    $draw = true;
-                }
+            if(!array_key_exists($key, $teams)) {
+                $teams[$key] = [];
             }
-        }
-        if ($dbPrevious !== null) {
-            $prevScore = $dbPrevious->getScore();
 
-            if ($score->getScore() === $prevScore->getScore()) {
-                $highPrecision = true;
+            if(count($teams[$key]) < $teamSize) {
+                $teams[$key][] = $entry;
             }
         }
 
-        $result = new CompetitionResult($dbResult, $position, $highPrecision);
+        // create results
+        $results = [];
 
-        if (!$draw) {
-            $position++;
+        foreach($teams as $teamEntries) {
+            $results[] = new TeamResult($teamEntries);
         }
 
-        return $result;
+        usort($results, function(TeamResult $a, TeamResult $b) {
+           return $b->getScoreValue() - $a->getScoreValue();
+        });
+
+        return $results;
     }
 }
