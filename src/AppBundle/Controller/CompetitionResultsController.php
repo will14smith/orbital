@@ -3,6 +3,7 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Competition;
+use AppBundle\Services\Enum\BowType;
 use AppBundle\Services\Enum\Gender;
 use AppBundle\Services\Enum\Skill;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -31,12 +32,14 @@ class CompetitionResultsController extends Controller
         $teamFilter = $request->query->get('team') === 'true';
         $genderFilter = $this->getFilter($request, 'gender', array_keys(Gender::$choices));
         $skillFilter = $this->getFilter($request, 'skill', array_keys(Skill::$choices));
+        $bowtypeFilter = $this->getFilterArray($request, 'bowtype', array_keys(BowType::$choices));
 
         $results = $this->get('orbital.competition.result_manager')
             ->getResults($competition, $session, [
                 'team' => $teamFilter,
                 'gender' => $genderFilter,
-                'skill' => $skillFilter
+                'skill' => $skillFilter,
+                'bowtype' => $bowtypeFilter
             ]);
 
         return $this->render('competition/results.html.twig', [
@@ -66,6 +69,31 @@ class CompetitionResultsController extends Controller
         }
 
         return $value;
+    }
 
+    /**
+     * @param Request $request
+     * @param string $key
+     * @param string[] $allowedValues
+     *
+     * @return string[]
+     */
+    private function getFilterArray(Request $request, $key, array $allowedValues)
+    {
+        $values = $request->query->get($key);
+        if($values === null || !is_array($values) || count($values) === 0) {
+            return null;
+        }
+
+        $result = [];
+
+        foreach($values as $value) {
+            $value = strtolower($value);
+            if(in_array($value, $allowedValues)) {
+                $result[] = $value;
+            }
+        }
+
+        return $result;
     }
 }

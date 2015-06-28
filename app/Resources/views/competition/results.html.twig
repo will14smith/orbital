@@ -1,6 +1,6 @@
 {% extends '::base.html.twig' %}
 {% import ':macro:display.html.twig' as display %}
-{% from ':macro:filter.html.twig' import link %}
+{% from ':macro:filter.html.twig' import link, arrayLink %}
 
 {% macro filter(f, t, v) %}
 
@@ -18,6 +18,11 @@
             [ {{ link('team', 'true', 'Team') }} / {{ link('team', null, 'Ind') }} ]
             [ {{ link('gender', Enum.gender.male, 'Male') }} / {{ link('gender', Enum.gender.female, 'Female') }} ]
             [ {{ link('skill', Enum.skill.senior, 'Senior') }} / {{ link('skill', Enum.skill.novice, 'Novice') }} ]
+            [ {{ arrayLink('bowtype', Enum.bowtype.recurve, 'Recurve') }}
+                , {{ arrayLink('bowtype', Enum.bowtype.barebow, 'Barebow') }}
+                , {{ arrayLink('bowtype', Enum.bowtype.longbow, 'Longbow') }}
+                , {{ arrayLink('bowtype', Enum.bowtype.traditional, 'Traditional') }}
+                , {{ arrayLink('bowtype', Enum.bowtype.compound, 'Compound') }} ]
         </div>
         <div>
             [

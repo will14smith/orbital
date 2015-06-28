@@ -11,6 +11,19 @@
     {% endif %}
 {% endmacro %}
 
+{% macro arrayLink(attr, value, text) %}
+    {% if value in app.request.get(attr) %}
+        <a class="text-strong"
+           href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')|merge(app.request.query.all|remove(attr ~ '[]', value))) }}">
+            {{ text }}
+        </a>
+    {% else %}
+        <a href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')|merge(app.request.query.all|merge({(attr ~ '[]'): value }))) }}">
+            {{ text }}
+        </a>
+    {% endif %}
+{% endmacro %}
+
 {% macro filter_link(text, filterName) %}
     {% import _self as self %}
     {{  self.link('filter', text, filterName) }}

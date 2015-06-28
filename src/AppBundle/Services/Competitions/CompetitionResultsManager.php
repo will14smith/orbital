@@ -51,6 +51,10 @@ class CompetitionResultsManager
             $qb = $qb->andWhere('e.skill = :skill')
                 ->setParameter('skill', $filter['skill']);
         }
+        if(array_key_exists('bowtype', $filter) && $filter['bowtype'] !== null && count($filter['bowtype']) > 0) {
+            $qb = $qb->andWhere('e.bowtype IN (:bowtypes)')
+                ->setParameter('bowtypes', $filter['bowtype']);
+        }
 
         /** @var CompetitionSessionEntry[] $dbResults */
         $dbResults = $qb->getQuery()->getResult();
