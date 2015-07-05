@@ -40,8 +40,7 @@ gulp.task('css', ['bower', 'icons'], function () {
         }))
         .pipe(autoprefixer())
         .pipe(gulp.dest('../web/css'));
-})
-;
+});
 
 function processJsFiles(files, folder) {
     return gulp.src(files)
@@ -66,9 +65,9 @@ gulp.task('js:vendors', ['bower'], function() {
 
 gulp.task('js:app', function () {
     var folders = {
-        'head': ['modernizr*.js', 'jquery-*.js'],
+        'head': [],
         'app': [],
-        'scoring': ['mithril.js']
+        'scoring': []
     };
 
 

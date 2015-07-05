@@ -37,11 +37,6 @@ services:
             - { name: kernel.event_listener, event: 'orbital.events.score_create', method: handleScore }
             - { name: kernel.event_listener, event: 'orbital.events.score_update', method: handleScore }
 
-# competitions
-    orbital.competition.manager:
-        class: AppBundle\Services\Competitions\CompetitionManager
-        arguments: ["@doctrine"]
-
 # handicaps
     orbital.handicap.calculate:
         class: AppBundle\Services\Handicap\HandicapCalculator
@@ -74,6 +69,16 @@ services:
         public: false
         tags:
           - { name: orbital.approval.provider }
+    orbital.approval.providers.competition_entry:
+        class: AppBundle\Services\Approvals\Providers\CompetitionEntryApprovalProvider
+        public: false
+        tags:
+          - { name: orbital.approval.provider }
+
+# competitions
+    orbital.competition.result_manager:
+        class: AppBundle\Services\Competitions\CompetitionResultsManager
+        arguments: ["@doctrine"]
 
 # leagues
     orbital.league.manager:
@@ -115,8 +120,8 @@ services:
         public: false
         tags:
           - { name: security.voter }
-    orbital.security.competition_voter:
-        class: AppBundle\Services\Security\CompetitionVoter
+    orbital.security.competition_session_voter:
+        class: AppBundle\Services\Security\CompetitionSessionVoter
         public: false
         tags:
           - { name: security.voter }
@@ -154,6 +159,11 @@ services:
 # twig extensions
     orbital.twig.enum:
         class: AppBundle\Services\Twig\EnumExtension
+        public: false
+        tags:
+            - { name: twig.extension }
+    orbital.twig.array:
+        class: AppBundle\Services\Twig\ArrayExtension
         public: false
         tags:
             - { name: twig.extension }

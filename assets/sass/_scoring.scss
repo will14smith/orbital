@@ -2,6 +2,8 @@ $target-info-bg: transparent;
 $target-info-border: map-get($color-grey, '300');
 $target-info-fg: #000;
 
+$scoring-active-color: #f2f2f2;
+
 $yellow-color: #FFEB3B;
 $red-color: #F44336;
 $blue-color: #2196F3;
@@ -45,6 +47,15 @@ $white-color: #FAFAFA;
   }
 }
 
+#scoring_app {
+  .flush {
+    width: 100%;
+    text-align: center;
+
+    margin-bottom: $baseline-grid;
+  }
+}
+
 .scoresheet {
   display: flex;
   flex-direction: column;
@@ -53,6 +64,7 @@ $white-color: #FAFAFA;
     flex-direction: row;
     flex-wrap: wrap;
   }
+
 
   .target {
     text-align: center;
@@ -74,11 +86,7 @@ $white-color: #FAFAFA;
       &:nth-child(2n) {
         border-left-style: none;
       }
-
-
     }
-
-
 
     .header {
       background-color: $target-info-bg;
@@ -100,14 +108,21 @@ $white-color: #FAFAFA;
             flex: 1;
             padding: $baseline-grid;
           }
+
+          &.active {
+            background: $scoring-active-color;
+          }
         }
       }
-      .endTotals {
-        .endTotal {
-          background-color: $target-info-bg;
-          color: $target-info-fg;
 
-          padding: $baseline-grid;
+      .endTotal {
+        background-color: $target-info-bg;
+        color: $target-info-fg;
+
+        padding: $baseline-grid;
+
+        &.active {
+          background: $scoring-active-color;
         }
       }
     }

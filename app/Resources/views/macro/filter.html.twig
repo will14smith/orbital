@@ -1,6 +1,30 @@
+{% macro link(attr, value, text) %}
+    {% if app.request.get(attr) == value %}
+        <a class="text-strong"
+           href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')|merge(app.request.query.all|merge({(attr): null}))) }}">
+            {{ text }}
+        </a>
+    {% else %}
+        <a href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')|merge(app.request.query.all|merge({(attr): value }))) }}">
+            {{ text }}
+        </a>
+    {% endif %}
+{% endmacro %}
+
+{% macro arrayLink(attr, value, text) %}
+    {% if value in app.request.get(attr) %}
+        <a class="text-strong"
+           href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')|merge(app.request.query.all|remove(attr ~ '[]', value))) }}">
+            {{ text }}
+        </a>
+    {% else %}
+        <a href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')|merge(app.request.query.all|merge({(attr ~ '[]'): value }))) }}">
+            {{ text }}
+        </a>
+    {% endif %}
+{% endmacro %}
+
 {% macro filter_link(text, filterName) %}
-    <a{% if app.request.get('filter') == filterName %} class="text-strong"{% endif %}
-        href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')|merge(app.request.query.all|merge({'filter': filterName }))) }}">
-        {{ text }}
-    </a>
+    {% import _self as self %}
+    {{  self.link('filter', text, filterName) }}
 {% endmacro %}

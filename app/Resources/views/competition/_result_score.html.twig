@@ -1,0 +1,13 @@
+{% import ':macro:display.html.twig' as display %}
+
+{% if not result.team %}
+<a href="{{ url('score_detail', { 'id': result.score.id }) }}">
+    {% endif %}
+    {% if result.highPrecision %}
+        {{ result.scoreValue }} ({{ result.golds }}G, {{ result.hits }}H)
+    {% else %}
+        {{ result.scoreValue }}
+    {% endif %}
+    {% if not result.team %}
+</a>
+{% endif %}

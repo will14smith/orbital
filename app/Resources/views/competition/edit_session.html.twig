@@ -1,0 +1,39 @@
+{% extends '::base.html.twig' %}
+{% import ':macro:display.html.twig' as display %}
+
+{% block title %}
+    Edit Competition Session
+{% endblock %}
+
+{% block body %}
+    {{ form_start(form) }}
+
+    <div class="form-row">
+        <div class="form-input with-value">
+            {{ display.competition(competition) }}
+        </div>
+        <label>
+            Competition
+        </label>
+    </div>
+
+    {{ form_widget(form) }}
+
+    <input type="submit" value="Save"/>
+    {{ form_end(form) }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <script>
+        'use strict';
+
+        (function($) {
+            $('#competition_session_rounds').collection('Round', {
+                allowRemove: true
+            });
+        })(jQuery);
+    </script>
+
+{% endblock %}

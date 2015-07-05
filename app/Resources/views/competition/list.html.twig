@@ -10,23 +10,6 @@
         {% for competition in competitions %}
             <li>
                 {{ display.competition(competition) }}
-                {% if is_granted('ENTER', competition) %}
-                    <span class="actions">
-                        {% if is_granted('ENTER', competition) %}
-                            <a href="{{ url('competition_enter', { 'id': competition.id }) }}">
-                                <i class="fa fa-sign-in" title="Enter this competition"></i>
-                            </a>
-                        {% endif %}
-                        {% if is_granted('ROLE_ADMIN') %}
-                            <a href="{{ url('competition_edit', { 'id': competition.id }) }}">
-                                <i class="fa fa-pencil"></i>
-                            </a>
-                            <a href="{{ url('competition_delete', { 'id': competition.id }) }}">
-                                <i class="fa fa-trash-o"></i>
-                            </a>
-                        {% endif %}
-                    </span>
-                {% endif %}
             </li>
         {% else %}
             <li>No Competitions :(</li>

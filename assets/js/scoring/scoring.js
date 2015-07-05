@@ -4,44 +4,107 @@ window.orbital.scoring = window.orbital.scoring || {};
 (function (scoring) {
     'use strict';
 
-    scoring.zones = {
-        'metric': {'X': 10, 10: 10, 9: 9, 8: 8, 7: 7, 6: 6, 5: 5, 4: 4, 3: 3, 2: 2, 1: 1, 'M': 0},
+    function setupSocketIO(urls, scoreId) {
+        scoring.vm.socket = io(urls['socket.io']);
+        scoring.vm.socket.on('arrows', scoring.vm.handleArrows);
+        scoring.vm.socket.on('arrow', scoring.vm.handleArrow);
 
-        //This logic should be inline with AppBundle\Services\Scoring\ZoneManager
+        scoring.vm.socket.emit('sub_score', scoreId);
+    }
 
-        getValue: function (zone, score) {
-            var zoneData = scoring.zones[zone];
-            if (!zoneData) {
-                throw "Unsupported Zones '" + zone + "'";
-            }
+    scoring.vm = {
+        init: function (round, scoreId, input, urls) {
+            scoring.vm.urls = urls;
 
-            return zoneData[score];
+            scoring.vm.round = new scoring.Round(round);
+
+            scoring.vm.input = input;
+            scoring.vm.arrowIndex = 0;
+            scoring.vm.arrowBuffer = [];
+
+            scoring.vm.arrows = [];
+
+            scoring.vm.inputController = new scoring.input({
+                buffer: scoring.vm.arrowBuffer,
+                submitBuffer: scoring.vm.submitBuffer,
+                keyboard: true
+            });
+
+            setupSocketIO(urls, scoreId);
         },
-        isGold: function (zone, score) {
-            return scoring.zones.getValue(zone, score) >= 9;
+
+        getArrow: function (index) {
+            var arrows = scoring.vm.arrows;
+
+            if (arrows.length <= index) {
+                return null;
+            }
+
+            return arrows[index];
         },
-        isHit: function (zone, score) {
-            return scoring.zones.getValue(zone, score) > 0;
+
+        submitBuffer: function (buffer) {
+            var vm = scoring.vm;
+
+            m.request({
+                'method': 'POST',
+                'url': vm.urls.add,
+                'data': {
+                    'index': vm.arrowIndex,
+                    'arrows': buffer
+                }
+            }).then(function (data) {
+                if (data.success) {
+                    buffer.splice(0, buffer.length);
+                } else {
+                    throw "ERROR";
+                }
+            });
+        },
+        complete: function () {
+            var vm = scoring.vm;
+
+            m.request({
+                'method': 'POST',
+                'url': vm.urls.complete
+            }).then(function (data) {
+                if (data.success) {
+                    document.location = data.url;
+                } else {
+                    throw "ERROR";
+                }
+            });
         },
 
-        cssClass: function (zone, score) {
-            var value = scoring.zones.getValue(zone, score);
+        handleArrows: function (data) {
+            var arrows = data.arrows;
+            /*jshint camelcase: false */
+            var score_id = data.score_id;
+            /*jshint camelcase: true */
 
-            if (value >= 9) {
-                return 'yellow';
-            }
-            if (value >= 7) {
-                return 'red';
-            }
-            if (value >= 5) {
-                return 'blue';
-            }
-            if (value >= 3) {
-                return 'black';
+            m.startComputation();
+            arrows.forEach(function (arrow) {
+                scoring.vm.arrows[arrow.number] = arrow;
+            });
+            scoring.vm.arrowIndex = arrows.length;
+            m.endComputation();
+        },
+        handleArrow: function (data) {
+            var arrow = data.arrow;
+            /*jshint camelcase: false */
+            var score_id = data.score_id;
+            /*jshint camelcase: true */
+
+            m.startComputation();
+
+            if(arrow === null) {
+                console.error('arrow deletion not implemented');
+            } else {
+                scoring.vm.arrows[arrow.number] = arrow;
+                scoring.vm.arrowIndex = Math.max(arrow.number + 1, scoring.vm.arrowIndex);
             }
 
-            return 'white';
+            m.endComputation();
         }
     };
-
 })(window.orbital.scoring);

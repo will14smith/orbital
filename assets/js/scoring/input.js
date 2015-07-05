@@ -8,113 +8,99 @@ window.orbital.scoring = window.orbital.scoring || {};
         'metric': ['X', 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 'M']
     };
 
-    scoring.input = {};
+    scoring.input = function(options) {
+        if(typeof options.submitBuffer !== 'function') {
+            throw "must supply a submitBuffer";
+        }
 
-    function setupKeyboard() {
+        this.buffer = options.buffer = (options.buffer || []);
+
+        this.addArrow = function(score) { this.buffer.push(score); };
+        this.removeArrow = function() { this.buffer.pop(); };
+        this.hasArrowsInBuffer = function() { return this.buffer.length > 0; };
+        this.submitBuffer = function() { options.submitBuffer(this.buffer); };
+
+        if(options.keyboard) {
+            this.unbindKeyboard = setupKeyboard(this);
+        }
+    };
+
+    function setupKeyboard(controller) {
         var addArrowToBuffer = function (score) {
-            scoring.vm.addToBuffer(score);
+            controller.addArrow(score);
         };
 
-        window.addEventListener('keydown', function (e) {
+        var keydownFn = function (e) {
             m.startComputation();
 
-            if (e.keyCode >= 49 && e.keyCode <= 57) {
-                addArrowToBuffer(e.keyCode - 48);
-            } else if (e.keyCode == 48) {
-                addArrowToBuffer(10);
-            } else if (e.keyCode >= 97 && e.keyCode <= 105) {
-                addArrowToBuffer(e.keyCode - 96);
-            } else if (e.keyCode == 96) {
-                addArrowToBuffer(10);
-            } else if (e.keyCode == 77) {
-                addArrowToBuffer('M');
-            } else if (e.keyCode == 88) {
-                addArrowToBuffer('X');
-            } else if (e.keyCode == 8) {
-                if (scoring.vm.arrowBuffer.length) {
-                    e.preventDefault();
+            if (e.keyCode >= 49 && e.keyCode <= 57) { addArrowToBuffer(e.keyCode - 48); }
+            else if (e.keyCode == 48) { addArrowToBuffer(10); }
+            else if (e.keyCode >= 97 && e.keyCode <= 105) { addArrowToBuffer(e.keyCode - 96); }
+            else if (e.keyCode == 96) { addArrowToBuffer(10); }
+            else if (e.keyCode == 77) { addArrowToBuffer('M'); }
+            else if (e.keyCode == 88) { addArrowToBuffer('X'); }
+            else if (e.keyCode == 8 && controller.hasArrowsInBuffer()) {
+                e.preventDefault();
 
-                    scoring.vm.removeFromBuffer();
-                }
-            } else if (e.keyCode == 13) {
-                if (scoring.vm.arrowBuffer.length) {
-                    scoring.vm.submitBuffer();
-                }
-            } else {
-                console.log(e.keyCode);
+                controller.removeArrow();
+            } else if (e.keyCode == 13 && controller.hasArrowsInBuffer()) {
+                controller.submitBuffer();
             }
 
             m.endComputation();
-        });
-    }
+        };
 
-    scoring.input.init = function() {
-        if(scoring.vm.input) {
-            setupKeyboard();
+        window.addEventListener('keydown', keydownFn);
+
+        return function() {
+            window.removeEventListener('keydown', keydownFn);
         }
     }
 
-    var scoreClickFactory = function (score) {
+    var scoreClickFactory = function (controller, score) {
         return function () {
-            scoring.vm.addToBuffer(score);
+            controller.addArrow(score);
         };
     };
-    var undoClick = function () {
-        scoring.vm.removeFromBuffer();
+    var undoClick = function (controller) {
+        controller.removeArrow();
     };
-    var saveClick = function () {
-        scoring.vm.submitBuffer();
+    var saveClick = function (controller) {
+        controller.submitBuffer();
     };
-    var completeClick = function () {
-        scoring.vm.complete();
+    var completeClick = function (controller) {
+        controller.complete();
     };
 
-    scoring.input.view = function () {
+    scoring.input.view = function (controller) {
         var children = [];
 
-        if (scoring.vm.arrowBuffer.length > 0) {
-            children.push(scoring.input.viewBuffer());
+        if (controller.hasArrowsInBuffer()) {
+            children.push(scoring.input.viewBuffer(controller));
         }
-        children.push(scoring.input.viewButtons());
+        children.push(scoring.input.viewButtons(controller));
 
         return m("div", {'class': 'input'}, children);
     };
-    scoring.input.viewButtons = function () {
-        var complete = scoring.vm.arrowIndex >= scoring.vm.round.totalArrows();
-
-        if (complete) {
-            if (scoring.vm.arrowBuffer.length) {
-                return;
-            } else {
-                return scoring.input.viewAccept();
-            }
-        }
-
-        var target = scoring.vm.round.targetFromArrowIndex(scoring.vm.arrowIndex);
-        var scoringZones = target.scoringZones();
-
-        if (!zoneData[scoringZones]) {
-            throw "Unsupported scoring_zone: " + scoringZones;
-        }
-
-        var buttons = zoneData[scoringZones].map(function (score) {
-            return m("button", {onclick: scoreClickFactory(score)}, score);
+    scoring.input.viewButtons = function (controller) {
+        var buttons = zoneData['metric'].map(function (score) {
+            return m("button", {onclick: scoreClickFactory(controller, score)}, score);
         });
 
         return m("div", {'class': 'buttons btn-group'}, buttons);
     };
-    scoring.input.viewAccept = function () {
+    scoring.input.viewAccept = function (controller) {
         return m("div", {'class': 'accept'}, [
-            m('button', {onclick: completeClick}, 'Sign & Complete')
+            m('button', {onclick: function() { completeClick(controller); }}, 'Sign & Complete')
         ]);
     };
-    scoring.input.viewBuffer = function () {
-        var buffer = scoring.vm.arrowBuffer.map(function (score) {
+    scoring.input.viewBuffer = function (controller) {
+        var buffer = controller.buffer.map(function (score) {
             return m("div", score);
         });
 
-        var undo = m("button", {onclick: undoClick}, "Undo");
-        var save = m("button", {onclick: saveClick}, "Save");
+        var undo = m("button", {onclick: function() { undoClick(controller); }}, "Undo");
+        var save = m("button", {onclick: function() { saveClick(controller); }}, "Save");
 
         return m("div", {'class': 'buffer'}, buffer.concat([
             m('div', { 'class': 'btn-group' }, [undo, save])])

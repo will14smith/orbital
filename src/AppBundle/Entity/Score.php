@@ -57,6 +57,11 @@ class Score
      */
     protected $competition;
     /**
+     * @ORM\OneToOne(targetEntity="CompetitionSessionEntry", mappedBy="score")
+     */
+    protected $competition_entry;
+
+    /**
      * @ORM\Column(type="boolean")
      */
     protected $complete;
@@ -488,5 +493,28 @@ class Score
     public function getArrows()
     {
         return $this->arrows;
+    }
+
+    /**
+     * Set competition_entry
+     *
+     * @param CompetitionSessionEntry $competitionEntry
+     * @return Score
+     */
+    public function setCompetitionEntry(CompetitionSessionEntry $competitionEntry = null)
+    {
+        $this->competition_entry = $competitionEntry;
+    
+        return $this;
+    }
+
+    /**
+     * Get competition_entry
+     *
+     * @return CompetitionSessionEntry
+     */
+    public function getCompetitionEntry()
+    {
+        return $this->competition_entry;
     }
 }

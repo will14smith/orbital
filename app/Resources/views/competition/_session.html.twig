@@ -1,0 +1,52 @@
+{% import ':macro:display.html.twig' as display %}
+
+<h3>
+    {{ session.startTime|date(DATETIME_FORMAT) }}
+    {% if is_granted('ROLE_ADMIN') or is_granted('ENTER', session) %}
+        <small>
+            {% if is_granted('ENTER', session) %}
+                <a href="{{ url('competition_enter', { 'competition_id': competition.id, 'session_id': session.id }) }}">Enter</a>
+                {% if is_granted('ROLE_ADMIN') %}, {% endif %}
+            {% endif %}
+
+            {% if is_granted('ROLE_ADMIN') %}
+                {% if is_granted('START', session) %}
+                    <a href="{{ url('competition_session_start', { 'competition_id': competition.id, 'session_id': session.id }) }}">
+                        {% if not session.finished %}
+                            Start
+                        {% else %}
+                            (Re)Start
+                        {% endif %}
+                    </a>,
+                {% else %}
+                    {% if is_granted('SCORE', session) %}
+                        <a href="{{ url('competition_session_score', { 'competition_id': competition.id, 'session_id': session.id }) }}">Score</a>,
+                    {% endif %}
+                    {% if is_granted('END', session) %}
+                        <a href="{{ url('competition_session_end', { 'competition_id': competition.id, 'session_id': session.id }) }}">End</a>,
+                    {% endif %}
+                {% endif %}
+                <a href="{{ url('competition_session_edit', { 'competition_id': competition.id, 'id': session.id }) }}">Edit</a>,
+                <a href="{{ url('competition_session_delete', { 'competition_id': competition.id, 'id': session.id }) }}">Delete</a>
+            {% endif %}
+        </small>
+    {% endif %}
+</h3>
+
+<dl>
+    <dt>Rounds</dt>
+    <dd>
+        {% for round in session.rounds %}
+            {{ display.round(round.round) }}
+            {% if not loop.last %},{% endif %}
+        {% endfor %}
+    </dd>
+    {% if competition.isOpen %}
+        <dt>Spaces</dt>
+        <dd>
+            {{ session.freeSpaces }} left out of {{ session.totalSpaces }}
+        </dd>
+    {% endif %}
+</dl>
+
+{% include 'competition/_session_target_list.html.twig' with { 'session': session } %}
