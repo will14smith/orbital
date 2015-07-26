@@ -6,6 +6,7 @@
 @import "material/structure";
 @import "compass/support";
 @import "compass/css3/background-size";
+
 $fa-font-size-base: $base-font-size;
 @import "font-awesome";
 
@@ -52,6 +53,7 @@ a {
 .text-italic {
   font-style: italic;
 }
+
 .text-strong {
   font-weight: bold;
 }
@@ -129,6 +131,10 @@ p:first-child {
       padding: $input-container-padding;
     }
 
+    .form-input + label {
+      height: 15px;
+    }
+    
     button {
       width: 100%;
 
