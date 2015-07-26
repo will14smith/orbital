@@ -11,7 +11,7 @@
     {% include ':record:_requirements.html.twig' with { 'record': record } only %}
 
     {% if is_granted('ROLE_ADMIN') and record.unconfirmedHolders|length > 0 %}
-        <h2>Unconfirmed Holders</h2>
+        <h2>Unconfirmed holders</h2>
         <table>
             {% for holder in record.unconfirmedHolders %}
                 <tr>
@@ -23,7 +23,7 @@
 
 
     {% if record.holders|length > 1 %}
-        <h2>Past Holders</h2>
+        <h2>Past holders</h2>
         <table>
             {% for holder in record.holders[1:] %}
                 <tr>
@@ -37,7 +37,7 @@
 {% block sidebar %}
     {% if is_granted('ROLE_ADMIN') %}
         <div class="widget">
-            <h3 class="widget-title">Actions</h3>
+            <h2 class="widget-title">Actions</h2>
             <ul>
                 <li><a href="{{ url('record_award', { 'id': record.id }) }}">Award</a></li>
                 <li><a href="{{ url('record_revoke', { 'id': record.id }) }}">Revoke</a></li>

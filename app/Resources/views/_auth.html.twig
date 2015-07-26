@@ -1,16 +1,25 @@
 <div class="widget">
     {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
-        <h3 class="widget-title">{{ app.user.displayName }}</h3>
+        <h2 class="widget-title">{{ app.user.displayName }}</h2>
         <ul>
             <li><a href="{{ url('person_detail', { 'id': app.user.id }) }}">View my Profile</a></li>
             <li><a href="{{ url('logout') }}">Logout</a></li>
         </ul>
     {% else %}
-        <h3 class="widget-title">Login</h3>
+        <h2 class="widget-title">Login</h2>
 
-        <ul>
-            <li><a href="{{ url('login') }}">Login</a></li>
-            <li>TODO: A form</li>
-        </ul>
+        <form action="{{ path('login_check') }}" method="post">
+            <div class="form-row">
+                <input type="text" class="form-input" id="username" name="_username"/>
+                <label for="username">Username</label>
+            </div>
+
+            <div class="form-row">
+                <input class="form-input" type="password" id="password" name="_password"/>
+                <label for="password">Password</label>
+            </div>
+
+            <button type="submit">login</button>
+        </form>
     {% endif %}
 </div>

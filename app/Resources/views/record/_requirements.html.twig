@@ -1,6 +1,7 @@
 {% import ':macro:display.html.twig' as display %}
 
-<p>To break this record you must shoot a round that matches the following requirements:</p>
+<h2>Breaking it</h2>
+
 <ul class="list">
     <li><span class="text">shoot a&nbsp;{{ display.round(record.round) }}&nbsp;in a competition</span></li>
     {% if record.skill == Enum.skill.novice %}

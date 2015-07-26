@@ -2,13 +2,13 @@
 
 {% for person in people %}
     {{ display.person(person.person) }}
-    <span>&nbsp;-&nbsp;</span>
+    <span> - </span>
     {% if person.score %}
         {{ display.score(person.score) }}
     {% else %}
         {{ person.scoreValue }}
     {% endif %}
     {% if not loop.last %}
-        <span>,&nbsp;</span>
+        <span>, </span>
     {% endif %}
 {% endfor %}

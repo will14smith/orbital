@@ -33,6 +33,9 @@ security:
                 check_path:    login_check
                 login_path:    login
 
+                require_previous_session: false
+                use_referer: true
+
             logout:
                 path:   logout
                 target: homepage

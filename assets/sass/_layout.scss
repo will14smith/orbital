@@ -8,6 +8,8 @@
       height: 48px;
     }
   }
+
+  border-bottom: 1px solid #e4e4e4;
 }
 
 #main-menu {
@@ -17,8 +19,20 @@
   }
 }
 
+#content {
+  background: #fff;
+  // i have no idea...
+  margin-top: -21px;
+}
+
+#side-menu {
+  padding: $layout-gutter-width / 2;
+  border-top: 1px solid #e4e4e4;
+}
+
 .page-title {
-  padding: 0 $layout-gutter-width / 2;
+  padding: $layout-gutter-width / 2;
+  padding-bottom: 0;
 }
 
 .card {
@@ -39,6 +53,9 @@
   }
 
   #page-header {
+    border-bottom: none;
+    border-right: 1px solid #e4e4e4;
+
     .main-header-bar {
       text-align: left;
       .logo img {
@@ -55,25 +72,20 @@
   #content {
     flex: 1;
     padding: $layout-gutter-width / 2;
-
-    background: #fff;
+    margin-top: 0;
 
     .page-title {
       text-align: center;
 
       margin-top: 0;
-      line-height: 65px;
+      line-height: 57px;
       font-size: 48px;
     }
   }
 
   #side-menu {
-    h1 {
-      font-size: 36px;
-      margin-top: 12px;
-
-      color: #ccc;
-    }
+    border-top: none;
+    border-left: 1px solid #e4e4e4;
   }
 }
 

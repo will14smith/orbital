@@ -42,7 +42,7 @@
 {% block sidebar %}
     {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
         <div class="widget">
-            <h3 class="widget-title">Actions</h3>
+            <h2 class="widget-title">Actions</h2>
             <ul>
                 {% if not is_granted('ROLE_ADMIN') and is_granted('CLAIM', badge) %}
                     <li><a href="{{ url('badge_award', { 'badge': badge.id }) }}">Claim</a></li>
