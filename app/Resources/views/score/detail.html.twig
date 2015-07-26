@@ -21,7 +21,7 @@
 {% block sidebar %}
     {% if is_granted_any(['SCORE', 'EDIT', 'ACCEPT', 'ROLE_ADMIN'], score) %}
         <div class="widget">
-            <h3 class="widget-title">Actions</h3>
+            <h2 class="widget-title">Actions</h2>
             <ul>
                 {% if is_granted('SCORE', score) %}
                     <li><a href="{{ url('score_input', { 'id': score.id }) }}">Input Score</a></li>

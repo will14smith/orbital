@@ -64,19 +64,6 @@ a {
 @import "menu";
 
 // content
-#primary {
-  h1.page-title {
-    margin: $layout-gutter-width;
-  }
-
-  .card {
-    @extend .md-shadow-bottom-z-1;
-
-    margin: $layout-gutter-width;
-    padding: $layout-gutter-width;
-    background-color: $background-color-base;
-  }
-}
 
 p:first-child {
   margin-top: 0;
@@ -111,10 +98,6 @@ p:first-child {
 @import "scoring";
 
 // widgets
-#secondary {
-  padding: $layout-gutter-width;
-}
-
 .widget {
   font-size: $h5-font-size-base;
 
@@ -138,6 +121,19 @@ p:first-child {
       &:first-child {
         border-top: none;
       }
+    }
+  }
+
+  form {
+    .form-row {
+      padding: $input-container-padding;
+    }
+
+    button {
+      width: 100%;
+
+      margin-top: $layout-gutter-width/2;
+      padding: $layout-gutter-width/4 $layout-gutter-width;
     }
   }
 }

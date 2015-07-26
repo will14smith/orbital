@@ -57,6 +57,7 @@ form {
     }
 
     .form-input + label {
+      height: 15px;
       order: 1;
       pointer-events: none;
       -webkit-font-smoothing: antialiased;

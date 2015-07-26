@@ -17,7 +17,7 @@
 {% block sidebar %}
     {% if is_granted('SIGNUP', league) or is_granted('SUBMIT', league) %}
         <div class="widget">
-            <h3 class="widget-title">Actions</h3>
+            <h2 class="widget-title">Actions</h2>
             <ul>
                 {% if is_granted('SIGNUP', league) %}
                     <li><a href="{{ url('league_signup', { 'id': league.id }) }}">Join</a></li>

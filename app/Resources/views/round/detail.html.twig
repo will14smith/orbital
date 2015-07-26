@@ -48,7 +48,7 @@
 {% block sidebar %}
     {% if is_granted('ROLE_ADMIN') %}
         <div class="widget">
-            <h3 class="widget-title">Actions</h3>
+            <h2 class="widget-title">Actions</h2>
             <ul>
                 <li><a href="{{ url('round_edit', { 'id': round.id }) }}">Edit</a></li>
                 <li><a href="{{ url('round_delete', { 'id': round.id }) }}">Delete</a></li>

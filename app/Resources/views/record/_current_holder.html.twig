@@ -1,7 +1,7 @@
 {% import ':macro:display.html.twig' as display %}
 
 {% if holder %}
-    <div flex>
+    <p>
         This record was set
         on {{ holder.date|date(DATE_FORMAT) }}
         at {{ holder.location }}
@@ -12,7 +12,7 @@
                 with a total score of <strong>{{ holder.score }}</strong>
             </span>
         {% endif %}
-    </div>
+    </p>
 {% else %}
     <p>
         Nobody currently holds this record!

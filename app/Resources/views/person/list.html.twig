@@ -29,7 +29,7 @@
 {% block sidebar %}
     {% if is_granted('ROLE_ADMIN') %}
         <div class="widget">
-            <h3 class="widget-title">Actions</h3>
+            <h2 class="widget-title">Actions</h2>
             <ul>
                 <li><a href="{{ url('person_import') }}">Import</a></li>
                 <li><a href="{{ url('person_create') }}">Create</a></li>
