@@ -52,14 +52,14 @@ echo "composer.lock" >> $FILELIST
 # build package
 echo "Creating package"
 
-VERSION=$(git show --pretty=format:"%h")
+VERSION=$(git rev-parse --short HEAD)
 OUTPUT="web-$VERSION.tar.gz"
 
 # set version
 echo "parameters:" > app/config/version.yml
 echo "  orbital_version: $VERSION" >> app/config/version.yml
 
-mkdir packages
+mkdir -p packages
 tar cjf packages/$OUTPUT -T $FILELIST
 
 echo

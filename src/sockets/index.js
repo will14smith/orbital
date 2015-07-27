@@ -1,17 +1,19 @@
+var options = require('./config');
+if(options.production) { require('newrelic'); }
+
 var fs = require('fs');
 
-var port = process.env.PORT || 3000;
+var port = options.port || 3000;
 
 var app;
-var options = {};
-if (process.env.SSL) {
-    options = {
-        key: fs.readFileSync('/etc/apache2/ssl/orbital.toxon.co.uk.key'),
-        cert: fs.readFileSync('/etc/apache2/ssl/orbital.toxon.co.uk.crt'),
-        ca: fs.readFileSync('/etc/apache2/ssl/sub.class1.server.ca.pem')
+if (options.ssl) {
+    var httpOptions = {
+        key: fs.readFileSync(options.ssl.key),
+        cert: fs.readFileSync(options.ssl.cert),
+        ca: fs.readFileSync(options.ssl.ca)
     };
 
-    app = require('https').createServer(options);
+    app = require('https').createServer(httpOptions);
 } else {
     app = require('http').createServer();
 }
