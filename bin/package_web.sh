@@ -29,6 +29,7 @@ echo "app/config/parameters.yml.dist" >> $FILELIST
 echo "app/config/routing.yml" >> $FILELIST
 echo "app/config/security.yml" >> $FILELIST
 echo "app/config/services.yml" >> $FILELIST
+echo "app/config/version.yml" >> $FILELIST
 echo "app/DoctrineMigrations/" >> $FILELIST
 echo "app/Resources/" >> $FILELIST
 echo "app/AppCache.php" >> $FILELIST
