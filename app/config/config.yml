@@ -35,7 +35,8 @@ twig:
         - form/fields.html.twig
     globals:
       socketio_url: "%socketio_url%"
-
+      app_version: %orbital.version%
+      app_release: %orbital.version.date%
 # Assetic Configuration
 assetic:
     debug:          "%kernel.debug%"

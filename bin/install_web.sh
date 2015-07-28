@@ -58,6 +58,8 @@ chown -R www-data:www-data $OFFLINE_PATH
 rm $APP_PATH
 ln -s $OFFLINE_PATH $APP_PATH
 
+service php5-fpm restart
+
 echo "Orbital offline"
 
 # migrate DB
@@ -73,5 +75,7 @@ echo "Putting new version live"
 rm $APP_PATH
 ln -s $INSTALL_PATH $APP_PATH
 chown www-data:www-data $APP_PATH
+
+service php5-fpm restart
 
 echo "Setup complete -- check $BASE_INSTALL_PATH/parameters.yml";

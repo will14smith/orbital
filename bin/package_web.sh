@@ -54,11 +54,13 @@ echo "composer.lock" >> $FILELIST
 echo "Creating package"
 
 VERSION=$(git rev-parse --short HEAD)
+VERSION_DATE=$(date -d "$(git show -s --format=%ai HEAD)" +"%y%m%d%H%M")
 OUTPUT="web-$VERSION.tar.gz"
 
 # set version
 echo "parameters:" > app/config/version.yml
-echo "  orbital_version: $VERSION" >> app/config/version.yml
+echo "  orbital.version: $VERSION" >> app/config/version.yml
+echo "  orbital.version.date: $VERSION_DATE" >> app/config/version.yml
 
 mkdir -p packages
 tar cjf packages/$OUTPUT -T $FILELIST
@@ -69,4 +71,5 @@ echo "Created package at $OUTPUT"
 # cleanup
 rm $FILELIST
 echo "parameters:" > app/config/version.yml
-echo "  orbital_version: master" >> app/config/version.yml
+echo "  orbital.version: master" >> app/config/version.yml
+echo "  orbital.version.date: $(date +"%y%m%d%H%M")" >> app/config/version.yml

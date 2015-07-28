@@ -49,6 +49,16 @@
         {% include '_auth.html.twig' %}
         {% include '_tools.html.twig' %}
     {% endblock %}
+
+    <div class="widget">
+        <ul>
+            <li>
+                <small>
+                    <a href="https://github.com/ICAC/orbital/commit/{{ app_version }}">version {{ app_release }}</a>
+                </small>
+            </li>
+        </ul>
+    </div>
 </div>
 
 {% block javascripts %}
