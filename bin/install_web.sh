@@ -24,6 +24,14 @@ ln -s $UPLOAD_PATH $INSTALL_PATH/web/uploads
 pushd $INSTALL_PATH > /dev/null
 export SYMFONY_ENV=prod
 
+# setup parameters.yml
+if [ ! -f $BASE_INSTALL_PATH/parameters.yml ]; then
+  echo "Creating $BASE_INSTALL_PATH/parameters.yml"
+  touch $BASE_INSTALL_PATH/parameters.yml
+fi
+
+ln -s $BASE_INSTALL_PATH/parameters.yml $INSTALL_PATH/app/config/parameters.yml
+
 # install composer deps
 echo "Installing dependencies"
 
@@ -66,4 +74,4 @@ rm $APP_PATH
 ln -s $INSTALL_PATH $APP_PATH
 chown www-data:www-data $APP_PATH
 
-echo "Setup complete -- check app/config/parameters.yml";
+echo "Setup complete -- check $BASE_INSTALL_PATH/parameters.yml";

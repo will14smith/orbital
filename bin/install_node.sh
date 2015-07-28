@@ -26,7 +26,19 @@ echo "Setting up config symlinks"
 cp node_modules/newrelic/newrelic.js newrelic.js.orig
 cp config.js config.js.orig
 
+if [ ! -f $BASE_INSTALL_PATH/config.js ]; then
+  echo "Creating $BASE_INSTALL_PATH/config.js please configure it."
+  cp config.js.orig $BASE_INSTALL_PATH/config.js
+fi
+if [ ! -f $BASE_INSTALL_PATH/newrelic.js ]; then
+  echo "Creating $BASE_INSTALL_PATH/newrelic.js please configure it."
+  cp newrelic.js.orig $BASE_INSTALL_PATH/newrelic.js
+fi
+
 rm config.js newrelic.js
+
+ln -s $BASE_INSTALL_PATH/config.js config.js
+ln -s $BASE_INSTALL_PATH/newrelic.js newrelic.js
 
 popd > /dev/null
 
