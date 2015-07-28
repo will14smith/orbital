@@ -6,7 +6,6 @@ var gulp = require('gulp'),
     bower = require('gulp-bower'),
     rename = require('gulp-rename'),
     uglify = require('gulp-uglify'),
-
     path = require('path'),
     merge = require('merge-stream');
 

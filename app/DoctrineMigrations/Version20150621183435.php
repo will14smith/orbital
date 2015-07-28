@@ -29,7 +29,7 @@ class Version20150621183435 extends AbstractMigration
         $this->addSql('DROP INDEX IDX_D896AFA67B39D312 ON competition_entry');
         // WARNING: this is SUPER BAD.
         $this->addSql('DELETE FROM competition_entry');
-        $this->addSql('ALTER TABLE competition_entry ADD registered DATETIME DEFAULT NULL, CHANGE competition_id session_id INT DEFAULT');
+        $this->addSql('ALTER TABLE competition_entry ADD registered DATETIME DEFAULT NULL, CHANGE competition_id session_id INT');
         $this->addSql('ALTER TABLE competition_entry ADD CONSTRAINT FK_D896AFA6613FECDF FOREIGN KEY (session_id) REFERENCES competition_session (id)');
         $this->addSql('CREATE INDEX IDX_D896AFA6613FECDF ON competition_entry (session_id)');
     }
