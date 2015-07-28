@@ -42,8 +42,8 @@ php composer.phar install --no-dev --optimize-autoloader
 echo "Warming up cache"
 
 php app/console cache:clear --env=prod --no-debug
-chown -R www-data:www-data $INSTALL_PATH/app/cache/prod
-chmod -R +w $INSTALL_PATH/app/cache/prod
+chown -R www-data:www-data $INSTALL_PATH/app/cache/prod $INSTALL_PATH/app/logs/
+chmod -R +w $INSTALL_PATH/app/cache/prod $INSTALL_PATH/app/logs/
 
 # update symlinks -- offline
 echo "Taking Orbital offline"

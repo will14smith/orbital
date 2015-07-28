@@ -2,10 +2,14 @@ var options = require('./config');
 if(options.production) { require('newrelic'); }
 
 var fs = require('fs');
+var express = require('express');
 
 var port = options.port || 3000;
+var host = options.host;
 
-var app;
+var app = express();
+var http;
+
 if (options.ssl) {
     var httpOptions = {
         key: fs.readFileSync(options.ssl.key),
@@ -13,28 +17,34 @@ if (options.ssl) {
         ca: fs.readFileSync(options.ssl.ca)
     };
 
-    app = require('https').createServer(httpOptions);
+    http = require('https').createServer(httpOptions, app);
 } else {
-    app = require('http').createServer();
+    http = require('http').createServer(app);
 }
 
-var io = require('socket.io').listen(app);
+var io = require('socket.io').listen(http);
 
-app.listen(port, function () {
-    console.log("Listening on port", port)
+app.get('/', function(req, res){
+    res.send('<h1>orbital-node</h1><p>You have probably reached here by mistake!</p>');
+});
+
+http.listen(port, host, function () {
+    var addr = http.address();
+
+    console.info("Listening on " + addr.address + ":" + addr.port)
 });
 
 io.sockets.on('connect', function (socket) {
-    console.log('connected client ' + socket.id);
+    console.debug('connected client ' + socket.id);
 
     require('./scoring')(io, socket);
     require('./competition')(io, socket);
 
     // misc handlers
     socket.on('disconnect', function () {
-        console.log('disconnect ' + socket.id);
+        console.debug('disconnect ' + socket.id);
     });
     socket.on('error', function () {
-        console.error('[SOCKET.IO]', arguments);
+        console.error('[socket.io]', arguments);
     });
 });

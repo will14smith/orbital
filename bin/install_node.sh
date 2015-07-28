@@ -48,7 +48,7 @@ stop orbital-node
 
 # setup upstart script
 echo "Installing new startup script"
-cat node_upstart_template | sed -r "s#@@INSTALL_PATH@@#$INSTALL_PATH#g" > /etc/init/orbital-node.conf
+cat orbital-node_upstart_template | sed -r "s#@@INSTALL_PATH@@#$INSTALL_PATH#g" > /etc/init/orbital-node.conf
 chmod 644 /etc/init/orbital-node.conf
 
 echo "Starting new version"
