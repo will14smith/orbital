@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-pushd src/sockets > /dev/null
+pushd src/node > /dev/null
 
 echo "Creating list of files"
 
