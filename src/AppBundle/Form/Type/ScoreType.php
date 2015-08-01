@@ -5,7 +5,7 @@ namespace AppBundle\Form\Type;
 use AppBundle\Services\Enum\BowType;
 use AppBundle\Services\Enum\Skill;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ScoreType extends AbstractProofType
 {
@@ -53,7 +53,7 @@ class ScoreType extends AbstractProofType
             ->add($this->getProofForm($builder));
     }
 
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
             'data_class' => 'AppBundle\Entity\Score'

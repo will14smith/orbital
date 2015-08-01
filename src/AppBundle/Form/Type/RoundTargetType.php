@@ -6,7 +6,7 @@ use AppBundle\Services\Enum\ScoreZones;
 use AppBundle\Services\Enum\Unit;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class RoundTargetType extends AbstractType
 {
@@ -22,7 +22,7 @@ class RoundTargetType extends AbstractType
             ->add('end_size');
     }
 
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
             'data_class' => 'AppBundle\Entity\RoundTarget'
