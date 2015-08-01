@@ -5,7 +5,7 @@ namespace AppBundle\Form\Type;
 use AppBundle\Services\Enum\BadgeCategory;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class BadgeType extends AbstractType
 {
@@ -16,7 +16,7 @@ class BadgeType extends AbstractType
             ->add('description', 'textarea')
             ->add('algo_name')
             ->add('category', 'choice', [
-                'choices' => BadgeCategory::$choices
+                'choices' => BadgeCategory::$choices,
             ])
             ->add('multiple', 'checkbox', [
                 'required' => false
@@ -27,7 +27,7 @@ class BadgeType extends AbstractType
             ]);
     }
 
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
             'data_class' => 'AppBundle\Entity\Badge',

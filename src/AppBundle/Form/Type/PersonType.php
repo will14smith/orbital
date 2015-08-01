@@ -7,7 +7,7 @@ use AppBundle\Services\Enum\Gender;
 use AppBundle\Services\Enum\Skill;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class PersonType extends AbstractType
 {
@@ -31,7 +31,7 @@ class PersonType extends AbstractType
             ->add('admin', 'checkbox', ['required' => false]);
     }
 
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
             'data_class' => 'AppBundle\Entity\Person'

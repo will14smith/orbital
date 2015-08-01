@@ -3,7 +3,7 @@
 namespace AppBundle\Form\Type;
 
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class LeagueMatchType extends AbstractProofType
 {
@@ -63,7 +63,7 @@ class LeagueMatchType extends AbstractProofType
 
     }
 
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
             'data_class' => 'AppBundle\Entity\LeagueMatch'
