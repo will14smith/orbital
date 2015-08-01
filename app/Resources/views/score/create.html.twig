@@ -6,6 +6,16 @@
 
 {% block body %}
     {{ form_start(form) }}
+
+    {{ form_row(form.date_shot) }}
+
+    {{ form_row(form.round) }}
+    {{ form_row(form.score) }}
+
+    {# WHAT was shot #}
+    {# WHO shot it #}
+
+
     {{ form_widget(form) }}
 
     <input type="submit" value="Create"/>

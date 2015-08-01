@@ -34,8 +34,8 @@ class ScoreType extends AbstractProofType
             ->add('hits', 'integer', ['required' => false]);
 
         $checks = $builder->create('checks', 'form', ['inherit_data' => true, 'label' => false, 'attr' => ['class' => 'inline']])
-            ->add('competition', 'checkbox', ['required' => false])
-            ->add('complete', 'checkbox', ['required' => false]);
+            ->add('competition', 'checkbox', ['required' => false, 'label' => 'Was it shot at a competition?'])
+            ->add('complete', 'checkbox', ['required' => false, 'label' => 'Have you completed it?']);
 
         $builder
             ->add('person', 'entity', [
@@ -49,7 +49,7 @@ class ScoreType extends AbstractProofType
             ])
             ->add($score)
             ->add($checks)
-            ->add('date_shot')
+            ->add('date_shot', 'datetime', ['label' => 'When was (or will be) this shot?'])
             ->add($this->getProofForm($builder));
     }
 
