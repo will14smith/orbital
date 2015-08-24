@@ -69,7 +69,6 @@ gulp.task('js:app', function () {
         'scoring': []
     };
 
-
     var tasks = Object.keys(folders).map(function (value) {
         var folder = value;
         var paths = [];
@@ -95,4 +94,3 @@ gulp.task('watch', ['images', 'css', 'js'], function () {
 });
 
 gulp.task('default', ['images', 'css', 'js']);
-

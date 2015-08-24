@@ -95,6 +95,7 @@ p:first-child {
 
 @import "buttons";
 @import "forms";
+@import "selectWidget";
 @import "lists";
 @import "pagination";
 @import "scoring";
@@ -134,7 +135,7 @@ p:first-child {
     .form-input + label {
       height: 15px;
     }
-    
+
     button {
       width: 100%;
 
@@ -148,4 +149,3 @@ p:first-child {
 footer.page-footer {
   padding: $layout-gutter-width;
 }
-

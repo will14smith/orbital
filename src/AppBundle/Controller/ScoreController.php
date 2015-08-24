@@ -7,6 +7,7 @@ use AppBundle\Entity\ProofEntity;
 use AppBundle\Entity\Score;
 use AppBundle\Entity\ScoreProof;
 use AppBundle\Form\Type\ScoreType;
+use AppBundle\Utilities\DateUtils;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -65,18 +66,16 @@ class ScoreController extends Controller
     public function createAction(Request $request)
     {
         $score = new Score();
-
-        $form = $this->createForm(new ScoreType(), $score);
-        $form_proof = $form->get('proof');
-
-        $form->handleRequest($request);
-        $this->validateScore($form);
-        $this->handleProof($form_proof);
-
+        $score->setDateShot(DateUtils::getRoundedNow());
         // default normal users to themselves
         if (!$this->isGranted('ROLE_ADMIN')) {
             $score->setPerson($this->getUser());
         }
+
+        $form = $this->createForm(new ScoreType(), $score);
+
+        $form->handleRequest($request);
+        $this->validateScore($form);
 
         if ($form->isSubmitted() && $form->isValid()) {
             if (!$score->getSkill()) {
@@ -87,7 +86,6 @@ class ScoreController extends Controller
             }
 
             $em = $this->getDoctrine()->getManager();
-            $this->saveProof($em, $score, $form_proof);
             $em->persist($score);
             $em->flush();
 
