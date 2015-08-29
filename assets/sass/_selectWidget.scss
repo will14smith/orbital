@@ -1,5 +1,5 @@
 .select-widget {
-  @extend .md-shadow-bottom-z-2;
+  @extend .md-shadow-bottom-z-1;
 
   display: none;
   background: #ffffff;
@@ -19,7 +19,7 @@
 
     a {
       display: flex;
-      padding: $layout-gutter-width/4;
+      padding: $layout-gutter-width/2 $layout-gutter-width;
 
       &:hover {
         background: #f4f4f4;

@@ -21,20 +21,18 @@
 
     {{ form_row(form.competition) }}
 
-    <div>
-        {{ form_errors(form.score) }}
-        {{ form_errors(form.hits) }}
-        {{ form_errors(form.golds) }}
 
-        <div layout="row">
-            {{ form_label(form.score, null, { 'label_attr' : { 'flex': '33' } }) }}
-            {{ form_label(form.hits, null, { 'label_attr' : { 'flex': '33' } }) }}
-            {{ form_label(form.golds, null, { 'label_attr' : { 'flex': '33' } }) }}
+
+
+    <div layout="row">
+        <div flex="33">
+            {{ form_row(form.score) }}
         </div>
-        <div layout="row">
-            {{ form_widget(form.score, { 'attr' : { 'flex': '33' } }) }}
-            {{ form_widget(form.hits, { 'attr' : { 'flex': '33' } }) }}
-            {{ form_widget(form.golds, { 'attr' : { 'flex': '33' } }) }}
+        <div flex="33">
+            {{ form_row(form.hits) }}
+        </div>
+        <div flex="33">
+            {{ form_row(form.golds) }}
         </div>
     </div>
 
