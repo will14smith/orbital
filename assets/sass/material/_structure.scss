@@ -1,20 +1,20 @@
-$h1-font-size-base: 2em !default;
-$h1-margin-base: 0.67em 0 !default;
+$h1-font-size-base: $h1-font-size !default;
+$h1-margin-base: 0.67rem 0 !default;
 
-$h2-font-size-base: 1.5em !default;
-$h2-margin-base: 0.83em 0 !default;
+$h2-font-size-base: $h2-font-size !default;
+$h2-margin-base: 0.83rem 0 !default;
 
-$h3-font-size-base: 1.17em !default;
-$h3-margin-base: 1em 0 !default;
+$h3-font-size-base: $h3-font-size !default;
+$h3-margin-base: 1rem 0 !default;
 
-$h4-font-size-base: 1em !default;
-$h4-margin-base: 1.33em 0 !default;
+$h4-font-size-base: $h4-font-size !default;
+$h4-margin-base: 1.33rem 0 !default;
 
-$h5-font-size-base: 0.83em !default;
-$h5-margin-base: 1.67em 0 !default;
+$h5-font-size-base: $h5-font-size !default;
+$h5-margin-base: 1.67rem 0 !default;
 
-$h6-font-size-base: 0.75em !default;
-$h6-margin-base: 2.33em 0 !default;
+$h6-font-size-base: $h6-font-size !default;
+$h6-margin-base: 2.33rem 0 !default;
 
 *,
 *:before,
@@ -44,7 +44,6 @@ html, body {
   h3 {
     display: block;
     @include margin-selectors();
-    font-size: 1.17em;
     font-weight: bold;
   }
 }
