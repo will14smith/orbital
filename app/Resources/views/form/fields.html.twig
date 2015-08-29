@@ -13,3 +13,53 @@
         </div>
     {% endspaceless %}
 {% endblock form_row %}
+
+{% block person_widget %}
+    {% spaceless %}
+        <ul class="select-widget select-width--person" id="{{ id }}" name="{{ full_name }}" data-value="{{ value }}">
+            {% for choice in choices %}
+                {% set person = choice.data %}
+
+                <li data-id="{{ person.id }}" data-skill="{{ person.skill }}" data-bowtype="{{ person.bowtype }}">
+                    <a href="#">{{ person }}</a>
+                </li>
+            {% endfor %}
+        </ul>
+    {% endspaceless %}
+{% endblock %}
+{% block round_widget %}
+    {% spaceless %}
+        <ul class="select-widget select-width--round" id="{{ id }}" name="{{ full_name }}" data-value="{{ value }}">
+            {% for choice in choices %}
+                {% set round = choice.data %}
+
+                <li data-id="{{ round.id }}">
+                    <a href="#">{{ round }}</a>
+                </li>
+            {% endfor %}
+        </ul>
+    {% endspaceless %}
+{% endblock %}
+
+{% block skill_widget %}
+    {% spaceless %}
+        <ul class="select-widget select-width--skill" id="{{ id }}" name="{{ full_name }}" data-value="{{ value }}">
+            {% for choice in choices %}
+                <li data-id="{{ choice.data }}">
+                    <a href="#">{{ choice.label }}</a>
+                </li>
+            {% endfor %}
+        </ul>
+    {% endspaceless %}
+{% endblock %}
+{% block bowtype_widget %}
+    {% spaceless %}
+        <ul class="select-widget select-width--bowtype" id="{{ id }}" name="{{ full_name }}" data-value="{{ value }}">
+            {% for choice in choices %}
+                <li data-id="{{ choice.data }}">
+                    <a href="#">{{ choice.label }}</a>
+                </li>
+            {% endfor %}
+        </ul>
+    {% endspaceless %}
+{% endblock %}

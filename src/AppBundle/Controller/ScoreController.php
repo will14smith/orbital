@@ -7,6 +7,7 @@ use AppBundle\Entity\ProofEntity;
 use AppBundle\Entity\Score;
 use AppBundle\Entity\ScoreProof;
 use AppBundle\Form\Type\ScoreType;
+use AppBundle\Utilities\DateUtils;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -28,7 +29,7 @@ class ScoreController extends Controller
     {
         $scoreRepository = $this->getDoctrine()->getRepository("AppBundle:Score");
 
-        switch($request->query->get('filter', 'all')) {
+        switch ($request->query->get('filter', 'all')) {
             case 'mine':
                 $query = $scoreRepository->findByPerson($this->getUser()->getId());
                 break;
@@ -46,7 +47,7 @@ class ScoreController extends Controller
                 break;
         }
 
-        $paginator  = $this->get('knp_paginator');
+        $paginator = $this->get('knp_paginator');
         $scores = $paginator->paginate($query, $request->query->getInt('page', 1));
 
         return $this->render('score/list.html.twig', [
@@ -65,33 +66,26 @@ class ScoreController extends Controller
     public function createAction(Request $request)
     {
         $score = new Score();
-
+        $score->setDateShot(DateUtils::getRoundedNow());
+        // default normal users to themselves
         if (!$this->isGranted('ROLE_ADMIN')) {
             $score->setPerson($this->getUser());
         }
 
         $form = $this->createForm(new ScoreType(), $score);
-        $form_proof = $form->get('proof');
 
         $form->handleRequest($request);
         $this->validateScore($form);
-        $this->handleProof($form_proof);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            // fill the default values
             if (!$score->getSkill()) {
                 $score->setSkill($score->getPerson()->getSkill());
             }
             if (!$score->getBowtype()) {
                 $score->setBowtype($score->getPerson()->getBowtype());
             }
-            // auto approve admin entered scores
-            if ($this->isGranted('ROLE_ADMIN') && $score->getComplete()) {
-                $score->accept();
-            }
 
             $em = $this->getDoctrine()->getManager();
-            $this->saveProof($em, $score, $form_proof);
             $em->persist($score);
             $em->flush();
 

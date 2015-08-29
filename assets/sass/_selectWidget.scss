@@ -1,0 +1,52 @@
+.select-widget {
+  @extend .md-shadow-bottom-z-1;
+
+  display: none;
+  background: #ffffff;
+
+  border: 1px solid #e4e4e4;
+  border-radius: $layout-gutter-width/2;
+  overflow: none;
+
+  margin: 0; padding: 0;
+  list-style-type: none;
+
+  li {
+    border-top: 1px solid #e4e4e4;
+    &:first-child {
+      border-top: none;
+    }
+
+    a {
+      display: flex;
+      padding: $layout-gutter-width/2 $layout-gutter-width;
+
+      &:hover {
+        background: #f4f4f4;
+      }
+    }
+
+    &.selected a {
+      background: map-get($color-blue, '700');
+      color: #fff;
+    }
+  }
+
+  &__label {
+    text-decoration: underline;
+
+    &--novalue {
+      color: $link-color;
+
+      &:hover {
+        color: $link-hover-color;
+      }
+    }
+
+    &:hover {
+      color: $link-hover-color;
+
+      cursor: pointer;
+    }
+  }
+}

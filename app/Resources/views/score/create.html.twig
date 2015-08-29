@@ -6,9 +6,50 @@
 
 {% block body %}
     {{ form_start(form) }}
-    {{ form_widget(form) }}
+
+    <div layout="row">
+        {{ form_errors(form.date_shot) }}
+        {{ form_widget(form.date_shot.date) }}
+        {{ form_widget(form.date_shot.time) }}
+    </div>
+
+    <div>
+        {{ form_errors(form.round) }}
+        {{ form_label(form.round) }}
+        {{ form_widget(form.round) }}
+    </div>
+
+    {{ form_row(form.competition) }}
+
+
+
+
+    <div layout="row">
+        <div flex="33">
+            {{ form_row(form.score) }}
+        </div>
+        <div flex="33">
+            {{ form_row(form.hits) }}
+        </div>
+        <div flex="33">
+            {{ form_row(form.golds) }}
+        </div>
+    </div>
+
+    {{ form_errors(form.person) }}
+    {{ form_label(form.person) }}
+    {{ form_widget(form.person) }}
+
+    {{ form_errors(form.skill) }}
+    {{ form_label(form.skill) }}
+    {{ form_widget(form.skill) }}
+
+    {{ form_errors(form.bowtype) }}
+    {{ form_label(form.bowtype) }}
+    {{ form_widget(form.bowtype) }}
 
     <input type="submit" value="Create"/>
+
     {{ form_end(form) }}
 {% endblock %}
 
@@ -19,8 +60,18 @@
         'use strict';
 
         (function ($) {
-            $('#score_proof_proof_images').collection('Image');
-            $('#score_proof_proof_people').collection('Person');
+            $('#{{ form.round.vars.id }}').selectWidget();
+
+            $('#{{ form.person.vars.id }}').selectWidget().on('selectwidget:update', function (evt, value, person) {
+                $('#{{ form.skill.vars.id }}').selectWidget('set', person.skill);
+                $('#{{ form.bowtype.vars.id }}').selectWidget('set', person.bowtype);
+            });
+
+            $('#{{ form.skill.vars.id }}').selectWidget();
+            $('#{{ form.bowtype.vars.id }}').selectWidget();
+
+            // if time < now: show score
+            // else: hide score
         })(jQuery);
     </script>
 

@@ -2,12 +2,15 @@
 
 namespace AppBundle\Form\Type;
 
-use AppBundle\Services\Enum\BowType;
-use AppBundle\Services\Enum\Skill;
+use AppBundle\Form\Type\Custom\BowTypeSelectType;
+use AppBundle\Form\Type\Custom\PersonSelectType;
+use AppBundle\Form\Type\Custom\RoundSelectType;
+use AppBundle\Form\Type\Custom\SkillSelectType;
+use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class ScoreType extends AbstractProofType
+class ScoreType extends AbstractType
 {
     private $edit;
 
@@ -18,39 +21,28 @@ class ScoreType extends AbstractProofType
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $mode = $builder->create('mode', 'form', ['inherit_data' => true, 'label' => false, 'attr' => ['orbital-collapse' => 'Skill / Bowtype']])
-            ->add('skill', 'choice', [
-                'choices' => Skill::$choices,
+        $builder
+            ->add('person', new PersonSelectType(), [
+                'disabled' => $this->edit
+            ])
+            ->add('skill', new SkillSelectType(), [
                 'required' => false,
             ])
-            ->add('bowtype', 'choice', [
-                'choices' => BowType::$choices,
+            ->add('bowtype', new BowTypeSelectType(), [
                 'required' => false,
-            ]);
-
-        $score = $builder->create('score', 'form', ['inherit_data' => true, 'label' => false, 'attr' => ['class' => 'inline']])
+            ])
+            ->add('round', new RoundSelectType(), [
+                'disabled' => $this->edit
+            ])
             ->add('score', 'integer', ['required' => false])
             ->add('golds', 'integer', ['required' => false])
-            ->add('hits', 'integer', ['required' => false]);
-
-        $checks = $builder->create('checks', 'form', ['inherit_data' => true, 'label' => false, 'attr' => ['class' => 'inline']])
-            ->add('competition', 'checkbox', ['required' => false])
-            ->add('complete', 'checkbox', ['required' => false]);
-
-        $builder
-            ->add('person', 'entity', [
-                'class' => 'AppBundle:Person',
-                'disabled' => $this->edit
-            ])
-            ->add($mode)
-            ->add('round', 'entity', [
-                'class' => 'AppBundle:Round',
-                'disabled' => $this->edit
-            ])
-            ->add($score)
-            ->add($checks)
-            ->add('date_shot')
-            ->add($this->getProofForm($builder));
+            ->add('hits', 'integer', ['required' => false])
+            ->add('competition', 'checkbox', ['required' => false, 'label' => 'Was it shot at a competition?'])
+            ->add('complete', 'hidden')
+            ->add('date_shot', 'datetime', [
+                'label' => 'When was (or will be) this shot?',
+                'minutes' => [0, 15, 30, 45]
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver)
