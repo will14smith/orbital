@@ -59,8 +59,11 @@ table {
       display: flex;
 
       a {
-        font-size: $h3-font-size;
         border-left: none;
+
+        i {
+          line-height: 1.5rem;
+        }
       }
     }
   }
@@ -85,12 +88,6 @@ dl {
 
   dt {
     font-weight: bold;
-
-    border-top: $dl-border;
-  }
-
-  dt:first-child {
-    border-top: none;
   }
 
   @media (min-width: $layout-breakpoint-sm) {
@@ -101,6 +98,8 @@ dl {
     dt {
       width: 33%;
       font-weight: normal;
+
+      border-top: $dl-border;
     }
 
     dd {
@@ -109,6 +108,9 @@ dl {
       border-left: $dl-border;
     }
 
+    dt:first-child {
+      border-top: none;
+    }
     dt:first-child + dd {
       border-top: none;
     }

@@ -1,64 +1,53 @@
 var gulp = require('gulp'),
-    sass = require('gulp-ruby-sass'),
+    sass = require('gulp-sass'),
     autoprefixer = require('gulp-autoprefixer'),
     concat = require('gulp-concat'),
     notify = require("gulp-notify"),
-    bower = require('gulp-bower'),
     rename = require('gulp-rename'),
     uglify = require('gulp-uglify'),
     path = require('path'),
     merge = require('merge-stream');
 
-gulp.task('bower', function () {
-    return bower()
-        .pipe(gulp.dest('./bower_components'));
-});
+var outputPath = '../web';
 
-gulp.task('icons', ['bower'], function () {
-    return gulp.src('./bower_components/fontawesome/fonts/**.*')
-        .pipe(gulp.dest('../web/fonts'));
+gulp.task('icons', function () {
+    return gulp.src('./node_modules/font-awesome/fonts/*')
+        .pipe(gulp.dest(outputPath + '/fonts'));
 });
 
 gulp.task('images', function () {
-    return gulp.src('./images/**.*')
-        .pipe(gulp.dest('../web/images'));
+    return gulp.src('./images/*')
+        .pipe(gulp.dest(outputPath + '/images'));
 });
 
-gulp.task('css', ['bower', 'icons'], function () {
-    return sass('./sass/', {
-        style: 'compressed',
-        compass: true,
-        loadPath: [
-            './sass',
-            './bower_components/fontawesome/scss',
-            './bower_components/normalize.scss'
-        ]
-    })
-        .on("error", notify.onError(function (error) {
-            return "Error: " + error.message;
-        }))
-        .pipe(autoprefixer())
-        .pipe(gulp.dest('../web/css'));
+gulp.task('css', function () {
+    return gulp.src(['./sass/app.scss', './sass/pdf.scss'])
+      .pipe(sass({
+          compass: true,
+          includePaths: [
+              './sass',
+              './node_modules/font-awesome/scss',
+              './node_modules/normalize.scss'
+          ]
+      }).on('error', sass.logError))
+      .pipe(autoprefixer())
+      .pipe(gulp.dest(outputPath + '/css'));
 });
 
 function processJsFiles(files, folder) {
     return gulp.src(files)
         .pipe(concat(folder + '.js'))
-        .pipe(gulp.dest('../web/js'))
-        .pipe(uglify())
-        .pipe(rename(folder + '.min.js'))
-        .pipe(gulp.dest('../web/js'))
+        .pipe(gulp.dest(outputPath + '/js'))
         .on("error", notify.onError(function (error) {
             return "Error: " + error.message;
         }));
 }
 
-gulp.task('js:vendors', ['bower'], function() {
+gulp.task('js:vendors', function() {
     return processJsFiles([
-        './bower_components/modernizr/modernizr.js',
-        './bower_components/jquery/dist/jquery.js',
-        './bower_components/socket.io-client/socket.io.js',
-        './bower_components/mithril/mithril.js'
+        './node_modules/jquery/dist/jquery.js',
+        './node_modules/socket.io-client/socket.io.js',
+        './node_modules/mithril/mithril.js'
     ], 'vendors');
 });
 
@@ -87,10 +76,10 @@ gulp.task('js:app', function () {
 
 gulp.task('js', ['js:vendors', 'js:app']);
 
-gulp.task('watch', ['images', 'css', 'js'], function () {
+gulp.task('watch', ['images', 'icons', 'css', 'js'], function () {
     gulp.watch('./images/**/*', ['images']);
     gulp.watch('./sass/**/*.scss', ['css']);
     gulp.watch('./js/**/*.js', ['js:app']);
 });
 
-gulp.task('default', ['images', 'css', 'js']);
+gulp.task('default', ['images', 'icons', 'css', 'js']);

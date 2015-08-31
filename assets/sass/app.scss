@@ -4,16 +4,18 @@
 @import "material/layout";
 @import "material/mixins";
 @import "material/structure";
-@import "compass/support";
-@import "compass/css3/background-size";
 
-$fa-font-size-base: $base-font-size;
+$fa-font-size-base: $font-size;
 @import "font-awesome";
+
+html { font-size: $font-size; }
 
 body {
   background-color: map-get($color-grey, '50');
   height: auto;
   min-height: 100%;
+  font-size: 1rem;
+  line-height: 1.5;
 }
 
 $link-color: map-get($primary-color-palette, '500');
@@ -24,6 +26,12 @@ h1, h2, h3, h4, h5, h6 {
   line-height: 1;
   margin-bottom: 0;
 }
+h1 { font-size: $h1-font-size; }
+h2 { font-size: $h2-font-size; }
+h3 { font-size: $h3-font-size; }
+h4 { font-size: $h4-font-size; }
+h5 { font-size: $h5-font-size; }
+h6 { font-size: $h6-font-size; }
 
 a {
   color: $link-color;
@@ -102,8 +110,6 @@ p:first-child {
 
 // widgets
 .widget {
-  font-size: $h5-font-size-base;
-
   .widget-title {
     margin-bottom: 0;
   }
