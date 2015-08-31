@@ -8,14 +8,16 @@ var gulp = require('gulp'),
     path = require('path'),
     merge = require('merge-stream');
 
+var outputPath = '../web';
+
 gulp.task('icons', function () {
     return gulp.src('./node_modules/font-awesome/fonts/*')
-        .pipe(gulp.dest('../web/fonts'));
+        .pipe(gulp.dest(outputPath + '/fonts'));
 });
 
 gulp.task('images', function () {
     return gulp.src('./images/*')
-        .pipe(gulp.dest('../web/images'));
+        .pipe(gulp.dest(outputPath + '/images'));
 });
 
 gulp.task('css', function () {
@@ -29,16 +31,13 @@ gulp.task('css', function () {
           ]
       }).on('error', sass.logError))
       .pipe(autoprefixer())
-      .pipe(gulp.dest('../web/css'));
+      .pipe(gulp.dest(outputPath + '/css'));
 });
 
 function processJsFiles(files, folder) {
     return gulp.src(files)
         .pipe(concat(folder + '.js'))
-        .pipe(gulp.dest('../web/js'))
-        .pipe(uglify())
-        .pipe(rename(folder + '.min.js'))
-        .pipe(gulp.dest('../web/js'))
+        .pipe(gulp.dest(outputPath + '/js'))
         .on("error", notify.onError(function (error) {
             return "Error: " + error.message;
         }));
