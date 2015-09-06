@@ -7,46 +7,52 @@
 {% block body %}
     {{ form_start(form) }}
 
-    <div layout="row">
+    <div layout="row" layout-padding>
         {{ form_errors(form.date_shot) }}
         {{ form_widget(form.date_shot.date) }}
+        <span>&nbsp;-&nbsp;</span>
         {{ form_widget(form.date_shot.time) }}
     </div>
 
-    <div>
+    <div layout-padding>
         {{ form_errors(form.round) }}
         {{ form_label(form.round) }}
         {{ form_widget(form.round) }}
     </div>
 
-    {{ form_row(form.competition) }}
+    <div layout-padding>
+        {{ form_row(form.competition) }}
+    </div>
 
-
-
-
-    <div layout="row">
-        <div flex="33">
+    <div layout-gt-md="row" layout-padding>
+        <div flex-gt-md="33">
             {{ form_row(form.score) }}
         </div>
-        <div flex="33">
+        <div flex-gt-md="33">
             {{ form_row(form.hits) }}
         </div>
-        <div flex="33">
+        <div flex-gt-md="33">
             {{ form_row(form.golds) }}
         </div>
     </div>
 
-    {{ form_errors(form.person) }}
-    {{ form_label(form.person) }}
-    {{ form_widget(form.person) }}
-
-    {{ form_errors(form.skill) }}
-    {{ form_label(form.skill) }}
-    {{ form_widget(form.skill) }}
-
-    {{ form_errors(form.bowtype) }}
-    {{ form_label(form.bowtype) }}
-    {{ form_widget(form.bowtype) }}
+    <div layout-gt-md="row" layout-padding>
+        <div flex-gt-md layout="column" layout-gt-md="row">
+            {{ form_errors(form.person) }}
+            {{ form_label(form.person) }}
+            {{ form_widget(form.person) }}
+        </div>
+        <div flex-gt-md layout="column" layout-gt-md="row">
+            {{ form_errors(form.skill) }}
+            {{ form_label(form.skill) }}
+            {{ form_widget(form.skill) }}
+        </div>
+        <div flex-gt-md layout="column" layout-gt-md="row">
+            {{ form_errors(form.bowtype) }}
+            {{ form_label(form.bowtype) }}
+            {{ form_widget(form.bowtype) }}
+        </div>
+    </div>
 
     <input type="submit" value="Create"/>
 
@@ -60,15 +66,15 @@
         'use strict';
 
         (function ($) {
-            $('#{{ form.round.vars.id }}').selectWidget();
+            $('#{{ form.round.vars.id }}').select2();
 
-            $('#{{ form.person.vars.id }}').selectWidget().on('selectwidget:update', function (evt, value, person) {
-                $('#{{ form.skill.vars.id }}').selectWidget('set', person.skill);
-                $('#{{ form.bowtype.vars.id }}').selectWidget('set', person.bowtype);
+            $('#{{ form.person.vars.id }}').select2().on('select2:select', function (e) {
+                var personId = e.params.data.id;
+                //TODO load & set skill + bowtype
             });
 
-            $('#{{ form.skill.vars.id }}').selectWidget();
-            $('#{{ form.bowtype.vars.id }}').selectWidget();
+            $('#{{ form.skill.vars.id }}').select2();
+            $('#{{ form.bowtype.vars.id }}').select2();
 
             // if time < now: show score
             // else: hide score
