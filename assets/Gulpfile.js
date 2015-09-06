@@ -27,7 +27,8 @@ gulp.task('css', function () {
           includePaths: [
               './sass',
               './node_modules/font-awesome/scss',
-              './node_modules/normalize.scss'
+              './node_modules/normalize.scss',
+              './node_modules',
           ]
       }).on('error', sass.logError))
       .pipe(autoprefixer())
@@ -47,7 +48,8 @@ gulp.task('js:vendors', function() {
     return processJsFiles([
         './node_modules/jquery/dist/jquery.js',
         './node_modules/socket.io-client/socket.io.js',
-        './node_modules/mithril/mithril.js'
+        './node_modules/select2/dist/js/select2.js',
+        './node_modules/mithril/mithril.js',
     ], 'vendors');
 });
 
