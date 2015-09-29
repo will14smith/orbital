@@ -67,6 +67,8 @@ class ScoreController extends Controller
     {
         $score = new Score();
         $score->setDateShot(DateUtils::getRoundedNow());
+        // NOTE: only handling completed scores for now.
+        $score->setComplete(true);
         // default normal users to themselves
         if (!$this->isGranted('ROLE_ADMIN')) {
             $score->setPerson($this->getUser());
