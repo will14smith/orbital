@@ -8,7 +8,8 @@ use AppBundle\Services\Enum\ScoreZones;
 class ZoneManager {
     private static $zones = [
         ScoreZones::METRIC => 'AppBundle\Services\Scoring\Zones\MetricCalculator',
-        ScoreZones::IMPERIAL => 'AppBundle\Services\Scoring\Zones\ImperialCalculator'
+        ScoreZones::IMPERIAL => 'AppBundle\Services\Scoring\Zones\ImperialCalculator',
+        ScoreZones::WORCESTER => 'AppBundle\Services\Scoring\Zones\WorcesterCalculator'
     ];
 
     /**
