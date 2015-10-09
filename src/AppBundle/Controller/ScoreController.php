@@ -74,6 +74,19 @@ class ScoreController extends Controller
             $score->setPerson($this->getUser());
         }
 
+        // continue
+        if ($request->query->has('person')) {
+            $score->setPerson(
+                $this->getDoctrine()->getRepository('AppBundle:Person')
+                    ->find($request->query->get('person')));
+        }
+        if ($request->query->has('skill')) {
+            $score->setSkill($request->query->get('skill'));
+        }
+        if ($request->query->has('bowtype')) {
+            $score->setBowtype($request->query->get('bowtype'));
+        }
+
         $form = $this->createForm(new ScoreType(), $score);
 
         $form->handleRequest($request);
@@ -83,6 +96,17 @@ class ScoreController extends Controller
             $em = $this->getDoctrine()->getManager();
             $em->persist($score);
             $em->flush();
+
+            if($request->get('continue')) {
+                return $this->redirectToRoute(
+                    'score_create',
+                    [
+                        'person' => $score->getPerson()->getId(),
+                        'skill' => $score->getSkill(),
+                        'bowtype' => $score->getBowtype(),
+                    ]
+                );
+            }
 
             return $this->redirectToRoute(
                 'score_detail',
