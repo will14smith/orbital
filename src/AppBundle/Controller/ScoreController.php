@@ -80,13 +80,6 @@ class ScoreController extends Controller
         $this->validateScore($form);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            if (!$score->getSkill()) {
-                $score->setSkill($score->getPerson()->getSkill());
-            }
-            if (!$score->getBowtype()) {
-                $score->setBowtype($score->getPerson()->getBowtype());
-            }
-
             $em = $this->getDoctrine()->getManager();
             $em->persist($score);
             $em->flush();
@@ -248,34 +241,51 @@ class ScoreController extends Controller
 
     private function validateScore(FormInterface $form)
     {
+        /** @var Score $score */
+        $score = $form->getData();
+        $person = $score->getPerson();
+
         if (!$form->isSubmitted()) {
             return;
         }
 
-        $score_form = $form->get('score');
-
-        /** @var Score $data */
-        $data = $form->getData();
-
-        if ($data->getScore() === null) {
-            if ($data->getComplete()) {
-                $score_form->get('score')->addError(new FormError('Score is required if completed.'));
+        if ($score->getScore() === null) {
+            if ($score->getComplete()) {
+                $form->get('score')->addError(new FormError('Score is required.'));
             } else {
-                $data->setScore(0);
+                $score->setScore(0);
             }
         }
-        if ($data->getHits() === null) {
-            if ($data->getComplete()) {
-                $score_form->get('hits')->addError(new FormError('Hits are required if completed.'));
+        if ($score->getHits() === null) {
+            if ($score->getComplete()) {
+                $form->get('hits')->addError(new FormError('Hits are required.'));
             } else {
-                $data->setHits(0);
+                $score->setHits(0);
             }
         }
-        if ($data->getGolds() === null) {
-            if ($data->getComplete()) {
-                $score_form->get('golds')->addError(new FormError('Golds are required if completed.'));
+        if ($score->getGolds() === null) {
+            if ($score->getComplete()) {
+                $form->get('golds')->addError(new FormError('Golds are required.'));
             } else {
-                $data->setGolds(0);
+                $score->setGolds(0);
+            }
+        }
+
+        if (!$score->getSkill()) {
+            $defaultBowtype = $person->getSkill();
+            if (!$defaultBowtype) {
+                $form->get('skill')->addError(new FormError('Must provide skill level'));
+            } else {
+                $score->setSkill($defaultBowtype);
+            }
+        }
+
+        if (!$score->getBowtype()) {
+            $defaultBowtype = $person->getBowtype();
+            if (!$defaultBowtype) {
+                $form->get('bowtype')->addError(new FormError('Must provide bow type'));
+            } else {
+                $score->setBowtype($defaultBowtype);
             }
         }
     }

@@ -7,19 +7,20 @@
 {% block body %}
     {{ form_start(form) }}
 
-    <div layout="row" layout-padding>
+    <div layout="row" layout-padding layout-align="start center">
         {{ form_errors(form.date_shot) }}
+        {{ form_label(form.date_shot) }}
         {{ form_widget(form.date_shot) }}
+
+        {{ form_errors(form.competition) }}
+        {{ form_label(form.competition) }}
+        {{ form_widget(form.competition) }}
     </div>
 
-    <div layout-padding>
+    <div layout-padding layout-align="start center">
         {{ form_errors(form.round) }}
         {{ form_label(form.round) }}
         {{ form_widget(form.round) }}
-    </div>
-
-    <div layout-padding>
-        {{ form_row(form.competition) }}
     </div>
 
     <div layout-gt-md="row" layout-padding>
