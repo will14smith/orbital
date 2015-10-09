@@ -34,10 +34,14 @@ class HandicapManager
 
         if (!$old_hc) {
             $scores = $this->doctrine->getRepository('AppBundle:Score')
-                ->findBy(
-                    ['person' => $person],
-                    ['date_shot' => 'ASC']
-                );
+                ->createQueryBuilder('s')
+                ->where('s.person = :person')
+                ->andWhere('s.date_accepted IS NOT NULL')
+                ->orderBy('s.date_shot', 'ASC')
+
+                ->setParameter('person', $person->getId())
+                ->getQuery()
+                ->getResult();
 
             if (count($scores) >= 3) {
                 $new_hc = $this->rebuild($scores);
