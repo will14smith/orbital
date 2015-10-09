@@ -23,11 +23,14 @@ class ScoreRepository extends EntityRepository
             $pbs_nested->expr()->gt('s.date_shot', 'a.date_shot')
         );
         $pbs_nested = $pbs_nested
-            ->where($pbs_nested_1)
-            ->orWhere($pbs_nested_2);
+            ->where($pbs_nested->expr()->orX($pbs_nested_1, $pbs_nested_2))
+            ->andWhere('a.person = :person');
 
         return $this->createQueryBuilder('s')
             ->where((new Expr())->not((new Expr())->exists($pbs_nested->getDQL())))
+            ->andWhere('s.person = :person')
+
+            ->setParameter('person', $person->getId())
             ->getQuery()
             ->getResult();
     }
