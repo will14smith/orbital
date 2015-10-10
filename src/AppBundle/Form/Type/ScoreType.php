@@ -39,9 +39,9 @@ class ScoreType extends AbstractType
             ->add('hits', 'integer', ['required' => false])
             ->add('competition', 'checkbox', ['required' => false, 'label' => 'Was it shot at a competition?'])
             ->add('complete', 'hidden')
-            ->add('date_shot', 'datetime', [
+            ->add('date_shot', 'date', [
                 'label' => 'When was (or will be) this shot?',
-                'minutes' => [0, 15, 30, 45]
+                'widget' => 'single_text',
             ]);
     }
 

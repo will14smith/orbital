@@ -21,6 +21,7 @@ abstract class InitialiserTestCase extends ServiceTestCase
         if($hc !== null) {
             $handicap = new PersonHandicap();
             $handicap->setHandicap($hc);
+            $handicap->setIndoor(true);
 
             $person->addHandicap($handicap);
         }

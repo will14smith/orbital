@@ -35,6 +35,10 @@ class PersonHandicap
      * @ORM\Column(type="integer")
      */
     protected $handicap;
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    protected $indoor;
 
     /**
      * @ORM\ManyToOne(targetEntity="Score")
@@ -170,5 +174,28 @@ class PersonHandicap
     public function getScore()
     {
         return $this->score;
+    }
+
+    /**
+     * Set indoor
+     *
+     * @param boolean $indoor
+     * @return Round
+     */
+    public function setIndoor($indoor)
+    {
+        $this->indoor = $indoor;
+
+        return $this;
+    }
+
+    /**
+     * Get indoor
+     *
+     * @return boolean
+     */
+    public function getIndoor()
+    {
+        return $this->indoor;
     }
 }

@@ -6,6 +6,7 @@ namespace AppBundle\Services\Importing;
 
 use AppBundle\Entity\Person;
 use AppBundle\Exceptions\InvalidFormatException;
+use AppBundle\Services\Enum\Gender;
 use AppBundle\Services\Enum\Skill;
 use Doctrine\Bundle\DoctrineBundle\Registry;
 
@@ -40,7 +41,9 @@ class PersonImporter
         $this->parse_header($reader, 'Full Members');
 
         $keys = $reader->fgetcsv();
-        $this->verify_keys($keys, ['CID', 'Login', 'First Name', 'Surname', 'Email']);
+        if(!$this->verify_keys($keys, ['CID', 'Login', 'First Name', 'Surname', 'Gender', 'Email'])) {
+            throw new InvalidFormatException("File doesn't contain all the required fields");
+        }
 
         $num_keys = count($keys);
 
@@ -59,7 +62,9 @@ class PersonImporter
         $this->parse_header($reader, 'Life / Associate');
 
         $keys = $reader->fgetcsv();
-        $this->verify_keys($keys, ['CID/Card Number', 'Login', 'First Name', 'Surname', 'Email']);
+        if(!$this->verify_keys($keys, ['CID/Card Number', 'Login', 'First Name', 'Surname', 'Gender', 'Email'])) {
+            throw new InvalidFormatException("File doesn't contain all the required fields");
+        }
 
         $num_keys = count($keys);
 
@@ -116,8 +121,8 @@ class PersonImporter
     {
         $person = new Person();
 
-        // 'CID', 'Login', 'First Name', 'Surname', 'Email'
-        // 'CID/Card Number', 'Login', 'First Name', 'Surname', 'Email'
+        // 'CID', 'Login', 'Gender', 'First Name', 'Surname', 'Email'
+        // 'CID/Card Number', 'Login', 'Gender', 'First Name', 'Surname', 'Email'
 
         if (!empty($data['CID'])) {
             $person->setCid($data['CID']);
@@ -131,8 +136,9 @@ class PersonImporter
 
         $name = $data['First Name'] . ' ' . $data['Surname'];
         $person->setName($name);
+        $person->setGender($data['Gender'] === 'Female' ? Gender::FEMALE : Gender::MALE);
 
-        if (!empty($data['Login'])) {
+        if (!empty($data['Email'])) {
             $person->setEmail($data['Email']);
         }
 
@@ -147,17 +153,19 @@ class PersonImporter
                 'cid' => $person->getCid()
             ]);
 
+        $em = $this->doctrine->getManager();
         if (!$current_person) {
             $person->setSkill(Skill::NOVICE);
             $person->setAdmin(false);
 
-            $em = $this->doctrine->getManager();
 
             $em->persist($person);
             // if we cared about performance we could share the em...
-            $em->flush();
+        } else {
+            $current_person->setSkill(Skill::SENIOR);
         }
 
+        $em->flush();
         return !$current_person;
     }
 }

@@ -4,7 +4,6 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Person;
 use AppBundle\Form\Type\PersonType;
-use AppBundle\Form\Type\ReassessType;
 use AppBundle\Services\Importing\PersonImportParameters;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -163,44 +162,6 @@ class PersonController extends Controller
         }
 
         return $this->render('person/edit.html.twig', [
-            'form' => $form->createView(),
-        ]);
-    }
-
-    /**
-     * @Security("has_role('ROLE_ADMIN')")
-     * @Route("/person/{id}/reassess", name="person_handicap_reassess", methods={"GET", "POST"})
-     *
-     * @param int $id
-     * @param Request $request
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function handicapReassessAction($id, Request $request)
-    {
-        $em = $this->getDoctrine()->getManager();
-        $person = $em->getRepository('AppBundle:Person')->find($id);
-        if (!$person) {
-            throw $this->createNotFoundException(
-                'No person found for id ' . $id
-            );
-        }
-
-        $data = [];
-        $form = $this->createForm(new ReassessType(), $data);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $data = $form->getData();
-            $this->get('orbital.handicap.manager')->reassess($person, $data['start_date'], $data['end_date']);
-
-            return $this->redirectToRoute(
-                'person_detail',
-                ['id' => $person->getId()]
-            );
-        }
-
-        return $this->render('person/reassess.html.twig', [
             'form' => $form->createView(),
         ]);
     }

@@ -23,15 +23,24 @@ class ScoreRepository extends EntityRepository
             $pbs_nested->expr()->gt('s.date_shot', 'a.date_shot')
         );
         $pbs_nested = $pbs_nested
-            ->where($pbs_nested_1)
-            ->orWhere($pbs_nested_2);
+            ->where($pbs_nested->expr()->orX($pbs_nested_1, $pbs_nested_2))
+            ->andWhere('a.person = :person');
 
         return $this->createQueryBuilder('s')
             ->where((new Expr())->not((new Expr())->exists($pbs_nested->getDQL())))
+            ->andWhere('s.person = :person')
+
+            ->setParameter('person', $person->getId())
             ->getQuery()
             ->getResult();
     }
 
+    /**
+     * @param Person $person
+     * @param \DateTime $start_date
+     * @param \DateTime $end_date
+     * @return Score[]
+     */
     public function getScoresByPersonBetween(Person $person, \DateTime $start_date, \DateTime $end_date){
         $score_query = $this->createQueryBuilder('s');
 
@@ -73,5 +82,24 @@ class ScoreRepository extends EntityRepository
         } else {
             return $q->where('s.date_accepted IS NOT NULL');
         }
+    }
+
+    /**
+     * @param int $personId
+     * @param bool $indoor
+     * @return Score[]
+     */
+    public function findByPersonAndLocation($personId, $indoor)
+    {
+        return $this->createQueryBuilder("s")
+            ->join('s.round', 'r')
+            ->where('s.person = :person_id')
+            ->andWhere('r.indoor = :indoor')
+
+            ->setParameter('person_id', $personId)
+            ->setParameter('indoor', $indoor)
+
+            ->getQuery()
+            ->getResult();
     }
 }

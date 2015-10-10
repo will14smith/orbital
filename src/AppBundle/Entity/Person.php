@@ -593,9 +593,19 @@ class Person implements UserInterface
     /**
      * @return PersonHandicap
      */
-    public function getCurrentHandicap()
+    public function getCurrentHandicap($indoor)
     {
-        return $this->getHandicaps()->last();
+        $count = $this->handicaps->count();
+
+        for ($i = $count - 1; $i >= 0; $i--) {
+            /** @var PersonHandicap $handicap */
+            $handicap = $this->handicaps->get($i);
+            if ($handicap->getIndoor() === $indoor) {
+                return $handicap;
+            }
+        }
+
+        return null;
     }
 
     public function __toString()

@@ -5,6 +5,7 @@ namespace AppBundle\Tests\Services\Handicap;
 
 
 use AppBundle\Entity\Person;
+use AppBundle\Entity\PersonHandicap;
 use AppBundle\Entity\Round;
 use AppBundle\Entity\RoundTarget;
 use AppBundle\Entity\Score;
@@ -41,17 +42,29 @@ class HandicapManagerTest extends ServiceTestCase
         $score->setPerson($person);
         $score->setRound($this->getRound());
 
-        switch($idx) {
-            case 0: $score->setScore(150); break;
-            case 1: $score->setScore(200); break;
-            case 2: $score->setScore(250); break;
-            case 3: $score->setScore(500); break;
-            case 4: $score->setScore(200); break;
-            case 5: $score->setScore(100); break;
+        switch ($idx) {
+            case 0:
+                $score->setScore(150);
+                break;
+            case 1:
+                $score->setScore(200);
+                break;
+            case 2:
+                $score->setScore(250);
+                break;
+            case 3:
+                $score->setScore(500);
+                break;
+            case 4:
+                $score->setScore(200);
+                break;
+            case 5:
+                $score->setScore(100);
+                break;
         }
 
-        if($idx == 3) {
-            $score->setDateShot(new \DateTime('+1 year'));
+        if ($idx == 3) {
+            $score->setDateShot(new \DateTime('8 hours ago'));
         } else {
             $score->setDateShot(new \DateTime('yesterday'));
         }
@@ -68,7 +81,7 @@ class HandicapManagerTest extends ServiceTestCase
         }, $score_idxs);
 
         $score = null;
-        if(count($scores) > 0) {
+        if (count($scores) > 0) {
             $score = $scores[count($scores) - 1];
         }
 
@@ -77,29 +90,41 @@ class HandicapManagerTest extends ServiceTestCase
         return [$person, $score];
     }
 
-    private function expectHandicap($person, $handicap = null)
+    private function expectHandicap($person, array $handicaps = [])
     {
         $doctrine = $this->getDoctrine();
         $manager = new HandicapManager($doctrine, new HandicapCalculator());
 
-        if ($handicap === null) {
-            $count = $this->never();
-        } else {
-            $count = $this->once();
-        }
+        $i = -1;
+        $last_hc = null;
 
         $em = $doctrine->getManager();
-        $em->expects($count)
+        $em->expects($this->exactly(count($handicaps)))
             ->method('persist')
-            ->with($this->attributeEqualTo('handicap', $handicap));
+            ->with($this->callback(function(PersonHandicap $handicap) use ($handicaps, &$i, &$last_hc) {
+                if($handicap !== $last_hc) {
+                    $last_hc = $handicap;
+                    $i++;
+                }
+
+                $expected = $handicaps[$i];
+                return $expected == $handicap->getHandicap();
+            }));
 
         $repository = $this->getRepository($doctrine, 'AppBundle:Score', '\AppBundle\Entity\ScoreRepository');
         $repository->expects($this->any())
             ->method('findBy')->willReturn($person->scores);
 
         $repository->expects($this->any())
+            ->method('findByPersonAndLocation')->willReturnCallback(function ($_, $indoor) use ($person) {
+                return array_filter($person->scores, function (Score $x) use ($indoor) {
+                    return $x->isIndoor() === $indoor;
+                });
+            });
+
+        $repository->expects($this->any())
             ->method('getScoresByPersonBetween')->willReturnCallback(function ($_, $start, $end) use ($person) {
-                return array_filter($person->scores, function(Score $x) use ($start, $end) {
+                return array_filter($person->scores, function (Score $x) use ($start, $end) {
                     return $x->getDateShot() >= $start && $x->getDateShot() <= $end;
                 });
             });
@@ -121,25 +146,25 @@ class HandicapManagerTest extends ServiceTestCase
     public function testInitialScore3()
     {
         list($person, $score) = $this->getPerson([0, 1, 2]);
-        $this->expectHandicap($person, 72)->updateHandicap($score);
+        $this->expectHandicap($person, [72])->updateHandicap($score);
     }
 
     public function testUpdateScoreImprovement()
     {
         list($person, $score) = $this->getPerson([0, 1, 2, 3]);
-        $this->expectHandicap($person, 55)->updateHandicap($score);
+        $this->expectHandicap($person, [72, 55])->updateHandicap($score);
     }
 
     public function testUpdateScoreNoChange()
     {
         list($person, $score) = $this->getPerson([0, 1, 2, 4]);
-        $this->expectHandicap($person, 72)->updateHandicap($score);
+        $this->expectHandicap($person, [72])->updateHandicap($score);
     }
 
     public function testUpdateScoreWorse()
     {
         list($person, $score) = $this->getPerson([0, 1, 2, 5]);
-        $this->expectHandicap($person, 72)->updateHandicap($score);
+        $this->expectHandicap($person, [72])->updateHandicap($score);
     }
 
     public function testReassessScoreTooFewScores()
@@ -157,18 +182,18 @@ class HandicapManagerTest extends ServiceTestCase
     public function testReassessScoreCorrect()
     {
         list($person) = $this->getPerson([0, 1, 2, 4]);
-        $this->expectHandicap($person, 70)->reassess($person);
+        $this->expectHandicap($person, [70])->reassess($person);
     }
 
     public function testReassessScoreTooFewFilteredScores()
     {
         list($person) = $this->getPerson([0, 1, 3]);
-        $this->expectHandicap($person)->reassess($person);
+        $this->expectHandicap($person)->reassess($person, new \DateTime('1 year ago'), new \DateTime('12 hours ago'));
     }
 
     public function testReassessScoreCorrectFiltered()
     {
         list($person) = $this->getPerson([1, 2, 3, 4]);
-        $this->expectHandicap($person, 70)->reassess($person);
+        $this->expectHandicap($person, [70])->reassess($person, new \DateTime('1 year ago'), new \DateTime('12 hours ago'));
     }
 }
