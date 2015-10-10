@@ -29,9 +29,10 @@
             <h2 class="widget-title">Actions</h2>
             <ul>
                 <li><a href="{{ url('person_edit', { 'id': person.id }) }}">Edit</a></li>
-                <li><a href="{{ url('person_handicap_reassess', { 'id': person.id }) }}">Reassess Handicap</a>
-                </li>
                 <li><a href="{{ url('person_delete', { 'id': person.id }) }}">Delete</a></li>
+                <li><a href="{{ url('person_handicap_reassess', { 'id': person.id }) }}">Reassess Handicap</a></li>
+                <li><a href="{{ url('person_handicap_manual', { 'id': person.id }) }}">Manual Handicap</a></li>
+                <li><a href="{{ url('person_handicap_rebuild', { 'id': person.id }) }}">Rebuild Handicap</a></li>
             </ul>
         </div>
     {% endif %}

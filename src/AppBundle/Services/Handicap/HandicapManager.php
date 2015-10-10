@@ -7,7 +7,6 @@ use AppBundle\Entity\PersonHandicap;
 use AppBundle\Entity\Score;
 use AppBundle\Services\Enum\HandicapType;
 use Doctrine\Bundle\DoctrineBundle\Registry;
-use Doctrine\DBAL\Types\Type;
 
 class HandicapManager
 {
@@ -43,7 +42,7 @@ class HandicapManager
             // existing hc is older => average update
             if ($current_handicap->getDate() < $score->getDateShot()) {
                 $new_handicap = $this->averageUpdate($current_handicap, $score);
-                if($new_handicap !== null) {
+                if ($new_handicap !== null) {
                     $new_handicaps = [$new_handicap];
                 }
             } else {
@@ -52,13 +51,49 @@ class HandicapManager
                     return $hc->getDate() <= $score->getDateShot();
                 })->last();
 
-                $new_handicaps = $this->rebuild($person, $indoor, $last_handicap);
-                $this->removeAfter($person, $last_handicap);
+                $new_handicaps = $this->calculateRebuild($person, $indoor, $last_handicap);
+                $this->removeAfter($person, $indoor, $last_handicap);
             }
         } else {
             // might be 3 scores => try rebuilding
-            $new_handicaps = $this->rebuild($person, $indoor);
+            $new_handicaps = $this->calculateRebuild($person, $indoor);
         }
+
+        if (count($new_handicaps) > 0) {
+            $this->persist($person, $new_handicaps);
+        }
+    }
+
+    /**
+     * @param Person $person
+     * @param bool $indoor
+     */
+    public function rebuildFromLastManual(Person $person, $indoor)
+    {
+        $handicaps = $person->getHandicaps();
+
+        $handicap = null;
+        for ($i = $handicaps->count() - 1; $i >= 0; $i--) {
+            /** @var PersonHandicap $i_handicap */
+            $i_handicap = $handicaps->get($i);
+            if ($i_handicap->getIndoor() === $indoor && $i_handicap->getType() === HandicapType::MANUAL) {
+                $handicap = $i_handicap;
+                break;
+            }
+        }
+
+        $this->rebuild($person, $indoor, $handicap);
+    }
+
+    /**
+     * @param Person $person
+     * @param bool $indoor
+     * @param PersonHandicap $from
+     */
+    public function rebuild(Person $person, $indoor, PersonHandicap $from = null)
+    {
+        $new_handicaps = $this->calculateRebuild($person, $indoor, $from);
+        $this->removeAfter($person, $indoor, $from);
 
         if (count($new_handicaps) > 0) {
             $this->persist($person, $new_handicaps);
@@ -93,7 +128,7 @@ class HandicapManager
      *
      * @return PersonHandicap[]
      */
-    private function rebuild(Person $person, $indoor, PersonHandicap $from = null)
+    private function calculateRebuild(Person $person, $indoor, PersonHandicap $from = null)
     {
         // get all scores (in date order) since from
         $person_scores = $this->doctrine->getRepository('AppBundle:Score')
@@ -133,7 +168,7 @@ class HandicapManager
         // iterate remaining
         for (; $score_index < $score_count; $score_index++) {
             $next_handicap = $this->averageUpdate($last_handicap, $scores[$score_index]);
-            if($next_handicap === null) {
+            if ($next_handicap === null) {
                 continue;
             }
 
@@ -278,13 +313,23 @@ class HandicapManager
         $em->flush();
     }
 
-    private function removeAfter(Person $person, PersonHandicap $last_handicap)
+    /**
+     * @param Person $person
+     * @param bool $indoor
+     * @param PersonHandicap $last_handicap
+     */
+    private function removeAfter(Person $person, $indoor, PersonHandicap $last_handicap = null)
     {
+        /** @var PersonHandicap[] $handicaps */
         $handicaps = $this->doctrine->getRepository('AppBundle:PersonHandicap')
-            ->findAfter($person, $last_handicap->getDate());
+            ->findAfter($person, $last_handicap !== null ? $last_handicap->getDate() : new \DateTime('1990-01-01'));
 
         $em = $this->doctrine->getManager();
         foreach ($handicaps as $handicap) {
+            if ($handicap->getIndoor() !== $indoor) {
+                continue;
+            }
+
             $em->remove($handicap);
         }
         $em->flush();
