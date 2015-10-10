@@ -517,4 +517,12 @@ class Score
     {
         return $this->competition_entry;
     }
+
+    /**
+     * @return bool
+     */
+    public function isIndoor()
+    {
+        return $this->getRound()->getIndoor();
+    }
 }

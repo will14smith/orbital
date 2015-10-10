@@ -35,6 +35,12 @@ class ScoreRepository extends EntityRepository
             ->getResult();
     }
 
+    /**
+     * @param Person $person
+     * @param \DateTime $start_date
+     * @param \DateTime $end_date
+     * @return Score[]
+     */
     public function getScoresByPersonBetween(Person $person, \DateTime $start_date, \DateTime $end_date){
         $score_query = $this->createQueryBuilder('s');
 
@@ -76,5 +82,24 @@ class ScoreRepository extends EntityRepository
         } else {
             return $q->where('s.date_accepted IS NOT NULL');
         }
+    }
+
+    /**
+     * @param int $personId
+     * @param bool $indoor
+     * @return Score[]
+     */
+    public function findByPersonAndLocation($personId, $indoor)
+    {
+        return $this->createQueryBuilder("s")
+            ->join('s.round', 'r')
+            ->where('s.person = :person_id')
+            ->andWhere('r.indoor = :indoor')
+
+            ->setParameter('person_id', $personId)
+            ->setParameter('indoor', $indoor)
+
+            ->getQuery()
+            ->getResult();
     }
 }

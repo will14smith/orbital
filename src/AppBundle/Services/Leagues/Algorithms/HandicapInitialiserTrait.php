@@ -3,6 +3,7 @@
 namespace AppBundle\Services\Leagues\Algorithms;
 
 use AppBundle\Entity\LeaguePerson;
+use AppBundle\Entity\Person;
 
 trait HandicapInitialiserTrait
 {
@@ -14,8 +15,8 @@ trait HandicapInitialiserTrait
     public function init(array $people)
     {
         usort($people, function(LeaguePerson $personA, LeaguePerson $personB) {
-            $handicapA = $personA->getPerson()->getCurrentHandicap();
-            $handicapB = $personB->getPerson()->getCurrentHandicap();
+            $handicapA = $this->getHandicap($personA->getPerson());
+            $handicapB = $this->getHandicap($personB->getPerson());
 
             if(!$handicapA && !$handicapB) {
                 return 0;
@@ -36,5 +37,22 @@ trait HandicapInitialiserTrait
         }
 
         return $people;
+    }
+
+    private function getHandicap(Person $person) {
+        $indoor = $person->getCurrentHandicap(true);
+        $outdoor = $person->getCurrentHandicap(false);
+
+        if($indoor === null) {
+            return $outdoor;
+        } else if($outdoor === null) {
+            return $indoor;
+        }
+
+        if($indoor->getHandicap() < $outdoor->getHandicap()) {
+            return $indoor;
+        } else {
+            return $outdoor;
+        }
     }
 }

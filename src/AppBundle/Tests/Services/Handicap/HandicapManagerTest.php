@@ -41,16 +41,28 @@ class HandicapManagerTest extends ServiceTestCase
         $score->setPerson($person);
         $score->setRound($this->getRound());
 
-        switch($idx) {
-            case 0: $score->setScore(150); break;
-            case 1: $score->setScore(200); break;
-            case 2: $score->setScore(250); break;
-            case 3: $score->setScore(500); break;
-            case 4: $score->setScore(200); break;
-            case 5: $score->setScore(100); break;
+        switch ($idx) {
+            case 0:
+                $score->setScore(150);
+                break;
+            case 1:
+                $score->setScore(200);
+                break;
+            case 2:
+                $score->setScore(250);
+                break;
+            case 3:
+                $score->setScore(500);
+                break;
+            case 4:
+                $score->setScore(200);
+                break;
+            case 5:
+                $score->setScore(100);
+                break;
         }
 
-        if($idx == 3) {
+        if ($idx == 3) {
             $score->setDateShot(new \DateTime('+1 year'));
         } else {
             $score->setDateShot(new \DateTime('yesterday'));
@@ -68,7 +80,7 @@ class HandicapManagerTest extends ServiceTestCase
         }, $score_idxs);
 
         $score = null;
-        if(count($scores) > 0) {
+        if (count($scores) > 0) {
             $score = $scores[count($scores) - 1];
         }
 
@@ -98,8 +110,15 @@ class HandicapManagerTest extends ServiceTestCase
             ->method('findBy')->willReturn($person->scores);
 
         $repository->expects($this->any())
+            ->method('findByPersonAndLocation')->willReturnCallback(function ($_, $indoor) use ($person) {
+                return array_filter($person->scores, function (Score $x) use ($indoor) {
+                    return $x->isIndoor() === $indoor;
+                });
+            });
+
+        $repository->expects($this->any())
             ->method('getScoresByPersonBetween')->willReturnCallback(function ($_, $start, $end) use ($person) {
-                return array_filter($person->scores, function(Score $x) use ($start, $end) {
+                return array_filter($person->scores, function (Score $x) use ($start, $end) {
                     return $x->getDateShot() >= $start && $x->getDateShot() <= $end;
                 });
             });
