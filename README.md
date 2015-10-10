@@ -2,8 +2,9 @@ Archery record management
 =======
 
 [![Build Status](https://travis-ci.org/ICAC/orbital.svg?branch=master)](https://travis-ci.org/ICAC/orbital)
-[![Test Coverage](https://codeclimate.com/github/ICAC/orbital/badges/coverage.svg)](https://codeclimate.com/github/ICAC/orbital)
+[![Dependency Status](https://www.versioneye.com/user/projects/5618f636a193340f3200037d/badge.svg?style=flat)](https://www.versioneye.com/user/projects/5618f636a193340f3200037d)
 
+[![Test Coverage](https://codeclimate.com/github/ICAC/orbital/badges/coverage.svg)](https://codeclimate.com/github/ICAC/orbital)
 [![Code Climate](https://codeclimate.com/github/ICAC/orbital/badges/gpa.svg)](https://codeclimate.com/github/ICAC/orbital)
 [![SensioLabsInsight](https://insight.sensiolabs.com/projects/b81e7935-0416-4887-a31d-05385aa1c7f1/mini.png)](https://insight.sensiolabs.com/projects/b81e7935-0416-4887-a31d-05385aa1c7f1)
 
