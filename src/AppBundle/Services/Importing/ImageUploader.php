@@ -29,10 +29,14 @@ class ImageUploader
 
         $uniq_time = explode(' ', microtime());
 
-        $file_name = $uniq_time[1] . substr($uniq_time[0], 2) . '.jpg';
+        $file_name = $uniq_time[1] . substr($uniq_time[0], 2) . '.png';
         $path = $this->upload_path . DIRECTORY_SEPARATOR . $file_name;
 
-        imagejpeg($img, $path);
+        // preserve transparency
+        imagealphablending($img, false);
+        imagesavealpha($img, true);
+
+        imagepng($img, $path);
         imagedestroy($img);
 
         return $file_name;
