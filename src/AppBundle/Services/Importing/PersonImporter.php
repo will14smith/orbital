@@ -153,6 +153,7 @@ class PersonImporter
                 'cid' => $person->getCid()
             ]);
 
+        // if we cared about performance we could share the em...
         $em = $this->doctrine->getManager();
         if (!$current_person) {
             $person->setSkill(Skill::NOVICE);
@@ -160,12 +161,9 @@ class PersonImporter
 
 
             $em->persist($person);
-            // if we cared about performance we could share the em...
-        } else {
-            $current_person->setSkill(Skill::SENIOR);
+            $em->flush();
         }
 
-        $em->flush();
         return !$current_person;
     }
 }
