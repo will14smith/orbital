@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\Record;
 use AppBundle\Entity\RecordHolder;
 use AppBundle\Entity\RecordHolderPerson;
 use AppBundle\Form\Type\RecordHolderType;
@@ -26,6 +27,7 @@ class RecordAwardController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
         $record_repository = $em->getRepository('AppBundle:Record');
+        /** @var Record $record */
         $record = $record_repository->find($id);
         if (!$record) {
             throw $this->createNotFoundException(
@@ -34,6 +36,7 @@ class RecordAwardController extends Controller
         }
 
         $holder = new RecordHolder();
+        $holder->setRecord($record);
 
         $numHolders = $record->getNumHolders();
         for ($i = 0; $i < $numHolders; $i++) {
