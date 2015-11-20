@@ -123,7 +123,7 @@ class Round implements JsonSerializable
 
     public function __toString()
     {
-        return $this->name;
+        return (string) $this->name;
     }
 
     /**
@@ -183,10 +183,10 @@ class Round implements JsonSerializable
     /**
      * Set category
      *
-     * @param \AppBundle\Entity\RoundCategory $category
+     * @param RoundCategory $category
      * @return Round
      */
-    public function setCategory(\AppBundle\Entity\RoundCategory $category = null)
+    public function setCategory(RoundCategory $category = null)
     {
         $this->category = $category;
     
@@ -196,7 +196,7 @@ class Round implements JsonSerializable
     /**
      * Get category
      *
-     * @return \AppBundle\Entity\RoundCategory 
+     * @return RoundCategory
      */
     public function getCategory()
     {

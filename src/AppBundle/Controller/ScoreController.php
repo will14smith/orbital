@@ -67,8 +67,7 @@ class ScoreController extends Controller
     {
         $score = new Score();
         $score->setDateShot(DateUtils::getRoundedNow());
-        // NOTE: only handling completed scores for now.
-        $score->setComplete(true);
+
         if (!$this->isGranted('ROLE_ADMIN')) {
             // default normal users to themselves
             $score->setPerson($this->getUser());
@@ -140,11 +139,7 @@ class ScoreController extends Controller
             );
         }
 
-        if ($score->getComplete()) {
-            $handicap = $this->get('orbital.handicap.calculate')->handicapForScore($score);
-        } else {
-            $handicap = null;
-        }
+        $handicap = $this->get('orbital.handicap.calculate')->handicapForScore($score);
 
         return $this->render('score/detail.html.twig', [
             'score' => $score,
@@ -274,28 +269,6 @@ class ScoreController extends Controller
 
         if (!$form->isSubmitted()) {
             return;
-        }
-
-        if ($score->getScore() === null) {
-            if ($score->getComplete()) {
-                $form->get('score')->addError(new FormError('Score is required.'));
-            } else {
-                $score->setScore(0);
-            }
-        }
-        if ($score->getHits() === null) {
-            if ($score->getComplete()) {
-                $form->get('hits')->addError(new FormError('Hits are required.'));
-            } else {
-                $score->setHits(0);
-            }
-        }
-        if ($score->getGolds() === null) {
-            if ($score->getComplete()) {
-                $form->get('golds')->addError(new FormError('Golds are required.'));
-            } else {
-                $score->setGolds(0);
-            }
         }
 
         if (!$score->getSkill()) {

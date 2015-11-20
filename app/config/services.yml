@@ -15,21 +15,7 @@ services:
         class: AppBundle\Services\Importing\ImageUploader
         arguments: ["%orbital.upload_dir%"]
 
-#scoring
-    orbital.scoring.live_listener:
-        class: AppBundle\Services\Scoring\LiveScoringListener
-        arguments: ['@socketio_client']
-        tags:
-            - { name: kernel.event_listener, event: 'orbital.events.score_arrow_create', method: arrowAdded }
-            - { name: kernel.event_listener, event: 'orbital.events.score_arrow_update', method: arrowUpdated }
-            - { name: kernel.event_listener, event: 'orbital.events.score_arrow_remove', method: arrowRemoved }
-    orbital.scoring.agg_listener:
-        class: AppBundle\Services\Scoring\ScoringAggregationListener
-        arguments: ['@doctrine']
-        tags:
-            - { name: kernel.event_listener, event: 'orbital.events.score_arrow_create', method: arrowAdded }
-            - { name: kernel.event_listener, event: 'orbital.events.score_arrow_update', method: arrowUpdated }
-            - { name: kernel.event_listener, event: 'orbital.events.score_arrow_remove', method: arrowRemoved }
+# records
     orbital.scoring.record_listener:
         class: AppBundle\Services\Scoring\RecordListener
         arguments: ["@doctrine"]
@@ -137,11 +123,6 @@ services:
         - { name: security.voter }
     orbital.security.score_voter:
         class: AppBundle\Services\Security\ScoreVoter
-        public: false
-        tags:
-          - { name: security.voter }
-    orbital.security.scoring_voter:
-        class: AppBundle\Services\Security\ScoringVoter
         public: false
         tags:
           - { name: security.voter }

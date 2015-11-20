@@ -2,8 +2,6 @@
 
 namespace AppBundle\Services\Scoring;
 
-use AppBundle\Entity\RecordHolder;
-use AppBundle\Entity\RecordHolderPerson;
 use AppBundle\Entity\Score;
 use AppBundle\Services\Events\ScoreEvent;
 use Doctrine\Bundle\DoctrineBundle\Registry;
@@ -24,7 +22,7 @@ class RecordListener
     {
         $score = $event->getScore();
 
-        if ($score->getComplete() && $score->getCompetition()) {
+        if ($score->getCompetition()) {
             $this->checkForRecord($score);
         }
     }

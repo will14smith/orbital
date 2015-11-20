@@ -19,7 +19,6 @@ class AppKernel extends Kernel
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
             new Knp\Bundle\SnappyBundle\KnpSnappyBundle(),
             new Knp\Bundle\PaginatorBundle\KnpPaginatorBundle(),
-            new SocketIOBundle\SocketIOBundle(),
             new Hackzilla\BarcodeBundle\HackzillaBarcodeBundle(),
             new BarcodeBundle\BarcodeBundle(),
             new AppBundle\AppBundle(),

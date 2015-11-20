@@ -253,10 +253,10 @@ class CompetitionSessionEntry
     /**
      * Set person
      *
-     * @param \AppBundle\Entity\Person $person
+     * @param Person $person
      * @return CompetitionSessionEntry
      */
-    public function setPerson(\AppBundle\Entity\Person $person = null)
+    public function setPerson(Person $person = null)
     {
         $this->person = $person;
     
@@ -266,7 +266,7 @@ class CompetitionSessionEntry
     /**
      * Get person
      *
-     * @return \AppBundle\Entity\Person 
+     * @return Person
      */
     public function getPerson()
     {
@@ -276,10 +276,10 @@ class CompetitionSessionEntry
     /**
      * Set club
      *
-     * @param \AppBundle\Entity\Club $club
+     * @param Club $club
      * @return CompetitionSessionEntry
      */
-    public function setClub(\AppBundle\Entity\Club $club = null)
+    public function setClub(Club $club = null)
     {
         $this->club = $club;
     
@@ -289,7 +289,7 @@ class CompetitionSessionEntry
     /**
      * Get club
      *
-     * @return \AppBundle\Entity\Club 
+     * @return Club
      */
     public function getClub()
     {
@@ -299,10 +299,10 @@ class CompetitionSessionEntry
     /**
      * Set session
      *
-     * @param \AppBundle\Entity\CompetitionSession $session
+     * @param CompetitionSession $session
      * @return CompetitionSessionEntry
      */
-    public function setSession(\AppBundle\Entity\CompetitionSession $session = null)
+    public function setSession(CompetitionSession $session = null)
     {
         $this->session = $session;
     
@@ -312,7 +312,7 @@ class CompetitionSessionEntry
     /**
      * Get session
      *
-     * @return \AppBundle\Entity\CompetitionSession 
+     * @return CompetitionSession
      */
     public function getSession()
     {
@@ -322,10 +322,10 @@ class CompetitionSessionEntry
     /**
      * Set round
      *
-     * @param \AppBundle\Entity\Round $round
+     * @param Round $round
      * @return CompetitionSessionEntry
      */
-    public function setRound(\AppBundle\Entity\Round $round = null)
+    public function setRound(Round $round = null)
     {
         $this->round = $round;
     
@@ -335,7 +335,7 @@ class CompetitionSessionEntry
     /**
      * Get round
      *
-     * @return \AppBundle\Entity\Round 
+     * @return Round
      */
     public function getRound()
     {
@@ -345,10 +345,10 @@ class CompetitionSessionEntry
     /**
      * Set score
      *
-     * @param \AppBundle\Entity\Score $score
+     * @param Score $score
      * @return CompetitionSessionEntry
      */
-    public function setScore(\AppBundle\Entity\Score $score = null)
+    public function setScore(Score $score = null)
     {
         $this->score = $score;
     
@@ -358,7 +358,7 @@ class CompetitionSessionEntry
     /**
      * Get score
      *
-     * @return \AppBundle\Entity\Score 
+     * @return Score
      */
     public function getScore()
     {

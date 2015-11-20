@@ -2,8 +2,6 @@
 
 namespace AppBundle\Services\Competitions;
 
-use AppBundle\Entity\Club;
-
 class TeamResult implements ICompetitionResult
 {
     /** @var ICompetitionResult[] */

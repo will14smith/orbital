@@ -24,7 +24,6 @@ class HandicapListenerTest extends ServiceTestCase
     private function getValidScore() {
         $score = new Score();
 
-        $score->setComplete(true);
         $score->setDateAccepted(new \DateTime('10 seconds ago'));
 
         return $score;
@@ -37,17 +36,6 @@ class HandicapListenerTest extends ServiceTestCase
             ->method('updateHandicap');
 
         $score = $this->getValidScore();
-        $listener->score_create(new ScoreEvent($score));
-    }
-    public function testCreateScoreIncomplete() {
-        list($listener, $manager) = $this->createListener();
-
-        $manager->expects($this->never())
-            ->method('updateHandicap');
-
-        $score = $this->getValidScore();
-        $score->setComplete(false);
-
         $listener->score_create(new ScoreEvent($score));
     }
     public function testCreateScoreNotAccepted() {
@@ -98,21 +86,6 @@ class HandicapListenerTest extends ServiceTestCase
             ->method('updateHandicap');
 
         $score = $this->getValidScore();
-        $listener->score_update(new ScoreEvent($score));
-    }
-    public function testUpdateScoreIncomplete() {
-        list($listener, $manager, $doctrine) = $this->createListener();
-
-        $manager->expects($this->never())
-            ->method('updateHandicap');
-
-        $repo = $this->getRepository($doctrine, 'AppBundle:PersonHandicap', true);
-        $repo->expects($this->any())
-            ->method('exists')->willReturn(0);
-
-        $score = $this->getValidScore();
-        $score->setComplete(false);
-
         $listener->score_update(new ScoreEvent($score));
     }
     public function testUpdateScoreNotAccepted() {

@@ -62,11 +62,6 @@ class Score
     protected $competition_entry;
 
     /**
-     * @ORM\Column(type="boolean")
-     */
-    protected $complete;
-
-    /**
      * @ORM\Column(type="datetime")
      */
     protected $date_shot;
@@ -80,10 +75,6 @@ class Score
      */
     protected $date_accepted;
 
-    /**
-     * @ORM\OneToMany(targetEntity="ScoreArrow", mappedBy="score")
-     */
-    protected $arrows;
     /**
      * @ORM\OneToMany(targetEntity="ScoreProof", mappedBy="score")
      */
@@ -251,30 +242,6 @@ class Score
     }
 
     /**
-     * Set complete
-     *
-     * @param boolean $complete
-     *
-     * @return Score
-     */
-    public function setComplete($complete)
-    {
-        $this->complete = $complete;
-
-        return $this;
-    }
-
-    /**
-     * Get complete
-     *
-     * @return boolean
-     */
-    public function getComplete()
-    {
-        return $this->complete;
-    }
-
-    /**
      * Set date_shot
      *
      * @param \DateTime $dateShot
@@ -359,6 +326,14 @@ class Score
         }
 
         return $this;
+    }
+
+    public function isAccepted(\DateTime $now = null) {
+        if($now === null) {
+            $now = new \DateTime('now');
+        }
+
+        return $this->getDateAccepted() && $this->getDateAccepted() <= $now;
     }
 
     /**
@@ -460,39 +435,6 @@ class Score
     public function getProof()
     {
         return $this->proof;
-    }
-
-    /**
-     * Add arrows
-     *
-     * @param \AppBundle\Entity\ScoreArrow $arrows
-     * @return Score
-     */
-    public function addArrow(\AppBundle\Entity\ScoreArrow $arrows)
-    {
-        $this->arrows[] = $arrows;
-
-        return $this;
-    }
-
-    /**
-     * Remove arrows
-     *
-     * @param \AppBundle\Entity\ScoreArrow $arrows
-     */
-    public function removeArrow(\AppBundle\Entity\ScoreArrow $arrows)
-    {
-        $this->arrows->removeElement($arrows);
-    }
-
-    /**
-     * Get arrows
-     *
-     * @return \Doctrine\Common\Collections\Collection|ScoreArrow[]
-     */
-    public function getArrows()
-    {
-        return $this->arrows;
     }
 
     /**

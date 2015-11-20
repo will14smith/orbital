@@ -18,10 +18,10 @@ class LeagueMatchProof extends ProofEntity
     /**
      * Set match
      *
-     * @param \AppBundle\Entity\LeagueMatch $match
+     * @param LeagueMatch $match
      * @return LeagueMatchProof
      */
-    public function setMatch(\AppBundle\Entity\LeagueMatch $match = null)
+    public function setMatch(LeagueMatch $match = null)
     {
         $this->match = $match;
 
@@ -31,7 +31,7 @@ class LeagueMatchProof extends ProofEntity
     /**
      * Get match
      *
-     * @return \AppBundle\Entity\LeagueMatch 
+     * @return LeagueMatch
      */
     public function getMatch()
     {

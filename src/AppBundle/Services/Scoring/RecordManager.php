@@ -38,13 +38,15 @@ class RecordManager
     }
 
     /**
+     * @param Record $record
      * @param Score[] $scores
      * @return RecordHolder
      */
-    public static function createHolder(array $scores)
+    public static function createHolder($record, array $scores)
     {
         $holder = new RecordHolder();
 
+        $holder->setRecord($record);
         $holder->setLocation('?');
         $holder->setDate($scores[0]->getDateShot());
 
