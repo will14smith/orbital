@@ -1,0 +1,100 @@
+{% extends '::base.html.twig' %}
+
+{% block title %}
+    Create Record
+{% endblock %}
+
+{% block body %}
+    {{ form_start(form) }}
+    {{ form_widget(form) }}
+
+    <input type="submit" value="Create"/>
+
+    <div id="record_matrix_preview">
+        <h2>Records to be created</h2>
+        <ul>
+            <li>...</li>
+        </ul>
+    </div>
+
+    {{ form_end(form) }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <script>
+        (function ($) {
+            function get_selected(sel) {
+                return $(sel).children('option:selected').map(function () {
+                    return $(this).text();
+                }).toArray();
+            }
+
+            function format_record(round, num_holders, skill, gender, bowtype) {
+                // NOTE: keep this in sync with AppBundle:Record:__toString
+                var name = skill;
+
+                if (gender) {
+                    name += ' ' + gender;
+                }
+
+                if (bowtype) {
+                    name += ' ' + bowtype;
+                }
+
+                name += ' ' + round;
+
+                if (num_holders > 1) {
+                    name += ' Team';
+                }
+
+                return name;
+            }
+
+            function get_records() {
+                var round = get_selected('#record_matrix_round')[0];
+                var num_holders = $('#record_matrix_num_holders').val() || 1;
+                var skills = get_selected('#record_matrix_skill');
+                var genders = get_selected('#record_matrix_gender');
+                var bowtypes = get_selected('#record_matrix_bowtype');
+
+                if (genders.length === 0) {
+                    genders.push(null);
+                }
+                if (bowtypes.length === 0) {
+                    bowtypes.push(null);
+                }
+
+                var records = [];
+                skills.forEach(function (skill) {
+                    genders.forEach(function (gender) {
+                        bowtypes.forEach(function (bowtype) {
+                            records.push(format_record(round, num_holders, skill, gender, bowtype));
+                        });
+                    });
+                });
+
+                return records;
+            }
+
+            function display_records(records) {
+                var list = $('#record_matrix_preview').find('ul');
+
+                list.empty();
+                records.forEach(function (record) {
+                    list.append($('<li />').text(record));
+                });
+
+                console.log(records);
+            }
+
+            function update_records() {
+                display_records(get_records());
+            }
+
+            $('#record_matrix').find('input, select').change(update_records);
+            $(update_records);
+        })(jQuery);
+    </script>
+{% endblock %}

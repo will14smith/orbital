@@ -256,6 +256,8 @@ class Record
      */
     public function getDisplayName()
     {
+        // NOTE: keep AppBundle:Record:matrix.html.twig:format_record in sync
+
         // skill gender? bowtype? round team?
         $name = Skill::display($this->skill);
 
