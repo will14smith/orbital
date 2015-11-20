@@ -34,7 +34,6 @@ twig:
     form_themes:
         - form/fields.html.twig
     globals:
-      socketio_url: "%socketio_url%"
       app_version: %orbital.version%
       app_release: %orbital.version.date%
 # Assetic Configuration
@@ -94,11 +93,6 @@ knp_snappy:
         options:    []
     image:
         enabled:    false
-
-# socket.io client
-socket_io:
-    connection: "%socketio_url%"
-    version: 1.x
 
 parameters:
   hackzilla_barcode.class: BarcodeBundle\Utility\Barcode

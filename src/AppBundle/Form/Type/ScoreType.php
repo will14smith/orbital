@@ -34,11 +34,10 @@ class ScoreType extends AbstractType
             ->add('round', new RoundSelectType(), [
                 'disabled' => $this->edit
             ])
-            ->add('score', 'integer', ['required' => false])
-            ->add('golds', 'integer', ['required' => false])
-            ->add('hits', 'integer', ['required' => false])
+            ->add('score', 'integer', ['required' => true])
+            ->add('golds', 'integer', ['required' => true])
+            ->add('hits', 'integer', ['required' => true])
             ->add('competition', 'checkbox', ['required' => false, 'label' => 'Was it shot at a competition?'])
-            ->add('complete', 'hidden')
             ->add('date_shot', 'date', [
                 'label' => 'When was (or will be) this shot?',
                 'widget' => 'single_text',

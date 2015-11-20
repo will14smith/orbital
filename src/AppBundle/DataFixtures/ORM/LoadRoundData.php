@@ -4,16 +4,14 @@
 namespace AppBundle\DataFixtures\ORM;
 
 
-use AppBundle\Entity\Person;
 use AppBundle\Entity\Round;
+use AppBundle\Entity\RoundCategory;
 use AppBundle\Entity\RoundTarget;
 use AppBundle\Services\Enum\ScoreZones;
-use AppBundle\Services\Enum\Skill;
 use AppBundle\Services\Enum\Unit;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
-use Proxies\__CG__\AppBundle\Entity\RoundCategory;
 
 class LoadRoundData extends AbstractFixture implements OrderedFixtureInterface
 {

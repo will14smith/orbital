@@ -5,8 +5,8 @@ namespace AppBundle\Tests\Services\Leagues;
 use AppBundle\Entity\League;
 use AppBundle\Entity\LeagueMatch;
 use AppBundle\Entity\LeaguePerson;
-use AppBundle\Services\Events\LeagueMatchEvent;
-use AppBundle\Services\Leagues\LeagueListener;
+
+
 use AppBundle\Services\Leagues\LeagueManager;
 use AppBundle\Tests\Services\ServiceTestCase;
 

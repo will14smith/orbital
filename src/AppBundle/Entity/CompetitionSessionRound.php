@@ -39,10 +39,10 @@ class CompetitionSessionRound
     /**
      * Set session
      *
-     * @param \AppBundle\Entity\CompetitionSession $session
+     * @param CompetitionSession $session
      * @return CompetitionSessionRound
      */
-    public function setSession(\AppBundle\Entity\CompetitionSession $session = null)
+    public function setSession(CompetitionSession $session = null)
     {
         $this->session = $session;
     
@@ -52,7 +52,7 @@ class CompetitionSessionRound
     /**
      * Get session
      *
-     * @return \AppBundle\Entity\CompetitionSession 
+     * @return CompetitionSession
      */
     public function getSession()
     {

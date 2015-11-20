@@ -57,7 +57,6 @@ gulp.task('js:app', function () {
     var folders = {
         'head': [],
         'app': [],
-        'scoring': []
     };
 
     var tasks = Object.keys(folders).map(function (value) {

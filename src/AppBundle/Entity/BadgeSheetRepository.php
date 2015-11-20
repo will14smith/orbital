@@ -30,7 +30,6 @@ class BadgeSheetRepository extends EntityRepository
 
         $q = $q
             ->where($q->expr()->in('bh.id', $badgeIds))
-
             ->setParameter('date', new \DateTime(), Type::DATETIME);
 
         return $q->getQuery()->execute();

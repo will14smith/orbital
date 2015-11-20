@@ -36,11 +36,6 @@ class LoadClubData extends AbstractFixture implements OrderedFixtureInterface
         $manager->flush();
     }
 
-    private function init(Person $person)
-    {
-        $person->setSkill(Skill::SENIOR);
-    }
-
     /**
      * Get the order of this fixture
      *

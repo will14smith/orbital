@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -53,7 +54,7 @@ class Competition
      */
     public function __construct()
     {
-        $this->sessions = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->sessions = new ArrayCollection();
     }
 
     /**
@@ -161,10 +162,10 @@ class Competition
     /**
      * Add sessions
      *
-     * @param \AppBundle\Entity\CompetitionSession $sessions
+     * @param CompetitionSession $sessions
      * @return Competition
      */
-    public function addSession(\AppBundle\Entity\CompetitionSession $sessions)
+    public function addSession(CompetitionSession $sessions)
     {
         $this->sessions[] = $sessions;
     
@@ -174,9 +175,9 @@ class Competition
     /**
      * Remove sessions
      *
-     * @param \AppBundle\Entity\CompetitionSession $sessions
+     * @param CompetitionSession $sessions
      */
-    public function removeSession(\AppBundle\Entity\CompetitionSession $sessions)
+    public function removeSession(CompetitionSession $sessions)
     {
         $this->sessions->removeElement($sessions);
     }

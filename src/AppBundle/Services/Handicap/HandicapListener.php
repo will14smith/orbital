@@ -51,10 +51,7 @@ class HandicapListener
      */
     private function should_accept(Score $score, $full = true)
     {
-        if (!$score->getComplete()) {
-            return false;
-        }
-        if (!$score->getDateAccepted() || $score->getDateAccepted() > new \DateTime('now')) {
+        if (!$score->isAccepted()) {
             return false;
         }
 

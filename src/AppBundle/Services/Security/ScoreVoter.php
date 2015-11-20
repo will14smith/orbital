@@ -25,7 +25,7 @@ class ScoreVoter extends BaseVoter
                 }
 
                 if ($score->getPerson()->getId() == $user->getId()) {
-                    if (!$score->getComplete() && !$score->getDateAccepted()) {
+                    if (!$score->getDateAccepted()) {
                         return VoterInterface::ACCESS_GRANTED;
                     }
                 }
@@ -33,9 +33,6 @@ class ScoreVoter extends BaseVoter
                 break;
             case SecurityAction::ACCEPT:
                 if (!$user->isAdmin()) {
-                    return VoterInterface::ACCESS_DENIED;
-                }
-                if (!$score->getComplete()) {
                     return VoterInterface::ACCESS_DENIED;
                 }
                 if ($score->getDateAccepted()) {

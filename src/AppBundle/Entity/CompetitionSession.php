@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use AppBundle\Services\Competitions\CompetitionManager;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -29,17 +30,6 @@ class CompetitionSession
      * @ORM\Column(type="datetime")
      */
     protected $startTime;
-
-    /**
-     * The time the session actually started
-     *
-     * @ORM\Column(type="datetime", nullable=true)
-     */
-    protected $actualStartTime;
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     */
-    protected $actualEndTime;
 
     /**
      * Number of bosses available
@@ -75,8 +65,8 @@ class CompetitionSession
      */
     public function __construct()
     {
-        $this->rounds = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->entries = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->rounds = new ArrayCollection();
+        $this->entries = new ArrayCollection();
     }
 
     /**
@@ -184,10 +174,10 @@ class CompetitionSession
     /**
      * Set competition
      *
-     * @param \AppBundle\Entity\Competition $competition
+     * @param Competition $competition
      * @return CompetitionSession
      */
-    public function setCompetition(\AppBundle\Entity\Competition $competition = null)
+    public function setCompetition(Competition $competition = null)
     {
         $this->competition = $competition;
     
@@ -197,7 +187,7 @@ class CompetitionSession
     /**
      * Get competition
      *
-     * @return \AppBundle\Entity\Competition 
+     * @return Competition
      */
     public function getCompetition()
     {
@@ -207,10 +197,10 @@ class CompetitionSession
     /**
      * Add rounds
      *
-     * @param \AppBundle\Entity\CompetitionSessionRound $rounds
+     * @param CompetitionSessionRound $rounds
      * @return CompetitionSession
      */
-    public function addRound(\AppBundle\Entity\CompetitionSessionRound $rounds)
+    public function addRound(CompetitionSessionRound $rounds)
     {
         $this->rounds[] = $rounds;
     
@@ -220,9 +210,9 @@ class CompetitionSession
     /**
      * Remove rounds
      *
-     * @param \AppBundle\Entity\CompetitionSessionRound $rounds
+     * @param CompetitionSessionRound $rounds
      */
-    public function removeRound(\AppBundle\Entity\CompetitionSessionRound $rounds)
+    public function removeRound(CompetitionSessionRound $rounds)
     {
         $this->rounds->removeElement($rounds);
     }
@@ -240,10 +230,10 @@ class CompetitionSession
     /**
      * Add entries
      *
-     * @param \AppBundle\Entity\CompetitionSessionEntry $entries
+     * @param CompetitionSessionEntry $entries
      * @return CompetitionSession
      */
-    public function addEntry(\AppBundle\Entity\CompetitionSessionEntry $entries)
+    public function addEntry(CompetitionSessionEntry $entries)
     {
         $this->entries[] = $entries;
     
@@ -253,9 +243,9 @@ class CompetitionSession
     /**
      * Remove entries
      *
-     * @param \AppBundle\Entity\CompetitionSessionEntry $entries
+     * @param CompetitionSessionEntry $entries
      */
-    public function removeEntry(\AppBundle\Entity\CompetitionSessionEntry $entries)
+    public function removeEntry(CompetitionSessionEntry $entries)
     {
         $this->entries->removeElement($entries);
     }
@@ -268,67 +258,6 @@ class CompetitionSession
     public function getEntries()
     {
         return $this->entries;
-    }
-
-    /**
-     * Set actualStartTime
-     *
-     * @param \DateTime $actualStartTime
-     * @return CompetitionSession
-     */
-    public function setActualStartTime($actualStartTime)
-    {
-        $this->actualStartTime = $actualStartTime;
-    
-        return $this;
-    }
-
-    /**
-     * Get actualStartTime
-     *
-     * @return \DateTime 
-     */
-    public function getActualStartTime()
-    {
-        return $this->actualStartTime;
-    }
-
-    /**
-     * Set actualEndTime
-     *
-     * @param \DateTime $actualEndTime
-     * @return CompetitionSession
-     */
-    public function setActualEndTime($actualEndTime)
-    {
-        $this->actualEndTime = $actualEndTime;
-    
-        return $this;
-    }
-
-    /**
-     * Get actualEndTime
-     *
-     * @return \DateTime 
-     */
-    public function getActualEndTime()
-    {
-        return $this->actualEndTime;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isStarted()
-    {
-        return $this->actualStartTime !== null && $this->actualEndTime === null;
-    }
-    /**
-     * @return bool
-     */
-    public function isFinished()
-    {
-        return $this->actualEndTime !== null;
     }
 
     /**

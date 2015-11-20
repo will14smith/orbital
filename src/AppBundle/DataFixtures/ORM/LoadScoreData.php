@@ -2,8 +2,7 @@
 
 namespace AppBundle\DataFixtures\ORM;
 
-use AppBundle\Entity\League;
-use AppBundle\Entity\LeaguePerson;
+
 use AppBundle\Entity\Score;
 use AppBundle\Services\Enum\BowType;
 use AppBundle\Services\Enum\Skill;
@@ -28,7 +27,6 @@ class LoadScoreData extends AbstractFixture implements OrderedFixtureInterface {
         $score1->setSkill(Skill::SENIOR);
         $score1->setBowtype(BowType::RECURVE);
         $score1->setCompetition(false);
-        $score1->setComplete(true);
         $score1->setScore(500);
         $score1->setGolds(25);
         $score1->setHits(60);

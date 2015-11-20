@@ -79,10 +79,10 @@ class RecordRepository extends EntityRepository
                    ->setParameter('skill', Skill::SENIOR);
         }
 
-        $q = $q->andWhere('q.bowtype IS NULL OR q.bowtype = :bowtype')
-            ->setParameter('bowtype', $score->getBowtype());
-
-        $q = $q->andWhere('q.gender IS NULL OR q.gender = :gender')
+        $q = $q
+            ->andWhere('q.bowtype IS NULL OR q.bowtype = :bowtype')
+            ->andWhere('q.gender IS NULL OR q.gender = :gender')
+            ->setParameter('bowtype', $score->getBowtype())
             ->setParameter('gender', $score->getPerson()->getGender());
 
         return $q->getQuery()->getResult();
