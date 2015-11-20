@@ -29,15 +29,15 @@ class BadgeHolderType extends AbstractProofType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('badge')
-            ->add('person')
-            ->add('date_awarded', 'date', ['label' => 'Date Claimed']);
+            ->add('badge', null, ['required' => true])
+            ->add('person', null, ['required' => true])
+            ->add('date_awarded', 'date', ['label' => 'Date claimed', 'widget' => 'single_text']);
 
         if ($this->admin) {
             $builder
-                ->add('date_confirmed')
-                ->add('date_made')
-                ->add('date_delivered');
+                ->add('date_confirmed', 'date', ['widget' => 'single_text'])
+                ->add('date_made', 'date', ['widget' => 'single_text', 'required' => false])
+                ->add('date_delivered', 'date', ['widget' => 'single_text', 'required' => false]);
         }
 
         if ($this->show_proof) {

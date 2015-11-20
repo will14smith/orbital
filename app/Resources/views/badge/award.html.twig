@@ -6,6 +6,37 @@
 
 {% block body %}
     {{ form_start(form) }}
+
+    <div layout-gt-md="row" layout-padding layout-align="start center">
+        <div flex-gt-md layout="column" layout-gt-md="row">
+            {{ form_errors(form.badge) }}
+            {{ form_label(form.badge) }}
+            {{ form_widget(form.badge) }}
+        </div>
+        <div flex-gt-md layout="column" layout-gt-md="row">
+            {{ form_errors(form.person) }}
+            {{ form_label(form.person) }}
+            {{ form_widget(form.person) }}
+        </div>
+    </div>
+
+    <div layout="row" layout-padding>
+        <div flex="50">
+            {{ form_row(form.date_awarded) }}
+        </div>
+        <div flex="50">
+            {{ form_row(form.date_confirmed) }}
+        </div>
+    </div>
+    <div layout="row" layout-padding>
+        <div flex="50">
+            {{ form_row(form.date_made) }}
+        </div>
+        <div flex="50">
+            {{ form_row(form.date_delivered) }}
+        </div>
+    </div>
+
     {{ form_widget(form) }}
 
     <input type="submit" value="Award"/>
@@ -21,6 +52,9 @@
         (function ($) {
             $('#badge_holder_proof_proof_images').collection('Image');
             $('#badge_holder_proof_proof_people').collection('Person');
+
+            $('#{{ form.badge.vars.id }}').select2();
+            $('#{{ form.person.vars.id }}').select2();
         })(jQuery);
     </script>
 

@@ -31,6 +31,7 @@ class BadgeAwardController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $badgeHolder = new BadgeHolder();
+        $badgeHolder->setDateAwarded(new \DateTime('now'));
 
         $badge_id = $request->get('badge');
         if ($badge_id) {
