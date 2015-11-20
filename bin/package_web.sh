@@ -38,7 +38,6 @@ echo "app/autoload.php" >> $FILELIST
 echo "app/console" >> $FILELIST
 echo "src/AppBundle/" >> $FILELIST
 echo "src/BarcodeBundle/" >> $FILELIST
-echo "src/SocketIOBundle/" >> $FILELIST
 echo "web/bundles/" >> $FILELIST
 echo "web/css/" >> $FILELIST
 echo "web/fonts/" >> $FILELIST
