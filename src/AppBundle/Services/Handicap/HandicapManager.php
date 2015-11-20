@@ -76,6 +76,11 @@ class HandicapManager
         for ($i = $handicaps->count() - 1; $i >= 0; $i--) {
             /** @var PersonHandicap $i_handicap */
             $i_handicap = $handicaps->get($i);
+            // it can be null when handicaps are removed.
+            if($i_handicap === null) {
+                continue;
+            }
+
             if ($i_handicap->getIndoor() === $indoor && $i_handicap->getType() === HandicapType::MANUAL) {
                 $handicap = $i_handicap;
                 break;
@@ -142,9 +147,11 @@ class HandicapManager
             if ($score->isIndoor() !== $indoor) {
                 continue;
             }
-            if (!$score->getDateAccepted())
+            if (!$score->getDateAccepted()) {
+                continue;
+            }
 
-                $scores[] = $score;
+            $scores[] = $score;
         }
 
         $score_index = 0;
@@ -196,6 +203,10 @@ class HandicapManager
         $outdoor = [];
 
         foreach ($scores as $score) {
+            if (!$score->getDateAccepted()) {
+                continue;
+            }
+
             $handicap = $this->calculator->handicapForScore($score);
             if ($score->isIndoor()) {
                 $indoor[] = $handicap;

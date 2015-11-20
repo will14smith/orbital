@@ -22,6 +22,7 @@ class HandicapManagerTest extends ServiceTestCase
         $round = new Round();
         $target = new RoundTarget();
 
+        $round->setIndoor(true);
         $round->addTarget($target);
 
         $target->setScoringZones(ScoreZones::METRIC);
@@ -68,6 +69,8 @@ class HandicapManagerTest extends ServiceTestCase
         } else {
             $score->setDateShot(new \DateTime('yesterday'));
         }
+
+        $score->setDateAccepted(new \DateTime('10 mins ago'));
 
         return $score;
     }
