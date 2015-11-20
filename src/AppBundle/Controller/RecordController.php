@@ -3,7 +3,9 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Record;
+use AppBundle\Form\Type\RecordMatrixType;
 use AppBundle\Form\Type\RecordType;
+use Doctrine\Common\Persistence\ObjectManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -52,6 +54,33 @@ class RecordController extends Controller
         }
 
         return $this->render('record/create.html.twig', [
+            'form' => $form->createView(),
+        ]);
+    }
+
+
+    /**
+     * @Security("has_role('ROLE_ADMIN')")
+     * @Route("/record/matrix", name="record_matrix", methods={"GET", "POST"})
+     *
+     * @param Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function matrixCreateAction(Request $request)
+    {
+        $form = $this->createForm(new RecordMatrixType());
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $this->buildMatrixFromFormData($em, $form->getData());
+            $em->flush();
+
+            return $this->redirectToRoute('record_list');
+        }
+
+        return $this->render('record/matrix.html.twig', [
             'form' => $form->createView(),
         ]);
     }
@@ -145,5 +174,41 @@ class RecordController extends Controller
         return $this->render('record/delete.html.twig', [
             'record' => $record
         ]);
+    }
+
+    /**
+     * @param ObjectManager $em
+     * @param array $data
+     */
+    private function buildMatrixFromFormData($em, $data)
+    {
+        $round = $data['round'];
+        $num_holders = $data['num_holders'];
+        $skills = $data['skill'];
+        $genders = $data['gender'];
+        $bowtypes = $data['bowtype'];
+
+        if (count($genders) === 0) {
+            $genders = [null];
+        }
+        if (count($bowtypes) === 0) {
+            $bowtypes = [null];
+        }
+
+        foreach ($skills as $skill) {
+            foreach ($genders as $gender) {
+                foreach ($bowtypes as $bowtype) {
+                    $record = new Record();
+
+                    $record->setRound($round);
+                    $record->setNumHolders($num_holders);
+                    $record->setSkill($skill);
+                    $record->setGender($gender);
+                    $record->setBowtype($bowtype);
+
+                    $em->persist($record);
+                }
+            }
+        }
     }
 }
