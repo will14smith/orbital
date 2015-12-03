@@ -62,10 +62,10 @@ class CompetitionSessionRound
     /**
      * Set round
      *
-     * @param \AppBundle\Entity\Round $round
+     * @param Round $round
      * @return CompetitionSessionRound
      */
-    public function setRound(\AppBundle\Entity\Round $round = null)
+    public function setRound(Round $round = null)
     {
         $this->round = $round;
     
@@ -75,7 +75,7 @@ class CompetitionSessionRound
     /**
      * Get round
      *
-     * @return \AppBundle\Entity\Round 
+     * @return Round
      */
     public function getRound()
     {

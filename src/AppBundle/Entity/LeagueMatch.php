@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -83,7 +84,7 @@ class LeagueMatch
      */
     public function __construct()
     {
-        $this->proofs = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->proofs = new ArrayCollection();
     }
 
     /**
@@ -243,11 +244,11 @@ class LeagueMatch
     /**
      * Set league
      *
-     * @param \AppBundle\Entity\League $league
+     * @param League $league
      *
      * @return LeagueMatch
      */
-    public function setLeague(\AppBundle\Entity\League $league = null)
+    public function setLeague(League $league = null)
     {
         $this->league = $league;
 
@@ -257,7 +258,7 @@ class LeagueMatch
     /**
      * Get league
      *
-     * @return \AppBundle\Entity\League
+     * @return League
      */
     public function getLeague()
     {
@@ -267,11 +268,11 @@ class LeagueMatch
     /**
      * Set challenger
      *
-     * @param \AppBundle\Entity\LeaguePerson $challenger
+     * @param LeaguePerson $challenger
      *
      * @return LeagueMatch
      */
-    public function setChallenger(\AppBundle\Entity\LeaguePerson $challenger = null)
+    public function setChallenger(LeaguePerson $challenger = null)
     {
         $this->challenger = $challenger;
 
@@ -281,7 +282,7 @@ class LeagueMatch
     /**
      * Get challenger
      *
-     * @return \AppBundle\Entity\LeaguePerson
+     * @return LeaguePerson
      */
     public function getChallenger()
     {
@@ -291,11 +292,11 @@ class LeagueMatch
     /**
      * Set challengee
      *
-     * @param \AppBundle\Entity\LeaguePerson $challengee
+     * @param LeaguePerson $challengee
      *
      * @return LeagueMatch
      */
-    public function setChallengee(\AppBundle\Entity\LeaguePerson $challengee = null)
+    public function setChallengee(LeaguePerson $challengee = null)
     {
         $this->challengee = $challengee;
 
@@ -305,7 +306,7 @@ class LeagueMatch
     /**
      * Get challengee
      *
-     * @return \AppBundle\Entity\LeaguePerson
+     * @return LeaguePerson
      */
     public function getChallengee()
     {
@@ -364,11 +365,11 @@ class LeagueMatch
     /**
      * Set round
      *
-     * @param \AppBundle\Entity\Round $round
+     * @param Round $round
      *
      * @return LeagueMatch
      */
-    public function setRound(\AppBundle\Entity\Round $round = null)
+    public function setRound(Round $round = null)
     {
         $this->round = $round;
 
@@ -378,7 +379,7 @@ class LeagueMatch
     /**
      * Get round
      *
-     * @return \AppBundle\Entity\Round
+     * @return Round
      */
     public function getRound()
     {
@@ -388,11 +389,11 @@ class LeagueMatch
     /**
      * Set challenger_score
      *
-     * @param \AppBundle\Entity\Score $challengerScore
+     * @param Score $challengerScore
      *
      * @return LeagueMatch
      */
-    public function setChallengerScore(\AppBundle\Entity\Score $challengerScore = null)
+    public function setChallengerScore(Score $challengerScore = null)
     {
         $this->challenger_score = $challengerScore;
 
@@ -402,7 +403,7 @@ class LeagueMatch
     /**
      * Get challenger_score
      *
-     * @return \AppBundle\Entity\Score
+     * @return Score
      */
     public function getChallengerScore()
     {
@@ -412,11 +413,11 @@ class LeagueMatch
     /**
      * Set challengee_score
      *
-     * @param \AppBundle\Entity\Score $challengeeScore
+     * @param Score $challengeeScore
      *
      * @return LeagueMatch
      */
-    public function setChallengeeScore(\AppBundle\Entity\Score $challengeeScore = null)
+    public function setChallengeeScore(Score $challengeeScore = null)
     {
         $this->challengee_score = $challengeeScore;
 
@@ -426,7 +427,7 @@ class LeagueMatch
     /**
      * Get challengee_score
      *
-     * @return \AppBundle\Entity\Score
+     * @return Score
      */
     public function getChallengeeScore()
     {
@@ -436,11 +437,11 @@ class LeagueMatch
     /**
      * Add proofs
      *
-     * @param \AppBundle\Entity\LeagueMatchProof $proofs
+     * @param LeagueMatchProof $proofs
      *
      * @return LeagueMatch
      */
-    public function addProof(\AppBundle\Entity\LeagueMatchProof $proofs)
+    public function addProof(LeagueMatchProof $proofs)
     {
         $this->proofs[] = $proofs;
 
@@ -450,9 +451,9 @@ class LeagueMatch
     /**
      * Remove proofs
      *
-     * @param \AppBundle\Entity\LeagueMatchProof $proofs
+     * @param LeagueMatchProof $proofs
      */
-    public function removeProof(\AppBundle\Entity\LeagueMatchProof $proofs)
+    public function removeProof(LeagueMatchProof $proofs)
     {
         $this->proofs->removeElement($proofs);
     }

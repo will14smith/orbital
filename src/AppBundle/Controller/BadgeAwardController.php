@@ -33,27 +33,27 @@ class BadgeAwardController extends Controller
         $badgeHolder = new BadgeHolder();
         $badgeHolder->setDateAwarded(new \DateTime('now'));
 
-        $badge_id = $request->get('badge');
-        if ($badge_id) {
-            $badge = $em->getRepository('AppBundle:Badge')->find($badge_id);
+        $badgeId = $request->get('badge');
+        if ($badgeId) {
+            $badge = $em->getRepository('AppBundle:Badge')->find($badgeId);
             if ($badge) {
                 $badgeHolder->setBadge($badge);
             }
         }
 
-        $is_admin = $this->isGranted('ROLE_ADMIN');
-        if ($is_admin) {
+        $isAdmin = $this->isGranted('ROLE_ADMIN');
+        if ($isAdmin) {
             $badgeHolder->setDateConfirmed(new \DateTime('now'));
         }
 
-        $form = $this->createForm(new BadgeHolderType($is_admin), $badgeHolder);
-        $form_proof = $form->get('proof');
+        $form = $this->createForm(new BadgeHolderType($isAdmin), $badgeHolder);
+        $formProof = $form->get('proof');
 
         $form->handleRequest($request);
-        $this->handleProof($form_proof);
+        $this->handleProof($formProof);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->saveProof($em, $badgeHolder, $form_proof);
+            $this->saveProof($em, $badgeHolder, $formProof);
             $em->persist($badgeHolder);
             $em->flush();
 
@@ -73,27 +73,27 @@ class BadgeAwardController extends Controller
 
     /**
      * @Security("has_role('ROLE_ADMIN')")
-     * @Route("/badge/{id}/award/{award_id}", name="badge_award_edit", methods={"GET", "POST"})
+     * @Route("/badge/{id}/award/{awardId}", name="badge_award_edit", methods={"GET", "POST"})
      *
      * @param int $id
-     * @param int $award_id
+     * @param int $awardId
      * @param Request $request
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function awardEditAction($id, $award_id, Request $request)
+    public function awardEditAction($id, $awardId, Request $request)
     {
         $em = $this->getDoctrine()->getManager();
-        $badgeHolder = $em->getRepository('AppBundle:BadgeHolder')->find($award_id);
+        $badgeHolder = $em->getRepository('AppBundle:BadgeHolder')->find($awardId);
         if (!$badgeHolder) {
             throw $this->createNotFoundException(
-                'No badge-holder found for id ' . $award_id
+                'No badge-holder found for id ' . $awardId
             );
         }
 
         if ($id != $badgeHolder->getBadge()->getId()) {
             throw $this->createNotFoundException(
-                'Badge-holder ' . $award_id . ' not associated with badge ' . $id
+                'Badge-holder ' . $awardId . ' not associated with badge ' . $id
             );
         }
 
@@ -120,72 +120,59 @@ class BadgeAwardController extends Controller
 
     /**
      * @Security("has_role('ROLE_ADMIN')")
-     * @Route("/badge/{id}/award/{award_id}/state", name="badge_award_state", methods={"GET", "POST"})
+     * @Route("/badge/{id}/award/{awardId}/state", name="badge_award_state", methods={"GET", "POST"})
      *
      * @param int $id
-     * @param int $award_id
+     * @param int $awardId
      * @param Request $request
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function awardStateAction($id, $award_id, Request $request)
+    public function awardStateAction($id, $awardId, Request $request)
     {
         $em = $this->getDoctrine()->getManager();
-        /** @var BadgeHolder $badge_holder */
-        $badge_holder = $em->getRepository('AppBundle:BadgeHolder')->find($award_id);
-        if (!$badge_holder) {
+        /** @var BadgeHolder $badgeHolder */
+        $badgeHolder = $em->getRepository('AppBundle:BadgeHolder')->find($awardId);
+        if (!$badgeHolder) {
             throw $this->createNotFoundException(
-                'No badge-holder found for id ' . $award_id
+                'No badge-holder found for id ' . $awardId
             );
         }
 
-        if ($id != $badge_holder->getBadge()->getId()) {
+        if ($id != $badgeHolder->getBadge()->getId()) {
             throw $this->createNotFoundException(
-                'Badge-holder ' . $award_id . ' not associated with badge ' . $id
+                'Badge-holder ' . $awardId . ' not associated with badge ' . $id
             );
         }
 
-        switch ($badge_holder->getState()) {
+        switch ($badgeHolder->getState()) {
             case BadgeState::UNCONFIRMED:
-                $confirm_proof = $this->confirmProof($request);
-                if ($confirm_proof !== false) {
+                $confirmProof = $this->confirmProof($request);
+                if ($confirmProof !== false) {
                     return $this->render('badge/proof_confirm.html.twig',
-                        ['form' => $confirm_proof, 'badge' => $badge_holder]
+                        ['form' => $confirmProof, 'badge' => $badgeHolder]
                     );
                 }
 
-                $badge_holder->setDateConfirmed(new \DateTime('now'));
+                $badgeHolder->setDateConfirmed(new \DateTime('now'));
                 break;
             case BadgeState::CONFIRMED:
-                $badge_holder->setDateMade(new \DateTime('now'));
+                $badgeHolder->setDateMade(new \DateTime('now'));
                 break;
             case BadgeState::MADE:
-                $badge_holder->setDateDelivered(new \DateTime('now'));
+                $badgeHolder->setDateDelivered(new \DateTime('now'));
                 break;
         }
         $em->flush();
 
         if ($request->query->get('person')) {
-            return $this->redirectToRoute('person_detail', ['id' => $badge_holder->getPerson()->getId()]);
+            return $this->redirectToRoute('person_detail', ['id' => $badgeHolder->getPerson()->getId()]);
         } else {
-            return $this->redirectToRoute('badge_detail', ['id' => $badge_holder->getBadge()->getId()]);
+            return $this->redirectToRoute('badge_detail', ['id' => $badgeHolder->getBadge()->getId()]);
         }
     }
 
-    /**
-     * @Security("has_role('ROLE_ADMIN')")
-     * @Route("/badge/{id}/award/{award_id}/delete", name="badge_award_delete", methods={"GET", "POST"})
-     *
-     * @param int $id
-     * @param int $award_id
-     * @param Request $request
-     *
-     * @throws \Exception
-     */
-    public function awardDeleteAction($id, $award_id, Request $request)
-    {
-        throw new \Exception('NOT IMPLEMENTED');
-    }
+    // TODO add DELETE method
 
     /**
      * @param $object

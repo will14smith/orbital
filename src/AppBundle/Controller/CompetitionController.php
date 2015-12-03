@@ -17,8 +17,8 @@ class CompetitionController extends Controller
      */
     public function indexAction()
     {
-        $competitionRepository = $this->getDoctrine()->getRepository("AppBundle:Competition");
-        $competitions = $competitionRepository->findAll();
+        $repository = $this->getDoctrine()->getRepository("AppBundle:Competition");
+        $competitions = $repository->findAll();
 
         return $this->render('competition/list.html.twig', [
             'competitions' => $competitions

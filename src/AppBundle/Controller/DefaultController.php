@@ -56,21 +56,21 @@ class DefaultController extends Controller
         ]);
     }
 
-    private function generateRoundup($start_date, $end_date, array $types)
+    private function generateRoundup($start, $end, array $types)
     {
         $data = [];
         $doctrine = $this->getDoctrine();
 
         if (in_array('records', $types)) {
             $records = $doctrine->getRepository('AppBundle:Record')
-                ->getByRoundup($start_date, $end_date);
+                ->getByRoundup($start, $end);
 
             $data['records'] = $records;
         }
 
         if (in_array('badges', $types)) {
             $badges = $doctrine->getRepository('AppBundle:BadgeHolder')
-                ->getByRoundup($start_date, $end_date);
+                ->getByRoundup($start, $end);
 
             $data['badges'] = $badges;
         }

@@ -19,10 +19,10 @@ class BarcodeExtension extends \Twig_Extension
 
     public function getFilters()
     {
-        return [new \Twig_SimpleFilter('barcode', [$this, 'barcode_filter'], ['is_safe' => ['all']])];
+        return [new \Twig_SimpleFilter('barcode', [$this, 'barcodeFilter'], ['is_safe' => ['all']])];
     }
 
-    public function barcode_filter($value, $type='html') {
+    public function barcodeFilter($value) {
 
         if(!is_int($value)) {
             throw new \Exception("Not currently implemented");

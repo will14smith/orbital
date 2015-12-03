@@ -28,12 +28,12 @@ if (!function_exists('pam_auth')) {
         return array_key_exists($username, $login_data) && $login_data[$username] == $password;
     }
 
-    function ldap_get_name($username)
+    function ldap_get_name(/* $username */)
     {
         return "Will Smith";
     }
 
-    function ldap_get_mail($username)
+    function ldap_get_mail(/* $username */)
     {
         return "wds12@imperial.ac.uk";
     }

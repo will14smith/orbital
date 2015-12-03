@@ -27,8 +27,8 @@ class BadgeSheetController extends Controller {
         $doctrine = $this->getDoctrine();
 
         if (is_array($badges) && count($badges) > 0) {
-            $badgeHolderRepository = $doctrine->getRepository("AppBundle:BadgeHolder");
-            $badges = $badgeHolderRepository->findBy([
+            $holderRepository = $doctrine->getRepository("AppBundle:BadgeHolder");
+            $badges = $holderRepository->findBy([
                 'badge' => $badges,
                 'date_made' => null
             ]);

@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -75,9 +76,9 @@ class League
      */
     public function __construct()
     {
-        $this->rounds = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->people = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->matches = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->rounds = new ArrayCollection();
+        $this->people = new ArrayCollection();
+        $this->matches = new ArrayCollection();
     }
 
     /**
@@ -261,11 +262,11 @@ class League
     /**
      * Add rounds
      *
-     * @param \AppBundle\Entity\Round $rounds
+     * @param Round $rounds
      *
      * @return League
      */
-    public function addRound(\AppBundle\Entity\Round $rounds)
+    public function addRound(Round $rounds)
     {
         $this->rounds[] = $rounds;
 
@@ -275,9 +276,9 @@ class League
     /**
      * Remove rounds
      *
-     * @param \AppBundle\Entity\Round $rounds
+     * @param Round $rounds
      */
-    public function removeRound(\AppBundle\Entity\Round $rounds)
+    public function removeRound(Round $rounds)
     {
         $this->rounds->removeElement($rounds);
     }
@@ -295,11 +296,11 @@ class League
     /**
      * Add people
      *
-     * @param \AppBundle\Entity\LeaguePerson $people
+     * @param LeaguePerson $people
      *
      * @return League
      */
-    public function addPerson(\AppBundle\Entity\LeaguePerson $people)
+    public function addPerson(LeaguePerson $people)
     {
         $this->people[] = $people;
 
@@ -309,9 +310,9 @@ class League
     /**
      * Remove people
      *
-     * @param \AppBundle\Entity\LeaguePerson $people
+     * @param LeaguePerson $people
      */
-    public function removePerson(\AppBundle\Entity\LeaguePerson $people)
+    public function removePerson(LeaguePerson $people)
     {
         $this->people->removeElement($people);
     }
@@ -383,11 +384,11 @@ class League
     /**
      * Add matches
      *
-     * @param \AppBundle\Entity\LeagueMatch $matches
+     * @param LeagueMatch $matches
      *
      * @return League
      */
-    public function addMatch(\AppBundle\Entity\LeagueMatch $matches)
+    public function addMatch(LeagueMatch $matches)
     {
         $this->matches[] = $matches;
 
@@ -397,9 +398,9 @@ class League
     /**
      * Remove matches
      *
-     * @param \AppBundle\Entity\LeagueMatch $matches
+     * @param LeagueMatch $matches
      */
-    public function removeMatch(\AppBundle\Entity\LeagueMatch $matches)
+    public function removeMatch(LeagueMatch $matches)
     {
         $this->matches->removeElement($matches);
     }
