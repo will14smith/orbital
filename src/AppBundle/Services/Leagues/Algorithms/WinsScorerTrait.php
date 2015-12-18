@@ -2,12 +2,15 @@
 
 namespace AppBundle\Services\Leagues\Algorithms;
 
+use AppBundle\Entity\LeagueMatch;
+
 trait WinsScorerTrait
 {
     /**
-     * @return int[] [winner delta, loser delta]
+     * @param LeagueMatch $match
+     * @return \int[] [winner delta, loser delta]
      */
-    public function score()
+    public function score(LeagueMatch $match)
     {
         return [1, 0];
     }
