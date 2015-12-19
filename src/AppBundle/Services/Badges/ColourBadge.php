@@ -6,7 +6,6 @@ use AppBundle\Entity\Badge;
 use AppBundle\Entity\Score;
 use AppBundle\Services\Enum\BowType;
 use AppBundle\Services\Enum\Gender;
-use AppBundle\Services\Enum\Skill;
 use AppBundle\Services\Handicap\HandicapCalculator;
 
 class ColourBadge
@@ -77,6 +76,27 @@ class ColourBadge
         return $this->badge;
     }
 
+
+    private static $tableFill = [
+        'm' => [Gender::MALE => [BowType::RECURVE, BowType::BAREBOW, BowType::LONGBOW, BowType::COMPOUND]],
+        'f' => [Gender::FEMALE => [BowType::RECURVE, BowType::BAREBOW, BowType::LONGBOW, BowType::COMPOUND]],
+
+        'r' => [Gender::MALE => [BowType::RECURVE], Gender::FEMALE => [BowType::RECURVE]],
+        'b' => [Gender::MALE => [BowType::BAREBOW], Gender::FEMALE => [BowType::BAREBOW]],
+        'l' => [Gender::MALE => [BowType::LONGBOW], Gender::FEMALE => [BowType::LONGBOW]],
+        'c' => [Gender::MALE => [BowType::COMPOUND], Gender::FEMALE => [BowType::COMPOUND]],
+
+        'mr' => [Gender::MALE => [BowType::RECURVE]],
+        'mb' => [Gender::MALE => [BowType::BAREBOW]],
+        'ml' => [Gender::MALE => [BowType::LONGBOW]],
+        'mc' => [Gender::MALE => [BowType::COMPOUND]],
+
+        'fr' => [Gender::FEMALE => [BowType::RECURVE]],
+        'fb' => [Gender::FEMALE => [BowType::BAREBOW]],
+        'fl' => [Gender::FEMALE => [BowType::LONGBOW]],
+        'fc' => [Gender::FEMALE => [BowType::COMPOUND]],
+    ];
+
     private function buildHandicapTable()
     {
         // default table
@@ -101,24 +121,14 @@ class ColourBadge
         foreach($matches as $match) {
             $value = intval($match[2]);
 
-            switch($match[1]) {
-                case 'm': $table[Gender::MALE] = [BowType::RECURVE => $value, BowType::BAREBOW => $value, BowType::LONGBOW => $value, BowType::COMPOUND => $value]; break;
-                case 'f': $table[Gender::FEMALE] = [BowType::RECURVE => $value, BowType::BAREBOW => $value, BowType::LONGBOW => $value, BowType::COMPOUND => $value]; break;
+            $fill = self::$tableFill[$match[1]];
+            //TODO log this
+            if(!$fill) { continue; }
 
-                case 'r': $table[Gender::MALE][BowType::RECURVE] = $value; $table[Gender::FEMALE][BowType::RECURVE] = $value; break;
-                case 'b': $table[Gender::MALE][BowType::BAREBOW] = $value; $table[Gender::FEMALE][BowType::BAREBOW] = $value; break;
-                case 'l': $table[Gender::MALE][BowType::LONGBOW] = $value; $table[Gender::FEMALE][BowType::LONGBOW] = $value; break;
-                case 'c': $table[Gender::MALE][BowType::COMPOUND] = $value; $table[Gender::FEMALE][BowType::COMPOUND] = $value; break;
-
-                case 'mr': $table[Gender::MALE][BowType::RECURVE] = $value; break;
-                case 'mb': $table[Gender::MALE][BowType::BAREBOW] = $value; break;
-                case 'ml': $table[Gender::MALE][BowType::LONGBOW] = $value; break;
-                case 'mc': $table[Gender::MALE][BowType::COMPOUND] = $value; break;
-
-                case 'fr': $table[Gender::FEMALE][BowType::RECURVE] = $value; break;
-                case 'fb': $table[Gender::FEMALE][BowType::BAREBOW] = $value; break;
-                case 'fl': $table[Gender::FEMALE][BowType::LONGBOW] = $value; break;
-                case 'fc': $table[Gender::FEMALE][BowType::COMPOUND] = $value; break;
+            foreach($fill as $gender => $types) {
+                foreach($types as $type) {
+                    $table[$gender][$type] = $value;
+                }
             }
         }
 

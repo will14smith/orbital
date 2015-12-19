@@ -3,6 +3,7 @@
 namespace AppBundle\Services\Badges;
 
 use AppBundle\Entity\Badge;
+use AppBundle\Entity\BadgeHolder;
 use AppBundle\Entity\Person;
 use AppBundle\Entity\Score;
 
@@ -32,13 +33,11 @@ class ColoursHandler extends BaseHandler
         $scoredColour = $this->getColour($score);
         if(!$scoredColour) { return; }
 
-        $person = $score->getPerson();
-        $currentColour = $this->getCurrent($person);
-
+        $currentColour = $this->getCurrent($score->getPerson());
         if(!$scoredColour->isBetterThan($currentColour)) { return; }
 
         // award badge
-        $this->award($scoredColour, $person);
+        $this->award($scoredColour, $score);
     }
 
     /**
@@ -72,13 +71,21 @@ class ColoursHandler extends BaseHandler
 
     /**
      * @param ColourBadge $colour
-     * @param Person $person
+     * @param Score $score
      */
-    private function award(ColourBadge $colour, Person $person)
+    private function award(ColourBadge $colour, Score $score)
     {
         // convert ColourBadge to BadgeHolder
+        $badgeHolder = new BadgeHolder();
 
-        // throw new \Exception("TODO");
+        $badgeHolder->setDateAwarded($score->getDateShot());
+
+        $badgeHolder->setBadge($colour->getBadge());
+        $badgeHolder->setPerson($score->getPerson());
+
+        $em = $this->doctrine->getManager();
+        $em->persist($badgeHolder);
+        $em->flush();
     }
 
     /**
