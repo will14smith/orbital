@@ -1,8 +1,6 @@
 <?php
 
-
 namespace AppBundle\Services\Events;
-
 
 use AppBundle\Entity\Score;
 use Symfony\Component\EventDispatcher\Event;
