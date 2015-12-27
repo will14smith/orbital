@@ -97,11 +97,11 @@ abstract class ProofEntity
     /**
      * Set person
      *
-     * @param \AppBundle\Entity\Person $person
+     * @param Person $person
      *
      * @return ProofEntity
      */
-    public function setPerson(\AppBundle\Entity\Person $person = null)
+    public function setPerson(Person $person = null)
     {
         $this->person = $person;
 
@@ -111,7 +111,7 @@ abstract class ProofEntity
     /**
      * Get person
      *
-     * @return \AppBundle\Entity\Person
+     * @return Person
      */
     public function getPerson()
     {
@@ -121,10 +121,10 @@ abstract class ProofEntity
     /**
      * Set voucher
      *
-     * @param \AppBundle\Entity\Person $voucher
+     * @param Person $voucher
      * @return ProofEntity
      */
-    public function setVoucher(\AppBundle\Entity\Person $voucher = null)
+    public function setVoucher(Person $voucher = null)
     {
         $this->voucher = $voucher;
 
@@ -134,7 +134,7 @@ abstract class ProofEntity
     /**
      * Get voucher
      *
-     * @return \AppBundle\Entity\Person 
+     * @return Person
      */
     public function getVoucher()
     {

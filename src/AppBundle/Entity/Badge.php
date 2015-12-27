@@ -7,7 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="BadgeRepository")
  * @ORM\Table(name="badge")
  */
 class Badge
@@ -29,7 +29,7 @@ class Badge
     protected $description;
 
     /**
-     * @ORM\Column(type="string", length=20, nullable=true)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     protected $algo_name;
 

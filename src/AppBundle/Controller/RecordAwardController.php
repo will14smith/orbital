@@ -26,9 +26,9 @@ class RecordAwardController extends Controller
     public function awardAction($id, Request $request)
     {
         $em = $this->getDoctrine()->getManager();
-        $record_repository = $em->getRepository('AppBundle:Record');
+        $recordRepository = $em->getRepository('AppBundle:Record');
         /** @var Record $record */
-        $record = $record_repository->find($id);
+        $record = $recordRepository->find($id);
         if (!$record) {
             throw $this->createNotFoundException(
                 'No record found for id ' . $id
@@ -69,17 +69,17 @@ class RecordAwardController extends Controller
 
     /**
      * @Security("has_role('ROLE_ADMIN')")
-     * @Route("/record/{record_id}/confirm/{holder_id}", name="record_holder_confirm", methods={"GET"})
+     * @Route("/record/{recordId}/confirm/{holderId}", name="record_holder_confirm", methods={"GET"})
      */
-    public function recordConfirmAction($record_id, $holder_id)
+    public function recordConfirmAction($recordId, $holderId)
     {
         $em = $this->getDoctrine()->getManager();
-        $recordHolderRepository = $em->getRepository('AppBundle:RecordHolder');
+        $rhRepository = $em->getRepository('AppBundle:RecordHolder');
 
-        $holder = $recordHolderRepository->find($holder_id);
+        $holder = $rhRepository->find($holderId);
         if (!$holder) {
             throw $this->createNotFoundException(
-                'No record holder found for id ' . $holder_id
+                'No record holder found for id ' . $holderId
             );
         }
 

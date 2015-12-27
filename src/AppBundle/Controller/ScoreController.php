@@ -166,10 +166,10 @@ class ScoreController extends Controller
             );
         }
 
-        $confirm_proof = $this->confirmProof($request);
-        if ($confirm_proof !== false) {
+        $confirmProof = $this->confirmProof($request);
+        if ($confirmProof !== false) {
             return $this->render('score/proof_confirm.html.twig', [
-                'form' => $confirm_proof,
+                'form' => $confirmProof,
                 'score' => $score
             ]);
         }
@@ -201,7 +201,7 @@ class ScoreController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $form = $this->createForm(new ScoreType(true), $score);
-        $form_proof = $form->get('proof');
+        $formProof = $form->get('proof');
 
         $form->handleRequest($request);
         $this->validateScore($form);
@@ -209,7 +209,7 @@ class ScoreController extends Controller
 
         if ($form->isSubmitted() && $form->isValid()) {
             //  however, if they provide more we should save it
-            $this->saveProof($em, $score, $form_proof);
+            $this->saveProof($em, $score, $formProof);
             $em->flush();
 
             return $this->redirectToRoute(

@@ -49,10 +49,10 @@ trait ProofControllerTrait
         $data = $form->getData();
 
         // images
-        $image_importer = $this->get('orbital.image_importer');
+        $imageImporter = $this->get('orbital.image_importer');
 
         foreach ($data['proof_images'] as $image) {
-            $outpath = $image_importer->persist($image);
+            $outpath = $imageImporter->persist($image);
 
             $proof = $this->createProof($object);
             $proof->setImageName($outpath);
@@ -63,8 +63,8 @@ trait ProofControllerTrait
 
         // people
         $personRepository = $this->getDoctrine()->getRepository('AppBundle:Person');
-        foreach ($data['proof_people'] as $voucher_id) {
-            $voucher = $personRepository->find($voucher_id);
+        foreach ($data['proof_people'] as $voucherId) {
+            $voucher = $personRepository->find($voucherId);
 
             $proof = $this->createProof($object);
             $proof->setVoucher($voucher);

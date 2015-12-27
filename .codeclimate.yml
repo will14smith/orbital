@@ -6,7 +6,16 @@ exclude_paths:
 - "assets/js/head/modernizr.min.js"
 - "assets/js/scoring/mithril.js"
 - "app/check.php"
+- "app/AppKernel.php"
 - "app/SymfonyRequirements.php"
 - "app/DoctrineMigrations/*.php"
 - "web/app.php"
 - "web/app_dev.php"
+engines:
+  phpmd:
+    enabled: true
+    config:
+      file_extensions: "php"
+      rulesets: "./ruleset.xml"
+  phpcodesniffer:
+    enabled: true

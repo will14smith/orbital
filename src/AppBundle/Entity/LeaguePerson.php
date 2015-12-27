@@ -124,11 +124,11 @@ class LeaguePerson
     /**
      * Set league
      *
-     * @param \AppBundle\Entity\League $league
+     * @param League $league
      *
      * @return LeaguePerson
      */
-    public function setLeague(\AppBundle\Entity\League $league = null)
+    public function setLeague(League $league = null)
     {
         $this->league = $league;
 
@@ -138,7 +138,7 @@ class LeaguePerson
     /**
      * Get league
      *
-     * @return \AppBundle\Entity\League
+     * @return League
      */
     public function getLeague()
     {
@@ -148,11 +148,11 @@ class LeaguePerson
     /**
      * Set person
      *
-     * @param \AppBundle\Entity\Person $person
+     * @param Person $person
      *
      * @return LeaguePerson
      */
-    public function setPerson(\AppBundle\Entity\Person $person = null)
+    public function setPerson(Person $person = null)
     {
         $this->person = $person;
 
@@ -162,7 +162,7 @@ class LeaguePerson
     /**
      * Get person
      *
-     * @return \AppBundle\Entity\Person
+     * @return Person
      */
     public function getPerson()
     {

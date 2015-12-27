@@ -21,6 +21,9 @@ class PersonApiController extends ApiController
         ]);
     }
 
+    /**
+     * @SuppressWarnings(PHPMD.UnusedPrivateMethod)
+     */
     private function indexMap(Person $person)
     {
         return [

@@ -99,6 +99,15 @@ services:
         tags:
           - { name: orbital.league.algo }
 
+# badges
+    orbital.badges.listener:
+        class: AppBundle\Services\Badges\BadgeListener
+        arguments: ["@doctrine"]
+        tags:
+            - { name: kernel.event_listener, event: 'orbital.events.score_create', method: handle_score }
+            - { name: kernel.event_listener, event: 'orbital.events.score_update', method: handle_score }
+            - { name: kernel.event_listener, event: 'orbital.events.record_holder_person_create', method: handle_record_holder_person }
+            - { name: kernel.event_listener, event: 'orbital.events.record_holder_person_update', method: handle_record_holder_person }
 
 # voters
     orbital.security.badge_voter:

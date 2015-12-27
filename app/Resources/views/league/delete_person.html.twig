@@ -6,7 +6,7 @@
 {% endblock %}
 
 {% block body %}
-    <form method="post" action="{{ url('league_signup_delete', { id: league.id, signup_id: person.id }) }}">
+    <form method="post" action="{{ url('league_signup_delete', { id: league.id, signupId: person.id }) }}">
         <p>Are you sure you want to remove {{ display.person(person.person) }} from {{ display.league(league) }}?</p>
         <input type="submit" value="Yes"> | <a href="{{ url('league_detail', { id: league.id }) }}">No</a>
     </form>

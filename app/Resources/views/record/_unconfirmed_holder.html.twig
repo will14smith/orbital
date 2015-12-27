@@ -6,7 +6,7 @@
     <td class="shrink">{{ holder.score }}</td>
 {% endif %}
 <td class="actions">
-    <a class="shrink" href="{{ url('record_holder_confirm', { 'record_id': holder.record.id, 'holder_id': holder.id }) }}">
+    <a class="shrink" href="{{ url('record_holder_confirm', { 'recordId': holder.record.id, 'holderId': holder.id }) }}">
         <i class="fa fa-check" title="Confirm"></i>
     </a>
 </td>

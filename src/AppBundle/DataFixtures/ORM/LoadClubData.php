@@ -1,12 +1,8 @@
 <?php
 
-
 namespace AppBundle\DataFixtures\ORM;
 
-
 use AppBundle\Entity\Club;
-use AppBundle\Entity\Person;
-use AppBundle\Services\Enum\Skill;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;

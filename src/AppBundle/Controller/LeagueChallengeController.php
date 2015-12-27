@@ -32,22 +32,22 @@ class LeagueChallengeController extends Controller {
         $lm = new LeagueMatch();
         $lm->setLeague($league);
 
-        $is_admin = $this->isGranted('ROLE_ADMIN');
-        if ($is_admin) {
+        $isAdmin = $this->isGranted('ROLE_ADMIN');
+        if ($isAdmin) {
             $lm->setDateConfirmed(new \DateTime('now'));
         } else {
             $lm->setChallenger($this->getUser());
         }
 
-        $form = $this->createForm(new LeagueMatchType($is_admin), $lm);
-        $form_proof = $form->get('proof');
+        $form = $this->createForm(new LeagueMatchType($isAdmin), $lm);
+        $formProof = $form->get('proof');
 
         $form->handleRequest($request);
-        $this->handleProof($form_proof);
+        $this->handleProof($formProof);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            $this->saveProof($em, $lm, $form_proof);
+            $this->saveProof($em, $lm, $formProof);
             $em->persist($lm);
             $em->flush();
 
@@ -84,10 +84,10 @@ class LeagueChallengeController extends Controller {
             );
         }
 
-        $confirm_proof = $this->confirmProof($request);
-        if ($confirm_proof !== false) {
+        $confirmProof = $this->confirmProof($request);
+        if ($confirmProof !== false) {
             return $this->render(':league:proof_confirm.html.twig', [
-                'form' => $confirm_proof,
+                'form' => $confirmProof,
                 'match' => $leagueMatch
             ]);
         }

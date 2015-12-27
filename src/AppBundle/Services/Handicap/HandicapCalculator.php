@@ -69,7 +69,6 @@ class HandicapCalculator
         $delta = 32;
         $handicap = 50;
 
-        $hc_min_score = 0;
         while ($delta >= 1) {
             $hc_min_score = $this->score($round, $compound, $handicap);
 

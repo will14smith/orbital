@@ -26,13 +26,13 @@ class LeagueSignupController extends Controller {
     {
         $em = $this->getDoctrine()->getManager();
 
-        $lp_repo = $em->getRepository('AppBundle:LeaguePerson');
+        $lpRepository = $em->getRepository('AppBundle:LeaguePerson');
 
         $lp = new LeaguePerson();
         $lp->setDateAdded(new \DateTime('now'));
         $lp->setLeague($league);
         $lp->setPoints(0);
-        $lp->setInitialPosition($lp_repo->getInitialPosition($league));
+        $lp->setInitialPosition($lpRepository->getInitialPosition($league));
 
         if (!$this->isGranted('ROLE_ADMIN')) {
             if (!$league->isSignedUp($this->getUser())) {
@@ -67,21 +67,21 @@ class LeagueSignupController extends Controller {
 
     /**
      * @Security("has_role('ROLE_ADMIN')")
-     * @Route("/league/{id}/signup/{signup_id}", name="league_signup_edit", methods={"GET", "POST"})
+     * @Route("/league/{id}/signup/{signupId}", name="league_signup_edit", methods={"GET", "POST"})
      *
      * @param int $id
-     * @param int $signup_id
+     * @param int $signupId
      * @param Request $request
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function signupEditAction($id, $signup_id, Request $request)
+    public function signupEditAction($id, $signupId, Request $request)
     {
         $em = $this->getDoctrine()->getManager();
-        $lp = $em->getRepository('AppBundle:LeaguePerson')->find($signup_id);
+        $lp = $em->getRepository('AppBundle:LeaguePerson')->find($signupId);
         if (!$lp) {
             throw $this->createNotFoundException(
-                'No league-person found for id ' . $signup_id
+                'No league-person found for id ' . $signupId
             );
         }
         if ($lp->getLeague()->getId() != $id) {
@@ -109,21 +109,21 @@ class LeagueSignupController extends Controller {
 
     /**
      * @Security("has_role('ROLE_ADMIN')")
-     * @Route("/league/{id}/signup/{signup_id}/delete", name="league_signup_delete", methods={"GET", "POST"})
+     * @Route("/league/{id}/signup/{signupId}/delete", name="league_signup_delete", methods={"GET", "POST"})
      *
      * @param int $id
-     * @param int $signup_id
+     * @param int $signupId
      * @param Request $request
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function signupRemoveAction($id, $signup_id, Request $request)
+    public function signupRemoveAction($id, $signupId, Request $request)
     {
         $em = $this->getDoctrine()->getManager();
-        $lp = $em->getRepository('AppBundle:LeaguePerson')->find($signup_id);
+        $lp = $em->getRepository('AppBundle:LeaguePerson')->find($signupId);
         if (!$lp) {
             throw $this->createNotFoundException(
-                'No league-person found for id ' . $signup_id
+                'No league-person found for id ' . $signupId
             );
         }
         if ($lp->getLeague()->getId() != $id) {

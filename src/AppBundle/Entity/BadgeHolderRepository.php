@@ -4,6 +4,7 @@ namespace AppBundle\Entity;
 
 use Doctrine\DBAL\Types\Type;
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\Query\Expr;
 
 class BadgeHolderRepository extends EntityRepository
 {
@@ -24,5 +25,32 @@ class BadgeHolderRepository extends EntityRepository
     {
         return $this->createQueryBuilder('b')
             ->where('b.date_delivered IS NULL');
+    }
+
+    public function findByIdentAndPerson($ident, $person_id)
+    {
+        $badgeCondition = (new Expr)->orX(
+            (new Expr)->eq('b.algo_name', ':ident'),
+            (new Expr)->like('b.algo_name', ':ident_fuzzy')
+        );
+
+        $subquery = $this->createQueryBuilder('bh')
+            ->where('bh.badge = b')
+            ->andWhere('bh.person = :person');
+
+        $holder = (new Expr)->exists($subquery);
+
+        return $this->_em->createQueryBuilder()
+            ->from('AppBundle:Badge', 'b')
+            ->select('b')
+            ->where($badgeCondition)
+            ->andWhere($holder)
+
+            ->setParameter('ident', $ident)
+            ->setParameter('ident_fuzzy', $ident . ':%')
+            ->setParameter('person', $person_id)
+
+            ->getQuery()
+            ->getResult();
     }
 }
