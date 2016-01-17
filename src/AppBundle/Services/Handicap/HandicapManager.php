@@ -51,6 +51,8 @@ class HandicapManager
                     return $hc->getDate() <= $score->getDateShot();
                 })->last();
 
+                if(!$last_handicap) { $last_handicap = null; }
+
                 $new_handicaps = $this->calculateRebuild($person, $indoor, $last_handicap);
                 $this->removeAfter($person, $indoor, $last_handicap);
             }
