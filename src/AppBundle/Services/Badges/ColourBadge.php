@@ -117,9 +117,10 @@ class ColourBadge
         }
     }
 
-    private static function crossArrays(...$arrays)
+    private static function crossArrays()
     {
-        $count = count($arrays);
+        $count = func_num_args();
+        $arrays = func_get_args();
 
         if ($count == 0) {
             return [];
@@ -133,7 +134,7 @@ class ColourBadge
 
         $result = [];
         foreach ($head as $key) {
-            $result[$key] = self::crossArrays(...$tail);
+            $result[$key] = call_user_func_array([__NAMESPACE__ .'\ColourBadge', 'crossArrays'], $tail);
         }
         return $result;
     }
