@@ -2,6 +2,7 @@
 
 namespace AppBundle\Form\Type;
 
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -11,7 +12,7 @@ class CompetitionSessionRoundType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('round', 'entity', [
+            ->add('round', EntityType::class, [
                 'class' => 'AppBundle:Round',
             ]);
     }
@@ -21,10 +22,5 @@ class CompetitionSessionRoundType extends AbstractType
         $resolver->setDefaults([
             'data_class' => 'AppBundle\Entity\CompetitionSessionRound'
         ]);
-    }
-
-    public function getName()
-    {
-        return 'competition_session_round';
     }
 }

@@ -3,6 +3,8 @@
 namespace AppBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\FormBuilderInterface;
 
 class RoundupType extends AbstractType
@@ -10,9 +12,9 @@ class RoundupType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('start_date', 'date')
-            ->add('end_date', 'date')
-            ->add('type', 'choice', [
+            ->add('start_date', DateType::class)
+            ->add('end_date', DateType::class)
+            ->add('type', ChoiceType::class, [
                 'multiple' => true,
                 'required' => true,
                 'choices' => [
@@ -22,10 +24,5 @@ class RoundupType extends AbstractType
                     'competitions' => 'Competitions'
                 ]
             ]);
-    }
-
-    public function getName()
-    {
-        return 'roundup';
     }
 }

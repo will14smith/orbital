@@ -39,7 +39,7 @@ class LeagueController extends Controller
         $leagueManager = $this->get('orbital.league.manager');
 
         $league = new League();
-        $form = $this->createForm(new LeagueType($leagueManager), $league);
+        $form = $this->createForm(LeagueType::class, $league, ['manager' => $leagueManager]);
 
         $form->handleRequest($request);
 
@@ -102,7 +102,7 @@ class LeagueController extends Controller
         }
 
         $leagueManager = $this->get('orbital.league.manager');
-        $form = $this->createForm(new LeagueType($leagueManager), $league);
+        $form = $this->createForm(LeagueType::class, $league, ['manager' => $leagueManager]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

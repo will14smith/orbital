@@ -35,7 +35,7 @@ class CompetitionController extends Controller
     public function createAction(Request $request)
     {
         $competition = new Competition();
-        $form = $this->createForm(new CompetitionType(), $competition);
+        $form = $this->createForm(CompetitionType::class, $competition);
 
         $form->handleRequest($request);
 
@@ -144,7 +144,7 @@ class CompetitionController extends Controller
             );
         }
 
-        $form = $this->createForm(new CompetitionType(), $competition);
+        $form = $this->createForm(CompetitionType::class, $competition);
 
         $form->handleRequest($request);
 

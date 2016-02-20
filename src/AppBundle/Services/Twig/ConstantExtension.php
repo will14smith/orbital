@@ -4,7 +4,7 @@ namespace AppBundle\Services\Twig;
 
 use AppBundle\Constants;
 
-class ConstantExtension extends \Twig_Extension
+class ConstantExtension extends \Twig_Extension implements \Twig_Extension_GlobalsInterface
 {
     public function getGlobals()
     {

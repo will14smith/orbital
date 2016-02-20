@@ -4,13 +4,24 @@
 namespace BarcodeBundle\Utility;
 
 
+/**
+ * Class Barcode
+ * @package BarcodeBundle\Utility
+ */
 class Barcode extends \Hackzilla\BarcodeBundle\Utility\Barcode
 {
+    /**
+     * Build barcode
+     *
+     * @param string $code
+     *
+     * @return resource
+     */
     public function build($code)
     {
         $bars = $this->encode($code);
         if (!$bars) {
-            return;
+            return null;
         }
 
         $bars = $bars['bars'];
@@ -43,8 +54,8 @@ class Barcode extends \Hackzilla\BarcodeBundle\Utility\Barcode
         $im = \imagecreate($total_x, $total_y);
 
         /* create two images */
-        \ImageColorAllocate($im, $this->bgColor(0), $this->bgColor(1), $this->bgColor(2));
-        $col_bar = \ImageColorAllocate($im, $this->barColor(0), $this->barColor(1), $this->barColor(2));
+        \imagecolorallocate($im, $this->bgColor(0), $this->bgColor(1), $this->bgColor(2));
+        $col_bar = \imagecolorallocate($im, $this->barColor(0), $this->barColor(1), $this->barColor(2));
         $height = \round($total_y - $space['bottom']);
 
         /* paint the bars */

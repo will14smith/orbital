@@ -35,7 +35,7 @@ class ClubController extends Controller
     public function createAction(Request $request)
     {
         $club = new Club();
-        $form = $this->createForm(new ClubType(), $club);
+        $form = $this->createForm(ClubType::class, $club);
 
         $form->handleRequest($request);
 
@@ -97,7 +97,7 @@ class ClubController extends Controller
             );
         }
 
-        $form = $this->createForm(new ClubType(), $club);
+        $form = $this->createForm(ClubType::class, $club);
 
         $form->handleRequest($request);
 

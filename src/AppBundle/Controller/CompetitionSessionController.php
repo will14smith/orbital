@@ -30,7 +30,7 @@ class CompetitionSessionController extends Controller
         $session = new CompetitionSession();
         $session->setCompetition($competition);
 
-        $form = $this->createForm(new CompetitionSessionType(), $session);
+        $form = $this->createForm(CompetitionSessionType::class, $session);
 
         $form->handleRequest($request);
 
@@ -83,7 +83,7 @@ class CompetitionSessionController extends Controller
             $originalRounds->add($round);
         }
 
-        $form = $this->createForm(new CompetitionSessionType(), $session);
+        $form = $this->createForm(CompetitionSessionType::class, $session);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

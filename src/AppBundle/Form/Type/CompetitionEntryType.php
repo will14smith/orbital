@@ -5,36 +5,23 @@ namespace AppBundle\Form\Type;
 use AppBundle\Entity\CompetitionSessionRound;
 use AppBundle\Entity\Round;
 use AppBundle\Services\Enum\BowType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class CompetitionEntryType extends AbstractType
 {
-    /**
-     * @var bool
-     */
-    private $admin;
-    /**
-     * @var Round[]
-     */
-    private $rounds;
-
-    /**
-     * @param bool $admin
-     * @param \Doctrine\Common\Collections\Collection $rounds
-     */
-    public function __construct($admin, $rounds)
-    {
-        $this->admin = $admin;
-        $this->rounds = $rounds->map(function(CompetitionSessionRound $sessionRound) {
-            return $sessionRound->getRound();
-        });
-    }
-
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        if ($this->admin) {
+        $admin = $options['admin'];
+        $rounds = $options['rounds']->map(function(CompetitionSessionRound $sessionRound) {
+            return $sessionRound->getRound();
+        });
+
+
+        if ($admin) {
             $builder
                 ->add('club')
                 ->add('person');
@@ -44,18 +31,18 @@ class CompetitionEntryType extends AbstractType
             $archer = $builder;
         }
 
-        $builder->add('round', 'entity', [
+        $builder->add('round', EntityType::class, [
             'class' => 'AppBundle:Round',
-            'choices' => $this->rounds,
+            'choices' => $rounds,
         ]);
 
         $archer
-            ->add('bowtype', 'choice', [
+            ->add('bowtype', ChoiceType::class, [
                 'choices' => BowType::$choices,
                 'required' => false,
             ]);
 
-        if ($this->admin) {
+        if ($admin) {
             $builder
                 ->add($archer)
                 ->add('date_entered')
@@ -67,12 +54,10 @@ class CompetitionEntryType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => 'AppBundle\Entity\CompetitionSessionEntry'
-        ]);
-    }
+            'data_class' => 'AppBundle\Entity\CompetitionSessionEntry',
 
-    public function getName()
-    {
-        return 'competition_entry';
+            'admin' => false,
+            'rounds' => [],
+        ]);
     }
 }

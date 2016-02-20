@@ -7,38 +7,37 @@ use AppBundle\Form\Type\Custom\PersonSelectType;
 use AppBundle\Form\Type\Custom\RoundSelectType;
 use AppBundle\Form\Type\Custom\SkillSelectType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ScoreType extends AbstractType
 {
-    private $edit;
-
-    public function __construct($edit = false)
-    {
-        $this->edit = $edit;
-    }
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $edit = $options['editing'];
+
         $builder
-            ->add('person', new PersonSelectType(), [
-                'disabled' => $this->edit
+            ->add('person', PersonSelectType::class, [
+                'disabled' => $edit
             ])
-            ->add('skill', new SkillSelectType(), [
+            ->add('skill', SkillSelectType::class, [
                 'required' => false,
             ])
-            ->add('bowtype', new BowTypeSelectType(), [
+            ->add('bowtype', BowTypeSelectType::class, [
                 'required' => false,
             ])
-            ->add('round', new RoundSelectType(), [
-                'disabled' => $this->edit
+            ->add('round', RoundSelectType::class, [
+                'disabled' => $edit
             ])
-            ->add('score', 'integer', ['required' => true])
-            ->add('golds', 'integer', ['required' => true])
-            ->add('hits', 'integer', ['required' => true])
-            ->add('competition', 'checkbox', ['required' => false, 'label' => 'Was it shot at a competition?'])
-            ->add('date_shot', 'date', [
+            ->add('score', IntegerType::class, ['required' => true])
+            ->add('golds', IntegerType::class, ['required' => true])
+            ->add('hits', IntegerType::class, ['required' => true])
+            ->add('competition', CheckboxType::class, ['required' => false, 'label' => 'Was it shot at a competition?'])
+            ->add('date_shot', DateType::class, [
                 'label' => 'When was (or will be) this shot?',
                 'widget' => 'single_text',
             ]);
@@ -47,12 +46,9 @@ class ScoreType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => 'AppBundle\Entity\Score'
-        ]);
-    }
+            'data_class' => 'AppBundle\Entity\Score',
 
-    public function getName()
-    {
-        return 'score';
+            'editing' => false
+        ]);
     }
 }

@@ -6,6 +6,7 @@ use AppBundle\Services\Enum\BowType;
 use AppBundle\Services\Enum\Gender;
 use AppBundle\Services\Enum\Skill;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -16,12 +17,12 @@ class RecordType extends AbstractType
         $builder
             ->add('round')
             ->add('num_holders')
-            ->add('skill', 'choice', ['choices' => Skill::$choices])
-            ->add('bowtype', 'choice', [
-                'choices' => Bowtype::$choices,
+            ->add('skill', ChoiceType::class, ['choices' => Skill::$choices])
+            ->add('bowtype', ChoiceType::class, [
+                'choices' => BowType::$choices,
                 'required' => false
             ])
-            ->add('gender', 'choice', [
+            ->add('gender', ChoiceType::class, [
                 'choices' => Gender::$choices,
                 'required' => false
             ]);
@@ -32,10 +33,5 @@ class RecordType extends AbstractType
         $resolver->setDefaults([
             'data_class' => 'AppBundle\Entity\Record'
         ]);
-    }
-
-    public function getName()
-    {
-        return 'club';
     }
 }

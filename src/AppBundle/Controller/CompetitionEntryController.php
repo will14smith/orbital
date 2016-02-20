@@ -37,7 +37,10 @@ class CompetitionEntryController extends Controller
             $entry->setClub($this->getUser()->getClub());
         }
 
-        $form = $this->createForm(new CompetitionEntryType($admin, $session->getRounds()), $entry);
+        $form = $this->createForm(CompetitionEntryType::class, $entry, [
+            'admin' => $admin,
+            'rounds' => $session->getRounds(),
+        ]);
         $form->handleRequest($request);
 
         if ($form->isValid()) {

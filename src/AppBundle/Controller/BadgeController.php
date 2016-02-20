@@ -40,7 +40,7 @@ class BadgeController extends Controller
     public function createAction(Request $request)
     {
         $badge = new Badge();
-        $form = $this->createForm(new BadgeType(), $badge);
+        $form = $this->createForm(BadgeType::class, $badge);
 
         $form->handleRequest($request);
 
@@ -109,7 +109,7 @@ class BadgeController extends Controller
             );
         }
 
-        $form = $this->createForm(new BadgeType(), $badge);
+        $form = $this->createForm(BadgeType::class, $badge);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

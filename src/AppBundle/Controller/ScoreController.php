@@ -89,7 +89,7 @@ class ScoreController extends Controller
             $score->setBowtype($request->query->get('bowtype'));
         }
 
-        $form = $this->createForm(new ScoreType(), $score);
+        $form = $this->createForm(ScoreType::class, $score, ['editing' => false]);
 
         $form->handleRequest($request);
         $this->validateScore($form);
@@ -200,7 +200,7 @@ class ScoreController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $form = $this->createForm(new ScoreType(true), $score);
+        $form = $this->createForm(ScoreType::class, $score, ['editing' => true]);
         $formProof = $form->get('proof');
 
         $form->handleRequest($request);

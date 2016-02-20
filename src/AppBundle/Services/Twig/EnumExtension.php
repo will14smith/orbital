@@ -9,7 +9,7 @@ use AppBundle\Services\Enum\Gender;
 use AppBundle\Services\Enum\Skill;
 use AppBundle\Services\Enum\Unit;
 
-class EnumExtension extends \Twig_Extension
+class EnumExtension extends \Twig_Extension implements \Twig_Extension_GlobalsInterface
 {
     public function getFilters()
     {

@@ -8,6 +8,7 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\BrowserKit\Cookie;
 use Symfony\Component\Console\Input\StringInput;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
+use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
 
 class FunctionalWebTestCase extends WebTestCase
 {
@@ -63,15 +64,20 @@ class FunctionalWebTestCase extends WebTestCase
         $this->runCommand('doctrine:fixtures:load');
     }
 
-    public function logIn()
+    public function login()
     {
         $client = $this->getClient();
 
-        $session = $client->getContainer()->get('session');
+        $container = $client->getContainer();
 
-        $firewall = 'secured_area';
-        $token = new UsernamePasswordToken('admin', null, $firewall, ['ROLE_ADMIN']);
-        $session->set('_security_'.$firewall, serialize($token));
+        $admin = $container->get('doctrine')->getRepository('AppBundle:Person')->loadUserByUsername('admin');
+
+        $token = new UsernamePasswordToken($admin, null, 'main', ['ROLE_ADMIN']);
+
+        $container->get("security.token_storage")->setToken($token);
+
+        $session = $container->get('session');
+        $session->set('_security_main', serialize($token));
         $session->save();
 
         $cookie = new Cookie($session->getName(), $session->getId());
