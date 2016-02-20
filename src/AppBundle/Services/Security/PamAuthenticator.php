@@ -8,13 +8,13 @@ use AppBundle\Entity\Person;
 use AppBundle\Services\Enum\Skill;
 use Doctrine\Bundle\DoctrineBundle\Registry;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Security\Core\Authentication\SimpleFormAuthenticatorInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
+use Symfony\Component\Security\Http\Authentication\SimpleFormAuthenticatorInterface;
 
 // needed for dev servers
 if (!function_exists('pam_auth')) {
@@ -28,12 +28,20 @@ if (!function_exists('pam_auth')) {
         return array_key_exists($username, $login_data) && $login_data[$username] == $password;
     }
 
-    function ldap_get_name(/* $username */)
+    /**
+     * @return string
+     * @internal param $username
+     */
+    function ldap_get_name()
     {
         return "Will Smith";
     }
 
-    function ldap_get_mail(/* $username */)
+    /**
+     * @return string
+     * @internal param $username
+     */
+    function ldap_get_mail()
     {
         return "wds12@imperial.ac.uk";
     }
@@ -103,8 +111,8 @@ class PamAuthenticator implements SimpleFormAuthenticatorInterface
         $username = $token->getUsername();
 
         $user->setCuser($username);
-        $user->setName(ldap_get_name($username));
-        $user->setEmail(ldap_get_mail($username));
+        $user->setName(\ldap_get_name($username));
+        $user->setEmail(\ldap_get_mail($username));
         $user->setSkill(Skill::NOVICE);
         $user->setAdmin(false);
 

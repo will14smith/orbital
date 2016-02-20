@@ -88,6 +88,7 @@ class HandicapManagerTest extends ServiceTestCase
             $score = $scores[count($scores) - 1];
         }
 
+        /** @noinspection PhpUndefinedFieldInspection used in the tests */
         $person->scores = $scores;
 
         return [$person, $score];
