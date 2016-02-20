@@ -1,0 +1,36 @@
+<?php
+
+namespace AppBundle\Services\Handicap\Calculators;
+
+use AppBundle\Services\Handicap\TargetCalculatorInterface;
+
+class Metric5ZoneTargetCalculator implements TargetCalculatorInterface
+{
+    /**
+     * @var boolean
+     */
+    private $compound;
+
+    /**
+     * @param boolean $compound
+     */
+    public function __construct($compound)
+    {
+        $this->compound = $compound;
+    }
+
+    function calculate($sigma, $targetDiameter)
+    {
+        $s = 10;
+
+        $sigma_sq = pow($sigma, 2);
+
+        for($i = 1; $i < 5; $i++) {
+            $s -= exp(-pow(($i * $targetDiameter) / ($i == 1 && $this->compound ? 40 : 20) + 0.357, 2) / $sigma_sq);
+        }
+
+        $s -= 6 * exp(-pow((5 * $targetDiameter) / 20 + 0.357, 2) / $sigma_sq);
+
+        return $s;
+    }
+}

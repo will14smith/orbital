@@ -16,7 +16,6 @@ class MetricTargetCalculator implements TargetCalculatorInterface
      */
     public function __construct($compound)
     {
-
         $this->compound = $compound;
     }
 
