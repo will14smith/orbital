@@ -3,6 +3,8 @@
 namespace AppBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -13,11 +15,11 @@ class RoundType extends AbstractType
         $builder
             ->add('name')
             ->add('category')
-            ->add('indoor', 'checkbox', [
+            ->add('indoor', CheckboxType::class, [
                 'required' => false
             ])
-            ->add('targets', 'collection', [
-                'type' => new RoundTargetType(),
+            ->add('targets', CollectionType::class, [
+                'entry_type' => RoundTargetType::class,
                 'allow_add' => true,
                 'by_reference' => false
             ]);
@@ -28,10 +30,5 @@ class RoundType extends AbstractType
         $resolver->setDefaults([
             'data_class' => 'AppBundle\Entity\Round'
         ]);
-    }
-
-    public function getName()
-    {
-        return 'round';
     }
 }

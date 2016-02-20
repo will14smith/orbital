@@ -42,7 +42,7 @@ class RecordAwardController extends Controller
         for ($i = 0; $i < $numHolders; $i++) {
             $holder->addPerson(new RecordHolderPerson());
         }
-        $form = $this->createForm(new RecordHolderType(), $holder);
+        $form = $this->createForm(RecordHolderType::class, $holder);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

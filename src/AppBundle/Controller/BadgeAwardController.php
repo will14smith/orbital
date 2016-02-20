@@ -46,7 +46,9 @@ class BadgeAwardController extends Controller
             $badgeHolder->setDateConfirmed(new \DateTime('now'));
         }
 
-        $form = $this->createForm(new BadgeHolderType($isAdmin), $badgeHolder);
+        $form = $this->createForm(BadgeHolderType::class, $badgeHolder, [
+            'admin' => $isAdmin
+        ]);
         $formProof = $form->get('proof');
 
         $form->handleRequest($request);
@@ -97,7 +99,10 @@ class BadgeAwardController extends Controller
             );
         }
 
-        $form = $this->createForm(new BadgeHolderType(true, false), $badgeHolder);
+        $form = $this->createForm(BadgeHolderType::class, $badgeHolder, [
+            'admin' => true,
+            'show_proof' => false
+        ]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

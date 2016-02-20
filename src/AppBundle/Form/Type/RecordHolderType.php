@@ -24,9 +24,4 @@ class RecordHolderType extends AbstractType
             'data_class' => 'AppBundle\Entity\RecordHolder'
         ]);
     }
-
-    public function getName()
-    {
-        return 'record_holder';
-    }
 }

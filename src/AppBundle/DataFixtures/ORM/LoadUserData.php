@@ -23,6 +23,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface
         $admin = new Person();
         $admin->setName("Admin User");
         $admin->setNamePreferred("Admin");
+        $admin->setCuser('admin');
         $admin->setAdmin(true);
         $this->init($admin);
 

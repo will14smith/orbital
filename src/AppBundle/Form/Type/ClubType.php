@@ -22,9 +22,4 @@ class ClubType extends AbstractType
             'data_class' => 'AppBundle\Entity\Club'
         ]);
     }
-
-    public function getName()
-    {
-        return 'club';
-    }
 }

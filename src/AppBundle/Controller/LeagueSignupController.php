@@ -47,7 +47,7 @@ class LeagueSignupController extends Controller {
             ]);
         }
 
-        $form = $this->createForm(new LeaguePersonType(), $lp);
+        $form = $this->createForm(LeaguePersonType::class, $lp);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -90,7 +90,7 @@ class LeagueSignupController extends Controller {
             );
         }
 
-        $form = $this->createForm(new LeaguePersonType(), $lp);
+        $form = $this->createForm(LeaguePersonType::class, $lp);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -132,7 +132,7 @@ class LeagueSignupController extends Controller {
             );
         }
 
-        $form = $this->createForm(new LeaguePersonType(), $lp);
+        $form = $this->createForm(LeaguePersonType::class, $lp);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

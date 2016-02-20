@@ -2,6 +2,7 @@
 
 namespace AppBundle\Form\Type\Custom;
 
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -16,11 +17,6 @@ class PersonSelectType extends AbstractType
 
     public function getParent()
     {
-        return new SelectType(true);
-    }
-
-    public function getName()
-    {
-        return 'person';
+        return EntityType::class;
     }
 }

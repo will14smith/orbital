@@ -38,7 +38,7 @@ class RecordController extends Controller
     public function createAction(Request $request)
     {
         $record = new Record();
-        $form = $this->createForm(new RecordType(), $record);
+        $form = $this->createForm(RecordType::class, $record);
 
         $form->handleRequest($request);
 
@@ -69,7 +69,7 @@ class RecordController extends Controller
      */
     public function matrixCreateAction(Request $request)
     {
-        $form = $this->createForm(new RecordMatrixType());
+        $form = $this->createForm(RecordMatrixType::class);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -127,7 +127,7 @@ class RecordController extends Controller
             );
         }
 
-        $form = $this->createForm(new RecordType(), $record);
+        $form = $this->createForm(RecordType::class, $record);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

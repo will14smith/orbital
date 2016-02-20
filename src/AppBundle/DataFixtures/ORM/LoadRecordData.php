@@ -32,11 +32,13 @@ class LoadRecordData extends AbstractFixture implements OrderedFixtureInterface 
         $record2->setBowtype(BowType::RECURVE);
 
         $holder = new RecordHolder();
+        $holder->setRecord($record1);
         $holder->setDate(new \DateTime('now'));
         $holder->setLocation('Location 1');
         $holder->setScore(500);
 
         $holderPerson = new RecordHolderPerson();
+        $holderPerson->setRecordHolder($holder);
         $holderPerson->setPerson($this->getReference('person-user'));
         $holderPerson->setScoreValue(500);
 

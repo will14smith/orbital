@@ -36,7 +36,7 @@ class RoundController extends Controller
     public function createAction(Request $request)
     {
         $round = new Round();
-        $form = $this->createForm(new RoundType(), $round);
+        $form = $this->createForm(RoundType::class, $round);
 
         $form->handleRequest($request);
 
@@ -98,7 +98,7 @@ class RoundController extends Controller
             );
         }
 
-        $form = $this->createForm(new RoundType(), $round);
+        $form = $this->createForm(RoundType::class, $round);
 
         $form->handleRequest($request);
 

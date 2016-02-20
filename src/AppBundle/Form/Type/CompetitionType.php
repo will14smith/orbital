@@ -3,6 +3,7 @@
 namespace AppBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -14,7 +15,7 @@ class CompetitionType extends AbstractType
             ->add('name')
             ->add('hosted')
             ->add('location')
-            ->add('description', 'textarea', ['required' => false]);
+            ->add('description', TextareaType::class, ['required' => false]);
     }
 
     public function configureOptions(OptionsResolver $resolver)
@@ -22,10 +23,5 @@ class CompetitionType extends AbstractType
         $resolver->setDefaults([
             'data_class' => 'AppBundle\Entity\Competition'
         ]);
-    }
-
-    public function getName()
-    {
-        return 'competition';
     }
 }

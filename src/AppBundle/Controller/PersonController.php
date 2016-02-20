@@ -64,7 +64,7 @@ class PersonController extends Controller
     public function createAction(Request $request)
     {
         $person = new Person();
-        $form = $this->createForm(new PersonType(), $person);
+        $form = $this->createForm(PersonType::class, $person);
 
         $form->handleRequest($request);
 
@@ -148,7 +148,7 @@ class PersonController extends Controller
             );
         }
 
-        $form = $this->createForm(new PersonType(), $person);
+        $form = $this->createForm(PersonType::class, $person);
 
         $form->handleRequest($request);
 

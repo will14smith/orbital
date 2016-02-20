@@ -15,7 +15,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
-class LeagueChallengeController extends Controller {
+class LeagueChallengeController extends Controller
+{
     use ProofControllerTrait;
 
     /**
@@ -39,7 +40,7 @@ class LeagueChallengeController extends Controller {
             $lm->setChallenger($this->getUser());
         }
 
-        $form = $this->createForm(new LeagueMatchType($isAdmin), $lm);
+        $form = $this->createForm(LeagueMatchType::class, $lm, ['admin' => $isAdmin]);
         $formProof = $form->get('proof');
 
         $form->handleRequest($request);

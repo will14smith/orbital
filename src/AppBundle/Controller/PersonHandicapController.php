@@ -32,7 +32,7 @@ class PersonHandicapController extends Controller
         }
 
         $data = [];
-        $form = $this->createForm(new ReassessType(), $data);
+        $form = $this->createForm(ReassessType::class, $data);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

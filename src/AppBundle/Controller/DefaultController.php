@@ -33,7 +33,7 @@ class DefaultController extends Controller
             'end_date' => new \DateTime('now')
         ];
 
-        $form = $this->createForm(new RoundupType(), $data);
+        $form = $this->createForm(RoundupType::class, $data);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

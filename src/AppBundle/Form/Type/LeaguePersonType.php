@@ -23,9 +23,4 @@ class LeaguePersonType extends AbstractType
             'data_class' => 'AppBundle\Entity\LeaguePerson'
         ]);
     }
-
-    public function getName()
-    {
-        return 'league_person';
-    }
 }

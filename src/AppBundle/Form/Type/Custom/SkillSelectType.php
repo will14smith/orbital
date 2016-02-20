@@ -4,6 +4,7 @@ namespace AppBundle\Form\Type\Custom;
 
 use AppBundle\Services\Enum\Skill;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class SkillSelectType extends AbstractType
@@ -17,11 +18,6 @@ class SkillSelectType extends AbstractType
 
     public function getParent()
     {
-        return new SelectType(false);
-    }
-
-    public function getName()
-    {
-        return 'skill';
+        return ChoiceType::class;
     }
 }
