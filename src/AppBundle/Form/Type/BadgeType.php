@@ -2,10 +2,9 @@
 
 namespace AppBundle\Form\Type;
 
-use AppBundle\Services\Enum\BadgeCategory;
+use AppBundle\Form\Type\Custom\BadgeCategorySelectType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -19,12 +18,8 @@ class BadgeType extends AbstractType
             ->add('name')
             ->add('description', TextareaType::class)
             ->add('algo_name')
-            ->add('category', ChoiceType::class, [
-                'choices' => BadgeCategory::$choices,
-            ])
-            ->add('multiple', CheckboxType::class, [
-                'required' => false
-            ])
+            ->add('category', BadgeCategorySelectType::class)
+            ->add('multiple', CheckboxType::class, ['required' => false])
             ->add('image', FileType::class, [
                 'required' => false,
                 'mapped' => false

@@ -12,7 +12,7 @@ class SkillSelectType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'choices' => Skill::$choices,
+            'choices' => array_flip(Skill::$choices),
         ]);
     }
 

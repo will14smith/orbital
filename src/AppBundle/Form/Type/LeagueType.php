@@ -2,11 +2,11 @@
 
 namespace AppBundle\Form\Type;
 
-use AppBundle\Services\Enum\BowType;
-use AppBundle\Services\Enum\Gender;
-use AppBundle\Services\Enum\Skill;
+use AppBundle\Form\Type\Custom\BowTypeSelectType;
+use AppBundle\Form\Type\Custom\GenderSelectType;
+use AppBundle\Form\Type\Custom\RoundSelectType;
+use AppBundle\Form\Type\Custom\SkillSelectType;
 use AppBundle\Services\Leagues\LeagueManager;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -26,30 +26,17 @@ class LeagueType extends AbstractType
                 'required' => false
             ])
             ->add('algo_name', ChoiceType::class, [
-                'choices' => $leagueManager->getAlgorithmNames(),
+                'choices' => array_flip($leagueManager->getAlgorithmNames()),
                 'required' => false
             ])
             #region LIMIT
             ->add('open_date')
             ->add('close_date')
-            ->add('skill_limit', ChoiceType::class, [
-                'choices' => Skill::$choices,
-                'required' => false
-            ])
-            ->add('bowtype_limit', ChoiceType::class, [
-                'choices' => BowType::$choices,
-                'required' => false
-            ])
-            ->add('gender_limit', ChoiceType::class, [
-                'choices' => Gender::$choices,
-                'required' => false
-            ])
+            ->add('skill_limit', SkillSelectType::class, ['required' => false])
+            ->add('bowtype_limit', BowTypeSelectType::class, ['required' => false])
+            ->add('gender_limit', GenderSelectType::class, ['required' => false])
             #end region
-            ->add('rounds', EntityType::class, [
-                'class' => 'AppBundle:Round',
-                'multiple' => true,
-                'required' => false
-            ]);
+            ->add('rounds', RoundSelectType::class, ['multiple' => true, 'required' => false]);
     }
 
     public function configureOptions(OptionsResolver $resolver)

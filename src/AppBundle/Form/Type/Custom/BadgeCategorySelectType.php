@@ -2,17 +2,17 @@
 
 namespace AppBundle\Form\Type\Custom;
 
-use AppBundle\Services\Enum\BowType;
+use AppBundle\Services\Enum\BadgeCategory;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class BowTypeSelectType extends AbstractType
+class BadgeCategorySelectType extends AbstractType
 {
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'choices' => array_flip(BowType::$choices),
+            'choices' => array_flip(BadgeCategory::$choices),
         ]);
     }
 

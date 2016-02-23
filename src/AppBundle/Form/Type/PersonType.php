@@ -2,13 +2,12 @@
 
 namespace AppBundle\Form\Type;
 
-use AppBundle\Services\Enum\BowType;
-use AppBundle\Services\Enum\Gender;
-use AppBundle\Services\Enum\Skill;
+use AppBundle\Form\Type\Custom\BowTypeSelectType;
+use AppBundle\Form\Type\Custom\GenderSelectType;
+use AppBundle\Form\Type\Custom\SkillSelectType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -26,10 +25,10 @@ class PersonType extends AbstractType
             ->add('cuser')
             ->add('email')
             ->add('mobile')
-            ->add('gender', ChoiceType::class, ['choices' => Gender::$choices])
+            ->add('gender', GenderSelectType::class)
             ->add('date_of_birth', BirthdayType::class, ['required' => false])
-            ->add('skill', ChoiceType::class, ['choices' => Skill::$choices])
-            ->add('bowtype', ChoiceType::class, ['choices' => BowType::$choices])
+            ->add('skill', SkillSelectType::class)
+            ->add('bowtype', BowTypeSelectType::class)
             ->add('club_bow')
             ->add('password', PasswordType::class, ['required' => false])
             ->add('admin', CheckboxType::class, ['required' => false]);
