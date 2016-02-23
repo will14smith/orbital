@@ -18,23 +18,14 @@ class EnumExtension extends \Twig_Extension implements \Twig_Extension_GlobalsIn
 
     public function getGlobals()
     {
-        return ['Enum' => array_map([$this, 'process_enum_global'], [
+        return ['Enum' => [
             'bowtype' => BowType::$choices,
             'gender' => Gender::$choices,
             'skill' => Skill::$choices,
             'unit' => Unit::$choices,
             'badgecat' => BadgeCategory::$choices,
             'badgestate' => BadgeState::$choices,
-        ])];
-    }
-
-    private function process_enum_global($enum)
-    {
-        array_walk($enum, function (&$v, $k) {
-            $v = $k;
-        });
-
-        return $enum;
+        ]];
     }
 
     public function enum_filter($value, $enum)
