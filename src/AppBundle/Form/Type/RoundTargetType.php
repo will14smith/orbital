@@ -2,10 +2,9 @@
 
 namespace AppBundle\Form\Type;
 
-use AppBundle\Services\Enum\ScoreZones;
-use AppBundle\Services\Enum\Unit;
+use AppBundle\Form\Type\Custom\ScoreZoneSelectType;
+use AppBundle\Form\Type\Custom\UnitSelectType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -15,10 +14,10 @@ class RoundTargetType extends AbstractType
     {
         $builder
             ->add('distance_value')
-            ->add('distance_unit', ChoiceType::class, ['choices' => Unit::$choices])
+            ->add('distance_unit', UnitSelectType::class)
             ->add('target_value')
-            ->add('target_unit', ChoiceType::class, ['choices' => Unit::$choices])
-            ->add('scoring_zones', ChoiceType::class, ['choices' => ScoreZones::$choices])
+            ->add('target_unit', UnitSelectType::class)
+            ->add('scoring_zones', ScoreZoneSelectType::class)
             ->add('arrow_count')
             ->add('end_size');
     }

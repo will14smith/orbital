@@ -3,11 +3,9 @@
 namespace AppBundle\Form\Type;
 
 use AppBundle\Entity\CompetitionSessionRound;
-use AppBundle\Entity\Round;
-use AppBundle\Services\Enum\BowType;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use AppBundle\Form\Type\Custom\BowTypeSelectType;
+use AppBundle\Form\Type\Custom\RoundSelectType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -16,7 +14,7 @@ class CompetitionEntryType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $admin = $options['admin'];
-        $rounds = $options['rounds']->map(function(CompetitionSessionRound $sessionRound) {
+        $rounds = $options['rounds']->map(function (CompetitionSessionRound $sessionRound) {
             return $sessionRound->getRound();
         });
 
@@ -31,16 +29,9 @@ class CompetitionEntryType extends AbstractType
             $archer = $builder;
         }
 
-        $builder->add('round', EntityType::class, [
-            'class' => 'AppBundle:Round',
-            'choices' => $rounds,
-        ]);
+        $builder->add('round', RoundSelectType::class, ['choices' => $rounds]);
 
-        $archer
-            ->add('bowtype', ChoiceType::class, [
-                'choices' => BowType::$choices,
-                'required' => false,
-            ]);
+        $archer->add('bowtype', BowTypeSelectType::class, ['required' => false,]);
 
         if ($admin) {
             $builder
