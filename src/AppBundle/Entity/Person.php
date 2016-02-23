@@ -326,7 +326,7 @@ class Person implements UserInterface
      */
     public function setGender($gender)
     {
-        $this->gender = $gender;
+        $this->gender = strtolower($gender);
 
         return $this;
     }
@@ -338,7 +338,7 @@ class Person implements UserInterface
      */
     public function getGender()
     {
-        return $this->gender;
+        return strtolower($this->gender);
     }
 
     /**
@@ -374,7 +374,7 @@ class Person implements UserInterface
      */
     public function setSkill($skill)
     {
-        $this->skill = $skill;
+        $this->skill = strtolower($skill);
 
         return $this;
     }
@@ -386,7 +386,7 @@ class Person implements UserInterface
      */
     public function getSkill()
     {
-        return $this->skill;
+        return strtolower($this->skill);
     }
 
     /**
@@ -398,7 +398,7 @@ class Person implements UserInterface
      */
     public function setBowtype($bowtype)
     {
-        $this->bowtype = $bowtype;
+        $this->bowtype = strtolower($bowtype);
 
         return $this;
     }
@@ -410,7 +410,7 @@ class Person implements UserInterface
      */
     public function getBowtype()
     {
-        return $this->bowtype;
+        return strtolower($this->bowtype);
     }
 
     /**

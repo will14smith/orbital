@@ -106,7 +106,7 @@ class Score
      */
     public function setSkill($skill)
     {
-        $this->skill = $skill;
+        $this->skill = strtolower($skill);
 
         return $this;
     }
@@ -118,7 +118,7 @@ class Score
      */
     public function getSkill()
     {
-        return $this->skill;
+        return strtolower($this->skill);
     }
 
     /**
@@ -130,7 +130,7 @@ class Score
      */
     public function setBowtype($bowtype)
     {
-        $this->bowtype = $bowtype;
+        $this->bowtype = strtolower($bowtype);
 
         return $this;
     }
@@ -142,7 +142,7 @@ class Score
      */
     public function getBowtype()
     {
-        return $this->bowtype;
+        return strtolower($this->bowtype);
     }
 
     /**
