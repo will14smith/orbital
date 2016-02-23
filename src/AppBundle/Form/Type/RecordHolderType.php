@@ -3,6 +3,7 @@
 namespace AppBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -13,8 +14,8 @@ class RecordHolderType extends AbstractType
         $builder
             ->add('date')
             ->add('location')
-            ->add('people', 'collection', [
-                'type' => new RecordHolderPersonType()
+            ->add('people', CollectionType::class, [
+                'entry_type' => RecordHolderPersonType::class
             ]);
     }
 
