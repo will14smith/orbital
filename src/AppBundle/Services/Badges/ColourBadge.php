@@ -63,9 +63,23 @@ class ColourBadge
 
         $gender = $score->getPerson()->getGender();
         $bowtype = $score->getBowtype();
-        $indoor = $score->getRound()->getIndoor();
+        $indoor = +$score->getRound()->getIndoor();
 
-        return $scoreHandicap <= $this->handicaps[$indoor][$gender][$bowtype];
+        $table = $this->handicaps;
+        if(!array_key_exists($indoor, $table)) {
+            return false;
+        }
+        $table = $table[$indoor];
+        if(!array_key_exists($gender, $table)) {
+            return false;
+        }
+        $table = $table[$gender];
+        if(!array_key_exists($bowtype, $table)) {
+            return false;
+        }
+        $table = $table[$bowtype];
+
+        return $scoreHandicap <= $table;
     }
 
     /**

@@ -82,11 +82,16 @@ class ScoreController extends Controller
                 $this->getDoctrine()->getRepository('AppBundle:Person')
                     ->find($request->query->get('person')));
         }
-        if ($request->query->has('skill')) {
-            $score->setSkill($request->query->get('skill'));
+        if ($request->query->has('date')) {
+            $score->setDateShot(new \DateTime($request->query->get('date')));
         }
-        if ($request->query->has('bowtype')) {
-            $score->setBowtype($request->query->get('bowtype'));
+        if ($request->query->has('competition')) {
+            $score->setCompetition(!!$request->query->get('competition'));
+        }
+        if ($request->query->has('round')) {
+            $score->setRound(
+                $this->getDoctrine()->getRepository('AppBundle:Round')
+                    ->find($request->query->get('round')));
         }
 
         $form = $this->createForm(ScoreType::class, $score, ['editing' => false]);
@@ -104,8 +109,9 @@ class ScoreController extends Controller
                     'score_create',
                     [
                         'person' => $score->getPerson()->getId(),
-                        'skill' => $score->getSkill(),
-                        'bowtype' => $score->getBowtype(),
+                        'date' => $score->getDateShot()->format('Y-m-d'),
+                        'competition' => $score->getCompetition(),
+                        'round' => $score->getRound()->getId(),
                     ]
                 );
             }
