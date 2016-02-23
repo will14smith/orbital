@@ -207,15 +207,11 @@ class ScoreController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $form = $this->createForm(ScoreType::class, $score, ['editing' => true]);
-        $formProof = $form->get('proof');
 
         $form->handleRequest($request);
         $this->validateScore($form);
-        // don't need proof on edit, must have been supplied by user on create
 
         if ($form->isSubmitted() && $form->isValid()) {
-            //  however, if they provide more we should save it
-            $this->saveProof($em, $score, $formProof);
             $em->flush();
 
             return $this->redirectToRoute(
