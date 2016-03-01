@@ -30,9 +30,9 @@ class RecordHolder
     protected $score;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\ManyToOne(targetEntity="Competition")
      */
-    protected $location;
+    protected $competition;
     /**
      * @ORM\Column(type="datetime")
      */
@@ -63,27 +63,27 @@ class RecordHolder
     }
 
     /**
-     * Set location
+     * Set competition
      *
-     * @param string $location
+     * @param Competition $competition
      *
      * @return RecordHolder
      */
-    public function setLocation($location)
+    public function setCompetition(Competition $competition = null)
     {
-        $this->location = $location;
+        $this->competition = $competition;
 
         return $this;
     }
 
     /**
-     * Get location
+     * Get competition
      *
-     * @return string
+     * @return Competition
      */
-    public function getLocation()
+    public function getCompetition()
     {
-        return $this->location;
+        return $this->competition;
     }
 
     /**

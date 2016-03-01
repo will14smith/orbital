@@ -1,9 +1,0 @@
-<table>
-    {% for entry in session.entries %}
-        <tr>{% include ':competition:_detail_entry.html.twig' with { 'entry': entry, 'session': session } %}</tr>
-    {% else %}
-        <tr>
-            <td>There are no entries :(</td>
-        </tr>
-    {% endfor %}
-</table>
