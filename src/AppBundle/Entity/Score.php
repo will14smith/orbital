@@ -53,13 +53,9 @@ class Score
     protected $hits;
 
     /**
-     * @ORM\Column(type="boolean")
+     * @ORM\ManyToOne(targetEntity="Competition")
      */
     protected $competition;
-    /**
-     * @ORM\OneToOne(targetEntity="CompetitionSessionEntry", mappedBy="score")
-     */
-    protected $competition_entry;
 
     /**
      * @ORM\Column(type="datetime")
@@ -220,11 +216,11 @@ class Score
     /**
      * Set competition
      *
-     * @param boolean $competition
+     * @param Competition $competition
      *
      * @return Score
      */
-    public function setCompetition($competition)
+    public function setCompetition(Competition $competition = null)
     {
         $this->competition = $competition;
 
@@ -234,7 +230,7 @@ class Score
     /**
      * Get competition
      *
-     * @return boolean
+     * @return Competition
      */
     public function getCompetition()
     {
@@ -435,36 +431,5 @@ class Score
     public function getProof()
     {
         return $this->proof;
-    }
-
-    /**
-     * Set competition_entry
-     *
-     * @param CompetitionSessionEntry $competitionEntry
-     * @return Score
-     */
-    public function setCompetitionEntry(CompetitionSessionEntry $competitionEntry = null)
-    {
-        $this->competition_entry = $competitionEntry;
-    
-        return $this;
-    }
-
-    /**
-     * Get competition_entry
-     *
-     * @return CompetitionSessionEntry
-     */
-    public function getCompetitionEntry()
-    {
-        return $this->competition_entry;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isIndoor()
-    {
-        return $this->getRound()->getIndoor();
     }
 }
