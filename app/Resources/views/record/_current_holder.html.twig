@@ -4,7 +4,7 @@
     <p>
         This record was set
         on {{ holder.date|date(DATE_FORMAT) }}
-        at {{ holder.location }}
+        at {{ display.competition(holder.competition) }}
         and is held by
         {% include ':record:_holder.html.twig' with { 'people': holder.people } only %}
         {% if record.numHolders > 1 %}

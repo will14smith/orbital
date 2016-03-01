@@ -11,7 +11,7 @@ class ReassessType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('start_date', DateType::class, ['required' => false])
-            ->add('end_date', DateType::class, ['required' => false]);
+            ->add('start_date', DateType::class, ['required' => false, 'widget' => 'single_text'])
+            ->add('end_date', DateType::class, ['required' => false, 'widget' => 'single_text']);
     }
 }

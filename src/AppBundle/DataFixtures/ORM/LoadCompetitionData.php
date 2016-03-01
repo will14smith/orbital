@@ -21,11 +21,15 @@ class LoadCompetitionData extends AbstractFixture implements OrderedFixtureInter
     {
         $competition1 = new Competition();
         $competition1->setName('Competition 1');
-        $competition1->setHosted(true);
+        $competition1->setDate(new \DateTime('2010-01-01'));
 
         $competition2 = new Competition();
         $competition2->setName('Competition 2');
-        $competition2->setHosted(false);
+        $competition2->setDate(new \DateTime('yesterday'));
+
+        $this->addReference("competition-1", $competition1);
+        $this->addReference("competition-2", $competition2);
+
 
         $manager->persist($competition1);
         $manager->persist($competition2);

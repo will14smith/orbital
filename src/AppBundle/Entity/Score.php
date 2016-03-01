@@ -432,4 +432,12 @@ class Score
     {
         return $this->proof;
     }
+
+    /**
+     * @return bool
+     */
+    public function isIndoor()
+    {
+        return $this->getRound()->getIndoor();
+    }
 }

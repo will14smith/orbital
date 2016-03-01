@@ -10,6 +10,12 @@
         {% for competition in competitions %}
             <li>
                 {{ display.competition(competition) }}
+                {% if is_granted('ROLE_ADMIN') %}
+                    <span class="actions">
+                        <a href="{{ url('competition_edit', { 'id': competition.id }) }}"><i class="fa fa-pencil"></i></a>
+                        <a href="{{ url('competition_delete', { 'id': competition.id }) }}"><i class="fa fa-trash-o"></i></a>
+                    </span>
+                {% endif %}
             </li>
         {% else %}
             <li>No Competitions :(</li>

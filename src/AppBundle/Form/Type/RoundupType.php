@@ -12,8 +12,8 @@ class RoundupType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('start_date', DateType::class)
-            ->add('end_date', DateType::class)
+            ->add('start_date', DateType::class, ['widget' => 'single_text'])
+            ->add('end_date', DateType::class, ['widget' => 'single_text'])
             ->add('type', ChoiceType::class, [
                 'multiple' => true,
                 'required' => true,

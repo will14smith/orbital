@@ -34,7 +34,7 @@ class LoadRecordData extends AbstractFixture implements OrderedFixtureInterface 
         $holder = new RecordHolder();
         $holder->setRecord($record1);
         $holder->setDate(new \DateTime('now'));
-        $holder->setLocation('Location 1');
+        $holder->setCompetition($this->getReference('competition-1'));
         $holder->setScore(500);
 
         $holderPerson = new RecordHolderPerson();

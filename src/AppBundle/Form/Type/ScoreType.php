@@ -3,6 +3,7 @@
 namespace AppBundle\Form\Type;
 
 use AppBundle\Form\Type\Custom\BowTypeSelectType;
+use AppBundle\Form\Type\Custom\CompetitionSelectType;
 use AppBundle\Form\Type\Custom\PersonSelectType;
 use AppBundle\Form\Type\Custom\RoundSelectType;
 use AppBundle\Form\Type\Custom\SkillSelectType;
@@ -33,12 +34,12 @@ class ScoreType extends AbstractType
             ->add('round', RoundSelectType::class, [
                 'disabled' => $edit
             ])
+            ->add('competition', CompetitionSelectType::class, ['required' => false])
             ->add('score', IntegerType::class, ['required' => true])
             ->add('golds', IntegerType::class, ['required' => true])
             ->add('hits', IntegerType::class, ['required' => true])
-            ->add('competition', CheckboxType::class, ['required' => false, 'label' => 'Was it shot at a competition?'])
             ->add('date_shot', DateType::class, [
-                'label' => 'When was (or will be) this shot?',
+                'label' => 'When was this shot?',
                 'widget' => 'single_text',
             ]);
     }

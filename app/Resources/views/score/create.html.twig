@@ -8,19 +8,22 @@
     {{ form_start(form) }}
 
     <div layout="row" layout-padding layout-align="start center">
-        {{ form_errors(form.date_shot) }}
-        {{ form_label(form.date_shot) }}
-        {{ form_widget(form.date_shot) }}
-
-        {{ form_errors(form.competition) }}
-        {{ form_label(form.competition) }}
-        {{ form_widget(form.competition) }}
+        <div flex-gt-md layout="column" layout-gt-md="row">
+            {{ form_errors(form.date_shot) }}
+            {{ form_label(form.date_shot) }}
+            {{ form_widget(form.date_shot) }}
+        </div>
+        <div flex-gt-md layout="column" layout-gt-md="row">
+            {{ form_errors(form.competition) }}
+            {{ form_label(form.competition) }}
+            {{ form_widget(form.competition) }}
+        </div>
     </div>
 
     <div layout-padding layout-align="start center">
-        {{ form_errors(form.round) }}
-        {{ form_label(form.round) }}
-        {{ form_widget(form.round) }}
+            {{ form_errors(form.round) }}
+            {{ form_label(form.round) }}
+            {{ form_widget(form.round) }}
     </div>
 
     <div layout-gt-md="row" layout-padding>
@@ -66,6 +69,7 @@
         'use strict';
 
         (function ($) {
+            $('#{{ form.competition.vars.id }}').select2();
             $('#{{ form.round.vars.id }}').select2();
 
             $('#{{ form.person.vars.id }}').select2().on('select2:select', function (e) {

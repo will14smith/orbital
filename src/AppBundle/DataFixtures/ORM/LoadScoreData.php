@@ -26,7 +26,7 @@ class LoadScoreData extends AbstractFixture implements OrderedFixtureInterface {
         $score1->setDateAccepted(new \DateTime('now'));
         $score1->setSkill(Skill::SENIOR);
         $score1->setBowtype(BowType::RECURVE);
-        $score1->setCompetition(false);
+        $score1->setCompetition(null);
         $score1->setScore(500);
         $score1->setGolds(25);
         $score1->setHits(60);

@@ -4,7 +4,6 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Competition;
 use AppBundle\Form\Type\CompetitionType;
-use AppBundle\Services\Competitions\CompetitionManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -56,76 +55,6 @@ class CompetitionController extends Controller
     }
 
     /**
-     * @Route("/competition/{id}", name="competition_detail", methods={"GET"})
-     *
-     * @param Competition $competition
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function detailAction(Competition $competition)
-    {
-        return $this->render('competition/detail.html.twig', [
-            'competition' => $competition
-        ]);
-    }
-
-
-    /**
-     * @Security("has_role('ROLE_ADMIN')")
-     * @Route("/competition/{id}/open", name="competition_open", methods={"GET"})
-     *
-     * @param Competition $competition
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function openAction(Competition $competition)
-    {
-        $em = $this->getDoctrine()->getManager();
-
-        $competition->open();
-        $em->flush();
-
-        return $this->redirectToRoute('competition_detail', ['id' => $competition->getId()]);
-    }
-
-    /**
-     * @Security("has_role('ROLE_ADMIN')")
-     * @Route("/competition/{id}/close", name="competition_close", methods={"GET"})
-     *
-     * @param Competition $competition
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function closeAction(Competition $competition)
-    {
-        $em = $this->getDoctrine()->getManager();
-
-        $competition->close();
-        $em->flush();
-
-        return $this->redirectToRoute('competition_detail', ['id' => $competition->getId()]);
-    }
-
-    /**
-     * @Security("has_role('ROLE_ADMIN')")
-     * @Route("/competition/{id}/assign_targets", name="competition_assign_targets", methods={"GET"})
-     *
-     * @param Competition $competition
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function assignTargetsAction(Competition $competition)
-    {
-        $em = $this->getDoctrine()->getManager();
-
-        CompetitionManager::assignTargets($competition);
-
-        $em->flush();
-
-        return $this->redirectToRoute('competition_detail', ['id' => $competition->getId()]);
-    }
-
-    /**
      * @Security("has_role('ROLE_ADMIN')")
      * @Route("/competition/{id}/edit", name="competition_edit", methods={"GET", "POST"})
      *
@@ -151,10 +80,7 @@ class CompetitionController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
             $em->flush();
 
-            return $this->redirectToRoute(
-                'competition_detail',
-                ['id' => $competition->getId()]
-            );
+            return $this->redirectToRoute('competition_list');
         }
 
         return $this->render('competition/edit.html.twig', [

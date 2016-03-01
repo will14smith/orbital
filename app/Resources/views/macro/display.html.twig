@@ -30,7 +30,7 @@
 
 {% macro competition(competition, class="") %}
     {% import _self as self %}
-    {{ self.entity_link(url('competition_detail', { 'id': competition.id }), competition.name, class) }}
+    <a>{{ competition.name }}</a>
 {% endmacro %}
 
 {% macro league(league, class="") %}
