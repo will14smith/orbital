@@ -25,7 +25,7 @@ class Record
     protected $id;
 
     /**
-     * @ORM\OneToMany(targetEntity="RecordRound", mappedBy="record")
+     * @ORM\OneToMany(targetEntity="RecordRound", mappedBy="record", cascade={"persist", "remove"})
      */
     protected $rounds;
     /**
@@ -90,6 +90,7 @@ class Record
      */
     public function addHolder(RecordHolder $holder)
     {
+        $holder->setRecord($this);
         $this->holders[] = $holder;
 
         return $this;

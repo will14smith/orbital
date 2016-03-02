@@ -11,3 +11,16 @@
     <input type="submit" value="Create"/>
     {{ form_end(form) }}
 {% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <script>
+        'use strict';
+
+        (function($) {
+            $('#{{ form.rounds.vars.id }}').collection('Round');
+        })(jQuery);
+    </script>
+
+{% endblock %}
