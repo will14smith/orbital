@@ -41,15 +41,9 @@ class Round implements JsonSerializable
      */
     protected $indoor;
 
-    /**
-     * @ORM\OneToMany(targetEntity="Record", mappedBy="round")
-     */
-    protected $records;
-
     public function __construct()
     {
         $this->targets = new ArrayCollection();
-        $this->records = new ArrayCollection();
     }
 
     /**
@@ -124,40 +118,6 @@ class Round implements JsonSerializable
     public function __toString()
     {
         return (string) $this->name;
-    }
-
-    /**
-     * Add records
-     *
-     * @param \AppBundle\Entity\Record $records
-     *
-     * @return Round
-     */
-    public function addRecord(Record $records)
-    {
-        $this->records[] = $records;
-
-        return $this;
-    }
-
-    /**
-     * Remove records
-     *
-     * @param \AppBundle\Entity\Record $records
-     */
-    public function removeRecord(Record $records)
-    {
-        $this->records->removeElement($records);
-    }
-
-    /**
-     * Get records
-     *
-     * @return \Doctrine\Common\Collections\Collection|Record[]
-     */
-    public function getRecords()
-    {
-        return $this->records;
     }
 
     public function getTotalArrows()

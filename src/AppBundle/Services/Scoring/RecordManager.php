@@ -6,6 +6,9 @@ use AppBundle\Entity\Record;
 use AppBundle\Entity\RecordHolder;
 use AppBundle\Entity\RecordHolderPerson;
 use AppBundle\Entity\Score;
+use AppBundle\Services\Enum\BowType;
+use AppBundle\Services\Enum\Gender;
+use AppBundle\Services\Enum\Skill;
 
 class RecordManager
 {
@@ -134,5 +137,29 @@ class RecordManager
         return $record->getAllHolders()->filter(function (RecordHolder $holder) {
             return $holder->getDateConfirmed() === null;
         });
+    }
+
+    public static function toString($record)
+    {
+        // TODO rewrite
+        throw new \Exception("TODO");
+
+        $name = Skill::display($record->skill);
+
+        if ($record->gender) {
+            $name .= ' ' . Gender::display($record->gender);
+        }
+
+        if ($record->bowtype) {
+            $name .= ' ' . BowType::display($record->bowtype);
+        }
+
+        $name .= ' ' . $record->getRound()->getName();
+
+        if ($record->num_holders > 1) {
+            $name .= ' Team';
+        }
+
+        return $name;
     }
 }

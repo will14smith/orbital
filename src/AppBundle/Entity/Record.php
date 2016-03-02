@@ -25,25 +25,13 @@ class Record
     protected $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Round", inversedBy="records")
+     * @ORM\OneToMany(targetEntity="RecordRound", mappedBy="record")
      */
-    protected $round;
+    protected $rounds;
     /**
      * @ORM\Column(type="integer")
      */
     protected $num_holders = 1;
-    /**
-     * @ORM\Column(type="string")
-     */
-    protected $skill;
-    /**
-     * @ORM\Column(type="string", nullable=true)
-     */
-    protected $bowtype;
-    /**
-     * @ORM\Column(type="string", nullable=true)
-     */
-    protected $gender;
 
     /**
      * @ORM\OneToMany(targetEntity="RecordHolder", mappedBy="record")
@@ -91,102 +79,6 @@ class Record
     public function getNumHolders()
     {
         return $this->num_holders;
-    }
-
-    /**
-     * Set skill
-     *
-     * @param string $skill
-     *
-     * @return Record
-     */
-    public function setSkill($skill)
-    {
-        $this->skill = $skill;
-
-        return $this;
-    }
-
-    /**
-     * Get skill
-     *
-     * @return string
-     */
-    public function getSkill()
-    {
-        return $this->skill;
-    }
-
-    /**
-     * Set bowtype
-     *
-     * @param string $bowtype
-     *
-     * @return Record
-     */
-    public function setBowtype($bowtype)
-    {
-        $this->bowtype = $bowtype;
-
-        return $this;
-    }
-
-    /**
-     * Get bowtype
-     *
-     * @return string
-     */
-    public function getBowtype()
-    {
-        return $this->bowtype;
-    }
-
-    /**
-     * Set gender
-     *
-     * @param string $gender
-     *
-     * @return Record
-     */
-    public function setGender($gender)
-    {
-        $this->gender = $gender;
-
-        return $this;
-    }
-
-    /**
-     * Get gender
-     *
-     * @return string
-     */
-    public function getGender()
-    {
-        return $this->gender;
-    }
-
-    /**
-     * Set round
-     *
-     * @param \AppBundle\Entity\Round $round
-     *
-     * @return Record
-     */
-    public function setRound(Round $round = null)
-    {
-        $this->round = $round;
-
-        return $this;
-    }
-
-    /**
-     * Get round
-     *
-     * @return \AppBundle\Entity\Round
-     */
-    public function getRound()
-    {
-        return $this->round;
     }
 
     /**
@@ -257,29 +149,45 @@ class Record
     public function getDisplayName()
     {
         // NOTE: keep AppBundle:Record:matrix.html.twig:format_record in sync
-
-        // skill gender? bowtype? round team?
-        $name = Skill::display($this->skill);
-
-        if ($this->gender) {
-            $name .= ' ' . Gender::display($this->gender);
-        }
-
-        if ($this->bowtype) {
-            $name .= ' ' . BowType::display($this->bowtype);
-        }
-
-        $name .= ' ' . $this->getRound()->getName();
-
-        if ($this->num_holders > 1) {
-            $name .= ' Team';
-        }
-
-        return $name;
+        return RecordManager::toString($this);
     }
 
     public function __toString()
     {
         return $this->getDisplayName();
+    }
+
+    /**
+     * Add round
+     *
+     * @param RecordRound $round
+     *
+     * @return Record
+     */
+    public function addRound(RecordRound $round)
+    {
+        $this->rounds[] = $round;
+    
+        return $this;
+    }
+
+    /**
+     * Remove round
+     *
+     * @param RecordRound $round
+     */
+    public function removeRound(RecordRound $round)
+    {
+        $this->rounds->removeElement($round);
+    }
+
+    /**
+     * Get rounds
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getRounds()
+    {
+        return $this->rounds;
     }
 }
