@@ -5,6 +5,7 @@ namespace AppBundle\DataFixtures\ORM;
 use AppBundle\Entity\Record;
 use AppBundle\Entity\RecordHolder;
 use AppBundle\Entity\RecordHolderPerson;
+use AppBundle\Entity\RecordRound;
 use AppBundle\Services\Enum\BowType;
 use AppBundle\Services\Enum\Skill;
 use Doctrine\Common\DataFixtures\AbstractFixture;
@@ -21,15 +22,21 @@ class LoadRecordData extends AbstractFixture implements OrderedFixtureInterface 
     public function load(ObjectManager $manager)
     {
         $record1 = new Record();
-        $record1->setRound($this->getReference('round-1'));
         $record1->setNumHolders(1);
-        $record1->setSkill(Skill::SENIOR);
+        $recordRound1 = new RecordRound();
+        $recordRound1->setCount(1);
+        $recordRound1->setRound($this->getReference('round-1'));
+        $recordRound1->setSkill(Skill::SENIOR);
+        $record1->addRound($recordRound1);
 
         $record2 = new Record();
-        $record2->setRound($this->getReference('round-2'));
         $record2->setNumHolders(2);
-        $record2->setSkill(Skill::NOVICE);
-        $record2->setBowtype(BowType::RECURVE);
+        $recordRound2 = new RecordRound();
+        $recordRound2->setCount(1);
+        $recordRound2->setRound($this->getReference('round-2'));
+        $recordRound2->setSkill(Skill::NOVICE);
+        $recordRound2->setBowtype(BowType::RECURVE);
+        $record2->addRound($recordRound2);
 
         $holder = new RecordHolder();
         $holder->setRecord($record1);
