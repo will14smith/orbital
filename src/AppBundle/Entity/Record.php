@@ -184,7 +184,7 @@ class Record
     /**
      * Get rounds
      *
-     * @return \Doctrine\Common\Collections\Collection
+     * @return \Doctrine\Common\Collections\Collection|RecordRound[]
      */
     public function getRounds()
     {
