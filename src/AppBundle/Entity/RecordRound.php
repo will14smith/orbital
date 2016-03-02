@@ -109,7 +109,7 @@ class RecordRound
      *
      * @return RecordRound
      */
-    public function setcount($count)
+    public function setCount($count)
     {
         $this->count = $count;
     
@@ -121,7 +121,7 @@ class RecordRound
      *
      * @return integer
      */
-    public function getcount()
+    public function getCount()
     {
         return $this->count;
     }

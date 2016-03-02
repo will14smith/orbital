@@ -5,6 +5,7 @@ namespace AppBundle\Services\Scoring;
 use AppBundle\Entity\Record;
 use AppBundle\Entity\RecordHolder;
 use AppBundle\Entity\RecordHolderPerson;
+use AppBundle\Entity\RecordRound;
 use AppBundle\Entity\Score;
 use AppBundle\Services\Enum\BowType;
 use AppBundle\Services\Enum\Gender;
@@ -139,25 +140,54 @@ class RecordManager
         });
     }
 
-    public static function toString($record)
+    public static function toString(Record $record)
     {
-        // TODO rewrite
-        throw new \Exception("TODO");
+        $rounds = $record->getRounds();
+        $roundNames = $rounds->map(function(RecordRound $round) {
+            $roundName = $round->getRound();
+            if($round->getCount() == 1) {
+                return $roundName;
+            }
+            if($round->getCount() == 2) {
+                return 'Double ' . $roundName;
+            }
 
-        $name = Skill::display($record->skill);
+            return $round->getCount() . ' x ' . $roundName;
+        });
 
-        if ($record->gender) {
-            $name .= ' ' . Gender::display($record->gender);
-        }
+        $allNovices = $rounds->forAll(function($_, RecordRound $round) { return $round->getSkill() == Skill::NOVICE; });
 
-        if ($record->bowtype) {
-            $name .= ' ' . BowType::display($record->bowtype);
-        }
+        $primaryGender = $rounds[0]->getGender();
+        $allGender = $rounds->forAll(function($_, RecordRound $round) use($primaryGender) { return $round->getGender() == $primaryGender; });
 
-        $name .= ' ' . $record->getRound()->getName();
+        $name = Skill::display($allNovices ? Skill::NOVICE : Skill::SENIOR);
+        if($record->getNumHolders() > 1) {
+            if($allGender && $primaryGender) {
+                $name .= ' ' . Gender::display($primaryGender);
+            }
 
-        if ($record->num_holders > 1) {
-            $name .= ' Team';
+            $name .= ' Team - ';
+
+            $name .= join(' / ', $roundNames->toArray());
+        } else {
+            if($rounds->count() > 1) {
+                throw new \Exception('Unexpected record configuration, indv records shouldn\'t be multi-rounds');
+            }
+
+            /** @var RecordRound $round */
+            $round = $rounds[0];
+            if ($round->getGender()) {
+                $name .= ' ' . Gender::display($round->getGender());
+            }
+            if ($round->getBowtype()) {
+                $name .= ' ' . BowType::display($round->getBowtype());
+            }
+
+            if(!$round->getGender() || !$round->getBowtype()) {
+                $name .= ' Individual';
+            }
+
+            $name .= ' - ' . $roundNames[0];
         }
 
         return $name;
