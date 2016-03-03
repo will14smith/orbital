@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Services\Scoring;
+namespace AppBundle\Services\Records;
 
 use AppBundle\Entity\Record;
 use AppBundle\Entity\RecordHolder;
@@ -28,7 +28,6 @@ class RecordManager
         // check it breaks the record
         if(!self::beatsRecord($record, $holder)) {
             throw new \Exception('New holder ' . $holder->getId() . ' doesn\'t break the record.');
-
         }
 
         // update current holder to have a broken date
@@ -44,14 +43,24 @@ class RecordManager
     /**
      * @param Record $record
      * @param Score[] $scores
+     *
      * @return RecordHolder
+     *
+     * @throws \Exception
      */
     public static function createHolder($record, array $scores)
     {
+        $competition = $scores[0]->getCompetition();
+        foreach($scores as $score) {
+            if($score->getCompetition()->getId() != $competition->getId()) {
+                throw new \Exception('Scores not at same competition');
+            }
+        }
+
         $holder = new RecordHolder();
 
         $holder->setRecord($record);
-        $holder->setLocation('?');
+        $holder->setCompetition($competition);
         $holder->setDate($scores[0]->getDateShot());
 
         foreach ($scores as $score) {

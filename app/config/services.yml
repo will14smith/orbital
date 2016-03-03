@@ -17,7 +17,7 @@ services:
 
 # records
     orbital.scoring.record_listener:
-        class: AppBundle\Services\Scoring\RecordListener
+        class: AppBundle\Services\Records\RecordListener
         arguments: ["@doctrine"]
         tags:
             - { name: kernel.event_listener, event: 'orbital.events.score_create', method: handleScore }
