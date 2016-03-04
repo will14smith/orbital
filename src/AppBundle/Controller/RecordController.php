@@ -3,12 +3,15 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Record;
+use AppBundle\Entity\RecordRound;
 use AppBundle\Form\Type\RecordMatrixType;
 use AppBundle\Form\Type\RecordType;
 use Doctrine\Common\Persistence\ObjectManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Form\FormError;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 class RecordController extends Controller
@@ -41,6 +44,7 @@ class RecordController extends Controller
         $form = $this->createForm(RecordType::class, $record);
 
         $form->handleRequest($request);
+        $this->validateRecord($form);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
@@ -129,6 +133,7 @@ class RecordController extends Controller
 
         $form = $this->createForm(RecordType::class, $record);
         $form->handleRequest($request);
+        $this->validateRecord($form);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $em->flush();
@@ -211,6 +216,27 @@ class RecordController extends Controller
 
                     $em->persist($record);
                 }
+            }
+        }
+    }
+
+    private function validateRecord(FormInterface $form)
+    {
+        /** @var Record $record */
+        $record = $form->getData();
+        /** @var FormInterface[] $roundForms */
+        $roundForms = $form->get('rounds');
+
+        foreach ($roundForms as $roundForm) {
+            /** @var RecordRound $round */
+            $round = $roundForm->getData();
+
+            if ($round->getCount() < 1) {
+                $roundForm->get('count')->addError(new FormError("Count must be greater than 1"));
+            }
+
+            if ($record->getNumHolders() > 1 && $round->getCount() > 1) {
+                $roundForm->get('count')->addError(new FormError("For team rounds count must be 1"));
             }
         }
     }
