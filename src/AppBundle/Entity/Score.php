@@ -440,4 +440,14 @@ class Score
     {
         return $this->getRound()->getIndoor();
     }
+
+    /**
+     * @param Score $other
+     *
+     * @return bool
+     */
+    public function isBetterThan(Score $other)
+    {
+        return $this->getScore() > $other->getScore();
+    }
 }

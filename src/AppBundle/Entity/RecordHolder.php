@@ -246,4 +246,8 @@ class RecordHolder
     {
         return $this->date_confirmed;
     }
+
+    public function isBetterThan(RecordHolder $other) {
+        return $this->getScore() > $other->getScore();
+    }
 }

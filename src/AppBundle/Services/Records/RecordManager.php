@@ -20,7 +20,7 @@ class RecordManager
             return true;
         }
 
-        return $current_holder->getScore() < $holder->getScore();
+        return $holder->isBetterThan($current_holder);
     }
 
     public static function approveHolder(Record $record, RecordHolder $holder)

@@ -6,7 +6,7 @@ use AppBundle\Entity\Record;
 use AppBundle\Entity\RecordHolder;
 use AppBundle\Entity\RecordHolderPerson;
 use AppBundle\Form\Type\RecordHolderType;
-use AppBundle\Services\Scoring\RecordManager;
+use AppBundle\Services\Records\RecordManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -38,6 +38,7 @@ class RecordAwardController extends Controller
         $holder = new RecordHolder();
         $holder->setRecord($record);
 
+        // TODO handle multi-rounds (i.e. Double Portsmouth)
         $numHolders = $record->getNumHolders();
         for ($i = 0; $i < $numHolders; $i++) {
             $holder->addPerson(new RecordHolderPerson());

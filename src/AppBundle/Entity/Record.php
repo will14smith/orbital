@@ -3,13 +3,9 @@
 
 namespace AppBundle\Entity;
 
-use AppBundle\Services\Enum\BowType;
-use AppBundle\Services\Enum\Gender;
-use AppBundle\Services\Enum\Skill;
-use AppBundle\Services\Scoring\RecordManager;
+use AppBundle\Services\Records\RecordManager;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
-
 
 /**
  * @ORM\Entity(repositoryClass="AppBundle\Entity\RecordRepository")
@@ -168,7 +164,7 @@ class Record
     public function addRound(RecordRound $round)
     {
         $this->rounds[] = $round;
-    
+
         return $this;
     }
 
