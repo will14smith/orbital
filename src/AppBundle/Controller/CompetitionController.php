@@ -43,10 +43,7 @@ class CompetitionController extends Controller
             $em->persist($competition);
             $em->flush();
 
-            return $this->redirectToRoute(
-                'competition_detail',
-                ['id' => $competition->getId()]
-            );
+            return $this->redirectToRoute('competition_list');
         }
 
         return $this->render('competition/create.html.twig', [
