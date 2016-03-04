@@ -65,8 +65,9 @@ class RoundController extends Controller
      */
     public function detailAction($id)
     {
-        $roundRepository = $this->getDoctrine()->getRepository("AppBundle:Round");
+        $doctrine = $this->getDoctrine();
 
+        $roundRepository = $doctrine->getRepository("AppBundle:Round");
         $round = $roundRepository->find($id);
         if (!$round) {
             throw $this->createNotFoundException(
@@ -74,8 +75,13 @@ class RoundController extends Controller
             );
         }
 
+        $records = $doctrine
+            ->getRepository("AppBundle:Record")
+            ->getByRound($round);
+
         return $this->render('round/detail.html.twig', [
-            'round' => $round
+            'round' => $round,
+            'records' => $records
         ]);
     }
 

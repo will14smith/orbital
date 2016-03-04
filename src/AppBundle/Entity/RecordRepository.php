@@ -91,4 +91,21 @@ class RecordRepository extends EntityRepository
 
         return $q->getQuery()->getResult();
     }
+
+    /**
+     * @param Round $round
+     *
+     * @return Record[]
+     */
+    public function getByRound(Round $round) {
+        $qb = $this->getEntityManager()->createQueryBuilder();
+
+        $q = $qb->select('r')
+            ->from('AppBundle:Record', 'r')
+            ->join('r.rounds', 'rr')
+            ->where('rr.round = :round')
+            ->setParameter('round', $round);
+
+        return $q->getQuery()->getResult();
+    }
 }
