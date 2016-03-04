@@ -70,20 +70,41 @@ class RecordRepository extends EntityRepository
      */
     public function getPossibleRecordsBroken(Score $score)
     {
-        $q = $this->createQueryBuilder('q')
-            ->where('q.round = :round')
+        $qb = $this->getEntityManager()->createQueryBuilder();
+
+        $q = $qb->select('r')
+            ->from('AppBundle:Record', 'r')
+            ->join('r.rounds', 'rr')
+            ->where('rr.round = :round')
             ->setParameter('round', $score->getRound());
 
         if($score->getSkill() != Skill::NOVICE) {
-            $q = $q->andWhere('q.skill = :skill')
+            $q = $q->andWhere('rr.skill IS NULL OR rr.skill = :skill')
                    ->setParameter('skill', Skill::SENIOR);
         }
 
         $q = $q
-            ->andWhere('q.bowtype IS NULL OR q.bowtype = :bowtype')
-            ->andWhere('q.gender IS NULL OR q.gender = :gender')
+            ->andWhere('rr.bowtype IS NULL OR rr.bowtype = :bowtype')
+            ->andWhere('rr.gender IS NULL OR rr.gender = :gender')
             ->setParameter('bowtype', $score->getBowtype())
             ->setParameter('gender', $score->getPerson()->getGender());
+
+        return $q->getQuery()->getResult();
+    }
+
+    /**
+     * @param Round $round
+     *
+     * @return Record[]
+     */
+    public function getByRound(Round $round) {
+        $qb = $this->getEntityManager()->createQueryBuilder();
+
+        $q = $qb->select('r')
+            ->from('AppBundle:Record', 'r')
+            ->join('r.rounds', 'rr')
+            ->where('rr.round = :round')
+            ->setParameter('round', $round);
 
         return $q->getQuery()->getResult();
     }

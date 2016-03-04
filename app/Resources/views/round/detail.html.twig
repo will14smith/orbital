@@ -28,10 +28,10 @@
         {% endfor %}
     </table>
 
-    {% if round.records|length %}
+    {% if records|length %}
         <h2>Records</h2>
         <table>
-            {% for record in round.records %}
+            {% for record in records %}
                 <tr>
                     <td>{{ display.record(record) }}</td>
                     {% if record.currentHolder %}

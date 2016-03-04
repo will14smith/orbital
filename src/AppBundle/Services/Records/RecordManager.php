@@ -1,11 +1,15 @@
 <?php
 
-namespace AppBundle\Services\Scoring;
+namespace AppBundle\Services\Records;
 
 use AppBundle\Entity\Record;
 use AppBundle\Entity\RecordHolder;
 use AppBundle\Entity\RecordHolderPerson;
+use AppBundle\Entity\RecordRound;
 use AppBundle\Entity\Score;
+use AppBundle\Services\Enum\BowType;
+use AppBundle\Services\Enum\Gender;
+use AppBundle\Services\Enum\Skill;
 
 class RecordManager
 {
@@ -16,7 +20,7 @@ class RecordManager
             return true;
         }
 
-        return $current_holder->getScore() < $holder->getScore();
+        return $holder->isBetterThan($current_holder);
     }
 
     public static function approveHolder(Record $record, RecordHolder $holder)
@@ -24,7 +28,6 @@ class RecordManager
         // check it breaks the record
         if(!self::beatsRecord($record, $holder)) {
             throw new \Exception('New holder ' . $holder->getId() . ' doesn\'t break the record.');
-
         }
 
         // update current holder to have a broken date
@@ -40,14 +43,24 @@ class RecordManager
     /**
      * @param Record $record
      * @param Score[] $scores
+     *
      * @return RecordHolder
+     *
+     * @throws \Exception
      */
     public static function createHolder($record, array $scores)
     {
+        $competition = $scores[0]->getCompetition();
+        foreach($scores as $score) {
+            if($score->getCompetition()->getId() != $competition->getId()) {
+                throw new \Exception('Scores not at same competition');
+            }
+        }
+
         $holder = new RecordHolder();
 
         $holder->setRecord($record);
-        $holder->setLocation('?');
+        $holder->setCompetition($competition);
         $holder->setDate($scores[0]->getDateShot());
 
         foreach ($scores as $score) {
@@ -134,5 +147,58 @@ class RecordManager
         return $record->getAllHolders()->filter(function (RecordHolder $holder) {
             return $holder->getDateConfirmed() === null;
         });
+    }
+
+    public static function toString(Record $record)
+    {
+        $rounds = $record->getRounds();
+        $roundNames = $rounds->map(function(RecordRound $round) {
+            $roundName = $round->getRound();
+            if($round->getCount() == 1) {
+                return $roundName;
+            }
+            if($round->getCount() == 2) {
+                return 'Double ' . $roundName;
+            }
+
+            return $round->getCount() . ' x ' . $roundName;
+        });
+
+        $allNovices = $rounds->forAll(function($_, RecordRound $round) { return $round->getSkill() == Skill::NOVICE; });
+
+        $primaryGender = $rounds[0]->getGender();
+        $allGender = $rounds->forAll(function($_, RecordRound $round) use($primaryGender) { return $round->getGender() == $primaryGender; });
+
+        $name = Skill::display($allNovices ? Skill::NOVICE : Skill::SENIOR);
+        if($record->getNumHolders() > 1) {
+            if($allGender && $primaryGender) {
+                $name .= ' ' . Gender::display($primaryGender);
+            }
+
+            $name .= ' Team - ';
+
+            $name .= join(' / ', $roundNames->toArray());
+        } else {
+            if($rounds->count() > 1) {
+                throw new \Exception('Unexpected record configuration, indv records shouldn\'t be multi-rounds');
+            }
+
+            /** @var RecordRound $round */
+            $round = $rounds[0];
+            if ($round->getGender()) {
+                $name .= ' ' . Gender::display($round->getGender());
+            }
+            if ($round->getBowtype()) {
+                $name .= ' ' . BowType::display($round->getBowtype());
+            }
+
+            if(!$round->getGender() || !$round->getBowtype()) {
+                $name .= ' Individual';
+            }
+
+            $name .= ' - ' . $roundNames[0];
+        }
+
+        return $name;
     }
 }

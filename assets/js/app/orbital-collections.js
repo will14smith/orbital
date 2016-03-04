@@ -31,7 +31,7 @@
         }
 
         if (options.allowRemove) {
-            $collectionHolder.find('div div.form-row').each(function () {
+            $collectionHolder.find('> div.form-row').each(function () {
                 addTagFormDeleteLink($(this));
             });
         }

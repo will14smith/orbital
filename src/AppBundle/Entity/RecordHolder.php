@@ -48,7 +48,7 @@ class RecordHolder
     protected $date_confirmed;
 
     /**
-     * @ORM\OneToMany(targetEntity="RecordHolderPerson", mappedBy="record_holder")
+     * @ORM\OneToMany(targetEntity="RecordHolderPerson", mappedBy="record_holder", cascade={"persist", "remove"})
      */
     protected $people;
 
@@ -245,5 +245,9 @@ class RecordHolder
     public function getDateConfirmed()
     {
         return $this->date_confirmed;
+    }
+
+    public function isBetterThan(RecordHolder $other) {
+        return $this->getScore() > $other->getScore();
     }
 }

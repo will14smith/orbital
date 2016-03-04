@@ -11,3 +11,21 @@
     <input type="submit" value="Award"/>
     {{ form_end(form) }}
 {% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <script>
+        'use strict';
+
+        (function ($) {
+            $('select + label').each(function() {
+                var prev = $(this).prev();
+                $(this).detach().insertBefore(prev);
+            });
+
+            $('select').select2();
+        })(jQuery);
+    </script>
+
+{% endblock %}

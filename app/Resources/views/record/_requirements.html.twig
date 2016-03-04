@@ -3,16 +3,25 @@
 <h2>Breaking it</h2>
 
 <ul class="list">
-    <li><span class="text">shoot a&nbsp;{{ display.round(record.round) }}&nbsp;in a competition</span></li>
-    {% if record.skill == Enum.skill.novice %}
-        <li><span class="text">be a novice</span></li>
-    {% endif %}
-    {% if record.gender %}
-        <li><span class="text">be {{ record.gender|enum('gender') }}</span></li>
-    {% endif %}
-    {% if record.bowtype %}
-        <li><span class="text">shoot {{ record.bowtype|enum('bowtype') }}</span></li>
-    {% endif %}
+    {% for round in record.rounds %}
+        <li>
+            <span class="text">
+                shoot a
+                &nbsp;{{ display.round(round.round) }}&nbsp;
+
+                {% if round.skill == Enum.skill.novice %}
+                    (novice)
+                {% endif %}
+                {% if round.gender %}
+                    ({{ round.gender|enum('gender') }})
+                {% endif %}
+                {% if round.bowtype %}
+                    ({{ round.bowtype|enum('bowtype') }})
+                {% endif %}
+                in a competition
+            </span>
+        </li>
+    {% endfor %}
     {% if record.numHolders > 1 %}
         <li><span class="text">shoot in a team of {{ record.numHolders }} (or fewer)</span></li>
     {% endif %}
