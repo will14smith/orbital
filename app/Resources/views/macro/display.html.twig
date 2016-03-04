@@ -30,7 +30,7 @@
 
 {% macro competition(competition, class="") %}
     {% import _self as self %}
-    <a>{{ competition.name }}</a>
+    <a>{{ competition.name }} - {{ competition.date|date(DATE_FORMAT) }}</a>
 {% endmacro %}
 
 {% macro league(league, class="") %}
