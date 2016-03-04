@@ -48,7 +48,9 @@ class RecordListener
         foreach ($records as $record) {
             $scores = $this->getCandidateScores($em, $record, $score);
             $holder = $this->buildRecord($record, $scores);
-            $this->addNewRecordIfBetter($em, $record, $holder);
+            if($holder != null) {
+                $this->addNewRecordIfBetter($em, $record, $holder);
+            }
         }
 
         $em->flush();
@@ -96,9 +98,6 @@ class RecordListener
             break;
         }
 
-        foreach ($holder->getPeople() as $person) {
-            $em->persist($person);
-        }
         $em->persist($holder);
     }
 
@@ -146,6 +145,10 @@ class RecordListener
         // NOTE: single scores can count for double records (but are unlikely to win)
         $selectedScores = array_slice($candidateScores, 0, $round->getCount());
 
+        if(count($selectedScores) == 0) {
+            return null;
+        }
+
         return RecordManager::createHolder($record, $selectedScores);
     }
 
@@ -164,13 +167,13 @@ class RecordListener
     {
         $rounds = $record->getRounds();
         foreach ($rounds as $round) {
-            if ($round->count() != 1) {
+            if ($round->getCount() != 1) {
                 throw new \Exception('Team records shouldn\'t have multi-rounds');
             }
         }
 
         // find highest scores without repeating people
-        $maxScores = $record->getNumHolders();
+        $maxCount = $record->getNumHolders();
         $selectedCount = 0;
         /** @var Score[] $selectedScores */
         $selectedScores = [];
@@ -181,16 +184,11 @@ class RecordListener
                 continue;
             }
 
-            // if score < lowest candidate: continue
-            if ($selectedCount > 0 && !$candidateScore->isBetterThan($selectedScores[$selectedCount - 1])) {
-                continue;
-            }
-
-            // if score.person has candidate: replace if better
+            // if score.person has selected score already: remove existing if this is better
             for ($i = 0; $i < $selectedCount; $i++) {
                 $score = $selectedScores[$i];
 
-                if (!$score->getPerson()->getId() == $candidateScore->getPerson()->getId()) {
+                if ($score->getPerson()->getId() != $candidateScore->getPerson()->getId()) {
                     continue;
                 }
 
@@ -205,8 +203,14 @@ class RecordListener
                 break;
             }
 
-            if ($selectedCount == $maxScores) {
-                // remove lowest if full
+            // selected list is full
+            if ($selectedCount == $maxCount) {
+                // if score < lowest candidate: continue
+                if ($selectedCount > 0 && !$candidateScore->isBetterThan($selectedScores[$selectedCount - 1])) {
+                    continue;
+                }
+
+                // remove lowest
                 array_splice($selectedScores, $selectedCount - 1, 1);
                 $selectedCount--;
             }
@@ -229,6 +233,10 @@ class RecordListener
             $selectedCount++;
         }
 
+        if(count($selectedScores) == 0) {
+            return null;
+        }
+
         return RecordManager::createHolder($record, $selectedScores);
     }
 
@@ -249,6 +257,7 @@ class RecordListener
             if($recordRound->getRound()->getId() !== $round->getId()) {
                 continue;
             }
+
 
             $skill = $recordRound->getSkill();
             if($skill && $skill !== $score->getSkill()) {

@@ -163,6 +163,7 @@ class Record
      */
     public function addRound(RecordRound $round)
     {
+        $round->setRecord($this);
         $this->rounds[] = $round;
 
         return $this;

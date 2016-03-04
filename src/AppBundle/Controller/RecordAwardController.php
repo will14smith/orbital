@@ -50,11 +50,7 @@ class RecordAwardController extends Controller
             RecordManager::syncHolder($holder);
             RecordManager::approveHolder($record, $holder);
 
-            foreach($holder->getPeople() as $person) {
-                $em->persist($person);
-            }
             $em->persist($holder);
-
             $em->flush();
 
             return $this->redirectToRoute(
