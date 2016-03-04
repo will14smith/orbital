@@ -30,7 +30,6 @@ class LoadCompetitionData extends AbstractFixture implements OrderedFixtureInter
         $this->addReference("competition-1", $competition1);
         $this->addReference("competition-2", $competition2);
 
-
         $manager->persist($competition1);
         $manager->persist($competition2);
 
@@ -44,6 +43,6 @@ class LoadCompetitionData extends AbstractFixture implements OrderedFixtureInter
      */
     public function getOrder()
     {
-        return 3;
+        return 1;
     }
 }
