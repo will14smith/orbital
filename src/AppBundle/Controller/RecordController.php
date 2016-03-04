@@ -199,12 +199,15 @@ class RecordController extends Controller
             foreach ($genders as $gender) {
                 foreach ($bowtypes as $bowtype) {
                     $record = new Record();
-
-                    $record->setRound($round);
                     $record->setNumHolders($num_holders);
-                    $record->setSkill($skill);
-                    $record->setGender($gender);
-                    $record->setBowtype($bowtype);
+
+                    $recordRound = new RecordRound();
+                    $recordRound->setRound($round);
+                    $recordRound->setSkill($skill);
+                    $recordRound->setGender($gender);
+                    $recordRound->setBowtype($bowtype);
+
+                    $record->addRound($recordRound);
 
                     $em->persist($record);
                 }
