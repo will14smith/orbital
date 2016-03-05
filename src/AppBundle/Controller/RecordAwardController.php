@@ -10,6 +10,7 @@ use AppBundle\Services\Records\RecordManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 
 class RecordAwardController extends Controller
@@ -38,13 +39,37 @@ class RecordAwardController extends Controller
         $holder = new RecordHolder();
         $holder->setRecord($record);
 
-        // TODO handle multi-rounds (i.e. Double Portsmouth)
-        $numHolders = $record->getNumHolders();
-        for ($i = 0; $i < $numHolders; $i++) {
+        $numScores = $record->getNumHolders();
+        if ($numScores === 1) {
+            foreach ($record->getRounds() as $recordRound) {
+                if ($recordRound->getCount() > $numScores) {
+                    $numScores = $recordRound->getCount();
+                }
+            }
+        }
+
+        for ($i = 0; $i < $numScores; $i++) {
             $holder->addPerson(new RecordHolderPerson());
         }
         $form = $this->createForm(RecordHolderType::class, $holder);
         $form->handleRequest($request);
+
+        if ($record->getNumHolders() === 1) {
+            $scores = $form->get('people');
+
+            $person = null;
+            foreach($scores->all() as $score) {
+                if($person === null) {
+                    $person = $score->getData()->getPerson();
+                } else {
+                    $p = $score->getData()->getPerson();
+
+                    if($person->getId() != $p->getId()) {
+                        $score->get('person')->addError(new FormError("Person must be the same for each score"));
+                    }
+                }
+            }
+        }
 
         if ($form->isSubmitted() && $form->isValid()) {
             RecordManager::syncHolder($holder);

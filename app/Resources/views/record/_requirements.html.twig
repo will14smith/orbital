@@ -6,9 +6,13 @@
     {% for round in record.rounds %}
         <li>
             <span class="text">
-                shoot a
+                shoot
+                {% if round.count == 1 %}
+                    a
+                {% else %}
+                    {{ round.count }}x
+                {% endif %}
                 &nbsp;{{ display.round(round.round) }}&nbsp;
-
                 {% if round.skill == Enum.skill.novice %}
                     (novice)
                 {% endif %}
