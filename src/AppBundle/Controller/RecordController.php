@@ -13,6 +13,7 @@ use AppBundle\Services\Enum\BowType;
 use AppBundle\Services\Enum\Environment;
 use AppBundle\Services\Enum\Gender;
 use AppBundle\Services\Enum\Skill;
+use AppBundle\Services\Records\RecordManager;
 use Doctrine\Common\Persistence\ObjectManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -118,7 +119,7 @@ class RecordController extends Controller
             if ($team) {
                 $target = &$groups[$envOffset]['subgroups'][$novice ? 1 : 0]['records'];
             } else {
-                $groupIdx = count($genders) * ($novice ? 1 : 0) + ($female ? 1 : 0) + $envOffset;
+                $groupIdx = $envOffset + count($genders) * ($novice ? 1 : 0) + ($female ? 2 : 1);
                 $subgroupIdx = array_search($record->getBowtype(), $bowtypes, true);
 
                 $target = &$groups[$groupIdx]['subgroups'][$subgroupIdx]['records'];
@@ -126,19 +127,16 @@ class RecordController extends Controller
 
             $currentHolder = $record->getCurrentHolder();
 
-            $roundName = [];
-            foreach($record->getRounds() as $round) {
-                array_push($roundName, $round->getRound()->getName());
-            }
+            $roundName = RecordManager::getRoundName($record);
 
             if ($currentHolder === null) {
                 array_push($target, [
-                    'round' => join(' / ', $roundName),
+                    'round' => $roundName,
                     'unclaimed' => true,
                 ]);
             } else {
                 array_push($target, [
-                    'round' => join(' / ', $roundName),
+                    'round' => $roundName,
                     'unclaimed' => false,
                     'score' => $currentHolder->getScore(),
                     'holders' => $currentHolder->getPeople()->map(function (RecordHolderPerson $person) {
