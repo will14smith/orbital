@@ -26,7 +26,7 @@ class RecordManager
     public static function approveHolder(Record $record, RecordHolder $holder)
     {
         // check it breaks the record
-        if(!self::beatsRecord($record, $holder)) {
+        if (!self::beatsRecord($record, $holder)) {
             throw new \Exception('New holder ' . $holder->getId() . ' doesn\'t break the record.');
         }
 
@@ -51,8 +51,8 @@ class RecordManager
     public static function createHolder($record, array $scores)
     {
         $competition = $scores[0]->getCompetition();
-        foreach($scores as $score) {
-            if($score->getCompetition()->getId() != $competition->getId()) {
+        foreach ($scores as $score) {
+            if ($score->getCompetition()->getId() != $competition->getId()) {
                 throw new \Exception('Scores not at same competition');
             }
         }
@@ -152,34 +152,26 @@ class RecordManager
     public static function toString(Record $record)
     {
         $rounds = $record->getRounds();
-        $roundNames = $rounds->map(function(RecordRound $round) {
-            $roundName = $round->getRound();
-            if($round->getCount() == 1) {
-                return $roundName;
-            }
-            if($round->getCount() == 2) {
-                return 'Double ' . $roundName;
-            }
+        $roundName = self::getRoundName($record);
 
-            return $round->getCount() . ' x ' . $roundName;
-        });
-
-        $allNovices = $rounds->forAll(function($_, RecordRound $round) { return $round->getSkill() == Skill::NOVICE; });
+        $allNovices = $record->isNovice();
 
         $primaryGender = $rounds[0]->getGender();
-        $allGender = $rounds->forAll(function($_, RecordRound $round) use($primaryGender) { return $round->getGender() == $primaryGender; });
+        $allGender = $rounds->forAll(function ($_, RecordRound $round) use ($primaryGender) {
+            return $round->getGender() == $primaryGender;
+        });
 
         $name = Skill::display($allNovices ? Skill::NOVICE : Skill::SENIOR);
-        if($record->getNumHolders() > 1) {
-            if($allGender && $primaryGender) {
+        if ($record->getNumHolders() > 1) {
+            if ($allGender && $primaryGender) {
                 $name .= ' ' . Gender::display($primaryGender);
             }
 
             $name .= ' Team - ';
 
-            $name .= join(' / ', $roundNames->toArray());
+            $name .= $roundName;
         } else {
-            if($rounds->count() > 1) {
+            if ($rounds->count() > 1) {
                 throw new \Exception('Unexpected record configuration, indv records shouldn\'t be multi-rounds');
             }
 
@@ -192,13 +184,31 @@ class RecordManager
                 $name .= ' ' . BowType::display($round->getBowtype());
             }
 
-            if(!$round->getGender() || !$round->getBowtype()) {
+            if (!$round->getGender() || !$round->getBowtype()) {
                 $name .= ' Individual';
             }
 
-            $name .= ' - ' . $roundNames[0];
+            $name .= ' - ' . $roundName;
         }
 
         return $name;
+    }
+
+    public static function getRoundName(Record $record)
+    {
+        $rounds = $record->getRounds();
+        $roundNames = $rounds->map(function (RecordRound $round) {
+            $roundName = $round->getRound();
+            if ($round->getCount() == 1) {
+                return $roundName;
+            }
+            if ($round->getCount() == 2) {
+                return 'Double ' . $roundName;
+            }
+
+            return $round->getCount() . ' x ' . $roundName;
+        });
+
+        return join(' / ', array_unique($roundNames->toArray()));
     }
 }

@@ -1,0 +1,96 @@
+{% extends '::base.pdf.twig' %}
+
+{% block title %}
+    <div class="page-break-after" style="text-align: center;">
+        <h1 style="font-size: 72pt;">ICAC Club Records</h1>
+
+        <img src="{{ absolute_url(asset("images/crest.png")) }}" style="width: 50%;"/>
+    </div>
+{% endblock %}
+
+{% block content %}
+    <div class="page-break-after">
+        {% include 'record/list_rules.pdf.twig' %}
+    </div>
+    <style>
+        .record_table tr {
+            padding-bottom: 1cm;
+        }
+
+        .record_table th {
+            text-align: left;
+        }
+
+        .record_table :first-child {
+            padding-left: 0;
+        }
+
+        .record_table :last-child {
+            padding-right: 0;
+        }
+
+        .record_table th, .record_table td {
+            padding: 0 1cm;
+        }
+
+        .record_table .team th, .record_table .team td {
+            padding-bottom: 0.5cm;
+            vertical-align: top;
+        }
+    </style>
+
+    {% for group in groups %}
+        <div class="page-break-after">
+            <h1>
+                Club Records
+                <div class="float-right">{{ group.name }}</div>
+            </h1>
+
+            {% for subgroup in group.subgroups %}
+                <div class="page-break-avoid">
+                    <h2 style="text-align: center;">{{ subgroup.name }}</h2>
+
+                    <table class="record_table">
+                        <tr>
+                            <th style="width: 18%">Round</th>
+                            <th style="width: 10%">Score</th>
+                            {% if subgroup.isTeam %}
+                                <th style="width: 30%">Team</th>
+                            {% else %}
+                                <th style="width: 30%">Name</th>
+                            {% endif %}
+                            <th>Details</th>
+                        </tr>
+                        {% for record in subgroup.records %}
+                            <tr{% if subgroup.isTeam %} class="team"{% endif %}>
+                                <td>{{ record.round }}</td>
+                                {% if record.unclaimed %}
+                                    <td colspan="3"><em>Not yet claimed</em></td>
+                                {% else %}
+                                    <td>{{ record.score }}</td>
+                                    {% if subgroup.isTeam %}
+                                        <td>
+                                            {% for holder in record.holders %}
+                                                <div>
+                                                    {{ holder.name }}
+                                                    <div style="float: right">{{ holder.score }}</div>
+                                                </div>
+                                            {% endfor %}
+                                        </td>
+                                    {% else %}
+                                        <td>{{ record.holders[0].name }}</td>
+                                    {% endif %}
+                                    <td>{{ record.details }}</td>
+                                {% endif %}
+                            </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+            {% endfor %}
+        </div>
+    {% endfor %}
+
+    <div class="page-break-after">
+        {% include 'record/list_appendix.pdf.twig' %}
+    </div>
+{% endblock %}

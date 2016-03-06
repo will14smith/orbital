@@ -7,6 +7,6 @@
 {% block body %}
     <form method="post" action="{{ url('competition_delete', { id: competition.id }) }}">
         <p>Are you sure you want to delete {{ competition.name }}?</p>
-        <input type="submit" value="Yes"> | <a href="{{ url('competition_detail', { id: competition.id }) }}">No</a>
+        <input type="submit" value="Yes"> | <a href="{{ url('competition_list') }}">No</a>
     </form>
 {% endblock %}

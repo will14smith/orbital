@@ -3,12 +3,32 @@
 $marker-size: 0.25cm;
 $marker-color: #000;
 
+* {
+  font-size: 14pt;
+  line-height: 1.5;
+}
+
+h1 .float-right {
+  float: right;
+
+  font-size: 1em;
+  margin: 0;
+}
+
+h2 {
+  font-size: 1.5em;
+}
+
 header {
   h1, h2, h3 {
     text-align: center;
     margin: 0;
   }
 }
+
+.page-break-before { page-break-before: always; }
+.page-break-after { page-break-after: always; }
+.page-break-avoid { page-break-inside: avoid; }
 
 article {
   section {
