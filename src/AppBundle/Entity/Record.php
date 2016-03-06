@@ -3,6 +3,7 @@
 
 namespace AppBundle\Entity;
 
+use AppBundle\Services\Enum\Skill;
 use AppBundle\Services\Records\RecordManager;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
@@ -187,5 +188,44 @@ class Record
     public function getRounds()
     {
         return $this->rounds;
+    }
+
+    public function isIndoor()
+    {
+        return $this->getRounds()->forAll(function ($_, RecordRound $round) {
+            return $round->getRound()->getIndoor();
+        });
+    }
+
+    public function isNovice()
+    {
+        return $this->getRounds()->forAll(function($_, RecordRound $round) { return $round->getSkill() == Skill::NOVICE; });
+    }
+
+    public function getGender() {
+        $rounds = $this->getRounds();
+
+        if($rounds->count() == 0) {
+            return null;
+        }
+
+        $primaryGender = $rounds[0]->getGender();
+        $allGender = $rounds->forAll(function($_, RecordRound $round) use($primaryGender) { return $round->getGender() == $primaryGender; });
+
+        return $allGender ? $primaryGender : null;
+    }
+
+    public function getBowtype()
+    {
+        $rounds = $this->getRounds();
+
+        if($rounds->count() == 0) {
+            return null;
+        }
+
+        $primaryBowtype = $rounds[0]->getBowtype();
+        $all = $rounds->forAll(function($_, RecordRound $round) use($primaryBowtype) { return $round->getBowtype() == $primaryBowtype; });
+
+        return $all ? $primaryBowtype : null;
     }
 }

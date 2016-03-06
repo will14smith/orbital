@@ -2,10 +2,17 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Constants;
+use AppBundle\Controller\Traits\PdfRenderTrait;
 use AppBundle\Entity\Record;
+use AppBundle\Entity\RecordHolderPerson;
 use AppBundle\Entity\RecordRound;
 use AppBundle\Form\Type\RecordMatrixType;
 use AppBundle\Form\Type\RecordType;
+use AppBundle\Services\Enum\BowType;
+use AppBundle\Services\Enum\Environment;
+use AppBundle\Services\Enum\Gender;
+use AppBundle\Services\Enum\Skill;
 use Doctrine\Common\Persistence\ObjectManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -16,6 +23,8 @@ use Symfony\Component\HttpFoundation\Request;
 
 class RecordController extends Controller
 {
+    use PdfRenderTrait;
+
     /**
      * @Route("/records", name="record_list", methods={"GET"})
      */
@@ -28,6 +37,137 @@ class RecordController extends Controller
         return $this->render('record/list.html.twig', [
             'records' => $records
         ]);
+    }
+
+    /**
+     * @Route("/records/pdf", name="record_pdf", methods={"GET"})
+     */
+    public function pdfAction(Request $req)
+    {
+        $recordRepository = $this->getDoctrine()->getRepository("AppBundle:Record");
+
+        $records = $recordRepository->findAll();
+
+        $groups = [];
+
+        $envs = [
+            Environment::INDOOR,
+            Environment::OUTDOOR,
+        ];
+
+        $skills = [
+            Skill::SENIOR,
+            Skill::NOVICE,
+        ];
+
+        $genders = [
+            Gender::MALE,
+            Gender::FEMALE,
+        ];
+
+        $bowtypes = [
+            BowType::RECURVE,
+            BowType::COMPOUND,
+            BowType::BAREBOW,
+            BowType::LONGBOW,
+        ];
+
+        foreach ($envs as $env) {
+            $envN = Environment::display($env);
+
+            array_push($groups, [
+                'name' => $envN . ' - Teams',
+                'subgroups' => [
+                    ['name' => 'Senior Team', 'isTeam' => true, 'records' => []],
+                    ['name' => 'Novice Team', 'isTeam' => true, 'records' => []]
+                ]
+            ]);
+
+            foreach ($skills as $skill) {
+                $skillN = Skill::display($skill);
+
+                foreach ($genders as $gender) {
+                    $genderN = Gender::display($gender);
+                    $subgroups = [];
+
+                    foreach ($bowtypes as $bowtype) {
+                        array_push($subgroups, [
+                            'name' => $skillN . ' ' . $genderN . ' ' . BowType::display($bowtype),
+                            'isTeam' => false,
+                            'records' => []
+                        ]);
+                    }
+
+                    array_push($groups, [
+                        'name' => $envN . ' - ' . $skillN . ' ' . $genderN,
+                        'subgroups' => $subgroups
+                    ]);
+                }
+            }
+        }
+
+
+        foreach ($records as $record) {
+            $indoors = $record->isIndoor();
+            $team = $record->getNumHolders() > 1;
+            $novice = $record->isNovice();
+            $female = $record->getGender() === Gender::FEMALE;
+
+            $envOffset = $indoors ? 0 : (count($skills) * count($genders) + 1);
+
+            if ($team) {
+                $target = &$groups[$envOffset]['subgroups'][$novice ? 1 : 0]['records'];
+            } else {
+                $groupIdx = count($genders) * ($novice ? 1 : 0) + ($female ? 1 : 0) + $envOffset;
+                $subgroupIdx = array_search($record->getBowtype(), $bowtypes, true);
+
+                $target = &$groups[$groupIdx]['subgroups'][$subgroupIdx]['records'];
+            }
+
+            $currentHolder = $record->getCurrentHolder();
+
+            $roundName = [];
+            foreach($record->getRounds() as $round) {
+                array_push($roundName, $round->getRound()->getName());
+            }
+
+            if ($currentHolder === null) {
+                array_push($target, [
+                    'round' => join(' / ', $roundName),
+                    'unclaimed' => true,
+                ]);
+            } else {
+                array_push($target, [
+                    'round' => join(' / ', $roundName),
+                    'unclaimed' => false,
+                    'score' => $currentHolder->getScore(),
+                    'holders' => $currentHolder->getPeople()->map(function (RecordHolderPerson $person) {
+                        return ['name' => $person->getPerson()->getName(), 'score' => $person->getScoreValue()];
+                    }),
+                    'details' => $currentHolder->getCompetition()->getName() . ', ' . $currentHolder->getDate()->format(Constants::DATE_FORMAT),
+                ]);
+            }
+        }
+
+        $data = [
+            'groups' => $groups
+        ];
+
+        if ($req->query->has('html')) {
+            return $this->render('record/list.pdf.twig', $data);
+        }
+
+        return $this->renderPdf('record/list.pdf.twig', $data, [
+            'margin-top' => '12mm',
+            'margin-bottom' => '12mm',
+            'margin-left' => '24mm',
+            'margin-right' => '24mm',
+
+            'orientation' => 'Landscape',
+
+            'footer-html' => $this->renderView('record/list_footer.pdf.twig', $data)
+        ]);
+
     }
 
     /**

@@ -164,7 +164,7 @@ class RecordManager
             return $round->getCount() . ' x ' . $roundName;
         });
 
-        $allNovices = $rounds->forAll(function($_, RecordRound $round) { return $round->getSkill() == Skill::NOVICE; });
+        $allNovices = $record->isNovice();
 
         $primaryGender = $rounds[0]->getGender();
         $allGender = $rounds->forAll(function($_, RecordRound $round) use($primaryGender) { return $round->getGender() == $primaryGender; });

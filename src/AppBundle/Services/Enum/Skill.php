@@ -10,8 +10,8 @@ class Skill
     const SENIOR = 'senior';
 
     static $choices = [
-        Skill::NOVICE => 'Novice',
-        Skill::SENIOR => 'Senior'
+        Skill::SENIOR => 'Senior',
+        Skill::NOVICE => 'Novice'
     ];
 
     public static function display($skill)
