@@ -22,17 +22,22 @@ class RecordListener
         $this->doctrine = $doctrine;
     }
 
+    /**
+     * @param ScoreEvent $event
+     * @return RecordHolder[]
+     */
     public function handleScore(ScoreEvent $event)
     {
         $score = $event->getScore();
 
         if (!$score->getDateAccepted()) {
-            return;
+            return [];
+        }
+        if (!$score->getCompetition()) {
+            return [];
         }
 
-        if ($score->getCompetition()) {
-            $this->checkForRecord($score);
-        }
+        return $this->checkForRecord($score);
     }
 
     private function checkForRecord(Score $score)
@@ -45,15 +50,19 @@ class RecordListener
         // find all matching records
         $records = $recordRepository->getPossibleRecordsBroken($score);
 
+        $newHolders = [];
+
         foreach ($records as $record) {
             $scores = $this->getCandidateScores($em, $record, $score);
             $holder = $this->buildRecord($record, $scores);
             if($holder != null) {
-                $this->addNewRecordIfBetter($em, $record, $holder);
+                $newHolders = array_merge($newHolders, $this->addNewRecordIfBetter($em, $record, $holder));
             }
         }
 
         $em->flush();
+
+        return $newHolders;
     }
 
     /**
@@ -81,7 +90,7 @@ class RecordListener
     private function addNewRecordIfBetter(ObjectManager $em, Record $record, RecordHolder $holder)
     {
         if (!RecordManager::beatsRecord($record, $holder)) {
-            return;
+            return [];
         }
 
         foreach($record->getUnconfirmedHolders() as $unconfirmedHolder) {
@@ -90,7 +99,7 @@ class RecordListener
             }
 
             if(!$holder->isBetterThan($unconfirmedHolder)) {
-                return;
+                return [];
             }
 
             $em->remove($unconfirmedHolder);
@@ -99,6 +108,8 @@ class RecordListener
         }
 
         $em->persist($holder);
+
+        return [$holder];
     }
 
 
