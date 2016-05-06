@@ -64,11 +64,25 @@
         'use strict';
 
         (function ($) {
-            $('#{{ form.competition.vars.id }}').select2();
+            $('#{{ form.competition.vars.id }}').select2().on('change', handleCompetitionChange);
             $('#{{ form.round.vars.id }}').select2();
 
             $('#{{ form.person.vars.id }}').select2()
             $('#{{ form.bowtype.vars.id }}').select2();
+
+            var r = /- (\d{4})-(\d{2})-(\d{1,2})$/g;
+            function handleCompetitionChange() {
+                var text = $('#{{ form.competition.vars.id }} option:selected').text();
+                r.lastIndex = 0;
+                var g = r.exec(text);
+
+                if(g === null) {
+                    return;
+                }
+
+                $('#{{ form.date_shot.vars.id }}').val(g[1] + '-' + g[2] + '-' + g[3]);
+            }
+
         })(jQuery);
     </script>
 
