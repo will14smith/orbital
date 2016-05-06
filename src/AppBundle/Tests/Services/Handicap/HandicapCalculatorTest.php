@@ -157,7 +157,7 @@ class HandicapCalculatorTest extends \PHPUnit_Framework_TestCase
 
         $score = new Score();
 
-        $score->setBowType(BowType::RECURVE);
+        $score->setBowtype(BowType::RECURVE);
         $score->setScore(530);
         $score->setRound(self::$rounds[0]);
 
