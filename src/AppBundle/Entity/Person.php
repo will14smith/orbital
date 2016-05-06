@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use AppBundle\Services\Enum\Skill;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\Role\Role;
@@ -65,9 +66,12 @@ class Person implements UserInterface
     protected $date_of_birth;
 
     /**
-     * @ORM\Column(type="string", length=50)
+     * @ORM\Column(type="date")
+     * The date when the person started archery.
+     * Used for calculating novice / senior
      */
-    protected $skill;
+    protected $date_started;
+
     /**
      * @ORM\Column(type="string", length=50, nullable=true)
      */
@@ -366,30 +370,6 @@ class Person implements UserInterface
     }
 
     /**
-     * Set skill
-     *
-     * @param string $skill
-     *
-     * @return Person
-     */
-    public function setSkill($skill)
-    {
-        $this->skill = strtolower($skill);
-
-        return $this;
-    }
-
-    /**
-     * Get skill
-     *
-     * @return string
-     */
-    public function getSkill()
-    {
-        return strtolower($this->skill);
-    }
-
-    /**
      * Set bowtype
      *
      * @param string $bowtype
@@ -620,5 +600,40 @@ class Person implements UserInterface
     public function isAdmin()
     {
         return in_array('ROLE_ADMIN', $this->getRoles());
+    }
+
+
+    public function getSkillOn(\DateTime $date)
+    {
+        return Skill::getSkillOn($this->getDateStarted(), $date);
+    }
+
+    public function getCurrentSkill()
+    {
+        return $this->getSkillOn(new \DateTime('now'));
+    }
+
+    /**
+     * Set dateStarted
+     *
+     * @param \DateTime $dateStarted
+     *
+     * @return Person
+     */
+    public function setDateStarted($dateStarted)
+    {
+        $this->date_started = $dateStarted;
+    
+        return $this;
+    }
+
+    /**
+     * Get dateStarted
+     *
+     * @return \DateTime
+     */
+    public function getDateStarted()
+    {
+        return $this->date_started;
     }
 }

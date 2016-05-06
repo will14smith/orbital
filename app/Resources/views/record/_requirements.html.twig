@@ -13,8 +13,8 @@
                     {{ round.count }}x
                 {% endif %}
                 &nbsp;{{ display.round(round.round) }}&nbsp;
-                {% if round.skill == Enum.skill.novice %}
-                    (novice)
+                {% if round.skill|enum('skill') == Enum.skill.novice %}
+                    ({{ round.skill|enum('skill') }})
                 {% endif %}
                 {% if round.gender %}
                     ({{ round.gender|enum('gender') }})

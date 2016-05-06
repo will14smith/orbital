@@ -45,7 +45,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface
 
     private function init(Person $person)
     {
-        $person->setSkill(Skill::SENIOR);
+        $person->setDateStarted((new \DateTime('now'))->sub(new \DateInterval('P2Y')));
     }
 
     /**

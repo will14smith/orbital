@@ -156,7 +156,7 @@ class PersonImporter
         // if we cared about performance we could share the em...
         $em = $this->doctrine->getManager();
         if (!$current_person) {
-            $person->setSkill(Skill::NOVICE);
+            $person->setDateStarted(new \DateTime('now'));
             $person->setAdmin(false);
 
 

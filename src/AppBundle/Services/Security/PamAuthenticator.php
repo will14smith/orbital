@@ -113,7 +113,7 @@ class PamAuthenticator implements SimpleFormAuthenticatorInterface
         $user->setCuser($username);
         $user->setName(\ldap_get_name($username));
         $user->setEmail(\ldap_get_mail($username));
-        $user->setSkill(Skill::NOVICE);
+        $user->setDateStarted(new \DateTime('now'));
         $user->setAdmin(false);
 
         $em->persist($user);
