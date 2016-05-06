@@ -28,10 +28,6 @@ class Score
     /**
      * @ORM\Column(type="string", length=50)
      */
-    protected $skill;
-    /**
-     * @ORM\Column(type="string", length=50)
-     */
     protected $bowtype;
 
     /**
@@ -91,30 +87,6 @@ class Score
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * Set skill
-     *
-     * @param string $skill
-     *
-     * @return Score
-     */
-    public function setSkill($skill)
-    {
-        $this->skill = strtolower($skill);
-
-        return $this;
-    }
-
-    /**
-     * Get skill
-     *
-     * @return string
-     */
-    public function getSkill()
-    {
-        return strtolower($this->skill);
     }
 
     /**
@@ -449,5 +421,9 @@ class Score
     public function isBetterThan(Score $other)
     {
         return $this->getScore() > $other->getScore();
+    }
+
+    public function getSkill() {
+        return $this->getPerson()->getSkillOn($this->getDateShot());
     }
 }

@@ -332,10 +332,10 @@ class League
      *
      * @return bool
      */
-    public function canSignUp(Person $person)
+    public function canSignup(Person $person)
     {
         if ($this->getSkillLimit()) {
-            if ($person->getSkill() != $this->getSkillLimit()) {
+            if ($person->getSkillOn($this->getOpenDate()) != $this->getSkillLimit()) {
                 return false;
             }
         }

@@ -45,11 +45,6 @@
             {{ form_widget(form.person) }}
         </div>
         <div flex-gt-md layout="column" layout-gt-md="row">
-            {{ form_errors(form.skill) }}
-            {{ form_label(form.skill) }}
-            {{ form_widget(form.skill) }}
-        </div>
-        <div flex-gt-md layout="column" layout-gt-md="row">
             {{ form_errors(form.bowtype) }}
             {{ form_label(form.bowtype) }}
             {{ form_widget(form.bowtype) }}
@@ -72,12 +67,7 @@
             $('#{{ form.competition.vars.id }}').select2();
             $('#{{ form.round.vars.id }}').select2();
 
-            $('#{{ form.person.vars.id }}').select2().on('select2:select', function (e) {
-                var personId = e.params.data.id;
-                //TODO load & set skill + bowtype
-            });
-
-            $('#{{ form.skill.vars.id }}').select2();
+            $('#{{ form.person.vars.id }}').select2()
             $('#{{ form.bowtype.vars.id }}').select2();
         })(jQuery);
     </script>

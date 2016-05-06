@@ -25,9 +25,6 @@ class ScoreType extends AbstractType
             ->add('person', PersonSelectType::class, [
                 'disabled' => $edit
             ])
-            ->add('skill', SkillSelectType::class, [
-                'required' => false,
-            ])
             ->add('bowtype', BowTypeSelectType::class, [
                 'required' => false,
             ])

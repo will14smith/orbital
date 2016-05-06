@@ -4,10 +4,10 @@ namespace AppBundle\Form\Type;
 
 use AppBundle\Form\Type\Custom\BowTypeSelectType;
 use AppBundle\Form\Type\Custom\GenderSelectType;
-use AppBundle\Form\Type\Custom\SkillSelectType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -27,7 +27,7 @@ class PersonType extends AbstractType
             ->add('mobile')
             ->add('gender', GenderSelectType::class)
             ->add('date_of_birth', BirthdayType::class, ['required' => false])
-            ->add('skill', SkillSelectType::class)
+            ->add('date_started', DateType::class, ['widget' => 'single_text'])
             ->add('bowtype', BowTypeSelectType::class)
             ->add('club_bow')
             ->add('password', PasswordType::class, ['required' => false])

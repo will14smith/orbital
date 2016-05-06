@@ -272,16 +272,7 @@ class ScoreController extends Controller
         if (!$form->isSubmitted()) {
             return;
         }
-
-        if (!$score->getSkill()) {
-            $defaultBowtype = $person->getSkill();
-            if (!$defaultBowtype) {
-                $form->get('skill')->addError(new FormError('Must provide skill level'));
-            } else {
-                $score->setSkill($defaultBowtype);
-            }
-        }
-
+        
         if (!$score->getBowtype()) {
             $defaultBowtype = $person->getBowtype();
             if (!$defaultBowtype) {

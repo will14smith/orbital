@@ -9,7 +9,7 @@
 
 <dl>
     {% include ':person:_detail_admin.html.twig' with { 'person': person } only %}
-    {{ field('Skill', person.skill|enum('skill')) }}
+    {{ field('Skill', person.currentSkill|enum('skill')) }}
     {% if person.bowtype %}
         {{ field('Preferred bow type', person.bowtype|enum('bowtype')) }}
     {% endif %}

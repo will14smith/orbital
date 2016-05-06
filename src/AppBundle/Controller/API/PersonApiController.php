@@ -30,7 +30,7 @@ class PersonApiController extends ApiController
             'id' => $person->getId(),
             'name' => $person->getDisplayName(),
 
-            'skill' => $person->getSkill(),
+            'skill' => $person->getCurrentSkill(),
             'bowtype' => $person->getBowtype()
         ];
     }
