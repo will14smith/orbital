@@ -1,0 +1,15 @@
+{% import ':macro:display.html.twig' as display %}
+
+<h2>Records</h2>
+<table>
+    {% for record in records %}
+        <tr>
+            <td>{{ display.record(record) }}</td>
+            {% if record.currentHolder %}
+                <td class="shrink">{{ record.currentHolder.score }}</td>
+            {% else %}
+                <td class="shrink">Not broken</td>
+            {% endif %}
+        </tr>
+    {% endfor %}
+</table>

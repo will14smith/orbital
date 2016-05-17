@@ -4,9 +4,13 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Round;
 use AppBundle\Form\Type\RoundType;
+use AppBundle\Services\Enum\BowType;
+use AppBundle\Services\Enum\Classification;
+use AppBundle\Services\Enum\Gender;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 class RoundController extends Controller
@@ -82,6 +86,98 @@ class RoundController extends Controller
         return $this->render('round/detail.html.twig', [
             'round' => $round,
             'records' => $records
+        ]);
+    }
+
+    /**
+     * @Route("/round/{id}/classification", name="round_classification_detail", methods={"GET"})
+     * @param integer $id
+     *
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function classificationAction($id, Request $request)
+    {
+        $doctrine = $this->getDoctrine();
+
+        $roundRepository = $doctrine->getRepository("AppBundle:Round");
+        $round = $roundRepository->find($id);
+        if (!$round) {
+            throw $this->createNotFoundException(
+                'No round found for id ' . $id
+            );
+        }
+
+        $gender = $request->get('gender');
+        $bowtype = $request->get('bowtype');
+
+        $genders = [Gender::MALE, Gender::FEMALE];
+        $bowtypes = [BowType::RECURVE, BowType::LONGBOW, BowType::COMPOUND, BowType::BAREBOW];
+        $classifications = [Classification::THIRD, Classification::SECOND, Classification::FIRST, Classification::BOWMAN, Classification::MASTER_BOWMAN, Classification::GRAND_MASTER_BOWMAN];
+
+        $calc = $this->get('orbital.handicap.classification.calculate');
+
+        if ($gender && $bowtype) {
+            $scores = [];
+
+            foreach ($classifications as $classification) {
+                $valid = $calc->isValidClassifiation($round, $gender, $bowtype, $classification);
+                $score = $calc->calculateRoundScore($round, $gender, $bowtype, $classification);
+
+                $targets = [];
+                foreach($round->getTargets() as $rt) {
+                    $targetScore = $calc->calculateTargetScore($rt, $gender, $bowtype, $classification);
+
+                    $targets[] = [
+                        'distance' => ['value' => $rt->getDistanceValue(), 'unit' => $rt->getDistanceUnit()],
+                        'size' => ['value' => $rt->getTargetValue(), 'unit' => $rt->getTargetUnit()],
+                        'score' => round($targetScore, 1),
+                        'end_average' => round(($targetScore / $rt->getArrowCount()) * $rt->getEndSize(), 2),
+                        'arrow_average' => round($targetScore / $rt->getArrowCount(), 2)
+                    ];
+                }
+
+                $scores[] = [
+                    'classification' => $classification,
+                    'score' => $score,
+                    'targets' => $targets,
+                    'valid' => $valid
+                ];
+            }
+
+            return new JsonResponse([
+                'round_id' => $round->getId(),
+                'classifications' => $scores,
+            ]);
+        }
+
+        $classificationTable = [];
+        foreach ($genders as $gender) {
+            foreach ($bowtypes as $bowtype) {
+                $scores = [];
+
+                foreach ($classifications as $classification) {
+                    $valid = $calc->isValidClassifiation($round, $gender, $bowtype, $classification);
+
+                    $score = $calc->calculateRoundScore($round, $gender, $bowtype, $classification);
+                    $scores[] = [
+                        'classification' => $classification,
+                        'score' => $score,
+                        'valid' => $valid
+                    ];
+                }
+
+                $classificationTable[] = [
+                    'gender' => $gender,
+                    'bowtype' => $bowtype,
+                    'scores' => $scores
+                ];
+            }
+        }
+
+        return new JsonResponse([
+            'round_id' => $round->getId(),
+            'classifications' => $classificationTable,
         ]);
     }
 

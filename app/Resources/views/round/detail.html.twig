@@ -29,20 +29,27 @@
     </table>
 
     {% if records|length %}
-        <h2>Records</h2>
-        <table>
-            {% for record in records %}
-                <tr>
-                    <td>{{ display.record(record) }}</td>
-                    {% if record.currentHolder %}
-                        <td class="shrink">{{ record.currentHolder.score }}</td>
-                    {% else %}
-                        <td class="shrink">Not broken</td>
-                    {% endif %}
-                </tr>
-            {% endfor %}
-        </table>
+        {% include ':round:_records.html.twig' with { 'round': round, 'records': records } only %}
     {% endif %}
+
+    <div>
+        <h2>Classifications</h2>
+        <select id="classification-gender">
+            <option selected="selected"></option>
+            <option value="male">{{ Enum.gender.male }}</option>
+            <option value="female">{{ Enum.gender.female }}</option>
+        </select>
+        <select id="classification-bowtype">
+            <option selected="selected"></option>
+            <option value="recurve">{{ Enum.bowtype.recurve }}</option>
+            <option value="longbow">{{ Enum.bowtype.longbow }}</option>
+            <option value="compound">{{ Enum.bowtype.compound }}</option>
+            <option value="barebow">{{ Enum.bowtype.barebow }}</option>
+        </select>
+        <div id="classification-table">
+
+        </div>
+    </div>
 {% endblock %}
 
 {% block sidebar %}
@@ -57,4 +64,148 @@
     {% endif %}
 
     {{ parent() }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <script>
+        (function ($) {
+            var $container = $('#classification-table');
+            var $genderInput = $('#classification-gender');
+            var $bowtypeInput = $('#classification-bowtype');
+
+            var genders = {'male': '{{ Enum.gender.male }}', 'female': '{{ Enum.gender.female }}'};
+            var bowtypes = {
+                'recurve': '{{ Enum.bowtype.recurve }}',
+                'longbow': '{{ Enum.bowtype.longbow }}',
+                'compound': '{{ Enum.bowtype.compound }}',
+                'barebow': '{{ Enum.bowtype.barebow }}'
+            };
+            var classifications = {
+                '3rd': '{{ Enum.short_classification['3rd'] }}',
+                '2nd': '{{ Enum.short_classification['2nd'] }}',
+                '1st': '{{ Enum.short_classification['1st'] }}',
+                'bm': '{{ Enum.short_classification.bm }}',
+                'mb': '{{ Enum.short_classification.mb }}',
+                'gmb': '{{ Enum.short_classification.gmb }}'
+            };
+            var full_classifications = {
+                '3rd': '{{ Enum.classification['3rd'] }}',
+                '2nd': '{{ Enum.classification['2nd'] }}',
+                '1st': '{{ Enum.classification['1st'] }}',
+                'bm': '{{ Enum.classification.bm }}',
+                'mb': '{{ Enum.classification.mb }}',
+                'gmb': '{{ Enum.classification.gmb }}'
+            };
+
+            function loadGeneralTable() {
+                showMessage('Loading...');
+
+                $.get('{{ path('round_classification_detail', { id: round.id}) }}', function (data) {
+                    $container.empty();
+                    for (var x in data.classifications) {
+                        var group = data.classifications[x];
+
+                        $container.append($('<h3 />').text(genders[group.gender] + ' ' + bowtypes[group.bowtype]));
+
+                        var $table = $('<table />');
+                        $container.append($table);
+
+                        var $header = $('<tr />');
+                        var $data = $('<tr />');
+                        $table.append($header).append($data);
+
+                        for (var y in group.scores) {
+                            var classificationScore = group.scores[y];
+
+                            var $headerItem = $('<th />').text(classifications[classificationScore.classification]);
+                            var $dataItem = $('<td />').text(classificationScore.score);
+
+                            $header.append($headerItem);
+                            $data.append($dataItem);
+
+                            if (!classificationScore.valid) {
+                                $headerItem.addClass('text-muted text-italic');
+                                $dataItem.addClass('text-muted text-italic');
+                            }
+                        }
+                    }
+                });
+            }
+
+            function loadDetailedTable(gender, bowtype) {
+                showMessage('Loading...');
+
+                var templateUrl = '{{ path('round_classification_detail', { id: round.id, gender: '__g__', bowtype: '__b__' })|e('js') }}';
+                var url = templateUrl.replace('__g__', gender).replace('__b__', bowtype);
+
+                $.get(url, function (data) {
+                    $container.empty();
+
+                    for (var x in data.classifications) {
+                        var classification = data.classifications[x];
+
+                        var $header = $('<h3 />').text(full_classifications[classification.classification] + ' - ' + classification.score);
+                        $container.append($header);
+
+                        if (!classification.valid) {
+                            $header.addClass('text-muted text-italic');
+                        }
+
+                        var $table = $('<table />');
+                        $container.append($table);
+
+                        var $headerRow = $('<tr />');
+                        $table.append($headerRow);
+
+                        $headerRow.append($('<th />').text('Distance'));
+                        $headerRow.append($('<th />').text('Target'));
+                        $headerRow.append($('<th />').text('Distance Score'));
+                        $headerRow.append($('<th />').text('End Score'));
+                        $headerRow.append($('<th />').text('Arrow Score'));
+
+                        for (var y in classification.targets) {
+                            var target = classification.targets[y];
+
+                            var $row = $('<tr />');
+                            $table.append($row);
+
+                            $row.append($('<td />').text(target.distance.value + ' ' + target.distance.unit));
+                            $row.append($('<td />').text(target.size.value + ' ' + target.size.unit));
+                            $row.append($('<td />').text(target.score));
+                            $row.append($('<td />').text(target.end_average));
+                            $row.append($('<td />').text(target.arrow_average));
+                        }
+                    }
+                });
+            }
+
+            function showMessage(message) {
+                $container.empty();
+                $container.append($('<p />').text(message).addClass('text-muted'));
+            }
+
+            function onInputUpdate() {
+                var gender = $genderInput.val();
+                var bowtype = $bowtypeInput.val();
+
+                if ((gender && !bowtype) || (!gender && bowtype)) {
+                    return showMessage('Please select both gender & bowtype (or neither)');
+                }
+                if (gender && bowtype) {
+                    return loadDetailedTable(gender, bowtype);
+                }
+
+                loadGeneralTable();
+            }
+
+            $(function () {
+                $genderInput.select2().on('change', onInputUpdate);
+                $bowtypeInput.select2().on('change', onInputUpdate);
+
+                onInputUpdate();
+            })
+        })(jQuery);
+    </script>
 {% endblock %}

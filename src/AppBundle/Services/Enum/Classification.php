@@ -18,7 +18,16 @@ class Classification
         Classification::FIRST => 'First Class',
         Classification::BOWMAN => 'Bowman',
         Classification::MASTER_BOWMAN => 'Master Bowman',
-        Classification::THIRD => 'Third Class',
+        Classification::GRAND_MASTER_BOWMAN => 'Grand Master Bowman',
+    ];
+
+    static $shortChoices = [
+        Classification::THIRD => '3rd',
+        Classification::SECOND => '2nd',
+        Classification::FIRST => '1st',
+        Classification::BOWMAN => 'BM',
+        Classification::MASTER_BOWMAN => 'MB',
+        Classification::GRAND_MASTER_BOWMAN => 'GMB',
     ];
 
     public static function display($classification)

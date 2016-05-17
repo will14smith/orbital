@@ -41,5 +41,11 @@ class ClassificationCalculator
     {
         throw new \Exception("Not Implemented");
     }
+
+    public function isValidClassifiation($round, $gender, $bowtype, $classification)
+    {
+        // TODO
+        return true;
+    }
 }
 

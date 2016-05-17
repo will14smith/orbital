@@ -27,6 +27,7 @@ class EnumExtension extends \Twig_Extension implements \Twig_Extension_GlobalsIn
             'badgecat' => BadgeCategory::$choices,
             'badgestate' => BadgeState::$choices,
             'classification' => Classification::$choices,
+            'short_classification' => Classification::$shortChoices,
         ]];
     }
 
