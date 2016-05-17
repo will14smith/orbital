@@ -35,6 +35,9 @@ services:
         tags:
             - { name: kernel.event_listener, event: 'orbital.events.score_create', method: score_create }
             - { name: kernel.event_listener, event: 'orbital.events.score_update', method: score_update }
+    orbital.handicap.classification.calculate:
+        class: AppBundle\Services\Handicap\ClassificationCalculator
+        arguments: ["@orbital.handicap.calculate"]
 
 # approvals
     orbital.approval.manager:
