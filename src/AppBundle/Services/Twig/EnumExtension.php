@@ -5,6 +5,7 @@ namespace AppBundle\Services\Twig;
 use AppBundle\Services\Enum\BadgeCategory;
 use AppBundle\Services\Enum\BadgeState;
 use AppBundle\Services\Enum\BowType;
+use AppBundle\Services\Enum\Classification;
 use AppBundle\Services\Enum\Gender;
 use AppBundle\Services\Enum\Skill;
 use AppBundle\Services\Enum\Unit;
@@ -25,6 +26,7 @@ class EnumExtension extends \Twig_Extension implements \Twig_Extension_GlobalsIn
             'unit' => Unit::$choices,
             'badgecat' => BadgeCategory::$choices,
             'badgestate' => BadgeState::$choices,
+            'classification' => Classification::$choices,
         ]];
     }
 

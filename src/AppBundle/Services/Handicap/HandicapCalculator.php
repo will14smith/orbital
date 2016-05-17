@@ -5,6 +5,7 @@ namespace AppBundle\Services\Handicap;
 
 // http://www.roystonarchery.org/new/wp-content/uploads/2013/09/Graduated-Handicap-Tables.pdf
 use AppBundle\Entity\Round;
+use AppBundle\Entity\RoundTarget;
 use AppBundle\Entity\Score;
 use AppBundle\Services\Enum\BowType;
 use AppBundle\Services\Enum\Unit;
@@ -42,16 +43,22 @@ class HandicapCalculator
         $score = 0;
 
         foreach ($round->getTargets() as $rt) {
-            $range = Unit::convert($rt->getDistanceValue(), $rt->getDistanceUnit(), Unit::METER);
-            $targetDiameter = Unit::convert($rt->getTargetValue(), $rt->getTargetUnit(), Unit::CENTIMETER);
-
-            $calculator = TargetCalculatorFactory::create($rt, $compound);
-
-            $score += $rt->getArrowCount() *
-                $this->average($calculator, $range, $targetDiameter, $handicap);
+            $score += $this->scoreTarget($rt, $compound, $handicap);
         }
 
         return round($score);
+    }
+
+    public function scoreTarget(RoundTarget $target, $compound, $handicap) {
+        $range = Unit::convert($target->getDistanceValue(), $target->getDistanceUnit(), Unit::METER);
+        $targetDiameter = Unit::convert($target->getTargetValue(), $target->getTargetUnit(), Unit::CENTIMETER);
+
+        $calculator = TargetCalculatorFactory::create($target, $compound);
+
+        $averageScore = $this->average($calculator, $range, $targetDiameter, $handicap);
+        $score = $averageScore * $target->getArrowCount();
+
+        return $score;
     }
 
     /**
