@@ -14,12 +14,20 @@ class PersonController extends Controller
 {
     /**
      * @Route("/people", name="person_list", methods={"GET"})
+     *
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function indexAction()
+    public function indexAction(Request $request)
     {
         $personRepository = $this->getDoctrine()->getRepository("AppBundle:Person");
 
-        $people = $personRepository->findAll();
+        $club = $request->query->getInt('club', 0);
+        if($club === 0) {
+            $people = $personRepository->findAll();
+        } else {
+            $people = $personRepository->findBy(['club' => $club]);
+        }
 
         return $this->render('person/list.html.twig', [
             'people' => $people

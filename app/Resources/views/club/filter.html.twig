@@ -1,0 +1,34 @@
+{% set filter_id = 'club-filter-' ~ random() %}
+
+<div class="widget">
+    <h2 class="widget-title">Club</h2>
+    <select id="{{ filter_id }}">
+        <option value="">-- All --</option>
+        {% for club in clubs %}
+            <option value="{{ club.id }}">{{ club.name }}</option>
+        {% endfor %}
+    </select>
+</div>
+
+<script>
+    $(function() {
+        var $el = $('#{{ filter_id }}');
+
+        var initialUrl = window.location.href;
+        var params = (initialUrl.split('?')[1] || '').split('&');
+        for(var x in params) {
+            if(/club=/i.test(params[x])) {
+                var id = params[x].split('=')[1];
+                $el.val(id);
+            }
+        }
+
+
+        $el.on('change', function() {
+            var clubId = $el.val();
+            var currentUrl = window.location.href;
+
+            window.location.href = updateUrlParameter(currentUrl, 'club', clubId);
+        });
+    });
+</script>
