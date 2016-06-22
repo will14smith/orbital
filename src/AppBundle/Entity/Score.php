@@ -26,6 +26,11 @@ class Score
      */
     protected $person;
     /**
+     * @ORM\ManyToOne(targetEntity="Club")
+     */
+    protected $club;
+
+    /**
      * @ORM\Column(type="string", length=50)
      */
     protected $bowtype;
@@ -326,6 +331,30 @@ class Score
     public function getPerson()
     {
         return $this->person;
+    }
+
+    /**
+     * Set club
+     *
+     * @param \AppBundle\Entity\Club $club
+     *
+     * @return Score
+     */
+    public function setClub(Club $club = null)
+    {
+        $this->club = $club;
+
+        return $this;
+    }
+
+    /**
+     * Get club
+     *
+     * @return \AppBundle\Entity\Club
+     */
+    public function getClub()
+    {
+        return $this->club;
     }
 
     /**

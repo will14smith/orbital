@@ -6,6 +6,8 @@
             in Competition
         {% endif %}
     </dd>
+    <dt>Club</dt>
+    <dd>{{ score.club }}</dd>
     <dt>Skill / Bow</dt>
     <dd>
         {{ score.skill|enum('skill') }} {{ score.bowtype|enum('bowtype') }}

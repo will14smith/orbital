@@ -3,6 +3,7 @@
 namespace AppBundle\Form\Type;
 
 use AppBundle\Form\Type\Custom\BowTypeSelectType;
+use AppBundle\Form\Type\Custom\ClubSelectType;
 use AppBundle\Form\Type\Custom\GenderSelectType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
@@ -17,7 +18,7 @@ class PersonType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('club', null, ['required' => true])
+            ->add('club', ClubSelectType::class, ['required' => true])
             ->add('name')
             ->add('name_preferred')
             ->add('agb_number')
