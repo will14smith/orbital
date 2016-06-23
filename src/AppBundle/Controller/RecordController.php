@@ -266,13 +266,13 @@ class RecordController extends Controller
      * @Route("/record/{id}", name="record_detail", methods={"GET"})
      *
      * @param int $id
+     * @param Request $request
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function detailAction($id)
+    public function detailAction($id, Request $request)
     {
         $recordRepository = $this->getDoctrine()->getRepository("AppBundle:Record");
-
         $record = $recordRepository->find($id);
         if (!$record) {
             throw $this->createNotFoundException(
@@ -280,8 +280,19 @@ class RecordController extends Controller
             );
         }
 
+        $club_id = $request->query->getInt('club');
+
+        $clubRepository = $this->getDoctrine()->getRepository("AppBundle:Club");
+        $club = $clubRepository->find($club_id);
+        if (!$club) {
+            throw $this->createNotFoundException(
+                'No club found for id ' . $club_id
+            );
+        }
+
         return $this->render('record/detail.html.twig', [
-            'record' => $record
+            'record' => $record,
+            'club' => $club
         ]);
     }
 

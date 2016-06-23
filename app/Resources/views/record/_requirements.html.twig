@@ -5,14 +5,14 @@
 <ul class="list">
     {% for round in record.rounds %}
         <li>
-            <span class="text">
+            <span class="text" style="display: inline;">
                 shoot
                 {% if round.count == 1 %}
                     a
                 {% else %}
                     {{ round.count }}x
                 {% endif %}
-                &nbsp;{{ display.round(round.round) }}&nbsp;
+                {{ display.round(round.round) }}
                 {% if round.skill|enum('skill') == Enum.skill.novice %}
                     ({{ round.skill|enum('skill') }})
                 {% endif %}
@@ -26,6 +26,7 @@
             </span>
         </li>
     {% endfor %}
+    <li><span class="text" style="display: inline;">shoot as part of {{ display.club(club) }} (as listed on the official results)</span></li>
     {% if record.numHolders > 1 %}
         <li><span class="text">shoot in a team of {{ record.numHolders }} (or fewer)</span></li>
     {% endif %}

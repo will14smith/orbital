@@ -111,39 +111,46 @@ class Record
     /**
      * Get confirmed holders
      *
-     * @return \Doctrine\Common\Collections\Collection|RecordHolder[]
+     * @param $club
+     * @return RecordHolder[]|\Doctrine\Common\Collections\Collection
      */
-    public function getHolders()
+    public function getHolders(Club $club)
     {
-        return RecordManager::getConfirmedHolders($this);
+        return RecordManager::getConfirmedHolders($this, $club);
     }
 
     /**
      * Get unconfirmed holders
      *
-     * @return \Doctrine\Common\Collections\Collection|RecordHolder[]
+     * @param Club $club
+     * @return RecordHolder[]|\Doctrine\Common\Collections\Collection
      */
-    public function getUnconfirmedHolders()
+    public function getUnconfirmedHolders(Club $club)
     {
-        return RecordManager::getUnconfirmedHolders($this);
+        return RecordManager::getUnconfirmedHolders($this, $club);
     }
 
     /**
      * Get all holders
      *
-     * @return \Doctrine\Common\Collections\Collection|RecordHolder[]
+     * @param Club $club
+     * @return RecordHolder[]|\Doctrine\Common\Collections\Collection
      */
-    public function getAllHolders()
+    public function getAllHolders(Club $club)
     {
-        return $this->holders;
+        return $this->holders->filter(function (RecordHolder $holder) use ($club) {
+            return $holder->getClub()->getId() == $club->getId();
+        });
     }
 
     /**
+     * @param Club $club
      * @return RecordHolder
+     * @throws \Exception
      */
-    public function getCurrentHolder()
+    public function getCurrentHolder(Club $club)
     {
-        return RecordManager::getCurrentHolder($this);
+        return RecordManager::getCurrentHolder($this, $club);
     }
 
     /**
