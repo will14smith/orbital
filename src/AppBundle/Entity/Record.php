@@ -22,6 +22,11 @@ class Record
     protected $id;
 
     /**
+     * @ORM\OneToMany(targetEntity="RecordClub", mappedBy="record", cascade={"persist", "remove"})
+     */
+    protected $clubs;
+
+    /**
      * @ORM\OneToMany(targetEntity="RecordRound", mappedBy="record", cascade={"persist", "remove"})
      */
     protected $rounds;
@@ -188,6 +193,41 @@ class Record
     public function getRounds()
     {
         return $this->rounds;
+    }
+
+    /**
+     * Add club
+     *
+     * @param RecordClub $club
+     *
+     * @return Record
+     */
+    public function addClub(RecordClub $club)
+    {
+        $club->setRecord($this);
+        $this->clubs[] = $club;
+
+        return $this;
+    }
+
+    /**
+     * Remove club
+     *
+     * @param RecordClub $club
+     */
+    public function removeClub(RecordClub $club)
+    {
+        $this->clubs->removeElement($club);
+    }
+
+    /**
+     * Get clubs
+     *
+     * @return \Doctrine\Common\Collections\Collection|RecordClub[]
+     */
+    public function getClubs()
+    {
+        return $this->clubs;
     }
 
     public function isIndoor()

@@ -28,15 +28,50 @@ class RecordController extends Controller
 
     /**
      * @Route("/records", name="record_list", methods={"GET"})
+     *
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function indexAction()
+    public function indexAction(Request $request)
     {
-        $recordRepository = $this->getDoctrine()->getRepository("AppBundle:Record");
+        $club_id = $request->query->getInt('club');
+        if ($club_id == 0) {
+            return $this->indexClubAction();
+        }
 
-        $records = $recordRepository->findAll();
+        $recordRepository = $this->getDoctrine()->getRepository("AppBundle:Record");
+        if( $club_id == -1 && $this->isGranted('ROLE_ADMIN')) {
+            $records = $recordRepository->findAll();
+
+            return $this->render('record/list.html.twig', [
+                'records' => $records,
+                'club' => null,
+            ]);
+        }
+
+        $clubRepository = $this->getDoctrine()->getRepository("AppBundle:Club");
+        $club = $clubRepository->find($club_id);
+        if ($club == null) {
+            return $this->indexClubAction();
+        }
+
+        $records = $recordRepository->getByClub($club);
 
         return $this->render('record/list.html.twig', [
-            'records' => $records
+            'records' => $records,
+            'club' => $club,
+        ]);
+    }
+
+
+    private function indexClubAction()
+    {
+        $clubRepository = $this->getDoctrine()->getRepository("AppBundle:Club");
+
+        $clubs = $clubRepository->findAll();
+
+        return $this->render('record/list_select_club.html.twig', [
+            'clubs' => $clubs
         ]);
     }
 

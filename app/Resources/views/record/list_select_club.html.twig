@@ -1,0 +1,36 @@
+{% extends '::base.html.twig' %}
+{% import ':macro:display.html.twig' as display %}
+
+{% block title %}
+    Records - Select a club
+{% endblock %}
+
+{% block body %}
+    <ul class="list">
+        {% if is_granted('ROLE_ADMIN') %}
+            <li>
+                <a href="{{ url('record_list', { 'club': -1 }) }}">-- All --</a>
+            </li>
+        {% endif %}
+        {% for club in clubs %}
+            <li>
+                <a href="{{ url('record_list', { 'club': club.id }) }}">{{ club.name }}</a>
+            </li>
+        {% else %}
+            <li>No Clubs :(</li>
+        {% endfor %}
+    </ul>
+{% endblock %}
+
+{% block sidebar %}
+    {% if is_granted('ROLE_ADMIN') %}
+        <div class="widget">
+            <h2 class="widget-title">Actions</h2>
+            <ul>
+                <li><a href="{{ url('record_create') }}">Create</a></li>
+            </ul>
+        </div>
+    {% endif %}
+
+    {{ parent() }}
+{% endblock %}

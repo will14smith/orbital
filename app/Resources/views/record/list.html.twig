@@ -9,7 +9,12 @@
     <ul class="list">
         {% for record in records %}
             <li>
-                {{ display.record(record) }}
+                {% if club %}
+                    <a href="{{ url('record_detail', { 'id': record.id, 'club': club.id }) }}">{{ record.displayName }}</a>
+                {% else %}
+                    <a href="#">{{ record.displayName }}</a>
+                {% endif %}
+
                 {% if is_granted('ROLE_ADMIN') %}
                     <span class="actions">
                         <a href="{{ url('record_edit', { 'id': record.id }) }}"><i class="fa fa-pencil"></i></a>
