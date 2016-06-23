@@ -78,11 +78,19 @@ class RecordController extends Controller
     /**
      * @Route("/records/pdf", name="record_pdf", methods={"GET"})
      */
-    public function pdfAction(Request $req)
+    public function pdfAction(Request $request)
     {
         $recordRepository = $this->getDoctrine()->getRepository("AppBundle:Record");
-
         $records = $recordRepository->findAll();
+
+        $clubRepository = $this->getDoctrine()->getRepository("AppBundle:Club");
+        $club_id = $request->query->getInt('club');
+        $club = $clubRepository->find($club_id);
+        if (!$club) {
+            throw $this->createNotFoundException(
+                'No club found for id ' . $club_id
+            );
+        }
 
         $groups = [];
 
@@ -160,7 +168,7 @@ class RecordController extends Controller
                 $target = &$groups[$groupIdx]['subgroups'][$subgroupIdx]['records'];
             }
 
-            $currentHolder = $record->getCurrentHolder();
+            $currentHolder = $record->getCurrentHolder($club);
 
             $roundName = RecordManager::getRoundName($record);
 
@@ -186,7 +194,7 @@ class RecordController extends Controller
             'groups' => $groups
         ];
 
-        if ($req->query->has('html')) {
+        if ($request->query->has('html')) {
             return $this->render('record/list.pdf.twig', $data);
         }
 
@@ -280,9 +288,9 @@ class RecordController extends Controller
             );
         }
 
-        $club_id = $request->query->getInt('club');
 
         $clubRepository = $this->getDoctrine()->getRepository("AppBundle:Club");
+        $club_id = $request->query->getInt('club');
         $club = $clubRepository->find($club_id);
         if (!$club) {
             throw $this->createNotFoundException(

@@ -29,11 +29,16 @@
 {% endblock %}
 
 {% block sidebar %}
-    {% if is_granted('ROLE_ADMIN') %}
+    {% if is_granted('ROLE_ADMIN') or club %}
         <div class="widget">
             <h2 class="widget-title">Actions</h2>
             <ul>
+                {% if is_granted('ROLE_ADMIN') %}
                 <li><a href="{{ url('record_create') }}">Create</a></li>
+                {% endif %}
+                {% if club %}
+                    <li><a href="{{ url('record_pdf', { 'club': club.id }) }}">View as PDF</a></li>
+                {% endif %}
             </ul>
         </div>
     {% endif %}
