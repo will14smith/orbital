@@ -76,7 +76,11 @@ class RecordRepository extends EntityRepository
             ->from('AppBundle:Record', 'r')
             ->join('r.rounds', 'rr')
             ->where('rr.round = :round')
-            ->setParameter('round', $score->getRound());
+            ->setParameter('round', $score->getRound())
+
+            ->join('r.clubs', 'rc')
+            ->where('rc.club = :club')
+            ->setParameter('club', $score->getClub());
 
         if ($score->getSkill() != Skill::NOVICE) {
             $q = $q->andWhere('rr.skill IS NULL OR rr.skill = :skill')

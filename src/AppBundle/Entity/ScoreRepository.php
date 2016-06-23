@@ -107,15 +107,18 @@ class ScoreRepository extends EntityRepository
      * In order of date_shot / date_created
      *
      * @param Competition $competition
+     * @param Club $club
      *
      * @return Score[]
      */
-    public function getByCompetition(Competition $competition)
+    public function getByCompetition(Competition $competition, Club $club)
     {
         return $this->createQueryBuilder("s")
             ->andWhere('s.competition = :competition')
+            ->andWhere('s.club = :club')
 
             ->setParameter('competition', $competition)
+            ->setParameter('club', $club)
 
             ->orderBy('s.date_shot', 'ASC')
             ->addOrderBy('s.date_entered', 'ASC')
@@ -130,17 +133,20 @@ class ScoreRepository extends EntityRepository
      *
      * @param Competition $competition
      * @param Person $person
+     * @param Club $club
      *
      * @return Score[]
      */
-    public function getByCompetitionAndPerson(Competition $competition, Person $person)
+    public function getByCompetitionAndPerson(Competition $competition, Person $person, Club $club)
     {
         return $this->createQueryBuilder("s")
             ->andWhere('s.competition = :competition')
             ->andWhere('s.person = :person')
+            ->andWhere('s.club = :club')
 
             ->setParameter('competition', $competition)
             ->setParameter('person', $person)
+            ->setParameter('club', $club)
 
             ->orderBy('s.date_shot', 'ASC')
             ->addOrderBy('s.date_entered', 'ASC')

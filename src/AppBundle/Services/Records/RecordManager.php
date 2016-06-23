@@ -23,12 +23,33 @@ class RecordManager
 
         return $holder->isBetterThan($current_holder);
     }
+    public static function consistentClub(RecordHolder $holder)
+    {
+        $holderClub = $holder->getClub();
+
+        foreach($holder->getPeople() as $personHolder) {
+            $score = $personHolder->getScore();
+
+            if(!$score) {
+                continue;
+            }
+
+            if($score->getClub()->getId() != $holderClub->getId()) {
+                return false;
+            }
+        }
+
+        return true;
+    }
 
     public static function approveHolder(Record $record, RecordHolder $holder)
     {
         // check it breaks the record
         if (!self::beatsRecord($record, $holder)) {
             throw new \Exception('New holder ' . $holder->getId() . ' doesn\'t break the record.');
+        }
+        if (!self::consistentClub($holder)) {
+            throw new \Exception('New holder ' . $holder->getId() . ' isn\'t all same club.');
         }
 
         // update current holder to have a broken date
@@ -107,7 +128,7 @@ class RecordManager
     /**
      * @param Record $record
      * @param Club $club
-     * 
+     *
      * @return RecordHolder
      * @throws \Exception
      */
