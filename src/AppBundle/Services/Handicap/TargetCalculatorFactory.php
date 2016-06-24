@@ -13,18 +13,18 @@ class TargetCalculatorFactory
 {
     /**
      * @param RoundTarget $roundTarget
-     * @param boolean $compound
+     * @param boolean $useInnerTen
      *
      * @return TargetCalculatorInterface
      * @throws \Exception
      */
-    public static function create(RoundTarget $roundTarget, $compound)
+    public static function create(RoundTarget $roundTarget, $useInnerTen)
     {
         switch ($roundTarget->getScoringZones()) {
             case ScoreZones::METRIC:
-                return new MetricTargetCalculator($compound);
+                return new MetricTargetCalculator($useInnerTen);
             case ScoreZones::TRIPLE:
-                return new Metric5ZoneTargetCalculator($compound);
+                return new Metric5ZoneTargetCalculator($useInnerTen);
             case ScoreZones::IMPERIAL:
                 return new ImperialTargetCalculator();
             case ScoreZones::WORCESTER:

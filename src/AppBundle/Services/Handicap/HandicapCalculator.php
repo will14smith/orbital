@@ -32,28 +32,28 @@ class HandicapCalculator
      * Get the lowest score needed for the given handicap
      *
      * @param Round $round
-     * @param boolean $compound
+     * @param boolean $useInnerTen
      * @param int $handicap
      *
      * @return int
      * @throws \Exception
      */
-    public function score(Round $round, $compound, $handicap)
+    public function score(Round $round, $useInnerTen, $handicap)
     {
         $score = 0;
 
         foreach ($round->getTargets() as $rt) {
-            $score += $this->scoreTarget($rt, $compound, $handicap);
+            $score += $this->scoreTarget($rt, $useInnerTen, $handicap);
         }
 
         return round($score);
     }
 
-    public function scoreTarget(RoundTarget $target, $compound, $handicap) {
+    public function scoreTarget(RoundTarget $target, $useInnerTen, $handicap) {
         $range = Unit::convert($target->getDistanceValue(), $target->getDistanceUnit(), Unit::METER);
         $targetDiameter = Unit::convert($target->getTargetValue(), $target->getTargetUnit(), Unit::CENTIMETER);
 
-        $calculator = TargetCalculatorFactory::create($target, $compound);
+        $calculator = TargetCalculatorFactory::create($target, $useInnerTen);
 
         $averageScore = $this->average($calculator, $range, $targetDiameter, $handicap);
         $score = $averageScore * $target->getArrowCount();
@@ -65,19 +65,19 @@ class HandicapCalculator
      * Get the handicap for the given score
      *
      * @param Round $round
-     * @param boolean $compound
+     * @param boolean $useInnerTen
      * @param int $score
      *
      * @return int
      */
-    public function handicap(Round $round, $compound, $score)
+    public function handicap(Round $round, $useInnerTen, $score)
     {
         // use a binary search method
         $delta = 32;
         $handicap = 50;
 
         while ($delta >= 1) {
-            $hc_min_score = $this->score($round, $compound, $handicap);
+            $hc_min_score = $this->score($round, $useInnerTen, $handicap);
 
             if ($score < $hc_min_score) {
                 $handicap += $delta;
@@ -91,7 +91,7 @@ class HandicapCalculator
         }
 
         // fix off by 1 error
-        $hc_min_score = $this->score($round, $compound, $handicap);
+        $hc_min_score = $this->score($round, $useInnerTen, $handicap);
 
         return $score < $hc_min_score ? $handicap + 1 : $handicap;
     }
@@ -100,8 +100,12 @@ class HandicapCalculator
     {
         return $this->handicap(
             $score->getRound(),
-            $score->getBowtype() == BowType::COMPOUND,
+            $this->useInnerTen($score),
             $score->getScore()
         );
+    }
+
+    private function useInnerTen(Score $score) {
+        return $score->getBowtype() == BowType::COMPOUND && $score->getRound()->getIndoor();
     }
 }

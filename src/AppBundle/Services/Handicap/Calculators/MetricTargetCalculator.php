@@ -9,14 +9,14 @@ class MetricTargetCalculator implements TargetCalculatorInterface
     /**
      * @var boolean
      */
-    private $compound;
+    private $useInnerTen;
 
     /**
-     * @param boolean $compound
+     * @param boolean $useInnerTen
      */
-    public function __construct($compound)
+    public function __construct($useInnerTen)
     {
-        $this->compound = $compound;
+        $this->useInnerTen = $useInnerTen;
     }
 
     public function calculate($sigma, $targetDiameter)
@@ -25,7 +25,7 @@ class MetricTargetCalculator implements TargetCalculatorInterface
 
         $sigma_sq = pow($sigma, 2);
 
-        if ($this->compound) {
+        if ($this->useInnerTen) {
             $x = pow($targetDiameter / 40 + 0.357, 2);
             $sum = exp(-$x / $sigma_sq);
 

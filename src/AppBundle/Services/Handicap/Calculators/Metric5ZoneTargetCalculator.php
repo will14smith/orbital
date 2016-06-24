@@ -9,14 +9,14 @@ class Metric5ZoneTargetCalculator implements TargetCalculatorInterface
     /**
      * @var boolean
      */
-    private $compound;
+    private $useInnerTen;
 
     /**
-     * @param boolean $compound
+     * @param boolean $useInnerTen
      */
-    public function __construct($compound)
+    public function __construct($useInnerTen)
     {
-        $this->compound = $compound;
+        $this->useInnerTen = $useInnerTen;
     }
 
     function calculate($sigma, $targetDiameter)
@@ -26,7 +26,7 @@ class Metric5ZoneTargetCalculator implements TargetCalculatorInterface
         $sigma_sq = pow($sigma, 2);
 
         for($i = 1; $i < 5; $i++) {
-            $s -= exp(-pow(($i * $targetDiameter) / ($i == 1 && $this->compound ? 40 : 20) + 0.357, 2) / $sigma_sq);
+            $s -= exp(-pow(($i * $targetDiameter) / ($i == 1 && $this->useInnerTen ? 40 : 20) + 0.357, 2) / $sigma_sq);
         }
 
         $s -= 6 * exp(-pow((5 * $targetDiameter) / 20 + 0.357, 2) / $sigma_sq);
