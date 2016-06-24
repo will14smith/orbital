@@ -5,15 +5,16 @@
 {% endblock %}
 
 {% block body %}
-    {% set holder = record.currentHolder %}
+    {% set holder = record.getCurrentHolder(club) %}
 
     {% include ':record:_current_holder.html.twig' with { 'record': record, 'holder': holder } only %}
-    {% include ':record:_requirements.html.twig' with { 'record': record } only %}
+    {% include ':record:_requirements.html.twig' with { 'record': record, 'club': club } only %}
 
-    {% if is_granted('ROLE_ADMIN') and record.unconfirmedHolders|length > 0 %}
+    {% set unconfirmed_holders = record.getUnconfirmedHolders(club) %}
+    {% if is_granted('ROLE_ADMIN') and unconfirmed_holders|length > 0 %}
         <h2>Unconfirmed holders</h2>
         <table>
-            {% for holder in record.unconfirmedHolders %}
+            {% for holder in unconfirmed_holders %}
                 <tr>
                     {% include ':record:_unconfirmed_holder.html.twig' with { 'record': record, 'holder': holder } only %}
                 </tr>
@@ -21,11 +22,11 @@
         </table>
     {% endif %}
 
-
-    {% if record.holders|length > 1 %}
+    {% set past_holders = record.getHolders(club) %}
+    {% if past_holders|length > 1 %}
         <h2>Past holders</h2>
         <table>
-            {% for holder in record.holders[1:] %}
+            {% for holder in past_holders[1:] %}
                 <tr>
                     {% include ':record:_past_holder.html.twig' with { 'record': record, 'holder': holder } only %}
                 </tr>
@@ -39,8 +40,8 @@
         <div class="widget">
             <h2 class="widget-title">Actions</h2>
             <ul>
-                <li><a href="{{ url('record_award', { 'id': record.id }) }}">Award</a></li>
-                <li><a href="{{ url('record_revoke', { 'id': record.id }) }}">Revoke</a></li>
+                <li><a href="{{ url('record_award', { 'id': record.id, 'club': club.id }) }}">Award</a></li>
+                <li><a href="{{ url('record_revoke', { 'id': record.id, 'club': club.id }) }}">Revoke</a></li>
                 <li><a href="{{ url('record_edit', { 'id': record.id }) }}">Edit</a></li>
                 <li><a href="{{ url('record_delete', { 'id': record.id }) }}">Delete</a></li>
             </ul>

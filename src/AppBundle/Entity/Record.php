@@ -22,6 +22,11 @@ class Record
     protected $id;
 
     /**
+     * @ORM\OneToMany(targetEntity="RecordClub", mappedBy="record", cascade={"persist", "remove"})
+     */
+    protected $clubs;
+
+    /**
      * @ORM\OneToMany(targetEntity="RecordRound", mappedBy="record", cascade={"persist", "remove"})
      */
     protected $rounds;
@@ -106,39 +111,46 @@ class Record
     /**
      * Get confirmed holders
      *
-     * @return \Doctrine\Common\Collections\Collection|RecordHolder[]
+     * @param $club
+     * @return RecordHolder[]|\Doctrine\Common\Collections\Collection
      */
-    public function getHolders()
+    public function getHolders(Club $club)
     {
-        return RecordManager::getConfirmedHolders($this);
+        return RecordManager::getConfirmedHolders($this, $club);
     }
 
     /**
      * Get unconfirmed holders
      *
-     * @return \Doctrine\Common\Collections\Collection|RecordHolder[]
+     * @param Club $club
+     * @return RecordHolder[]|\Doctrine\Common\Collections\Collection
      */
-    public function getUnconfirmedHolders()
+    public function getUnconfirmedHolders(Club $club)
     {
-        return RecordManager::getUnconfirmedHolders($this);
+        return RecordManager::getUnconfirmedHolders($this, $club);
     }
 
     /**
      * Get all holders
      *
-     * @return \Doctrine\Common\Collections\Collection|RecordHolder[]
+     * @param Club $club
+     * @return RecordHolder[]|\Doctrine\Common\Collections\Collection
      */
-    public function getAllHolders()
+    public function getAllHolders(Club $club)
     {
-        return $this->holders;
+        return $this->holders->filter(function (RecordHolder $holder) use ($club) {
+            return $holder->getClub()->getId() == $club->getId();
+        });
     }
 
     /**
+     * @param Club $club
      * @return RecordHolder
+     * @throws \Exception
      */
-    public function getCurrentHolder()
+    public function getCurrentHolder(Club $club)
     {
-        return RecordManager::getCurrentHolder($this);
+        return RecordManager::getCurrentHolder($this, $club);
     }
 
     /**
@@ -188,6 +200,41 @@ class Record
     public function getRounds()
     {
         return $this->rounds;
+    }
+
+    /**
+     * Add club
+     *
+     * @param RecordClub $club
+     *
+     * @return Record
+     */
+    public function addClub(RecordClub $club)
+    {
+        $club->setRecord($this);
+        $this->clubs[] = $club;
+
+        return $this;
+    }
+
+    /**
+     * Remove club
+     *
+     * @param RecordClub $club
+     */
+    public function removeClub(RecordClub $club)
+    {
+        $this->clubs->removeElement($club);
+    }
+
+    /**
+     * Get clubs
+     *
+     * @return \Doctrine\Common\Collections\Collection|RecordClub[]
+     */
+    public function getClubs()
+    {
+        return $this->clubs;
     }
 
     public function isIndoor()

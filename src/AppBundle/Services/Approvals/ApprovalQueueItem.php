@@ -2,12 +2,13 @@
 
 namespace AppBundle\Services\Approvals;
 
+use AppBundle\Entity\Club;
+
 class ApprovalQueueItem
 {
     private $type;
     private $name;
     private $url;
-
     private $data;
 
     public function __construct($type, $name, $url, $data = null)

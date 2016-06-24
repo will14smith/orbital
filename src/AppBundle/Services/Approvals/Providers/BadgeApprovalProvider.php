@@ -3,6 +3,7 @@
 namespace AppBundle\Services\Approvals\Providers;
 
 use AppBundle\Entity\BadgeHolder;
+use AppBundle\Entity\Club;
 use AppBundle\Services\Approvals\ApprovalQueueItem;
 use AppBundle\Services\Approvals\ApprovalQueueProviderInterface;
 use AppBundle\Services\Enum\BadgeState;
@@ -22,10 +23,31 @@ class BadgeApprovalProvider implements ApprovalQueueProviderInterface
         $repository = $doctrine->getRepository('AppBundle:BadgeHolder');
         $badges = $repository->findByIncomplete()->getQuery()->getResult();
 
-        return array_map(function (BadgeHolder $badge) use ($url) {
-            $name = (string)$badge . ' - ' . BadgeState::$choices[$badge->getState()];
-
-            return new ApprovalQueueItem('badge', $name, $url->generate('badge_detail', ['id' => $badge->getBadge()->getId()]), $badge);
+        return array_map(function (BadgeHolder $holder) use ($url) {
+            return $this->createApprovalItem($url, $holder);
         }, $badges);
+    }
+
+    /**
+     * @param Registry $doctrine
+     * @param UrlGeneratorInterface $url
+     * @param Club $club
+     *
+     * @return ApprovalQueueItem[]
+     */
+    function getItemsByClub(Registry $doctrine, UrlGeneratorInterface $url, Club $club)
+    {
+        $repository = $doctrine->getRepository('AppBundle:BadgeHolder');
+        $badges = $repository->findByIncompleteAndClub($club)->getQuery()->getResult();
+
+        return array_map(function (BadgeHolder $holder) use ($url) {
+            return $this->createApprovalItem($url, $holder);
+        }, $badges);    }
+
+    private function createApprovalItem(UrlGeneratorInterface $url, BadgeHolder $holder) {
+        $name = (string)$holder . ' - ' . BadgeState::$choices[$holder->getState()];
+
+        return new ApprovalQueueItem('badge', $name, $url->generate('badge_detail', ['id' => $holder->getBadge()->getId()]), $holder);
+
     }
 }

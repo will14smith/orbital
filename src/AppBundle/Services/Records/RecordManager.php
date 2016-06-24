@@ -2,6 +2,7 @@
 
 namespace AppBundle\Services\Records;
 
+use AppBundle\Entity\Club;
 use AppBundle\Entity\Record;
 use AppBundle\Entity\RecordHolder;
 use AppBundle\Entity\RecordHolderPerson;
@@ -15,12 +16,30 @@ class RecordManager
 {
     public static function beatsRecord(Record $record, RecordHolder $holder)
     {
-        $current_holder = $record->getCurrentHolder();
+        $current_holder = $record->getCurrentHolder($holder->getClub());
         if (!$current_holder) {
             return true;
         }
 
         return $holder->isBetterThan($current_holder);
+    }
+    public static function consistentClub(RecordHolder $holder)
+    {
+        $holderClub = $holder->getClub();
+
+        foreach($holder->getPeople() as $personHolder) {
+            $score = $personHolder->getScore();
+
+            if(!$score) {
+                continue;
+            }
+
+            if($score->getClub()->getId() != $holderClub->getId()) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     public static function approveHolder(Record $record, RecordHolder $holder)
@@ -29,9 +48,12 @@ class RecordManager
         if (!self::beatsRecord($record, $holder)) {
             throw new \Exception('New holder ' . $holder->getId() . ' doesn\'t break the record.');
         }
+        if (!self::consistentClub($holder)) {
+            throw new \Exception('New holder ' . $holder->getId() . ' isn\'t all same club.');
+        }
 
         // update current holder to have a broken date
-        $current_holder = $record->getCurrentHolder();
+        $current_holder = $record->getCurrentHolder($holder->getClub());
         if ($current_holder) {
             $current_holder->setDateBroken($holder->getDate());
         }
@@ -62,6 +84,7 @@ class RecordManager
         $holder->setRecord($record);
         $holder->setCompetition($competition);
         $holder->setDate($scores[0]->getDateShot());
+        $holder->setClub($scores[0]->getClub());
 
         foreach ($scores as $score) {
             $holder->addPerson(self::createHolderPerson($score));
@@ -104,13 +127,14 @@ class RecordManager
 
     /**
      * @param Record $record
+     * @param Club $club
      *
      * @return RecordHolder
      * @throws \Exception
      */
-    public static function getCurrentHolder(Record $record)
+    public static function getCurrentHolder(Record $record, Club $club)
     {
-        $filtered = self::getConfirmedHolders($record)->filter(function (RecordHolder $holder) {
+        $filtered = self::getConfirmedHolders($record, $club)->filter(function (RecordHolder $holder) {
             return $holder->getDateBroken() === null;
         });
 
@@ -127,24 +151,26 @@ class RecordManager
 
     /**
      * @param Record $record
+     * @param Club $club
      *
-     * @return \Doctrine\Common\Collections\Collection|RecordHolder[]
+     * @return \AppBundle\Entity\RecordHolder[]|\Doctrine\Common\Collections\Collection
      */
-    public static function getConfirmedHolders(Record $record)
+    public static function getConfirmedHolders(Record $record, Club $club)
     {
-        return $record->getAllHolders()->filter(function (RecordHolder $holder) {
+        return $record->getAllHolders($club)->filter(function (RecordHolder $holder) {
             return $holder->getDateConfirmed() !== null;
         });
     }
 
     /**
      * @param Record $record
+     * @param Club $club
      *
-     * @return \Doctrine\Common\Collections\Collection|RecordHolder[]
+     * @return \AppBundle\Entity\RecordHolder[]|\Doctrine\Common\Collections\Collection
      */
-    public static function getUnconfirmedHolders(Record $record)
+    public static function getUnconfirmedHolders(Record $record, Club $club)
     {
-        return $record->getAllHolders()->filter(function (RecordHolder $holder) {
+        return $record->getAllHolders($club)->filter(function (RecordHolder $holder) {
             return $holder->getDateConfirmed() === null;
         });
     }

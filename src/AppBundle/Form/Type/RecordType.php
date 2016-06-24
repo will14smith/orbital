@@ -18,6 +18,11 @@ class RecordType extends AbstractType
                 'allow_add' => true,
                 'by_reference' => false
             ])
+            ->add('clubs', CollectionType::class, [
+                'entry_type' => RecordClubType::class,
+                'allow_add' => true,
+                'by_reference' => false
+            ])
         ;
     }
 

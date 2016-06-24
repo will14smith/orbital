@@ -76,11 +76,15 @@ class RecordRepository extends EntityRepository
             ->from('AppBundle:Record', 'r')
             ->join('r.rounds', 'rr')
             ->where('rr.round = :round')
-            ->setParameter('round', $score->getRound());
+            ->setParameter('round', $score->getRound())
 
-        if($score->getSkill() != Skill::NOVICE) {
+            ->join('r.clubs', 'rc')
+            ->where('rc.club = :club')
+            ->setParameter('club', $score->getClub());
+
+        if ($score->getSkill() != Skill::NOVICE) {
             $q = $q->andWhere('rr.skill IS NULL OR rr.skill = :skill')
-                   ->setParameter('skill', Skill::SENIOR);
+                ->setParameter('skill', Skill::SENIOR);
         }
 
         $q = $q
@@ -97,7 +101,8 @@ class RecordRepository extends EntityRepository
      *
      * @return Record[]
      */
-    public function getByRound(Round $round) {
+    public function getByRound(Round $round)
+    {
         $qb = $this->getEntityManager()->createQueryBuilder();
 
         $q = $qb->select('r')
@@ -105,6 +110,19 @@ class RecordRepository extends EntityRepository
             ->join('r.rounds', 'rr')
             ->where('rr.round = :round')
             ->setParameter('round', $round);
+
+        return $q->getQuery()->getResult();
+    }
+
+    public function getByClub(Club $club)
+    {
+        $qb = $this->getEntityManager()->createQueryBuilder();
+
+        $q = $qb->select('r')
+            ->from('AppBundle:Record', 'r')
+            ->join('r.clubs', 'rc')
+            ->where('rc.club = :club')
+            ->setParameter('club', $club);
 
         return $q->getQuery()->getResult();
     }

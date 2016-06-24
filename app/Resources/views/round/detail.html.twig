@@ -28,10 +28,6 @@
         {% endfor %}
     </table>
 
-    {% if records|length %}
-        {% include ':round:_records.html.twig' with { 'round': round, 'records': records } only %}
-    {% endif %}
-
     <div>
         <h2>Classifications</h2>
         <select id="classification-gender">

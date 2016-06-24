@@ -81,9 +81,9 @@ class RecordListener
         if($record->getNumHolders() == 1) {
             $person = $score->getPerson();
 
-            return $scoreRepository->getByCompetitionAndPerson($competition, $person);
+            return $scoreRepository->getByCompetitionAndPerson($competition, $person, $score->getClub());
         } else {
-            return $scoreRepository->getByCompetition($competition);
+            return $scoreRepository->getByCompetition($competition, $score->getClub());
         }
     }
 
@@ -93,7 +93,7 @@ class RecordListener
             return [];
         }
 
-        foreach($record->getUnconfirmedHolders() as $unconfirmedHolder) {
+        foreach($record->getUnconfirmedHolders($holder->getClub()) as $unconfirmedHolder) {
             if($unconfirmedHolder->getCompetition()->getId() !== $holder->getCompetition()->getId()) {
                 continue;
             }
@@ -131,6 +131,7 @@ class RecordListener
     /**
      * PRE: $scores all same competition
      * PRE: $scores all same person
+     * PRE: $scores all same club
      * PRE: $scores is sorted by date
      *
      * @param Record $record
@@ -165,6 +166,7 @@ class RecordListener
 
     /**
      * PRE: $scores all same competition
+     * PRE: $scores all same club
      * PRE: $scores is sorted by date
      *
      * @param Record $record

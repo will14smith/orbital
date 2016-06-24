@@ -2,6 +2,7 @@
 
 namespace AppBundle\Services\Approvals\Providers;
 
+use AppBundle\Entity\Club;
 use AppBundle\Entity\RecordHolder;
 use AppBundle\Services\Approvals\ApprovalQueueItem;
 use AppBundle\Services\Approvals\ApprovalQueueProviderInterface;
@@ -19,12 +20,38 @@ class RecordApprovalProvider implements ApprovalQueueProviderInterface
     function getItems(Registry $doctrine, UrlGeneratorInterface $url)
     {
         $repository = $doctrine->getRepository('AppBundle:RecordHolder');
-        $records = $repository->findBy(['date_confirmed' => null]);
+        $records = $repository->getUnconfirmed();
 
         return array_map(function (RecordHolder $recordHolder) use ($url) {
-            $record = $recordHolder->getRecord();
-
-            return new ApprovalQueueItem('record', 'Record' . ' - ' . (string)$record, $url->generate('record_detail', ['id' => $record->getId()]), $recordHolder);
+            return $this->createApprovalItem($url, $recordHolder);
         }, $records);
+    }
+
+    /**
+     * @param Registry $doctrine
+     * @param UrlGeneratorInterface $url
+     * @param Club $club
+     *
+     * @return ApprovalQueueItem[]
+     */
+    function getItemsByClub(Registry $doctrine, UrlGeneratorInterface $url, Club $club)
+    {
+        $repository = $doctrine->getRepository('AppBundle:RecordHolder');
+        $records = $repository->getUnconfirmedByClub($club);
+
+        return array_map(function (RecordHolder $recordHolder) use ($url) {
+            return $this->createApprovalItem($url, $recordHolder);
+        }, $records);    }
+
+    /**
+     * @param RecordHolder $recordHolder
+     * @param $url
+     * @return ApprovalQueueItem
+     */
+    function createApprovalItem(UrlGeneratorInterface $url, RecordHolder $recordHolder)
+    {
+        $record = $recordHolder->getRecord();
+
+        return new ApprovalQueueItem('record', 'Record' . ' - ' . (string)$record, $url->generate('record_detail', ['id' => $record->getId()]), $recordHolder);
     }
 }

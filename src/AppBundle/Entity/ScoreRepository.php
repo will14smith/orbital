@@ -29,7 +29,6 @@ class ScoreRepository extends EntityRepository
         return $this->createQueryBuilder('s')
             ->where((new Expr())->not((new Expr())->exists($pbs_nested->getDQL())))
             ->andWhere('s.person = :person')
-
             ->setParameter('person', $person->getId())
             ->getQuery()
             ->getResult();
@@ -41,18 +40,17 @@ class ScoreRepository extends EntityRepository
      * @param \DateTime $end_date
      * @return Score[]
      */
-    public function getScoresByPersonBetween(Person $person, \DateTime $start_date, \DateTime $end_date){
+    public function getScoresByPersonBetween(Person $person, \DateTime $start_date, \DateTime $end_date)
+    {
         $score_query = $this->createQueryBuilder('s');
 
         return $score_query
             ->where('s.person = :person_id')
             ->andWhere('s.date_shot >= :start_date')
             ->andWhere('s.date_shot <= :end_date')
-
             ->setParameter('person_id', $person->getId())
             ->setParameter('start_date', $start_date, Type::DATE)
             ->setParameter('end_date', $end_date, Type::DATE)
-
             ->getQuery()
             ->getResult();
     }
@@ -61,27 +59,38 @@ class ScoreRepository extends EntityRepository
     {
         return $this->createQueryBuilder("s");
     }
+
     public function findByPerson($personId)
     {
         return $this->findAll()
             ->where('s.person = :person_id')
             ->setParameter('person_id', $personId);
     }
+
     public function findByCompetition($value)
     {
         return $this->findAll()
             ->where('s.competition = :value')
             ->setParameter('value', $value);
     }
+
     public function findByApproval($value)
     {
         $q = $this->findAll();
 
-        if(!$value) {
+        if (!$value) {
             return $q->where('s.date_accepted IS NULL');
         } else {
             return $q->where('s.date_accepted IS NOT NULL');
         }
+    }
+
+    public function findByApprovalAndClub($value, Club $club)
+    {
+        $q = $this->findByApproval($value);
+
+        return $q->andWhere('s.club = :club')
+            ->setParameter('club', $club);
     }
 
     /**
@@ -95,10 +104,8 @@ class ScoreRepository extends EntityRepository
             ->join('s.round', 'r')
             ->where('s.person = :person_id')
             ->andWhere('r.indoor = :indoor')
-
             ->setParameter('person_id', $personId)
             ->setParameter('indoor', $indoor)
-
             ->getQuery()
             ->getResult();
     }
@@ -107,19 +114,19 @@ class ScoreRepository extends EntityRepository
      * In order of date_shot / date_created
      *
      * @param Competition $competition
+     * @param Club $club
      *
      * @return Score[]
      */
-    public function getByCompetition(Competition $competition)
+    public function getByCompetition(Competition $competition, Club $club)
     {
         return $this->createQueryBuilder("s")
             ->andWhere('s.competition = :competition')
-
+            ->andWhere('s.club = :club')
             ->setParameter('competition', $competition)
-
+            ->setParameter('club', $club)
             ->orderBy('s.date_shot', 'ASC')
             ->addOrderBy('s.date_entered', 'ASC')
-
             ->getQuery()
             ->getResult();
     }
@@ -130,21 +137,21 @@ class ScoreRepository extends EntityRepository
      *
      * @param Competition $competition
      * @param Person $person
+     * @param Club $club
      *
      * @return Score[]
      */
-    public function getByCompetitionAndPerson(Competition $competition, Person $person)
+    public function getByCompetitionAndPerson(Competition $competition, Person $person, Club $club)
     {
         return $this->createQueryBuilder("s")
             ->andWhere('s.competition = :competition')
             ->andWhere('s.person = :person')
-
+            ->andWhere('s.club = :club')
             ->setParameter('competition', $competition)
             ->setParameter('person', $person)
-
+            ->setParameter('club', $club)
             ->orderBy('s.date_shot', 'ASC')
             ->addOrderBy('s.date_entered', 'ASC')
-
             ->getQuery()
             ->getResult();
     }

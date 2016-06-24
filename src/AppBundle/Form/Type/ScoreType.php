@@ -3,6 +3,7 @@
 namespace AppBundle\Form\Type;
 
 use AppBundle\Form\Type\Custom\BowTypeSelectType;
+use AppBundle\Form\Type\Custom\ClubSelectType;
 use AppBundle\Form\Type\Custom\CompetitionSelectType;
 use AppBundle\Form\Type\Custom\PersonSelectType;
 use AppBundle\Form\Type\Custom\RoundSelectType;
@@ -23,6 +24,10 @@ class ScoreType extends AbstractType
 
         $builder
             ->add('person', PersonSelectType::class, [
+                'disabled' => $edit
+            ])
+            ->add('club', ClubSelectType::class, [
+                'required' => false,
                 'disabled' => $edit
             ])
             ->add('bowtype', BowTypeSelectType::class, [

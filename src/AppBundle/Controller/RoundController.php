@@ -78,14 +78,9 @@ class RoundController extends Controller
                 'No round found for id ' . $id
             );
         }
-
-        $records = $doctrine
-            ->getRepository("AppBundle:Record")
-            ->getByRound($round);
-
+        
         return $this->render('round/detail.html.twig', [
             'round' => $round,
-            'records' => $records
         ]);
     }
 

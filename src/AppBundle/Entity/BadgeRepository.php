@@ -21,4 +21,13 @@ class BadgeRepository extends EntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    public function getByClub(Club $club)
+    {
+        $q = $this->createQueryBuilder('b')
+            ->where('b.club = :club')
+            ->setParameter('club', $club);
+
+        return $q->getQuery()->getResult();
+    }
 }

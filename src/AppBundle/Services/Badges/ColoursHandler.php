@@ -4,6 +4,7 @@ namespace AppBundle\Services\Badges;
 
 use AppBundle\Entity\Badge;
 use AppBundle\Entity\BadgeHolder;
+use AppBundle\Entity\Club;
 use AppBundle\Entity\Person;
 use AppBundle\Entity\Score;
 
@@ -33,7 +34,7 @@ class ColoursHandler extends BaseHandler
         $scoredColour = $this->getColour($score);
         if(!$scoredColour) { return; }
 
-        $currentColour = $this->getCurrent($score->getPerson());
+        $currentColour = $this->getCurrent($score->getClub(), $score->getPerson());
         if(!$scoredColour->isBetterThan($currentColour)) { return; }
 
         // award badge
@@ -41,10 +42,12 @@ class ColoursHandler extends BaseHandler
     }
 
     /**
+     * @param Club $club
      * @param Person $person
+     *
      * @return ColourBadge|null
      */
-    private function getCurrent(Person $person)
+    private function getCurrent(Club $club, Person $person)
     {
         // get current badges
         $badgeHolderRepository = $this->doctrine->getRepository('AppBundle:BadgeHolder');
@@ -53,8 +56,8 @@ class ColoursHandler extends BaseHandler
         $badgeIds = array_map(function (Badge $badge) { return $badge->getId(); }, $badges);
 
         // find highest ranked badge
-        return $this->getHighestWhere(function(ColourBadge $colour) use($badgeIds) {
-           return in_array($colour->getId(), $badgeIds);
+        return $this->getHighestWhere(function(ColourBadge $colour) use($badgeIds, $club) {
+           return $club->getId() == $colour->getBadge()->getClub()->getId() && in_array($colour->getId(), $badgeIds);
         });
     }
 
@@ -65,7 +68,7 @@ class ColoursHandler extends BaseHandler
     private function getColour(Score $score)
     {
         return $this->getHighestWhere(function (ColourBadge $colour) use ($score) {
-            return $colour->isLowerThan($score);
+            return $score->getClub()->getId() == $colour->getBadge()->getClub()->getId() && $colour->isLowerThan($score);
         });
     }
 

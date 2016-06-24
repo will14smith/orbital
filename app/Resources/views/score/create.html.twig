@@ -45,6 +45,11 @@
             {{ form_widget(form.person) }}
         </div>
         <div flex-gt-md layout="column" layout-gt-md="row">
+            {{ form_errors(form.club) }}
+            {{ form_label(form.club) }}
+            {{ form_widget(form.club) }}
+        </div>
+        <div flex-gt-md layout="column" layout-gt-md="row">
             {{ form_errors(form.bowtype) }}
             {{ form_label(form.bowtype) }}
             {{ form_widget(form.bowtype) }}
@@ -67,7 +72,8 @@
             $('#{{ form.competition.vars.id }}').select2().on('change', handleCompetitionChange);
             $('#{{ form.round.vars.id }}').select2();
 
-            $('#{{ form.person.vars.id }}').select2()
+            $('#{{ form.person.vars.id }}').select2();
+            $('#{{ form.club.vars.id }}').select2();
             $('#{{ form.bowtype.vars.id }}').select2();
 
             var r = /- (\d{4})-(\d{2})-(\d{1,2})$/g;

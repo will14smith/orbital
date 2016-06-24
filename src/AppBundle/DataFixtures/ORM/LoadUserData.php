@@ -25,13 +25,14 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface
         $admin->setNamePreferred("Admin");
         $admin->setCuser('admin');
         $admin->setAdmin(true);
+        $admin->setClub($this->getReference('club-1'));
         $this->init($admin);
 
         $user = new Person();
         $user->setName("Normal User");
         $user->setNamePreferred("Normal");
         $user->setAdmin(false);
-        $user->setClub($this->getReference('club-1'));
+        $user->setClub($this->getReference('club-2'));
         $this->init($user);
 
         $this->addReference('person-admin', $admin);

@@ -23,9 +23,9 @@ class Person implements UserInterface
 
     /**
      * @ORM\ManyToOne(targetEntity="Club", inversedBy="people")
+     * @ORM\JoinColumn(name="club_id", referencedColumnName="id", nullable=false)
      */
     protected $club;
-
 
     /**
      * @ORM\Column(type="string", length=200)

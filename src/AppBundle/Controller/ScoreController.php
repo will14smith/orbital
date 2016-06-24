@@ -104,7 +104,7 @@ class ScoreController extends Controller
             $em->persist($score);
             $em->flush();
 
-            if($request->get('continue')) {
+            if ($request->get('continue')) {
                 return $this->redirectToRoute(
                     'score_create',
                     [
@@ -272,7 +272,12 @@ class ScoreController extends Controller
         if (!$form->isSubmitted()) {
             return;
         }
-        
+
+        if (!$score->getClub()) {
+            $defaultClub = $person->getClub();
+            $score->setClub($defaultClub);
+        }
+
         if (!$score->getBowtype()) {
             $defaultBowtype = $person->getBowtype();
             if (!$defaultBowtype) {

@@ -15,6 +15,7 @@ class BadgeType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
+            ->add('club')
             ->add('name')
             ->add('description', TextareaType::class)
             ->add('algo_name')

@@ -7,7 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="RecordHolderRepository")
  * @ORM\Table(name="record_holder")
  */
 class RecordHolder
@@ -23,6 +23,10 @@ class RecordHolder
      * @ORM\ManyToOne(targetEntity="Record", inversedBy="holders")
      */
     protected $record;
+    /**
+     * @ORM\ManyToOne(targetEntity="Club")
+     */
+    protected $club;
 
     /**
      * @ORM\Column(type="integer")
@@ -132,6 +136,30 @@ class RecordHolder
     public function getRecord()
     {
         return $this->record;
+    }
+
+    /**
+     * Set club
+     *
+     * @param \AppBundle\Entity\Club $club
+     *
+     * @return RecordHolder
+     */
+    public function setClub(Club $club = null)
+    {
+        $this->club = $club;
+
+        return $this;
+    }
+
+    /**
+     * Get club
+     *
+     * @return \AppBundle\Entity\Club
+     */
+    public function getClub()
+    {
+        return $this->club;
     }
 
     /**

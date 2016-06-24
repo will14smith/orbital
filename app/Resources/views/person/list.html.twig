@@ -27,6 +27,7 @@
 {% endblock %}
 
 {% block sidebar %}
+    {{ render(url('club_filter')) }}
     {% if is_granted('ROLE_ADMIN') %}
         <div class="widget">
             <h2 class="widget-title">Actions</h2>

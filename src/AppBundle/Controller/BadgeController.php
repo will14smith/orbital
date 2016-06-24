@@ -14,19 +14,52 @@ class BadgeController extends Controller
 {
     /**
      * @Route("/badges", name="badge_list", methods={"GET"})
+     *
+     * @param Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function indexAction()
+    public function indexAction(Request $request)
     {
+        $club_id = $request->query->getInt('club');
+        if ($club_id == 0) {
+            return $this->indexClubAction();
+        }
+
         $badgeRepository = $this->getDoctrine()->getRepository("AppBundle:Badge");
+        if ($club_id == -1 && $this->isGranted('ROLE_ADMIN')) {
+            $badges = $badgeRepository->findAll();
 
-        $badges = $badgeRepository->findAll();
+            return $this->render('badge/list.html.twig', [
+                'badges' => $badges,
+                'club' => null,
+            ]);
+        }
 
-        return $this->render(
-            'badge/list.html.twig',
-            [
-                'badges' => $badges
-            ]
-        );
+        $clubRepository = $this->getDoctrine()->getRepository("AppBundle:Club");
+        $club = $clubRepository->find($club_id);
+        if ($club == null) {
+            return $this->indexClubAction();
+        }
+
+        $badges = $badgeRepository->getByClub($club);
+
+        return $this->render('badge/list.html.twig', [
+            'badges' => $badges,
+            'club' => $club,
+        ]);
+
+    }
+
+    private function indexClubAction()
+    {
+        $clubRepository = $this->getDoctrine()->getRepository("AppBundle:Club");
+
+        $clubs = $clubRepository->findAll();
+
+        return $this->render('badge/list_select_club.html.twig', [
+            'clubs' => $clubs
+        ]);
     }
 
     /**
@@ -78,7 +111,7 @@ class BadgeController extends Controller
         $badge = $badgeRepository->find($id);
         if (!$badge) {
             throw $this->createNotFoundException(
-                'No badge found for id '.$id
+                'No badge found for id ' . $id
             );
         }
 
@@ -105,7 +138,7 @@ class BadgeController extends Controller
         $badge = $em->getRepository('AppBundle:Badge')->find($id);
         if (!$badge) {
             throw $this->createNotFoundException(
-                'No badge found for id '.$id
+                'No badge found for id ' . $id
             );
         }
 
@@ -146,7 +179,7 @@ class BadgeController extends Controller
 
         if (!$badge) {
             throw $this->createNotFoundException(
-                'No badge found for id '.$id
+                'No badge found for id ' . $id
             );
         }
 
@@ -168,7 +201,7 @@ class BadgeController extends Controller
     private function updateImage(Form $form, Badge $badge)
     {
         $image = $form->get('image')->getData();
-        if($image === null) {
+        if ($image === null) {
             return;
         }
 
