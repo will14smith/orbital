@@ -52,6 +52,6 @@ class RecordApprovalProvider implements ApprovalQueueProviderInterface
     {
         $record = $recordHolder->getRecord();
 
-        return new ApprovalQueueItem('record', 'Record' . ' - ' . (string)$record, $url->generate('record_detail', ['id' => $record->getId()]), $recordHolder);
+        return new ApprovalQueueItem('record', 'Record' . ' - ' . (string)$record, $url->generate('record_detail', ['id' => $record->getId(), 'club' => $recordHolder->getClub()->getId()]), $recordHolder);
     }
 }

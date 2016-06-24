@@ -3,9 +3,9 @@
     {{ self.entity_link(url('person_detail', { 'id': person.id }), person.displayName, class) }}
 {% endmacro %}
 
-{% macro record(record, class="") %}
+{% macro record(record, club, class="") %}
     {% import _self as self %}
-    {{ self.entity_link(url('record_detail', { 'id': record.id }), record.displayName, class) }}
+    {{ self.entity_link(url('record_detail', { 'id': record.id, 'club': club.id }), record.displayName, class) }}
 {% endmacro %}
 
 {% macro round(round, class="") %}

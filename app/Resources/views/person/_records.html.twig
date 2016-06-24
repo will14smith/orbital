@@ -10,7 +10,7 @@
             {% else %}
                 <td class="shrink">Current</td>
             {% endif %}
-            <td>{{ display.record(holder.record) }}</td>
+            <td>{{ display.record(holder.record, holder.club) }}</td>
             <td class="shrink">{{ holder.score }}</td>
         </tr>
     {% endfor %}

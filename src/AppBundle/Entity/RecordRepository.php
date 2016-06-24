@@ -79,7 +79,7 @@ class RecordRepository extends EntityRepository
             ->setParameter('round', $score->getRound())
 
             ->join('r.clubs', 'rc')
-            ->where('rc.club = :club')
+            ->andWhere('rc.club = :club')
             ->setParameter('club', $score->getClub());
 
         if ($score->getSkill() != Skill::NOVICE) {
