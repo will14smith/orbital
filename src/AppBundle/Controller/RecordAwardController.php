@@ -39,6 +39,12 @@ class RecordAwardController extends Controller
         $holder = new RecordHolder();
         $holder->setRecord($record);
 
+        $club_id = $request->query->getInt('club');
+        $clubRepository = $this->getDoctrine()->getRepository("AppBundle:Club");
+        $club = $clubRepository->find($club_id);
+
+        $holder->setClub($club);
+
         $numScores = $record->getNumHolders();
         if ($numScores === 1) {
             foreach ($record->getRounds() as $recordRound) {
@@ -58,13 +64,13 @@ class RecordAwardController extends Controller
             $scores = $form->get('people');
 
             $person = null;
-            foreach($scores->all() as $score) {
-                if($person === null) {
+            foreach ($scores->all() as $score) {
+                if ($person === null) {
                     $person = $score->getData()->getPerson();
                 } else {
                     $p = $score->getData()->getPerson();
 
-                    if($person->getId() != $p->getId()) {
+                    if ($person->getId() != $p->getId()) {
                         $score->get('person')->addError(new FormError("Person must be the same for each score"));
                     }
                 }
@@ -78,10 +84,10 @@ class RecordAwardController extends Controller
             $em->persist($holder);
             $em->flush();
 
-            return $this->redirectToRoute(
-                'record_detail',
-                ['id' => $record->getId()]
-            );
+            return $this->redirectToRoute('record_detail', [
+                'id' => $record->getId(),
+                'club' => $holder->getClub()->getId()
+            ]);
         }
 
         return $this->render('record/award.html.twig', [
@@ -111,7 +117,10 @@ class RecordAwardController extends Controller
 
         $em->flush();
 
-        return $this->redirectToRoute('record_detail', ['id' => $record->getId()]);
+        return $this->redirectToRoute('record_detail', [
+            'id' => $record->getId(),
+            'club' => $holder->getClub()->getId()
+        ]);
     }
 
     /**

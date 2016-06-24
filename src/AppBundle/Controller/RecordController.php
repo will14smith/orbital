@@ -232,10 +232,7 @@ class RecordController extends Controller
             $em->persist($record);
             $em->flush();
 
-            return $this->redirectToRoute(
-                'record_detail',
-                ['id' => $record->getId()]
-            );
+            return $this->redirectToRoute('record_list');
         }
 
         return $this->render('record/create.html.twig', [
@@ -330,10 +327,7 @@ class RecordController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
             $em->flush();
 
-            return $this->redirectToRoute(
-                'record_detail',
-                ['id' => $record->getId()]
-            );
+            return $this->redirectToRoute('record_list');
         }
 
         return $this->render('record/edit.html.twig', [

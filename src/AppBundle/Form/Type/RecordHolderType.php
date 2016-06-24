@@ -2,6 +2,7 @@
 
 namespace AppBundle\Form\Type;
 
+use AppBundle\Form\Type\Custom\ClubSelectType;
 use AppBundle\Form\Type\Custom\CompetitionSelectType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
@@ -16,6 +17,7 @@ class RecordHolderType extends AbstractType
         $builder
             ->add('date', DateType::class, ['widget' => 'single_text'])
             ->add('competition', CompetitionSelectType::class)
+            ->add('club', ClubSelectType::class)
             ->add('people', CollectionType::class, [
                 'entry_type' => RecordHolderPersonType::class
             ]);
