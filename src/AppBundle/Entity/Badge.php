@@ -20,6 +20,11 @@ class Badge
     protected $id;
 
     /**
+     * @ORM\ManyToOne(targetEntity="Club")
+     */
+    protected $club;
+
+    /**
      * @ORM\Column(type="string", length=200)
      */
     protected $name;
@@ -251,5 +256,29 @@ class Badge
     public function getImageName()
     {
         return $this->image_name;
+    }
+
+    /**
+     * Set club
+     *
+     * @param Club $club
+     *
+     * @return Badge
+     */
+    public function setClub(Club $club = null)
+    {
+        $this->club = $club;
+    
+        return $this;
+    }
+
+    /**
+     * Get club
+     *
+     * @return Club
+     */
+    public function getClub()
+    {
+        return $this->club;
     }
 }

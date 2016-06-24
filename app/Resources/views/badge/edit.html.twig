@@ -11,3 +11,16 @@
     <input type="submit" value="Save"/>
     {{ form_end(form) }}
 {% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <script>
+        'use strict';
+
+        (function ($) {
+            $('select').select2();
+        })(jQuery);
+    </script>
+
+{% endblock %}

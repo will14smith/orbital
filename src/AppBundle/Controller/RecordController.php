@@ -40,7 +40,7 @@ class RecordController extends Controller
         }
 
         $recordRepository = $this->getDoctrine()->getRepository("AppBundle:Record");
-        if( $club_id == -1 && $this->isGranted('ROLE_ADMIN')) {
+        if ($club_id == -1 && $this->isGranted('ROLE_ADMIN')) {
             $records = $recordRepository->findAll();
 
             return $this->render('record/list.html.twig', [
