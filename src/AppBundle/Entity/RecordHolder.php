@@ -145,7 +145,7 @@ class RecordHolder
      *
      * @return RecordHolder
      */
-    public function setClub(Club $club)
+    public function setClub(Club $club = null)
     {
         $this->club = $club;
 
