@@ -22,8 +22,8 @@ class PersonController extends Controller
     {
         $personRepository = $this->getDoctrine()->getRepository("AppBundle:Person");
 
-        $club = $request->query->getInt('club', 0);
-        if($club === 0) {
+        $club = $request->query->getInt('club');
+        if($club == 0) {
             $people = $personRepository->findAll();
         } else {
             $people = $personRepository->findBy(['club' => $club]);

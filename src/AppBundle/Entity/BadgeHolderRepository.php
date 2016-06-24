@@ -27,6 +27,15 @@ class BadgeHolderRepository extends EntityRepository
             ->where('b.date_delivered IS NULL');
     }
 
+    public function findByIncompleteAndClub(Club $club)
+    {
+        return $this->createQueryBuilder('bh')
+            ->join('bh.badge', 'b')
+            ->where('bh.date_delivered IS NULL')
+            ->andWhere('b.club = :club')
+            ->setParameter('club', $club);
+    }
+
     public function findByIdentAndPerson($ident, $person_id)
     {
         $badgeCondition = (new Expr)->orX(

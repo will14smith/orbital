@@ -3,6 +3,9 @@
 
 {% block title %}
     Approval Queue
+    {% if club != null %}
+        - {{ display.club(club) }}
+    {% endif %}
 {% endblock %}
 
 {% block body %}
@@ -18,4 +21,10 @@
             </li>
         {% endfor %}
     </ul>
+{% endblock %}
+
+{% block sidebar %}
+    {{ render(url('club_filter')) }}
+
+    {{ parent() }}
 {% endblock %}

@@ -2,6 +2,7 @@
 
 namespace AppBundle\Services\Approvals;
 
+use AppBundle\Entity\Club;
 use Doctrine\Bundle\DoctrineBundle\Registry;
 use Symfony\Component\Routing\Router;
 
@@ -25,6 +26,17 @@ class ApprovalQueueManager {
     public function getItems() {
         return array_reduce(array_map(function(ApprovalQueueProviderInterface $item) {
             return $item->getItems($this->doctrine, $this->router);
+        }, $this->providers), 'array_merge', []);
+    }
+
+    /**
+     * @param Club $club
+     * 
+     * @return ApprovalQueueItem[]
+     */
+    public function getItemsByClub(Club $club) {
+        return array_reduce(array_map(function(ApprovalQueueProviderInterface $item) use ($club) {
+            return $item->getItemsByClub($this->doctrine, $this->router, $club);
         }, $this->providers), 'array_merge', []);
     }
 
