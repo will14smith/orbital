@@ -3,12 +3,14 @@
         <h2 class="widget-title">{{ app.user.displayName }}</h2>
         <ul>
             <li><a href="{{ url('person_detail', { 'id': app.user.id }) }}">View my Profile</a></li>
-            <li><a href="{{ url('logout') }}">Logout</a></li>
+            <li><a href="{{ url('fos_user_security_logout') }}">Logout</a></li>
         </ul>
     {% else %}
         <h2 class="widget-title">Login</h2>
 
-        <form action="{{ path('login_check') }}" method="post">
+        <form action="{{ path('fos_user_security_check') }}" method="post">
+            <input type="hidden" name="_csrf_token" value="{{ fos_csrf_provider.getToken('authenticate') }}" />
+
             <div class="form-row">
                 <input type="text" class="form-input" id="username" name="_username"/>
                 <label for="username">Username</label>

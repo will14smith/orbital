@@ -23,16 +23,14 @@ class PersonType extends AbstractType
             ->add('name_preferred')
             ->add('agb_number')
             ->add('cid')
-            ->add('cuser')
+            ->add('username')
             ->add('email')
             ->add('mobile')
             ->add('gender', GenderSelectType::class)
             ->add('date_of_birth', BirthdayType::class, ['required' => false])
             ->add('date_started', DateType::class, ['widget' => 'single_text'])
             ->add('bowtype', BowTypeSelectType::class)
-            ->add('club_bow')
-            ->add('password', PasswordType::class, ['required' => false])
-            ->add('admin', CheckboxType::class, ['required' => false]);
+            ->add('club_bow');
     }
 
     public function configureOptions(OptionsResolver $resolver)

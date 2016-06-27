@@ -37,6 +37,9 @@ class Version20160627115616 extends AbstractMigration
         $this->addSql('UPDATE person SET cuser = id WHERE cuser IS NULL');
         $this->addSql('UPDATE person SET email = id WHERE email IS NULL OR email = \'\'');
 
+        $this->addSql('UPDATE person SET roles = \'a:0:{}\' WHERE admin = false');
+        $this->addSql('UPDATE person SET roles = \'a:1:{i:0;s:10:"ROLE_ADMIN";}\', enabled = 1 WHERE admin = true');
+
         $this->addSql('UPDATE person SET username = cuser, username_canonical = LOWER(cuser), password = \'\', salt = \'\', email = LEFT(email, 255), email_canonical = LOWER(LEFT(email, 255))');
         $this->addSql('ALTER TABLE person DROP cuser, DROP admin, CHANGE email email VARCHAR(255) NOT NULL, CHANGE password password VARCHAR(255) NOT NULL, CHANGE salt salt VARCHAR(255) NOT NULL');
 

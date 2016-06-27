@@ -6,7 +6,7 @@ imports:
 
 framework:
     #esi:             ~
-    #translator:      { fallbacks: ["%locale%"] }
+    translator:      ~
     secret:          "%secret%"
     router:
         resource: "%kernel.root_dir%/config/routing.yml"
@@ -36,6 +36,8 @@ twig:
     globals:
       app_version: %orbital.version%
       app_release: %orbital.version.date%
+      fos_csrf_provider: "@security.csrf.token_manager"
+
 # Assetic Configuration
 assetic:
     debug:          "%kernel.debug%"

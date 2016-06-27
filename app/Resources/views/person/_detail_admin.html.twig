@@ -3,7 +3,7 @@
 {% if is_granted('ROLE_ADMIN') %}
     {{ field('ArcheryGB #', person.agbNumber, true) }}
     {{ field('CID', person.cid, true) }}
-    {{ field('College username', person.cuser, true) }}
+    {{ field('Username', person.username, true) }}
     {{ field('Email', person.email, true) }}
     {{ field('Mobile', person.mobile, true) }}
     {% if person.gender %}

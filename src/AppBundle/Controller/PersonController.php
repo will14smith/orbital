@@ -72,6 +72,8 @@ class PersonController extends Controller
     public function createAction(Request $request)
     {
         $person = new Person();
+        $person->setPassword('');
+
         $form = $this->createForm(PersonType::class, $person);
 
         $form->handleRequest($request);
