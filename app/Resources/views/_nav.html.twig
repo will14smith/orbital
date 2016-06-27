@@ -6,6 +6,7 @@
     <li><a href="{{ url('competition_list') }}">Competitions</a></li>
     {# useful info #}
     <li><a href="{{ url('badge_list') }}">Badges</a></li>
+    <li><a href="{{ url('club_list') }}">Clubs</a></li>
 
     {# not useful? #}
     <li><a href="{{ url('score_list') }}">Scores</a></li>
@@ -13,16 +14,4 @@
     {# reference #}
     <li><a href="{{ url('round_list') }}">Rounds</a></li>
 
-    {# internal admin #}
-    <li><a href="{{ url('club_list') }}">Clubs</a></li>
-
-    {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
-    <li class="menu-item-has-children">
-        <a href="#">{{ app.user.displayName }}</a>
-        <ul class="sub-menu">
-            <li><a href="{{ url('person_detail', { 'id': app.user.id }) }}">View my Profile</a></li>
-            <li><a href="{{ url('fos_user_security_logout') }}">Logout</a></li>
-        </ul>
-    </li>
-    {% endif %}
 </ul>

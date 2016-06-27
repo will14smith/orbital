@@ -3,6 +3,7 @@
         <h2 class="widget-title">{{ app.user.displayName }}</h2>
         <ul>
             <li><a href="{{ url('person_detail', { 'id': app.user.id }) }}">View my Profile</a></li>
+            <li><a href="{{ url('fos_user_change_password') }}">Change your password</a></li>
             <li><a href="{{ url('fos_user_security_logout') }}">Logout</a></li>
         </ul>
     {% else %}

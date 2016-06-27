@@ -30,6 +30,19 @@
             <ul>
                 <li><a href="{{ url('person_edit', { 'id': person.id }) }}">Edit</a></li>
                 <li><a href="{{ url('person_delete', { 'id': person.id }) }}">Delete</a></li>
+
+                <li><a href="{{ url('person_change_password', { 'id': person.id }) }}">Change password</a></li>
+                <li>
+                    <a href="{{ url('person_toggle_enable', { 'id': person.id }) }}">{% if person.enabled %}Disable login{% else %}Enable login{% endif %}</a>
+                </li>
+                <li>
+                    <a href="{{ url('person_toggle_admin', { 'id': person.id }) }}">{% if person.hasRole('ROLE_ADMIN') %}Demote{% else %}Promote{% endif %}</a>
+                </li>
+            </ul>
+        </div>
+        <div class="widget">
+            <h2 class="widget-title">Handicaps</h2>
+            <ul>
                 <li><a href="{{ url('person_handicap_reassess', { 'id': person.id }) }}">Reassess Handicap</a></li>
                 <li><a href="{{ url('person_handicap_manual', { 'id': person.id }) }}">Manual Handicap</a></li>
                 <li><a href="{{ url('person_handicap_rebuild', { 'id': person.id }) }}">Rebuild Handicap</a></li>
