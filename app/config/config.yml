@@ -94,5 +94,11 @@ knp_snappy:
     image:
         enabled:    false
 
+fos_user:
+    db_driver: orm
+    firewall_name: main
+    user_class: AppBundle\Entity\Person
+
 parameters:
   hackzilla_barcode.class: BarcodeBundle\Utility\Barcode
+

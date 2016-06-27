@@ -5,14 +5,13 @@ namespace AppBundle\Entity;
 use AppBundle\Services\Enum\Skill;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Security\Core\Role\Role;
-use Symfony\Component\Security\Core\User\UserInterface;
+use FOS\UserBundle\Model\User as BaseUser;
 
 /**
  * @ORM\Entity(repositoryClass="AppBundle\Entity\PersonRepository")
  * @ORM\Table(name="person")
  */
-class Person implements UserInterface
+class Person extends BaseUser
 {
     /**
      * @ORM\Column(type="integer")
@@ -47,14 +46,6 @@ class Person implements UserInterface
     /**
      * @ORM\Column(type="string", length=50, nullable=true)
      */
-    protected $cuser;
-    /**
-     * @ORM\Column(type="string", length=400, nullable=true)
-     */
-    protected $email;
-    /**
-     * @ORM\Column(type="string", length=50, nullable=true)
-     */
     protected $mobile;
     /**
      * @ORM\Column(type="string", length=50, nullable=true)
@@ -82,21 +73,6 @@ class Person implements UserInterface
     protected $club_bow;
 
     /**
-     * Only used for non-cusers
-     * @ORM\Column(type="string", length=256, nullable=true)
-     */
-    protected $password;
-    /**
-     * Only used for non-cusers
-     * @ORM\Column(type="string", length=256, nullable=true)
-     */
-    protected $salt;
-    /**
-     * @ORM\Column(type="boolean")
-     */
-    protected $admin;
-
-    /**
      * @ORM\OneToMany(targetEntity="PersonHandicap", mappedBy="person")
      * @ORM\OrderBy({"date" = "ASC"})
      */
@@ -107,6 +83,8 @@ class Person implements UserInterface
      */
     public function __construct()
     {
+        parent::__construct();
+
         $this->handicaps = new ArrayCollection();
     }
 
@@ -223,78 +201,6 @@ class Person implements UserInterface
     public function getCid()
     {
         return $this->cid;
-    }
-
-    /**
-     * Set cuser
-     *
-     * @param string $cuser
-     *
-     * @return Person
-     */
-    public function setCuser($cuser)
-    {
-        $this->cuser = $cuser;
-
-        return $this;
-    }
-
-    /**
-     * Get cuser
-     *
-     * @return string
-     */
-    public function getCuser()
-    {
-        return $this->cuser;
-    }
-
-    /**
-     * Set email
-     *
-     * @param string $email
-     *
-     * @return Person
-     */
-    public function setEmail($email)
-    {
-        $this->email = $email;
-
-        return $this;
-    }
-
-    /**
-     * Get email
-     *
-     * @return string
-     */
-    public function getEmail()
-    {
-        return $this->email;
-    }
-
-    /**
-     * Set password
-     *
-     * @param string $password
-     *
-     * @return Person
-     */
-    public function setPassword($password)
-    {
-        $this->password = $password;
-
-        return $this;
-    }
-
-    /**
-     * Get password
-     *
-     * @return string
-     */
-    public function getPassword()
-    {
-        return $this->password;
     }
 
     /**
@@ -418,101 +324,6 @@ class Person implements UserInterface
     }
 
     /**
-     * Set admin
-     *
-     * @param boolean $admin
-     *
-     * @return Person
-     */
-    public function setAdmin($admin)
-    {
-        $this->admin = $admin;
-
-        return $this;
-    }
-
-    /**
-     * Get admin
-     *
-     * @return boolean
-     */
-    public function getAdmin()
-    {
-        return $this->admin;
-    }
-
-    /**
-     * Returns the roles granted to the user.
-     *
-     * <code>
-     * public function getRoles()
-     * {
-     *     return array('ROLE_USER');
-     * }
-     * </code>
-     *
-     * Alternatively, the roles might be stored on a ``roles`` property,
-     * and populated in any number of different ways when the user object
-     * is created.
-     *
-     * @return Role[] The user roles
-     */
-    public function getRoles()
-    {
-        if ($this->admin) {
-            return ['ROLE_ADMIN'];
-        } else {
-            return ['ROLE_USER'];
-        }
-    }
-
-    /**
-     * Returns the username used to authenticate the user.
-     *
-     * @return string The username
-     */
-    public function getUsername()
-    {
-        return $this->email;
-    }
-
-    /**
-     * Removes sensitive data from the user.
-     *
-     * This is important if, at any given point, sensitive information like
-     * the plain-text password is stored on this object.
-     */
-    public function eraseCredentials()
-    {
-        $this->password = null;
-        $this->salt = null;
-    }
-
-    /**
-     * Set salt
-     *
-     * @param string $salt
-     *
-     * @return Person
-     */
-    public function setSalt($salt)
-    {
-        $this->salt = $salt;
-
-        return $this;
-    }
-
-    /**
-     * Get salt
-     *
-     * @return string
-     */
-    public function getSalt()
-    {
-        return $this->salt;
-    }
-
-    /**
      * Set club
      *
      * @param \AppBundle\Entity\Club $club
@@ -599,7 +410,7 @@ class Person implements UserInterface
 
     public function isAdmin()
     {
-        return in_array('ROLE_ADMIN', $this->getRoles());
+        return $this->hasRole('ROLE_ADMIN');
     }
 
 
