@@ -7,7 +7,6 @@ use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\BrowserKit\Cookie;
 use Symfony\Component\Console\Input\StringInput;
-use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 class FunctionalWebTestCase extends WebTestCase
 {
@@ -66,20 +65,20 @@ class FunctionalWebTestCase extends WebTestCase
     public function login()
     {
         $client = $this->getClient();
-
         $container = $client->getContainer();
 
-        $admin = $container->get('doctrine')->getRepository('AppBundle:Person')->loadUserByUsername('admin');
-
-        $token = new UsernamePasswordToken($admin, null, 'main', ['ROLE_ADMIN']);
-
-        $container->get("security.token_storage")->setToken($token);
-
         $session = $container->get('session');
-        $session->set('_security_main', serialize($token));
-        $session->save();
+        $userManager = $container->get('fos_user.user_manager');
+        $loginManager = $container->get('fos_user.security.login_manager');
+        $firewallName = $container->getParameter('fos_user.firewall_name');
 
-        $cookie = new Cookie($session->getName(), $session->getId());
-        $client->getCookieJar()->set($cookie);
+        $user = $userManager->findUserBy(['username' => 'admin']);
+        $loginManager->logInUser($firewallName, $user);
+
+        $container->get('session')->set('_security_' . $firewallName, serialize($container->get('security.token_storage')->getToken()));
+        $container->get('session')->save();
+        $client->getCookieJar()->set(new Cookie($session->getName(), $session->getId()));
+
+        return $client;
     }
 }
