@@ -5,6 +5,10 @@ php:
   - 5.6
   - 7.0
 
+matrix:
+  allow_failures:
+    - php: 7.0
+
 addons:
   code_climate:
     repo_token: 898149e74d4bf6bfd0ba331b38cc2d7f9aa01d582d594a821330937eeaf5e0b1
