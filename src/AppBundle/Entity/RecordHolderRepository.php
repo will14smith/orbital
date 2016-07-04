@@ -19,10 +19,9 @@ class RecordHolderRepository extends EntityRepository
         return $this->createQueryBuilder('rh')
             ->where('rh.date_confirmed IS NULL')
             ->andWhere('rh.club = :club')
-            
+
             ->setParameter('club', $club)
 
             ->getQuery()->getResult();
-
     }
 }

@@ -23,6 +23,7 @@ class ColourBadge
 
     /**
      * ColourBadge constructor.
+     *
      * @param Badge $badge
      */
     public function __construct($badge)
@@ -31,9 +32,10 @@ class ColourBadge
     }
 
     /**
-     * NOTE: this assumes that [o][m][r] is representative
+     * NOTE: this assumes that [o][m][r] is representative.
      *
      * @param ColourBadge|null $other
+     *
      * @return bool
      */
     public function isBetterThan(ColourBadge $other = null)
@@ -51,6 +53,7 @@ class ColourBadge
 
     /**
      * @param Score $score
+     *
      * @return bool
      */
     public function isLowerThan(Score $score)
@@ -59,22 +62,22 @@ class ColourBadge
             $this->buildHandicapTable();
         }
 
-        $scoreHandicap = (new HandicapCalculator)->handicapForScore($score);
+        $scoreHandicap = (new HandicapCalculator())->handicapForScore($score);
 
         $gender = $score->getPerson()->getGender();
         $bowtype = $score->getBowtype();
         $indoor = +$score->getRound()->getIndoor();
 
         $table = $this->handicaps;
-        if(!array_key_exists($indoor, $table)) {
+        if (!array_key_exists($indoor, $table)) {
             return false;
         }
         $table = $table[$indoor];
-        if(!array_key_exists($gender, $table)) {
+        if (!array_key_exists($gender, $table)) {
             return false;
         }
         $table = $table[$gender];
-        if(!array_key_exists($bowtype, $table)) {
+        if (!array_key_exists($bowtype, $table)) {
             return false;
         }
         $table = $table[$bowtype];
@@ -98,7 +101,6 @@ class ColourBadge
         return $this->badge;
     }
 
-
     /**
      * @var array
      */
@@ -114,7 +116,7 @@ class ColourBadge
             'l' => [BowType::LONGBOW],
             't' => [BowType::TRADITIONAL],
             'c' => [BowType::COMPOUND],
-            '' => array_keys(BowType::$choices)
+            '' => array_keys(BowType::$choices),
         ];
 
         self::$tableFill = [];
@@ -148,8 +150,9 @@ class ColourBadge
 
         $result = [];
         foreach ($head as $key) {
-            $result[$key] = call_user_func_array([__NAMESPACE__ .'\ColourBadge', 'crossArrays'], $tail);
+            $result[$key] = call_user_func_array([__NAMESPACE__ . '\ColourBadge', 'crossArrays'], $tail);
         }
+
         return $result;
     }
 

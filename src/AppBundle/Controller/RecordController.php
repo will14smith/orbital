@@ -20,6 +20,7 @@ class RecordController extends Controller
      * @Route("/records", name="record_list", methods={"GET"})
      *
      * @param Request $request
+     *
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function indexAction(Request $request)
@@ -29,7 +30,7 @@ class RecordController extends Controller
             return $this->indexClubAction();
         }
 
-        $recordRepository = $this->getDoctrine()->getRepository("AppBundle:Record");
+        $recordRepository = $this->getDoctrine()->getRepository('AppBundle:Record');
         if ($club_id == -1 && $this->isGranted('ROLE_ADMIN')) {
             $records = $recordRepository->findAll();
 
@@ -39,7 +40,7 @@ class RecordController extends Controller
             ]);
         }
 
-        $clubRepository = $this->getDoctrine()->getRepository("AppBundle:Club");
+        $clubRepository = $this->getDoctrine()->getRepository('AppBundle:Club');
         $club = $clubRepository->find($club_id);
         if ($club == null) {
             return $this->indexClubAction();
@@ -53,18 +54,17 @@ class RecordController extends Controller
         ]);
     }
 
-
     private function indexClubAction()
     {
-        $clubRepository = $this->getDoctrine()->getRepository("AppBundle:Club");
+        $clubRepository = $this->getDoctrine()->getRepository('AppBundle:Club');
 
         $clubs = $clubRepository->findAll();
 
         return $this->render('record/list_select_club.html.twig', [
-            'clubs' => $clubs
+            'clubs' => $clubs,
         ]);
     }
-    
+
     /**
      * @Security("has_role('ROLE_ADMIN')")
      * @Route("/record/create", name="record_create", methods={"GET", "POST"})
@@ -93,7 +93,6 @@ class RecordController extends Controller
             'form' => $form->createView(),
         ]);
     }
-
 
     /**
      * @Security("has_role('ROLE_ADMIN')")
@@ -124,14 +123,14 @@ class RecordController extends Controller
     /**
      * @Route("/record/{id}", name="record_detail", methods={"GET"})
      *
-     * @param int $id
+     * @param int     $id
      * @param Request $request
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function detailAction($id, Request $request)
     {
-        $recordRepository = $this->getDoctrine()->getRepository("AppBundle:Record");
+        $recordRepository = $this->getDoctrine()->getRepository('AppBundle:Record');
         $record = $recordRepository->find($id);
         if (!$record) {
             throw $this->createNotFoundException(
@@ -140,7 +139,7 @@ class RecordController extends Controller
         }
 
 
-        $clubRepository = $this->getDoctrine()->getRepository("AppBundle:Club");
+        $clubRepository = $this->getDoctrine()->getRepository('AppBundle:Club');
         $club_id = $request->query->getInt('club');
         $club = $clubRepository->find($club_id);
         if (!$club) {
@@ -151,7 +150,7 @@ class RecordController extends Controller
 
         return $this->render('record/detail.html.twig', [
             'record' => $record,
-            'club' => $club
+            'club' => $club,
         ]);
     }
 
@@ -159,7 +158,7 @@ class RecordController extends Controller
      * @Security("has_role('ROLE_ADMIN')")
      * @Route("/record/{id}/edit", name="record_edit", methods={"GET", "POST"})
      *
-     * @param int $id
+     * @param int     $id
      * @param Request $request
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
@@ -193,7 +192,7 @@ class RecordController extends Controller
      * @Security("has_role('ROLE_ADMIN')")
      * @Route("/record/{id}/delete", name="record_delete", methods={"GET", "POST"})
      *
-     * @param int $id
+     * @param int     $id
      * @param Request $request
      *
      * @return \Symfony\Component\HttpFoundation\Response
@@ -209,7 +208,7 @@ class RecordController extends Controller
             );
         }
 
-        if ($request->isMethod("POST")) {
+        if ($request->isMethod('POST')) {
             $em->remove($record);
             $em->flush();
 
@@ -217,13 +216,13 @@ class RecordController extends Controller
         }
 
         return $this->render('record/delete.html.twig', [
-            'record' => $record
+            'record' => $record,
         ]);
     }
 
     /**
      * @param ObjectManager $em
-     * @param array $data
+     * @param array         $data
      */
     private function buildMatrixFromFormData($em, $data)
     {
@@ -272,11 +271,11 @@ class RecordController extends Controller
             $round = $roundForm->getData();
 
             if ($round->getCount() < 1) {
-                $roundForm->get('count')->addError(new FormError("Count must be greater than 1"));
+                $roundForm->get('count')->addError(new FormError('Count must be greater than 1'));
             }
 
             if ($record->getNumHolders() > 1 && $round->getCount() > 1) {
-                $roundForm->get('count')->addError(new FormError("For team rounds count must be 1"));
+                $roundForm->get('count')->addError(new FormError('For team rounds count must be 1'));
             }
         }
     }

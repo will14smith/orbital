@@ -47,7 +47,7 @@ class BadgeAwardController extends Controller
         }
 
         $form = $this->createForm(BadgeHolderType::class, $badgeHolder, [
-            'admin' => $isAdmin
+            'admin' => $isAdmin,
         ]);
         $formProof = $form->get('proof');
 
@@ -77,8 +77,8 @@ class BadgeAwardController extends Controller
      * @Security("has_role('ROLE_ADMIN')")
      * @Route("/badge/{id}/award/{awardId}", name="badge_award_edit", methods={"GET", "POST"})
      *
-     * @param int $id
-     * @param int $awardId
+     * @param int     $id
+     * @param int     $awardId
      * @param Request $request
      *
      * @return \Symfony\Component\HttpFoundation\Response
@@ -101,7 +101,7 @@ class BadgeAwardController extends Controller
 
         $form = $this->createForm(BadgeHolderType::class, $badgeHolder, [
             'admin' => true,
-            'show_proof' => false
+            'show_proof' => false,
         ]);
         $form->handleRequest($request);
 
@@ -127,8 +127,8 @@ class BadgeAwardController extends Controller
      * @Security("has_role('ROLE_ADMIN')")
      * @Route("/badge/{id}/award/{awardId}/state", name="badge_award_state", methods={"GET", "POST"})
      *
-     * @param int $id
-     * @param int $awardId
+     * @param int     $id
+     * @param int     $awardId
      * @param Request $request
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse

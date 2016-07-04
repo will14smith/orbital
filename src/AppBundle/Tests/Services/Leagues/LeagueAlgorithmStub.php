@@ -24,15 +24,15 @@ class LeagueAlgorithmStub implements LeagueAlgorithmInterface
 
     public function getKey()
     {
-        return "dummy";
+        return 'dummy';
     }
 
     public function getName()
     {
-        return "dummy";
+        return 'dummy';
     }
 
-    function init(array $people)
+    public function init(array $people)
     {
         throw new \Exception();
     }
@@ -42,7 +42,7 @@ class LeagueAlgorithmStub implements LeagueAlgorithmInterface
      *
      * @return int[] [winner dpoints, loser dpoints]
      */
-    function score(LeagueMatch $match)
+    public function score(LeagueMatch $match)
     {
         return [$this->deltaWinner, $this->deltaLoser];
     }

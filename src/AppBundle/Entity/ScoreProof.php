@@ -1,6 +1,5 @@
 <?php
 
-
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -17,7 +16,7 @@ class ScoreProof extends ProofEntity
     protected $score;
 
     /**
-     * Set score
+     * Set score.
      *
      * @param \AppBundle\Entity\Score $score
      *
@@ -31,7 +30,7 @@ class ScoreProof extends ProofEntity
     }
 
     /**
-     * Get score
+     * Get score.
      *
      * @return \AppBundle\Entity\Score
      */

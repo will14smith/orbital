@@ -23,11 +23,12 @@ class ScoreController extends Controller
      * @Route("/scores", name="score_list", methods={"GET"})
      *
      * @param Request $request
+     *
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function indexAction(Request $request)
     {
-        $scoreRepository = $this->getDoctrine()->getRepository("AppBundle:Score");
+        $scoreRepository = $this->getDoctrine()->getRepository('AppBundle:Score');
 
         switch ($request->query->get('filter', 'all')) {
             case 'mine':
@@ -51,7 +52,7 @@ class ScoreController extends Controller
         $scores = $paginator->paginate($query, $request->query->getInt('page', 1));
 
         return $this->render('score/list.html.twig', [
-            'scores' => $scores
+            'scores' => $scores,
         ]);
     }
 
@@ -86,7 +87,7 @@ class ScoreController extends Controller
             $score->setDateShot(new \DateTime($request->query->get('date')));
         }
         if ($request->query->has('competition')) {
-            $score->setCompetition(!!$request->query->get('competition'));
+            $score->setCompetition((bool) $request->query->get('competition'));
         }
         if ($request->query->has('round')) {
             $score->setRound(
@@ -136,7 +137,7 @@ class ScoreController extends Controller
      */
     public function detailAction($id)
     {
-        $scoreRepository = $this->getDoctrine()->getRepository("AppBundle:Score");
+        $scoreRepository = $this->getDoctrine()->getRepository('AppBundle:Score');
 
         $score = $scoreRepository->find($id);
         if (!$score) {
@@ -149,7 +150,7 @@ class ScoreController extends Controller
 
         return $this->render('score/detail.html.twig', [
             'score' => $score,
-            'handicap' => $handicap
+            'handicap' => $handicap,
         ]);
     }
 
@@ -157,7 +158,7 @@ class ScoreController extends Controller
      * @Security("has_role('ROLE_ADMIN')")
      * @Route("/score/{id}/accept", name="score_accept", methods={"GET", "POST"})
      *
-     * @param int $id
+     * @param int     $id
      * @param Request $request
      *
      * @return \Symfony\Component\HttpFoundation\Response
@@ -176,7 +177,7 @@ class ScoreController extends Controller
         if ($confirmProof !== false) {
             return $this->render('score/proof_confirm.html.twig', [
                 'form' => $confirmProof,
-                'score' => $score
+                'score' => $score,
             ]);
         }
 
@@ -197,7 +198,7 @@ class ScoreController extends Controller
      * @Security("is_granted('EDIT', score)")
      * @Route("/score/{id}/edit", name="score_edit", methods={"GET", "POST"})
      *
-     * @param Score $score
+     * @param Score   $score
      * @param Request $request
      *
      * @return \Symfony\Component\HttpFoundation\Response
@@ -229,7 +230,7 @@ class ScoreController extends Controller
      * @Security("is_granted('DELETE', score)")
      * @Route("/score/{id}/delete", name="score_delete", methods={"GET", "POST"})
      *
-     * @param Score $score
+     * @param Score   $score
      * @param Request $request
      *
      * @return \Symfony\Component\HttpFoundation\Response
@@ -238,7 +239,7 @@ class ScoreController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        if ($request->isMethod("POST")) {
+        if ($request->isMethod('POST')) {
             $em->remove($score);
             $em->flush();
 
@@ -246,7 +247,7 @@ class ScoreController extends Controller
         }
 
         return $this->render('score/delete.html.twig', [
-            'score' => $score
+            'score' => $score,
         ]);
     }
 

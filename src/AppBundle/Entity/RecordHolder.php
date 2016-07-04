@@ -1,6 +1,5 @@
 <?php
 
-
 namespace AppBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
@@ -57,9 +56,9 @@ class RecordHolder
     protected $people;
 
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -67,7 +66,7 @@ class RecordHolder
     }
 
     /**
-     * Set competition
+     * Set competition.
      *
      * @param Competition $competition
      *
@@ -81,7 +80,7 @@ class RecordHolder
     }
 
     /**
-     * Get competition
+     * Get competition.
      *
      * @return Competition
      */
@@ -91,7 +90,7 @@ class RecordHolder
     }
 
     /**
-     * Set date
+     * Set date.
      *
      * @param \DateTime $date
      *
@@ -105,7 +104,7 @@ class RecordHolder
     }
 
     /**
-     * Get date
+     * Get date.
      *
      * @return \DateTime
      */
@@ -115,7 +114,7 @@ class RecordHolder
     }
 
     /**
-     * Set record
+     * Set record.
      *
      * @param \AppBundle\Entity\Record $record
      *
@@ -129,7 +128,7 @@ class RecordHolder
     }
 
     /**
-     * Get record
+     * Get record.
      *
      * @return \AppBundle\Entity\Record
      */
@@ -139,7 +138,7 @@ class RecordHolder
     }
 
     /**
-     * Set club
+     * Set club.
      *
      * @param \AppBundle\Entity\Club $club
      *
@@ -153,7 +152,7 @@ class RecordHolder
     }
 
     /**
-     * Get club
+     * Get club.
      *
      * @return \AppBundle\Entity\Club
      */
@@ -163,7 +162,7 @@ class RecordHolder
     }
 
     /**
-     * Constructor
+     * Constructor.
      */
     public function __construct()
     {
@@ -171,9 +170,9 @@ class RecordHolder
     }
 
     /**
-     * Set score
+     * Set score.
      *
-     * @param integer $score
+     * @param int $score
      *
      * @return RecordHolder
      */
@@ -185,9 +184,9 @@ class RecordHolder
     }
 
     /**
-     * Get score
+     * Get score.
      *
-     * @return integer
+     * @return int
      */
     public function getScore()
     {
@@ -195,7 +194,7 @@ class RecordHolder
     }
 
     /**
-     * Add people
+     * Add people.
      *
      * @param \AppBundle\Entity\RecordHolderPerson $people
      *
@@ -209,7 +208,7 @@ class RecordHolder
     }
 
     /**
-     * Remove people
+     * Remove people.
      *
      * @param \AppBundle\Entity\RecordHolderPerson $people
      */
@@ -219,7 +218,7 @@ class RecordHolder
     }
 
     /**
-     * Get people
+     * Get people.
      *
      * @return \Doctrine\Common\Collections\Collection|RecordHolderPerson[]
      */
@@ -229,7 +228,7 @@ class RecordHolder
     }
 
     /**
-     * Set date_broken
+     * Set date_broken.
      *
      * @param \DateTime $dateBroken
      *
@@ -243,7 +242,7 @@ class RecordHolder
     }
 
     /**
-     * Get date_broken
+     * Get date_broken.
      *
      * @return \DateTime
      */
@@ -253,29 +252,31 @@ class RecordHolder
     }
 
     /**
-     * Set date_confirmed
+     * Set date_confirmed.
      *
      * @param \DateTime $dateConfirmed
+     *
      * @return RecordHolder
      */
     public function setDateConfirmed($dateConfirmed)
     {
         $this->date_confirmed = $dateConfirmed;
-    
+
         return $this;
     }
 
     /**
-     * Get date_confirmed
+     * Get date_confirmed.
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getDateConfirmed()
     {
         return $this->date_confirmed;
     }
 
-    public function isBetterThan(RecordHolder $other) {
+    public function isBetterThan(RecordHolder $other)
+    {
         return $this->getScore() > $other->getScore();
     }
 }

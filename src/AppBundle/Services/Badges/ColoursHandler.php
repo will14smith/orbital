@@ -21,28 +21,38 @@ class ColoursHandler extends BaseHandler
     {
         parent::__construct($doctrine, $badges);
 
-        $this->colours = array_map(function ($badge) { return new ColourBadge($badge); }, $badges);
+        $this->colours = array_map(function ($badge) {
+            return new ColourBadge($badge);
+        }, $badges);
     }
 
     public function handle(Score $score)
     {
         // must be accepted
-        if(!$score->isAccepted()) { return; }
+        if (!$score->isAccepted()) {
+            return;
+        }
         // must be at a competition
-        if(!$score->getCompetition()) { return; }
+        if (!$score->getCompetition()) {
+            return;
+        }
 
         $scoredColour = $this->getColour($score);
-        if(!$scoredColour) { return; }
+        if (!$scoredColour) {
+            return;
+        }
 
         $currentColour = $this->getCurrent($score->getClub(), $score->getPerson());
-        if(!$scoredColour->isBetterThan($currentColour)) { return; }
+        if (!$scoredColour->isBetterThan($currentColour)) {
+            return;
+        }
 
         // award badge
         $this->award($scoredColour, $score);
     }
 
     /**
-     * @param Club $club
+     * @param Club   $club
      * @param Person $person
      *
      * @return ColourBadge|null
@@ -53,16 +63,19 @@ class ColoursHandler extends BaseHandler
         $badgeHolderRepository = $this->doctrine->getRepository('AppBundle:BadgeHolder');
         $badges = $badgeHolderRepository->findByIdentAndPerson(self::IDENT, $person->getId());
 
-        $badgeIds = array_map(function (Badge $badge) { return $badge->getId(); }, $badges);
+        $badgeIds = array_map(function (Badge $badge) {
+            return $badge->getId();
+        }, $badges);
 
         // find highest ranked badge
-        return $this->getHighestWhere(function(ColourBadge $colour) use($badgeIds, $club) {
-           return $club->getId() == $colour->getBadge()->getClub()->getId() && in_array($colour->getId(), $badgeIds);
+        return $this->getHighestWhere(function (ColourBadge $colour) use ($badgeIds, $club) {
+            return $club->getId() == $colour->getBadge()->getClub()->getId() && in_array($colour->getId(), $badgeIds);
         });
     }
 
     /**
      * @param Score $score
+     *
      * @return ColourBadge|null
      */
     private function getColour(Score $score)
@@ -74,7 +87,7 @@ class ColoursHandler extends BaseHandler
 
     /**
      * @param ColourBadge $colour
-     * @param Score $score
+     * @param Score       $score
      */
     private function award(ColourBadge $colour, Score $score)
     {
@@ -93,14 +106,15 @@ class ColoursHandler extends BaseHandler
 
     /**
      * @param callable $filter
+     *
      * @return ColourBadge|null
      */
     private function getHighestWhere(callable $filter)
     {
         $result = null;
 
-        foreach($this->colours as $colour) {
-            if($filter($colour) && $colour->isBetterThan($result)) {
+        foreach ($this->colours as $colour) {
+            if ($filter($colour) && $colour->isBetterThan($result)) {
                 $result = $colour;
             }
         }

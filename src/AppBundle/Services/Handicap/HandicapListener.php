@@ -1,6 +1,5 @@
 <?php
 
-
 namespace AppBundle\Services\Handicap;
 
 use AppBundle\Entity\Score;
@@ -20,7 +19,6 @@ class HandicapListener
 
     public function __construct(HandicapManager $manager, Registry $doctrine)
     {
-
         $this->manager = $manager;
         $this->doctrine = $doctrine;
     }
@@ -45,7 +43,7 @@ class HandicapListener
 
     /**
      * @param Score $score
-     * @param bool $full
+     * @param bool  $full
      *
      * @return bool
      */

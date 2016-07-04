@@ -11,7 +11,7 @@ class ClubSelectType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'class' => 'AppBundle:Club'
+            'class' => 'AppBundle:Club',
         ]);
     }
 

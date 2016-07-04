@@ -10,14 +10,14 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class UnitSelectType extends AbstractType
 {
     public function configureOptions(OptionsResolver $resolver)
-{
-    $resolver->setDefaults([
+    {
+        $resolver->setDefaults([
         'choices' => array_flip(Unit::$choices),
     ]);
-}
+    }
 
     public function getParent()
-{
-    return ChoiceType::class;
-}
+    {
+        return ChoiceType::class;
+    }
 }

@@ -1,6 +1,5 @@
 <?php
 
-
 namespace AppBundle\Services\Leagues;
 
 use AppBundle\Entity\LeagueMatch;
@@ -15,7 +14,6 @@ class LeagueListener
 
     public function __construct(LeagueManager $manager)
     {
-
         $this->manager = $manager;
     }
 
@@ -41,19 +39,18 @@ class LeagueListener
      * @param LeagueMatch $match
      *
      * @return bool
-     *
      */
     private function should_accept(LeagueMatch $match)
     {
-        if(!$match->getAccepted()) {
+        if (!$match->getAccepted()) {
             return false;
         }
 
-        if(!$match->getDateConfirmed()) {
+        if (!$match->getDateConfirmed()) {
             return false;
         }
 
-        if(!$match->getLeague()->getAlgoName()) {
+        if (!$match->getLeague()->getAlgoName()) {
             return false;
         }
 

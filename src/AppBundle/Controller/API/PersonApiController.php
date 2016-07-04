@@ -12,12 +12,12 @@ class PersonApiController extends ApiController
      */
     public function indexAction()
     {
-        $personRepository = $this->getDoctrine()->getRepository("AppBundle:Person");
+        $personRepository = $this->getDoctrine()->getRepository('AppBundle:Person');
 
         $people = $personRepository->findAll();
 
         return $this->json([
-            'people' => array_map([$this, 'indexMap'], $people)
+            'people' => array_map([$this, 'indexMap'], $people),
         ]);
     }
 
@@ -31,7 +31,7 @@ class PersonApiController extends ApiController
             'name' => $person->getDisplayName(),
 
             'skill' => $person->getCurrentSkill(),
-            'bowtype' => $person->getBowtype()
+            'bowtype' => $person->getBowtype(),
         ];
     }
 }

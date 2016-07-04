@@ -1,6 +1,5 @@
 <?php
 
-
 namespace AppBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
@@ -59,7 +58,7 @@ class Badge
     protected $image_name;
 
     /**
-     * Constructor
+     * Constructor.
      */
     public function __construct()
     {
@@ -67,9 +66,9 @@ class Badge
     }
 
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -77,7 +76,7 @@ class Badge
     }
 
     /**
-     * Set name
+     * Set name.
      *
      * @param string $name
      *
@@ -91,7 +90,7 @@ class Badge
     }
 
     /**
-     * Get name
+     * Get name.
      *
      * @return string
      */
@@ -101,7 +100,7 @@ class Badge
     }
 
     /**
-     * Set description
+     * Set description.
      *
      * @param string $description
      *
@@ -115,7 +114,7 @@ class Badge
     }
 
     /**
-     * Get description
+     * Get description.
      *
      * @return string
      */
@@ -125,7 +124,7 @@ class Badge
     }
 
     /**
-     * Set algo_name
+     * Set algo_name.
      *
      * @param string $algoName
      *
@@ -139,7 +138,7 @@ class Badge
     }
 
     /**
-     * Get algo_name
+     * Get algo_name.
      *
      * @return string
      */
@@ -149,7 +148,7 @@ class Badge
     }
 
     /**
-     * Set category
+     * Set category.
      *
      * @param string $category
      *
@@ -163,7 +162,7 @@ class Badge
     }
 
     /**
-     * Get category
+     * Get category.
      *
      * @return string
      */
@@ -173,9 +172,9 @@ class Badge
     }
 
     /**
-     * Set multiple
+     * Set multiple.
      *
-     * @param boolean $multiple
+     * @param bool $multiple
      *
      * @return Badge
      */
@@ -187,9 +186,9 @@ class Badge
     }
 
     /**
-     * Get multiple
+     * Get multiple.
      *
-     * @return boolean
+     * @return bool
      */
     public function getMultiple()
     {
@@ -197,7 +196,7 @@ class Badge
     }
 
     /**
-     * Add holders
+     * Add holders.
      *
      * @param \AppBundle\Entity\BadgeHolder $holders
      *
@@ -211,7 +210,7 @@ class Badge
     }
 
     /**
-     * Remove holders
+     * Remove holders.
      *
      * @param \AppBundle\Entity\BadgeHolder $holders
      */
@@ -221,7 +220,7 @@ class Badge
     }
 
     /**
-     * Get holders
+     * Get holders.
      *
      * @return \Doctrine\Common\Collections\Collection
      */
@@ -236,9 +235,10 @@ class Badge
     }
 
     /**
-     * Set image_name
+     * Set image_name.
      *
      * @param string $imageName
+     *
      * @return Badge
      */
     public function setImageName($imageName)
@@ -249,9 +249,9 @@ class Badge
     }
 
     /**
-     * Get image_name
+     * Get image_name.
      *
-     * @return string 
+     * @return string
      */
     public function getImageName()
     {
@@ -259,7 +259,7 @@ class Badge
     }
 
     /**
-     * Set club
+     * Set club.
      *
      * @param Club $club
      *
@@ -268,12 +268,12 @@ class Badge
     public function setClub(Club $club = null)
     {
         $this->club = $club;
-    
+
         return $this;
     }
 
     /**
-     * Get club
+     * Get club.
      *
      * @return Club
      */

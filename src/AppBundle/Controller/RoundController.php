@@ -20,7 +20,7 @@ class RoundController extends Controller
      */
     public function indexAction()
     {
-        $roundRepository = $this->getDoctrine()->getRepository("AppBundle:Round");
+        $roundRepository = $this->getDoctrine()->getRepository('AppBundle:Round');
 
         $rounds = $roundRepository->findAllGrouped();
 
@@ -33,6 +33,7 @@ class RoundController extends Controller
     /**
      * @Security("has_role('ROLE_ADMIN')")
      * @Route("/round/create", name="round_create", methods={"GET", "POST"})
+     *
      * @param Request $request
      *
      * @return \Symfony\Component\HttpFoundation\Response
@@ -63,7 +64,8 @@ class RoundController extends Controller
 
     /**
      * @Route("/round/{id}", name="round_detail", methods={"GET"})
-     * @param integer $id
+     *
+     * @param int $id
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
@@ -71,14 +73,14 @@ class RoundController extends Controller
     {
         $doctrine = $this->getDoctrine();
 
-        $roundRepository = $doctrine->getRepository("AppBundle:Round");
+        $roundRepository = $doctrine->getRepository('AppBundle:Round');
         $round = $roundRepository->find($id);
         if (!$round) {
             throw $this->createNotFoundException(
                 'No round found for id ' . $id
             );
         }
-        
+
         return $this->render('round/detail.html.twig', [
             'round' => $round,
         ]);
@@ -86,16 +88,17 @@ class RoundController extends Controller
 
     /**
      * @Route("/round/{id}/classification", name="round_classification_detail", methods={"GET"})
-     * @param integer $id
      *
+     * @param int     $id
      * @param Request $request
+     *
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function classificationAction($id, Request $request)
     {
         $doctrine = $this->getDoctrine();
 
-        $roundRepository = $doctrine->getRepository("AppBundle:Round");
+        $roundRepository = $doctrine->getRepository('AppBundle:Round');
         $round = $roundRepository->find($id);
         if (!$round) {
             throw $this->createNotFoundException(
@@ -120,7 +123,7 @@ class RoundController extends Controller
                 $score = $calc->calculateRoundScore($round, $gender, $bowtype, $classification);
 
                 $targets = [];
-                foreach($round->getTargets() as $rt) {
+                foreach ($round->getTargets() as $rt) {
                     $targetScore = $calc->calculateTargetScore($rt, $gender, $bowtype, $classification);
 
                     $targets[] = [
@@ -128,7 +131,7 @@ class RoundController extends Controller
                         'size' => ['value' => $rt->getTargetValue(), 'unit' => $rt->getTargetUnit()],
                         'score' => round($targetScore, 1),
                         'end_average' => round(($targetScore / $rt->getArrowCount()) * $rt->getEndSize(), 2),
-                        'arrow_average' => round($targetScore / $rt->getArrowCount(), 2)
+                        'arrow_average' => round($targetScore / $rt->getArrowCount(), 2),
                     ];
                 }
 
@@ -136,7 +139,7 @@ class RoundController extends Controller
                     'classification' => $classification,
                     'score' => $score,
                     'targets' => $targets,
-                    'valid' => $valid
+                    'valid' => $valid,
                 ];
             }
 
@@ -158,14 +161,14 @@ class RoundController extends Controller
                     $scores[] = [
                         'classification' => $classification,
                         'score' => $score,
-                        'valid' => $valid
+                        'valid' => $valid,
                     ];
                 }
 
                 $classificationTable[] = [
                     'gender' => $gender,
                     'bowtype' => $bowtype,
-                    'scores' => $scores
+                    'scores' => $scores,
                 ];
             }
         }
@@ -180,7 +183,7 @@ class RoundController extends Controller
      * @Security("has_role('ROLE_ADMIN')")
      * @Route("/round/{id}/edit", name="round_edit", methods={"GET", "POST"})
      *
-     * @param integer $id
+     * @param int     $id
      * @param Request $request
      *
      * @return \Symfony\Component\HttpFoundation\Response
@@ -217,7 +220,7 @@ class RoundController extends Controller
      * @Security("has_role('ROLE_ADMIN')")
      * @Route("/round/{id}/delete", name="round_delete", methods={"GET", "POST"})
      *
-     * @param integer $id
+     * @param int     $id
      * @param Request $request
      *
      * @return \Symfony\Component\HttpFoundation\Response
@@ -233,7 +236,7 @@ class RoundController extends Controller
             );
         }
 
-        if ($request->isMethod("POST")) {
+        if ($request->isMethod('POST')) {
             $em->remove($round);
             $em->flush();
 
@@ -241,7 +244,7 @@ class RoundController extends Controller
         }
 
         return $this->render('round/delete.html.twig', [
-            'round' => $round
+            'round' => $round,
         ]);
     }
 }

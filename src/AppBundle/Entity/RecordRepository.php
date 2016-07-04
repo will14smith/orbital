@@ -15,9 +15,8 @@ class RecordRepository extends EntityRepository
      */
     public function findByPerson($person_id)
     {
-
         $people = [];
-        for ($i = 0; $i < 2; $i++) {
+        for ($i = 0; $i < 2; ++$i) {
             $qb = $this->getEntityManager()->createQueryBuilder();
 
             $q = $qb->select('rhp', 'rh', 'r')

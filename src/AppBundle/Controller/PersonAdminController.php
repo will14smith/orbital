@@ -14,7 +14,7 @@ class PersonAdminController extends Controller
      * @Security("has_role('ROLE_ADMIN')")
      * @Route("/person/{id}/change-password", name="person_change_password", methods={"GET", "POST"})
      *
-     * @param int $id
+     * @param int     $id
      * @param Request $request
      *
      * @return \Symfony\Component\HttpFoundation\Response
@@ -82,7 +82,7 @@ class PersonAdminController extends Controller
      * @Security("has_role('ROLE_ADMIN')")
      * @Route("/person/{id}/toggle-admin", name="person_toggle_admin", methods={"GET", "POST"})
      *
-     * @param int $id
+     * @param int     $id
      * @param Request $request
      *
      * @return \Symfony\Component\HttpFoundation\Response

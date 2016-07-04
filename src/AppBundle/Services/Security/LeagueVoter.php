@@ -12,11 +12,11 @@ class LeagueVoter extends BaseVoter
     protected $class = 'AppBundle\Entity\League';
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     protected function voteInternal(Person $user, $match, $permission)
     {
-        /** @var League $match */
+        /* @var League $match */
 
         if ($user->isAdmin()) {
             return VoterInterface::ACCESS_GRANTED;
@@ -24,12 +24,12 @@ class LeagueVoter extends BaseVoter
 
         switch ($permission) {
             case SecurityAction::SIGNUP:
-                if($match->canSignup($user) && !$match->isSignedUp($user)) {
+                if ($match->canSignup($user) && !$match->isSignedUp($user)) {
                     return VoterInterface::ACCESS_GRANTED;
                 }
                 break;
             case SecurityAction::SUBMIT:
-                if($match->isSignedUp($user)) {
+                if ($match->isSignedUp($user)) {
                     return VoterInterface::ACCESS_GRANTED;
                 }
                 break;

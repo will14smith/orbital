@@ -25,7 +25,7 @@ class RoundTargetType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => 'AppBundle\Entity\RoundTarget'
+            'data_class' => 'AppBundle\Entity\RoundTarget',
         ]);
     }
 }

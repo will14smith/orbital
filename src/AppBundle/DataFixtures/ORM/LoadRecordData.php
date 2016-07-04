@@ -13,10 +13,10 @@ use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 
-class LoadRecordData extends AbstractFixture implements OrderedFixtureInterface {
-
+class LoadRecordData extends AbstractFixture implements OrderedFixtureInterface
+{
     /**
-     * Load data fixtures with the passed EntityManager
+     * Load data fixtures with the passed EntityManager.
      *
      * @param ObjectManager $manager
      */
@@ -72,9 +72,9 @@ class LoadRecordData extends AbstractFixture implements OrderedFixtureInterface 
     }
 
     /**
-     * Get the order of this fixture
+     * Get the order of this fixture.
      *
-     * @return integer
+     * @return int
      */
     public function getOrder()
     {

@@ -1,8 +1,6 @@
 <?php
 
-
 namespace AppBundle\Services\Enum;
-
 
 class BadgeState
 {
@@ -12,9 +10,9 @@ class BadgeState
     const DELIVERED = 'delivered';
 
     public static $choices = [
-        BadgeState::UNCONFIRMED => 'Unconfirmed',
-        BadgeState::CONFIRMED => 'Confirmed',
-        BadgeState::MADE => 'Made',
-        BadgeState::DELIVERED => 'Delivered',
+        self::UNCONFIRMED => 'Unconfirmed',
+        self::CONFIRMED => 'Confirmed',
+        self::MADE => 'Made',
+        self::DELIVERED => 'Delivered',
     ];
 }

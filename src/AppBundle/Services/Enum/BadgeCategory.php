@@ -1,8 +1,6 @@
 <?php
 
-
 namespace AppBundle\Services\Enum;
-
 
 class BadgeCategory
 {
@@ -15,12 +13,12 @@ class BadgeCategory
     const OTHER = 'other';
 
     public static $choices = [
-        BadgeCategory::COLOUR => 'Colour',
-        BadgeCategory::SKILL => 'Skill',
-        BadgeCategory::EQUIPMENT => 'Equipment',
-        BadgeCategory::SOCIAL => 'Social',
-        BadgeCategory::COMMITTEE => 'Committee',
-        BadgeCategory::BESPOKE => 'Bespoke',
-        BadgeCategory::OTHER => 'Other',
+        self::COLOUR => 'Colour',
+        self::SKILL => 'Skill',
+        self::EQUIPMENT => 'Equipment',
+        self::SOCIAL => 'Social',
+        self::COMMITTEE => 'Committee',
+        self::BESPOKE => 'Bespoke',
+        self::OTHER => 'Other',
     ];
 }

@@ -1,6 +1,5 @@
 <?php
 
-
 namespace AppBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
@@ -47,9 +46,9 @@ class Round implements JsonSerializable
     }
 
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -57,7 +56,7 @@ class Round implements JsonSerializable
     }
 
     /**
-     * Set name
+     * Set name.
      *
      * @param string $name
      *
@@ -71,7 +70,7 @@ class Round implements JsonSerializable
     }
 
     /**
-     * Get name
+     * Get name.
      *
      * @return string
      */
@@ -81,7 +80,7 @@ class Round implements JsonSerializable
     }
 
     /**
-     * Add targets
+     * Add targets.
      *
      * @param \AppBundle\Entity\RoundTarget $target
      *
@@ -96,7 +95,7 @@ class Round implements JsonSerializable
     }
 
     /**
-     * Remove targets
+     * Remove targets.
      *
      * @param \AppBundle\Entity\RoundTarget $target
      */
@@ -106,7 +105,7 @@ class Round implements JsonSerializable
     }
 
     /**
-     * Get targets
+     * Get targets.
      *
      * @return \Doctrine\Common\Collections\Collection|RoundTarget[]
      */
@@ -127,7 +126,7 @@ class Round implements JsonSerializable
         })->toArray());
     }
 
-    function jsonSerialize()
+    public function jsonSerialize()
     {
         $targets = $this->getTargets()->map(function (RoundTarget $value) {
             return $value->jsonSerialize();
@@ -141,20 +140,21 @@ class Round implements JsonSerializable
     }
 
     /**
-     * Set category
+     * Set category.
      *
      * @param RoundCategory $category
+     *
      * @return Round
      */
     public function setCategory(RoundCategory $category = null)
     {
         $this->category = $category;
-    
+
         return $this;
     }
 
     /**
-     * Get category
+     * Get category.
      *
      * @return RoundCategory
      */
@@ -164,22 +164,23 @@ class Round implements JsonSerializable
     }
 
     /**
-     * Set indoor
+     * Set indoor.
      *
-     * @param boolean $indoor
+     * @param bool $indoor
+     *
      * @return Round
      */
     public function setIndoor($indoor)
     {
         $this->indoor = $indoor;
-    
+
         return $this;
     }
 
     /**
-     * Get indoor
+     * Get indoor.
      *
-     * @return boolean 
+     * @return bool
      */
     public function getIndoor()
     {

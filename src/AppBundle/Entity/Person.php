@@ -79,7 +79,7 @@ class Person extends BaseUser
     protected $handicaps;
 
     /**
-     * Constructor
+     * Constructor.
      */
     public function __construct()
     {
@@ -89,9 +89,9 @@ class Person extends BaseUser
     }
 
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -99,7 +99,7 @@ class Person extends BaseUser
     }
 
     /**
-     * Set name
+     * Set name.
      *
      * @param string $name
      *
@@ -113,7 +113,7 @@ class Person extends BaseUser
     }
 
     /**
-     * Get name
+     * Get name.
      *
      * @return string
      */
@@ -123,7 +123,7 @@ class Person extends BaseUser
     }
 
     /**
-     * Set name_preferred
+     * Set name_preferred.
      *
      * @param string $namePreferred
      *
@@ -137,7 +137,7 @@ class Person extends BaseUser
     }
 
     /**
-     * Get name_preferred
+     * Get name_preferred.
      *
      * @return string
      */
@@ -156,7 +156,7 @@ class Person extends BaseUser
     }
 
     /**
-     * Set agb_number
+     * Set agb_number.
      *
      * @param string $agbNumber
      *
@@ -170,7 +170,7 @@ class Person extends BaseUser
     }
 
     /**
-     * Get agb_number
+     * Get agb_number.
      *
      * @return string
      */
@@ -180,7 +180,7 @@ class Person extends BaseUser
     }
 
     /**
-     * Set cid
+     * Set cid.
      *
      * @param string $cid
      *
@@ -194,7 +194,7 @@ class Person extends BaseUser
     }
 
     /**
-     * Get cid
+     * Get cid.
      *
      * @return string
      */
@@ -204,7 +204,7 @@ class Person extends BaseUser
     }
 
     /**
-     * Set mobile
+     * Set mobile.
      *
      * @param string $mobile
      *
@@ -218,7 +218,7 @@ class Person extends BaseUser
     }
 
     /**
-     * Get mobile
+     * Get mobile.
      *
      * @return string
      */
@@ -228,7 +228,7 @@ class Person extends BaseUser
     }
 
     /**
-     * Set gender
+     * Set gender.
      *
      * @param string $gender
      *
@@ -242,7 +242,7 @@ class Person extends BaseUser
     }
 
     /**
-     * Get gender
+     * Get gender.
      *
      * @return string
      */
@@ -252,7 +252,7 @@ class Person extends BaseUser
     }
 
     /**
-     * Set date_of_birth
+     * Set date_of_birth.
      *
      * @param \DateTime $dateOfBirth
      *
@@ -266,7 +266,7 @@ class Person extends BaseUser
     }
 
     /**
-     * Get date_of_birth
+     * Get date_of_birth.
      *
      * @return \DateTime
      */
@@ -276,7 +276,7 @@ class Person extends BaseUser
     }
 
     /**
-     * Set bowtype
+     * Set bowtype.
      *
      * @param string $bowtype
      *
@@ -290,7 +290,7 @@ class Person extends BaseUser
     }
 
     /**
-     * Get bowtype
+     * Get bowtype.
      *
      * @return string
      */
@@ -300,7 +300,7 @@ class Person extends BaseUser
     }
 
     /**
-     * Set club_bow
+     * Set club_bow.
      *
      * @param string $clubBow
      *
@@ -314,7 +314,7 @@ class Person extends BaseUser
     }
 
     /**
-     * Get club_bow
+     * Get club_bow.
      *
      * @return string
      */
@@ -324,7 +324,7 @@ class Person extends BaseUser
     }
 
     /**
-     * Set club
+     * Set club.
      *
      * @param \AppBundle\Entity\Club $club
      *
@@ -338,7 +338,7 @@ class Person extends BaseUser
     }
 
     /**
-     * Get club
+     * Get club.
      *
      * @return \AppBundle\Entity\Club
      */
@@ -348,7 +348,7 @@ class Person extends BaseUser
     }
 
     /**
-     * Add handicaps
+     * Add handicaps.
      *
      * @param PersonHandicap $handicaps
      *
@@ -362,7 +362,7 @@ class Person extends BaseUser
     }
 
     /**
-     * Remove handicaps
+     * Remove handicaps.
      *
      * @param PersonHandicap $handicaps
      */
@@ -372,7 +372,7 @@ class Person extends BaseUser
     }
 
     /**
-     * Get handicaps
+     * Get handicaps.
      *
      * @return \Doctrine\Common\Collections\Collection|PersonHandicap[]
      */
@@ -388,7 +388,7 @@ class Person extends BaseUser
     {
         $count = $this->handicaps->count();
 
-        for ($i = $count - 1; $i >= 0; $i--) {
+        for ($i = $count - 1; $i >= 0; --$i) {
             /** @var PersonHandicap $handicap */
             $handicap = $this->handicaps->get($i);
             if ($handicap->getIndoor() === $indoor) {
@@ -396,7 +396,7 @@ class Person extends BaseUser
             }
         }
 
-        return null;
+        return;
     }
 
     public function __toString()
@@ -413,7 +413,6 @@ class Person extends BaseUser
         return $this->hasRole('ROLE_ADMIN');
     }
 
-
     public function getSkillOn(\DateTime $date)
     {
         return Skill::getSkillOn($this->getDateStarted(), $date);
@@ -425,7 +424,7 @@ class Person extends BaseUser
     }
 
     /**
-     * Set dateStarted
+     * Set dateStarted.
      *
      * @param \DateTime $dateStarted
      *
@@ -434,12 +433,12 @@ class Person extends BaseUser
     public function setDateStarted($dateStarted)
     {
         $this->date_started = $dateStarted;
-    
+
         return $this;
     }
 
     /**
-     * Get dateStarted
+     * Get dateStarted.
      *
      * @return \DateTime
      */

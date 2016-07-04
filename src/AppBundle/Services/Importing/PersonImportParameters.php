@@ -1,8 +1,6 @@
 <?php
 
-
 namespace AppBundle\Services\Importing;
-
 
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Constraints as Assert;

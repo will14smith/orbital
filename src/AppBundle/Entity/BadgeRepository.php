@@ -8,9 +8,11 @@ class BadgeRepository extends EntityRepository
 {
     /**
      * @param string $ident
+     *
      * @return Badge[]
      */
-    public function findByAlgorithm($ident) {
+    public function findByAlgorithm($ident)
+    {
         return $this->createQueryBuilder('b')
             ->where('b.algo_name = :ident')
             ->orWhere('b.algo_name LIKE :ident_fuzzy')

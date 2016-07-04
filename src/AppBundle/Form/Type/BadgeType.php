@@ -23,7 +23,7 @@ class BadgeType extends AbstractType
             ->add('multiple', CheckboxType::class, ['required' => false])
             ->add('image', FileType::class, [
                 'required' => false,
-                'mapped' => false
+                'mapped' => false,
             ]);
     }
 

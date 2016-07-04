@@ -19,14 +19,14 @@ class RecordHolderType extends AbstractType
             ->add('competition', CompetitionSelectType::class)
             ->add('club', ClubSelectType::class)
             ->add('people', CollectionType::class, [
-                'entry_type' => RecordHolderPersonType::class
+                'entry_type' => RecordHolderPersonType::class,
             ]);
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => 'AppBundle\Entity\RecordHolder'
+            'data_class' => 'AppBundle\Entity\RecordHolder',
         ]);
     }
 }

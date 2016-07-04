@@ -12,11 +12,11 @@ class LeagueMatchVoter extends BaseVoter
     protected $class = 'AppBundle\Entity\LeagueMatch';
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     protected function voteInternal(Person $user, $match, $permission)
     {
-        /** @var LeagueMatch $match */
+        /* @var LeagueMatch $match */
 
         switch ($permission) {
             case SecurityAction::ACCEPT:

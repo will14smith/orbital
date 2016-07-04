@@ -1,8 +1,6 @@
 <?php
 
-
 namespace AppBundle\Controller;
-
 
 use AppBundle\Entity\League;
 use AppBundle\Entity\LeaguePerson;
@@ -12,12 +10,13 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
-class LeagueSignupController extends Controller {
+class LeagueSignupController extends Controller
+{
     /**
      * @Security("is_granted('SIGNUP', league)")
      * @Route("/league/{id}/signup", name="league_signup", methods={"GET", "POST"})
      *
-     * @param League $league
+     * @param League  $league
      * @param Request $request
      *
      * @return \Symfony\Component\HttpFoundation\Response
@@ -43,7 +42,7 @@ class LeagueSignupController extends Controller {
             }
 
             return $this->redirectToRoute('league_detail', [
-                'id' => $league->getId()
+                'id' => $league->getId(),
             ]);
         }
 
@@ -69,8 +68,8 @@ class LeagueSignupController extends Controller {
      * @Security("has_role('ROLE_ADMIN')")
      * @Route("/league/{id}/signup/{signupId}", name="league_signup_edit", methods={"GET", "POST"})
      *
-     * @param int $id
-     * @param int $signupId
+     * @param int     $id
+     * @param int     $signupId
      * @param Request $request
      *
      * @return \Symfony\Component\HttpFoundation\Response
@@ -111,8 +110,8 @@ class LeagueSignupController extends Controller {
      * @Security("has_role('ROLE_ADMIN')")
      * @Route("/league/{id}/signup/{signupId}/delete", name="league_signup_delete", methods={"GET", "POST"})
      *
-     * @param int $id
-     * @param int $signupId
+     * @param int     $id
+     * @param int     $signupId
      * @param Request $request
      *
      * @return \Symfony\Component\HttpFoundation\Response

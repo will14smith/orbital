@@ -16,5 +16,4 @@ class AppBundle extends Bundle
         $container->addCompilerPass(new ApprovalCompilerPass());
         $container->addCompilerPass(new LeagueCompilerPass());
     }
-
 }

@@ -7,12 +7,12 @@ use AppBundle\Services\Handicap\TargetCalculatorInterface;
 class MetricTargetCalculator implements TargetCalculatorInterface
 {
     /**
-     * @var boolean
+     * @var bool
      */
     private $useInnerTen;
 
     /**
-     * @param boolean $useInnerTen
+     * @param bool $useInnerTen
      */
     public function __construct($useInnerTen)
     {
@@ -34,7 +34,7 @@ class MetricTargetCalculator implements TargetCalculatorInterface
             $start = 1;
         }
 
-        for ($n = $start; $n <= 10; $n++) {
+        for ($n = $start; $n <= 10; ++$n) {
             $x = pow($n * $targetDiameter / 20 + 0.357, 2);
 
             $sum += exp(-$x / $sigma_sq);

@@ -23,18 +23,19 @@ class RecordManager
 
         return $holder->isBetterThan($current_holder);
     }
+
     public static function consistentClub(RecordHolder $holder)
     {
         $holderClub = $holder->getClub();
 
-        foreach($holder->getPeople() as $personHolder) {
+        foreach ($holder->getPeople() as $personHolder) {
             $score = $personHolder->getScore();
 
-            if(!$score) {
+            if (!$score) {
                 continue;
             }
 
-            if($score->getClub()->getId() != $holderClub->getId()) {
+            if ($score->getClub()->getId() != $holderClub->getId()) {
                 return false;
             }
         }
@@ -63,7 +64,7 @@ class RecordManager
     }
 
     /**
-     * @param Record $record
+     * @param Record  $record
      * @param Score[] $scores
      *
      * @return RecordHolder
@@ -112,6 +113,7 @@ class RecordManager
 
     /**
      * @param Score $score
+     *
      * @return RecordHolderPerson
      */
     public static function createHolderPerson(Score $score)
@@ -127,9 +129,10 @@ class RecordManager
 
     /**
      * @param Record $record
-     * @param Club $club
+     * @param Club   $club
      *
      * @return RecordHolder
+     *
      * @throws \Exception
      */
     public static function getCurrentHolder(Record $record, Club $club)
@@ -141,17 +144,17 @@ class RecordManager
         $count = $filtered->count();
 
         if ($count == 0) {
-            return null;
-        } else if ($count == 1) {
+            return;
+        } elseif ($count == 1) {
             return $filtered->first();
         } else {
-            throw new \Exception("Multiple current holders of " . $record->getId());
+            throw new \Exception('Multiple current holders of ' . $record->getId());
         }
     }
 
     /**
      * @param Record $record
-     * @param Club $club
+     * @param Club   $club
      *
      * @return \AppBundle\Entity\RecordHolder[]|\Doctrine\Common\Collections\Collection
      */
@@ -164,7 +167,7 @@ class RecordManager
 
     /**
      * @param Record $record
-     * @param Club $club
+     * @param Club   $club
      *
      * @return \AppBundle\Entity\RecordHolder[]|\Doctrine\Common\Collections\Collection
      */
@@ -235,6 +238,6 @@ class RecordManager
             return $round->getCount() . ' x ' . $roundName;
         });
 
-        return join(' / ', array_unique($roundNames->toArray()));
+        return implode(' / ', array_unique($roundNames->toArray()));
     }
 }

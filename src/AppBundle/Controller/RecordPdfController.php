@@ -22,14 +22,15 @@ class RecordPdfController extends Controller
      * @Route("/records/pdf", name="record_pdf", methods={"GET"})
      *
      * @param Request $request
+     *
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function pdfAction(Request $request)
     {
-        $recordRepository = $this->getDoctrine()->getRepository("AppBundle:Record");
+        $recordRepository = $this->getDoctrine()->getRepository('AppBundle:Record');
         $records = $recordRepository->findAll();
 
-        $clubRepository = $this->getDoctrine()->getRepository("AppBundle:Club");
+        $clubRepository = $this->getDoctrine()->getRepository('AppBundle:Club');
         $club_id = $request->query->getInt('club');
         $club = $clubRepository->find($club_id);
         if (!$club) {
@@ -69,8 +70,8 @@ class RecordPdfController extends Controller
                 'name' => $envN . ' - Teams',
                 'subgroups' => [
                     ['name' => 'Senior Team', 'isTeam' => true, 'records' => []],
-                    ['name' => 'Novice Team', 'isTeam' => true, 'records' => []]
-                ]
+                    ['name' => 'Novice Team', 'isTeam' => true, 'records' => []],
+                ],
             ]);
 
             foreach ($skills as $skill) {
@@ -84,13 +85,13 @@ class RecordPdfController extends Controller
                         array_push($subgroups, [
                             'name' => $skillN . ' ' . $genderN . ' ' . BowType::display($bowtype),
                             'isTeam' => false,
-                            'records' => []
+                            'records' => [],
                         ]);
                     }
 
                     array_push($groups, [
                         'name' => $envN . ' - ' . $skillN . ' ' . $genderN,
-                        'subgroups' => $subgroups
+                        'subgroups' => $subgroups,
                     ]);
                 }
             }
@@ -142,7 +143,7 @@ class RecordPdfController extends Controller
             'preface' => $club->getRecordsPreface(),
             'appendix' => $club->getRecordsAppendix(),
 
-            'groups' => $groups
+            'groups' => $groups,
         ];
 
         if ($request->query->has('html')) {
@@ -157,7 +158,7 @@ class RecordPdfController extends Controller
 
             'orientation' => 'Landscape',
 
-            'footer-html' => $this->renderView('record/list_footer.pdf.twig', $data)
+            'footer-html' => $this->renderView('record/list_footer.pdf.twig', $data),
         ]);
     }
 }

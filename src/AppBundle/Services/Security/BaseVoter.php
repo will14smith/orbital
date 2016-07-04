@@ -12,7 +12,7 @@ abstract class BaseVoter implements VoterInterface
     protected $class = '';
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function supportsAttribute($attribute)
     {
@@ -20,7 +20,7 @@ abstract class BaseVoter implements VoterInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function supportsClass($class)
     {
@@ -28,7 +28,7 @@ abstract class BaseVoter implements VoterInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function vote(TokenInterface $token, $object, array $attributes)
     {
@@ -51,11 +51,11 @@ abstract class BaseVoter implements VoterInterface
     }
 
     /**
-     * @param Person $user
+     * @param Person      $user
      * @param object|null $object
-     * @param string $permission
+     * @param string      $permission
      *
      * @return int|null either ACCESS_GRANTED, ACCESS_ABSTAIN, ACCESS_DENIED, or null
      */
-    protected abstract function voteInternal(Person $user, $object, $permission);
+    abstract protected function voteInternal(Person $user, $object, $permission);
 }

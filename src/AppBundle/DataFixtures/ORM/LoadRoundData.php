@@ -1,8 +1,6 @@
 <?php
 
-
 namespace AppBundle\DataFixtures\ORM;
-
 
 use AppBundle\Entity\Round;
 use AppBundle\Entity\RoundCategory;
@@ -16,14 +14,14 @@ use Doctrine\Common\Persistence\ObjectManager;
 class LoadRoundData extends AbstractFixture implements OrderedFixtureInterface
 {
     /**
-     * Load data fixtures with the passed EntityManager
+     * Load data fixtures with the passed EntityManager.
      *
      * @param ObjectManager $manager
      */
     public function load(ObjectManager $manager)
     {
         $category = new RoundCategory();
-        $category->setName("Category");
+        $category->setName('Category');
 
         $this->addReference('round-category-1', $category);
         $manager->persist($category);
@@ -31,12 +29,12 @@ class LoadRoundData extends AbstractFixture implements OrderedFixtureInterface
         $manager->flush();
 
         $round1 = new Round();
-        $round1->setName("Round 1");
+        $round1->setName('Round 1');
         $round1->setCategory($category);
         $round1->setIndoor(false);
 
         $round2 = new Round();
-        $round2->setName("Round 2");
+        $round2->setName('Round 2');
         $round2->setCategory($category);
         $round2->setIndoor(true);
 
@@ -81,9 +79,9 @@ class LoadRoundData extends AbstractFixture implements OrderedFixtureInterface
     }
 
     /**
-     * Get the order of this fixture
+     * Get the order of this fixture.
      *
-     * @return integer
+     * @return int
      */
     public function getOrder()
     {

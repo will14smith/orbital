@@ -1,8 +1,6 @@
 <?php
 
-
 namespace AppBundle\Services\Twig;
-
 
 class LetterExtension extends \Twig_Extension
 {

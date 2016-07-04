@@ -29,7 +29,7 @@ class BadgeSheet
     protected $badgeHolders;
 
     /**
-     * Constructor
+     * Constructor.
      *
      * @param BadgeHolder[] $badges
      */
@@ -38,15 +38,15 @@ class BadgeSheet
         $this->badgeHolders = new ArrayCollection();
 
         $this->date = new \DateTime();
-        foreach($badges as $badge) {
+        foreach ($badges as $badge) {
             $this->addBadgeHolder($badge);
         }
     }
 
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer 
+     * @return int
      */
     public function getId()
     {
@@ -54,22 +54,23 @@ class BadgeSheet
     }
 
     /**
-     * Set date
+     * Set date.
      *
      * @param \DateTime $date
+     *
      * @return BadgeSheet
      */
     public function setDate($date)
     {
         $this->date = $date;
-    
+
         return $this;
     }
 
     /**
-     * Get date
+     * Get date.
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getDate()
     {
@@ -77,20 +78,21 @@ class BadgeSheet
     }
 
     /**
-     * Add badgeHolders
+     * Add badgeHolders.
      *
      * @param BadgeHolder $badgeHolders
+     *
      * @return BadgeSheet
      */
     public function addBadgeHolder(BadgeHolder $badgeHolders)
     {
         $this->badgeHolders[] = $badgeHolders;
-    
+
         return $this;
     }
 
     /**
-     * Remove badgeHolders
+     * Remove badgeHolders.
      *
      * @param BadgeHolder $badgeHolders
      */
@@ -100,7 +102,7 @@ class BadgeSheet
     }
 
     /**
-     * Get badgeHolders
+     * Get badgeHolders.
      *
      * @return \Doctrine\Common\Collections\Collection|BadgeHolder[]
      */

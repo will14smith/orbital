@@ -1,8 +1,6 @@
 <?php
 
-
 namespace AppBundle\Entity;
-
 
 use Doctrine\DBAL\Types\Type;
 use Doctrine\ORM\EntityRepository;
@@ -35,9 +33,10 @@ class ScoreRepository extends EntityRepository
     }
 
     /**
-     * @param Person $person
+     * @param Person    $person
      * @param \DateTime $start_date
      * @param \DateTime $end_date
+     *
      * @return Score[]
      */
     public function getScoresByPersonBetween(Person $person, \DateTime $start_date, \DateTime $end_date)
@@ -57,7 +56,7 @@ class ScoreRepository extends EntityRepository
 
     public function findAll()
     {
-        return $this->createQueryBuilder("s");
+        return $this->createQueryBuilder('s');
     }
 
     public function findByPerson($personId)
@@ -94,13 +93,14 @@ class ScoreRepository extends EntityRepository
     }
 
     /**
-     * @param int $personId
+     * @param int  $personId
      * @param bool $indoor
+     *
      * @return Score[]
      */
     public function findByPersonAndLocation($personId, $indoor)
     {
-        return $this->createQueryBuilder("s")
+        return $this->createQueryBuilder('s')
             ->join('s.round', 'r')
             ->where('s.person = :person_id')
             ->andWhere('r.indoor = :indoor')
@@ -111,16 +111,16 @@ class ScoreRepository extends EntityRepository
     }
 
     /**
-     * In order of date_shot / date_created
+     * In order of date_shot / date_created.
      *
      * @param Competition $competition
-     * @param Club $club
+     * @param Club        $club
      *
      * @return Score[]
      */
     public function getByCompetition(Competition $competition, Club $club)
     {
-        return $this->createQueryBuilder("s")
+        return $this->createQueryBuilder('s')
             ->andWhere('s.competition = :competition')
             ->andWhere('s.club = :club')
             ->setParameter('competition', $competition)
@@ -131,19 +131,18 @@ class ScoreRepository extends EntityRepository
             ->getResult();
     }
 
-
     /**
-     * In order of date_shot / date_created
+     * In order of date_shot / date_created.
      *
      * @param Competition $competition
-     * @param Person $person
-     * @param Club $club
+     * @param Person      $person
+     * @param Club        $club
      *
      * @return Score[]
      */
     public function getByCompetitionAndPerson(Competition $competition, Person $person, Club $club)
     {
-        return $this->createQueryBuilder("s")
+        return $this->createQueryBuilder('s')
             ->andWhere('s.competition = :competition')
             ->andWhere('s.person = :person')
             ->andWhere('s.club = :club')

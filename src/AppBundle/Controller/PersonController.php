@@ -16,27 +16,29 @@ class PersonController extends Controller
      * @Route("/people", name="person_list", methods={"GET"})
      *
      * @param Request $request
+     *
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function indexAction(Request $request)
     {
-        $personRepository = $this->getDoctrine()->getRepository("AppBundle:Person");
+        $personRepository = $this->getDoctrine()->getRepository('AppBundle:Person');
 
         $club = $request->query->getInt('club');
-        if($club == 0) {
+        if ($club == 0) {
             $people = $personRepository->findAll();
         } else {
             $people = $personRepository->findBy(['club' => $club]);
         }
 
         return $this->render('person/list.html.twig', [
-            'people' => $people
+            'people' => $people,
         ]);
     }
 
     /**
      * @Security("has_role('ROLE_ADMIN')")
      * @Route("/person/import", name="person_import", methods={"GET", "POST"})
+     *
      * @param Request $request
      *
      * @return \Symfony\Component\HttpFoundation\Response
@@ -65,6 +67,7 @@ class PersonController extends Controller
     /**
      * @Security("has_role('ROLE_ADMIN')")
      * @Route("/person/create", name="person_create", methods={"GET", "POST"})
+     *
      * @param Request $request
      *
      * @return \Symfony\Component\HttpFoundation\Response
@@ -104,7 +107,7 @@ class PersonController extends Controller
     public function detailAction($id)
     {
         $doctrine = $this->getDoctrine();
-        $personRepository = $doctrine->getRepository("AppBundle:Person");
+        $personRepository = $doctrine->getRepository('AppBundle:Person');
 
         /** @var Person $person */
         $person = $personRepository->find($id);
@@ -116,7 +119,7 @@ class PersonController extends Controller
 
         $badges = $doctrine->getRepository('AppBundle:BadgeHolder')
             ->findBy([
-                'person' => $person->getId()
+                'person' => $person->getId(),
             ], ['date_awarded' => 'DESC']);
 
         $records = $doctrine->getRepository('AppBundle:Record')
@@ -125,7 +128,7 @@ class PersonController extends Controller
         $scoreRepository = $doctrine->getRepository('AppBundle:Score');
         $recent_scores = $scoreRepository
             ->findBy([
-                'person' => $person->getId()
+                'person' => $person->getId(),
             ], ['date_shot' => 'DESC'], 5);
 
         $pbs = $scoreRepository->getPersonalBests($person);
@@ -135,7 +138,7 @@ class PersonController extends Controller
             'badges' => $badges,
             'records' => $records,
             'scores' => $recent_scores,
-            'pbs' => $pbs
+            'pbs' => $pbs,
         ]);
     }
 
@@ -143,7 +146,7 @@ class PersonController extends Controller
      * @Security("has_role('ROLE_ADMIN')")
      * @Route("/person/{id}/edit", name="person_edit", methods={"GET", "POST"})
      *
-     * @param int $id
+     * @param int     $id
      * @param Request $request
      *
      * @return \Symfony\Component\HttpFoundation\Response
@@ -180,7 +183,7 @@ class PersonController extends Controller
      * @Security("has_role('ROLE_ADMIN')")
      * @Route("/person/{id}/delete", name="person_delete", methods={"GET", "POST"})
      *
-     * @param int $id
+     * @param int     $id
      * @param Request $request
      *
      * @return \Symfony\Component\HttpFoundation\Response
@@ -196,7 +199,7 @@ class PersonController extends Controller
             );
         }
 
-        if ($request->isMethod("POST")) {
+        if ($request->isMethod('POST')) {
             $em->remove($person);
             $em->flush();
 
@@ -204,7 +207,7 @@ class PersonController extends Controller
         }
 
         return $this->render('person/delete.html.twig', [
-            'person' => $person
+            'person' => $person,
         ]);
     }
 }

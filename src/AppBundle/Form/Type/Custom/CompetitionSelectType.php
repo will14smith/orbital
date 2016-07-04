@@ -21,7 +21,7 @@ class CompetitionSelectType extends AbstractType
             },
             'choice_label' => function (Competition $competition) {
                 return $competition->getName() . ' - ' . $competition->getDate()->format(Constants::DATE_FORMAT);
-            }
+            },
         ]);
     }
 

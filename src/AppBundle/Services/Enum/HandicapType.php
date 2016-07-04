@@ -1,8 +1,6 @@
 <?php
 
-
 namespace AppBundle\Services\Enum;
-
 
 class HandicapType
 {
@@ -12,9 +10,9 @@ class HandicapType
     const MANUAL = 'manual';
 
     public static $choices = [
-        HandicapType::INITIAL => 'Initial',
-        HandicapType::UPDATE => 'Update',
-        HandicapType::REASSESS => 'Reassessment',
-        HandicapType::MANUAL => 'Manual',
+        self::INITIAL => 'Initial',
+        self::UPDATE => 'Update',
+        self::REASSESS => 'Reassessment',
+        self::MANUAL => 'Manual',
     ];
 }

@@ -1,22 +1,20 @@
 <?php
 
-
 namespace AppBundle\Services\Enum;
-
 
 class Skill
 {
     const NOVICE = 'novice';
     const SENIOR = 'senior';
 
-    static $choices = [
-        Skill::SENIOR => 'Senior',
-        Skill::NOVICE => 'Novice'
+    public static $choices = [
+        self::SENIOR => 'Senior',
+        self::NOVICE => 'Novice',
     ];
 
     public static function display($skill)
     {
-        return Skill::$choices[$skill];
+        return self::$choices[$skill];
     }
 
     public static function normaliseStartDate(\DateTime $date)
@@ -36,7 +34,7 @@ class Skill
         $date_started_norm = self::normaliseStartDate($date_started);
         $date_ref_norm = self::normaliseStartDate($date_ref);
 
-        if(self::date_equal($date_started_norm, $date_ref_norm)) {
+        if (self::date_equal($date_started_norm, $date_ref_norm)) {
             return self::NOVICE;
         }
 

@@ -2,7 +2,6 @@
 
 namespace AppBundle\Services\Badges;
 
-
 use AppBundle\Entity\Badge;
 use Doctrine\Bundle\DoctrineBundle\Registry;
 
@@ -20,8 +19,9 @@ abstract class BaseHandler
 
     /**
      * BaseHandler constructor.
+     *
      * @param Registry $doctrine
-     * @param Badge[] $badges
+     * @param Badge[]  $badges
      */
     public function __construct(Registry $doctrine, array $badges)
     {

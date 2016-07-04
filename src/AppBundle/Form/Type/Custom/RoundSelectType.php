@@ -11,7 +11,7 @@ class RoundSelectType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'class' => 'AppBundle:Round'
+            'class' => 'AppBundle:Round',
         ]);
     }
 

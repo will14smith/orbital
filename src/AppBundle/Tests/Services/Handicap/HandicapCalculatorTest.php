@@ -1,8 +1,6 @@
 <?php
 
-
 namespace AppBundle\Tests\Services\Handicap;
-
 
 use AppBundle\Entity\Round;
 use AppBundle\Entity\RoundTarget;
@@ -18,16 +16,19 @@ class HandicapCalculatorTest extends \PHPUnit_Framework_TestCase
      * @var Round[]
      */
     protected static $rounds;
+
     public static function setUpBeforeClass()
     {
         self::$rounds = self::getRounds();
     }
-    public static function getRounds() {
+
+    public static function getRounds()
+    {
         /** @var Round[] $rounds */
         $rounds = [
             new Round(),
             new Round(),
-            new Round()
+            new Round(),
         ];
 
         $target1 = new RoundTarget();
@@ -143,7 +144,7 @@ class HandicapCalculatorTest extends \PHPUnit_Framework_TestCase
         $scoreData = $this->scoreData();
         $results = [];
 
-        foreach($scoreData as $score) {
+        foreach ($scoreData as $score) {
             $results[] = [$score[0], $score[1], $score[3], $score[2]];
             $results[] = [$score[0], $score[1], $score[3] - 1, $score[2] + 1];
         }
@@ -165,5 +166,4 @@ class HandicapCalculatorTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals(30, $handicap);
     }
-
 }

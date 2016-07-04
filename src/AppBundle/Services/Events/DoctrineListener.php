@@ -1,6 +1,5 @@
 <?php
 
-
 namespace AppBundle\Services\Events;
 
 use AppBundle\Entity\LeagueMatch;
@@ -32,10 +31,10 @@ class DoctrineListener
         if ($entity instanceof Score) {
             $event = new ScoreEvent($entity);
             $this->dispatcher->dispatch('orbital.events.score_create', $event);
-        } else if ($entity instanceof LeagueMatch) {
+        } elseif ($entity instanceof LeagueMatch) {
             $event = new LeagueMatchEvent($entity);
             $this->dispatcher->dispatch('orbital.events.match_create', $event);
-        } else if($entity instanceof RecordHolderPerson) {
+        } elseif ($entity instanceof RecordHolderPerson) {
             $event = new RecordHolderPersonEvent($entity);
             $this->dispatcher->dispatch('orbital.events.record_holder_person_create', $event);
         }
@@ -48,10 +47,10 @@ class DoctrineListener
         if ($entity instanceof Score) {
             $event = new ScoreEvent($entity);
             $this->dispatcher->dispatch('orbital.events.score_update', $event);
-        } else if ($entity instanceof LeagueMatch) {
+        } elseif ($entity instanceof LeagueMatch) {
             $event = new LeagueMatchEvent($entity);
             $this->dispatcher->dispatch('orbital.events.match_update', $event);
-        } else if($entity instanceof RecordHolderPerson) {
+        } elseif ($entity instanceof RecordHolderPerson) {
             $event = new RecordHolderPersonEvent($entity);
             $this->dispatcher->dispatch('orbital.events.record_holder_person_update', $event);
         }
@@ -62,7 +61,7 @@ class DoctrineListener
         // $entity = $args->getEntity();
     }
 
-    public function postFlush(PostFlushEventArgs $args){
-
+    public function postFlush(PostFlushEventArgs $args)
+    {
     }
 }

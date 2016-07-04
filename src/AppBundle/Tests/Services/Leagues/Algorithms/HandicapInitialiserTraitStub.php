@@ -4,6 +4,7 @@ namespace AppBundle\Tests\Services\Leagues\Algorithms;
 
 use AppBundle\Services\Leagues\Algorithms\HandicapInitialiserTrait;
 
-class HandicapInitialiserTraitStub {
+class HandicapInitialiserTraitStub
+{
     use HandicapInitialiserTrait;
 }

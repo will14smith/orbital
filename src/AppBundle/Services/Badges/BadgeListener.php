@@ -38,9 +38,11 @@ class BadgeListener
 
     /**
      * @param string $ident
+     *
      * @return Badge[]
      */
-    private function getBadges($ident) {
+    private function getBadges($ident)
+    {
         return $this->doctrine->getRepository('AppBundle:Badge')->findByAlgorithm($ident);
     }
 }

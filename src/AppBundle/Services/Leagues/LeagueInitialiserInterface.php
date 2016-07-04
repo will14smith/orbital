@@ -2,14 +2,14 @@
 
 namespace AppBundle\Services\Leagues;
 
-
 use AppBundle\Entity\LeaguePerson;
 
-interface LeagueInitialiserInterface {
+interface LeagueInitialiserInterface
+{
     /**
      * @param LeaguePerson[] $people
      *
      * @return LeaguePerson[]
      */
-    function init(array $people);
+    public function init(array $people);
 }

@@ -4,7 +4,8 @@ namespace AppBundle\Tests;
 
 class DetailFunctionalTest extends FunctionalWebTestCase
 {
-    public function setUp() {
+    public function setUp()
+    {
         parent::setUp();
     }
 

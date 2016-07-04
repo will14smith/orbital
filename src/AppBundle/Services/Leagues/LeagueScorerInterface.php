@@ -2,14 +2,14 @@
 
 namespace AppBundle\Services\Leagues;
 
-
 use AppBundle\Entity\LeagueMatch;
 
-interface LeagueScorerInterface {
+interface LeagueScorerInterface
+{
     /**
      * @param LeagueMatch $match
      *
      * @return int[] [winner dpoints, loser dpoints]
      */
-    function score(LeagueMatch $match);
+    public function score(LeagueMatch $match);
 }

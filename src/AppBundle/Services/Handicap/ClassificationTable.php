@@ -10,9 +10,9 @@ use AppBundle\Services\Enum\Gender;
 
 class ClassificationTable
 {
-    static $handicapTable;
+    public static $handicapTable;
 
-    static function initHandicapTable()
+    public static function initHandicapTable()
     {
         $table = [];
 
@@ -34,7 +34,7 @@ class ClassificationTable
     }
 
     /** @noinspection PhpTooManyParametersInspection */
-    static function buildHandicapRow($third, $second, $first, $bowman, $master, $grand)
+    public static function buildHandicapRow($third, $second, $first, $bowman, $master, $grand)
     {
         return [
             Classification::THIRD => $third,

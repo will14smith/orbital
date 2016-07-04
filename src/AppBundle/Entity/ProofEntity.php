@@ -17,7 +17,8 @@ abstract class ProofEntity
     private $id;
 
     /**
-     * Person who submitted the proof
+     * Person who submitted the proof.
+     *
      * @ORM\ManyToOne(targetEntity="Person")
      */
     private $person;
@@ -37,9 +38,9 @@ abstract class ProofEntity
     private $notes;
 
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -47,7 +48,7 @@ abstract class ProofEntity
     }
 
     /**
-     * Set image_name
+     * Set image_name.
      *
      * @param string $imageName
      *
@@ -61,7 +62,7 @@ abstract class ProofEntity
     }
 
     /**
-     * Get image_name
+     * Get image_name.
      *
      * @return string
      */
@@ -71,7 +72,7 @@ abstract class ProofEntity
     }
 
     /**
-     * Set notes
+     * Set notes.
      *
      * @param string $notes
      *
@@ -85,7 +86,7 @@ abstract class ProofEntity
     }
 
     /**
-     * Get notes
+     * Get notes.
      *
      * @return string
      */
@@ -95,7 +96,7 @@ abstract class ProofEntity
     }
 
     /**
-     * Set person
+     * Set person.
      *
      * @param Person $person
      *
@@ -109,7 +110,7 @@ abstract class ProofEntity
     }
 
     /**
-     * Get person
+     * Get person.
      *
      * @return Person
      */
@@ -119,9 +120,10 @@ abstract class ProofEntity
     }
 
     /**
-     * Set voucher
+     * Set voucher.
      *
      * @param Person $voucher
+     *
      * @return ProofEntity
      */
     public function setVoucher(Person $voucher = null)
@@ -132,7 +134,7 @@ abstract class ProofEntity
     }
 
     /**
-     * Get voucher
+     * Get voucher.
      *
      * @return Person
      */

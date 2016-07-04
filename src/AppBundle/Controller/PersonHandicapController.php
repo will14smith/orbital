@@ -16,7 +16,7 @@ class PersonHandicapController extends Controller
      * @Security("has_role('ROLE_ADMIN')")
      * @Route("/person/{id}/reassess", name="person_handicap_reassess", methods={"GET", "POST"})
      *
-     * @param int $id
+     * @param int     $id
      * @param Request $request
      *
      * @return \Symfony\Component\HttpFoundation\Response
@@ -54,7 +54,7 @@ class PersonHandicapController extends Controller
      * @Security("has_role('ROLE_ADMIN')")
      * @Route("/person/{id}/hc_manual", name="person_handicap_manual", methods={"GET", "POST"})
      *
-     * @param int $id
+     * @param int     $id
      * @param Request $request
      *
      * @return \Symfony\Component\HttpFoundation\Response

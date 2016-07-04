@@ -16,19 +16,19 @@ class RoundType extends AbstractType
             ->add('name')
             ->add('category')
             ->add('indoor', CheckboxType::class, [
-                'required' => false
+                'required' => false,
             ])
             ->add('targets', CollectionType::class, [
                 'entry_type' => RoundTargetType::class,
                 'allow_add' => true,
-                'by_reference' => false
+                'by_reference' => false,
             ]);
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => 'AppBundle\Entity\Round'
+            'data_class' => 'AppBundle\Entity\Round',
         ]);
     }
 }

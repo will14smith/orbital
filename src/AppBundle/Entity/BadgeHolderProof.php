@@ -16,7 +16,7 @@ class BadgeHolderProof extends ProofEntity
     protected $badge_holder;
 
     /**
-     * Set badge_holder
+     * Set badge_holder.
      *
      * @param \AppBundle\Entity\BadgeHolder $badgeHolder
      *
@@ -30,7 +30,7 @@ class BadgeHolderProof extends ProofEntity
     }
 
     /**
-     * Get badge_holder
+     * Get badge_holder.
      *
      * @return \AppBundle\Entity\BadgeHolder
      */

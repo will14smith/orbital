@@ -12,12 +12,12 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 class ScoreApprovalProvider implements ApprovalQueueProviderInterface
 {
     /**
-     * @param Registry $doctrine
+     * @param Registry              $doctrine
      * @param UrlGeneratorInterface $url
      *
      * @return ApprovalQueueItem[]
      */
-    function getItems(Registry $doctrine, UrlGeneratorInterface $url)
+    public function getItems(Registry $doctrine, UrlGeneratorInterface $url)
     {
         $repository = $doctrine->getRepository('AppBundle:Score');
         $scores = $repository->findByApproval(false)->getQuery()->getResult();
@@ -28,13 +28,13 @@ class ScoreApprovalProvider implements ApprovalQueueProviderInterface
     }
 
     /**
-     * @param Registry $doctrine
+     * @param Registry              $doctrine
      * @param UrlGeneratorInterface $url
-     * @param Club $club
+     * @param Club                  $club
      *
      * @return ApprovalQueueItem[]
      */
-    function getItemsByClub(Registry $doctrine, UrlGeneratorInterface $url, Club $club)
+    public function getItemsByClub(Registry $doctrine, UrlGeneratorInterface $url, Club $club)
     {
         $repository = $doctrine->getRepository('AppBundle:Score');
         $scores = $repository->findByApprovalAndClub(false, $club)->getQuery()->getResult();
@@ -46,11 +46,12 @@ class ScoreApprovalProvider implements ApprovalQueueProviderInterface
 
     /**
      * @param UrlGeneratorInterface $url
-     * @param Score $score
+     * @param Score                 $score
+     *
      * @return ApprovalQueueItem
      */
     private function createApprovalItem(UrlGeneratorInterface $url, Score $score)
     {
-        return new ApprovalQueueItem('score', (string)$score, $url->generate('score_detail', ['id' => $score->getId()]), $score);
+        return new ApprovalQueueItem('score', (string) $score, $url->generate('score_detail', ['id' => $score->getId()]), $score);
     }
 }

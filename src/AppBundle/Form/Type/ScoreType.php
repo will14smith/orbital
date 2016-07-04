@@ -7,9 +7,7 @@ use AppBundle\Form\Type\Custom\ClubSelectType;
 use AppBundle\Form\Type\Custom\CompetitionSelectType;
 use AppBundle\Form\Type\Custom\PersonSelectType;
 use AppBundle\Form\Type\Custom\RoundSelectType;
-use AppBundle\Form\Type\Custom\SkillSelectType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -17,24 +15,23 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ScoreType extends AbstractType
 {
-
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $edit = $options['editing'];
 
         $builder
             ->add('person', PersonSelectType::class, [
-                'disabled' => $edit
+                'disabled' => $edit,
             ])
             ->add('club', ClubSelectType::class, [
                 'required' => false,
-                'disabled' => $edit
+                'disabled' => $edit,
             ])
             ->add('bowtype', BowTypeSelectType::class, [
                 'required' => false,
             ])
             ->add('round', RoundSelectType::class, [
-                'disabled' => $edit
+                'disabled' => $edit,
             ])
             ->add('competition', CompetitionSelectType::class, ['required' => false])
             ->add('score', IntegerType::class, ['required' => true])
@@ -51,7 +48,7 @@ class ScoreType extends AbstractType
         $resolver->setDefaults([
             'data_class' => 'AppBundle\Entity\Score',
 
-            'editing' => false
+            'editing' => false,
         ]);
     }
 }

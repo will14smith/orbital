@@ -16,12 +16,12 @@ class RecordType extends AbstractType
             ->add('rounds', CollectionType::class, [
                 'entry_type' => RecordRoundType::class,
                 'allow_add' => true,
-                'by_reference' => false
+                'by_reference' => false,
             ])
             ->add('clubs', CollectionType::class, [
                 'entry_type' => RecordClubType::class,
                 'allow_add' => true,
-                'by_reference' => false
+                'by_reference' => false,
             ])
         ;
     }
@@ -29,7 +29,7 @@ class RecordType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => 'AppBundle\Entity\Record'
+            'data_class' => 'AppBundle\Entity\Record',
         ]);
     }
 }

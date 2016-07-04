@@ -28,7 +28,7 @@ class ClubType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => 'AppBundle\Entity\Club'
+            'data_class' => 'AppBundle\Entity\Club',
         ]);
     }
 }

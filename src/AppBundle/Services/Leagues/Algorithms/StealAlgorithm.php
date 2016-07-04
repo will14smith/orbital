@@ -14,7 +14,8 @@ class StealAlgorithm implements LeagueAlgorithmInterface
 
     private $initialPoints;
 
-    public function __construct($initialPoints) {
+    public function __construct($initialPoints)
+    {
         $this->initialPoints = intval($initialPoints);
     }
 
@@ -22,6 +23,7 @@ class StealAlgorithm implements LeagueAlgorithmInterface
     {
         return 'steal';
     }
+
     public function getName()
     {
         return 'Winner steals a point from the loser';
@@ -32,11 +34,11 @@ class StealAlgorithm implements LeagueAlgorithmInterface
      *
      * @return LeaguePerson[]
      */
-    function init(array $people)
+    public function init(array $people)
     {
         $people = $this->randomInit($people);
 
-        foreach($people as $person) {
+        foreach ($people as $person) {
             $person->setPoints($this->initialPoints);
         }
 

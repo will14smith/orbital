@@ -11,6 +11,7 @@ abstract class InitialiserTestCase extends ServiceTestCase
 {
     /**
      * @param int $hc
+     *
      * @return LeaguePerson
      */
     protected function getPerson($hc = null)
@@ -18,7 +19,7 @@ abstract class InitialiserTestCase extends ServiceTestCase
         $leaguePerson = new LeaguePerson();
         $person = new Person();
 
-        if($hc !== null) {
+        if ($hc !== null) {
             $handicap = new PersonHandicap();
             $handicap->setHandicap($hc);
             $handicap->setIndoor(true);

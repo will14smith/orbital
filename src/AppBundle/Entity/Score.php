@@ -1,6 +1,5 @@
 <?php
 
-
 namespace AppBundle\Entity;
 
 use AppBundle\Constants;
@@ -78,16 +77,16 @@ class Score
     protected $proof;
 
     /** @ORM\PrePersist */
-    function on_create()
+    public function on_create()
     {
         //using Doctrine DateTime here
         $this->date_entered = new \DateTime('now');
     }
 
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -95,7 +94,7 @@ class Score
     }
 
     /**
-     * Set bowtype
+     * Set bowtype.
      *
      * @param string $bowtype
      *
@@ -109,7 +108,7 @@ class Score
     }
 
     /**
-     * Get bowtype
+     * Get bowtype.
      *
      * @return string
      */
@@ -119,9 +118,9 @@ class Score
     }
 
     /**
-     * Set score
+     * Set score.
      *
-     * @param integer $score
+     * @param int $score
      *
      * @return Score
      */
@@ -133,9 +132,9 @@ class Score
     }
 
     /**
-     * Get score
+     * Get score.
      *
-     * @return integer
+     * @return int
      */
     public function getScore()
     {
@@ -143,9 +142,9 @@ class Score
     }
 
     /**
-     * Set golds
+     * Set golds.
      *
-     * @param integer $golds
+     * @param int $golds
      *
      * @return Score
      */
@@ -157,9 +156,9 @@ class Score
     }
 
     /**
-     * Get golds
+     * Get golds.
      *
-     * @return integer
+     * @return int
      */
     public function getGolds()
     {
@@ -167,9 +166,9 @@ class Score
     }
 
     /**
-     * Set hits
+     * Set hits.
      *
-     * @param integer $hits
+     * @param int $hits
      *
      * @return Score
      */
@@ -181,9 +180,9 @@ class Score
     }
 
     /**
-     * Get hits
+     * Get hits.
      *
-     * @return integer
+     * @return int
      */
     public function getHits()
     {
@@ -191,7 +190,7 @@ class Score
     }
 
     /**
-     * Set competition
+     * Set competition.
      *
      * @param Competition $competition
      *
@@ -205,7 +204,7 @@ class Score
     }
 
     /**
-     * Get competition
+     * Get competition.
      *
      * @return Competition
      */
@@ -215,7 +214,7 @@ class Score
     }
 
     /**
-     * Set date_shot
+     * Set date_shot.
      *
      * @param \DateTime $dateShot
      *
@@ -229,7 +228,7 @@ class Score
     }
 
     /**
-     * Get date_shot
+     * Get date_shot.
      *
      * @return \DateTime
      */
@@ -239,22 +238,23 @@ class Score
     }
 
     /**
-     * Set date_entered
+     * Set date_entered.
      *
      * @deprecated
      *
      * @param \DateTime $dateEntered
      *
      * @return Score
+     *
      * @throws \Exception
      */
     public function setDateEntered($dateEntered)
     {
-        throw new \Exception("this function does nothing...");
+        throw new \Exception('this function does nothing...');
     }
 
     /**
-     * Get date_entered
+     * Get date_entered.
      *
      * @return \DateTime
      */
@@ -264,7 +264,7 @@ class Score
     }
 
     /**
-     * Set date_accepted
+     * Set date_accepted.
      *
      * @param \DateTime $dateAccepted
      *
@@ -278,7 +278,7 @@ class Score
     }
 
     /**
-     * Get date_accepted
+     * Get date_accepted.
      *
      * @return \DateTime
      */
@@ -288,7 +288,7 @@ class Score
     }
 
     /**
-     * Set the score as accepted
+     * Set the score as accepted.
      *
      * @return Score
      */
@@ -301,8 +301,9 @@ class Score
         return $this;
     }
 
-    public function isAccepted(\DateTime $now = null) {
-        if($now === null) {
+    public function isAccepted(\DateTime $now = null)
+    {
+        if ($now === null) {
             $now = new \DateTime('now');
         }
 
@@ -310,7 +311,7 @@ class Score
     }
 
     /**
-     * Set person
+     * Set person.
      *
      * @param \AppBundle\Entity\Person $person
      *
@@ -324,7 +325,7 @@ class Score
     }
 
     /**
-     * Get person
+     * Get person.
      *
      * @return \AppBundle\Entity\Person
      */
@@ -334,7 +335,7 @@ class Score
     }
 
     /**
-     * Set club
+     * Set club.
      *
      * @param \AppBundle\Entity\Club $club
      *
@@ -348,7 +349,7 @@ class Score
     }
 
     /**
-     * Get club
+     * Get club.
      *
      * @return \AppBundle\Entity\Club
      */
@@ -358,7 +359,7 @@ class Score
     }
 
     /**
-     * Set round
+     * Set round.
      *
      * @param \AppBundle\Entity\Round $round
      *
@@ -372,7 +373,7 @@ class Score
     }
 
     /**
-     * Get round
+     * Get round.
      *
      * @return \AppBundle\Entity\Round
      */
@@ -392,7 +393,7 @@ class Score
     }
 
     /**
-     * Constructor
+     * Constructor.
      */
     public function __construct()
     {
@@ -401,7 +402,7 @@ class Score
     }
 
     /**
-     * Add proof
+     * Add proof.
      *
      * @param \AppBundle\Entity\ScoreProof $proof
      *
@@ -415,7 +416,7 @@ class Score
     }
 
     /**
-     * Remove proof
+     * Remove proof.
      *
      * @param \AppBundle\Entity\ScoreProof $proof
      */
@@ -425,7 +426,7 @@ class Score
     }
 
     /**
-     * Get proof
+     * Get proof.
      *
      * @return \Doctrine\Common\Collections\Collection|ScoreProof[]
      */
@@ -452,7 +453,8 @@ class Score
         return $this->getScore() > $other->getScore();
     }
 
-    public function getSkill() {
+    public function getSkill()
+    {
         return $this->getPerson()->getSkillOn($this->getDateShot());
     }
 }

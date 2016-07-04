@@ -32,6 +32,7 @@ class LeagueManager
      * @param string $key
      *
      * @return LeagueAlgorithmInterface
+     *
      * @throws \Exception if algo not found
      */
     public function getAlgorithm($key)
@@ -51,7 +52,7 @@ class LeagueManager
         $algos = [];
 
         foreach ($this->algos as $key => $algo) {
-            /** @var LeagueAlgorithmInterface $algo */
+            /* @var LeagueAlgorithmInterface $algo */
             $algos[$key] = $algo->getName();
         }
 
@@ -59,7 +60,7 @@ class LeagueManager
     }
 
     /**
-     * Update round points
+     * Update round points.
      *
      * @param LeagueMatch $match
      */
@@ -74,6 +75,7 @@ class LeagueManager
 
     /**
      * @param LeagueMatch $match
+     *
      * @throws \Exception
      */
     public function updateMatch(LeagueMatch $match)

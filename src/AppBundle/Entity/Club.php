@@ -1,6 +1,5 @@
 <?php
 
-
 namespace AppBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
@@ -57,16 +56,15 @@ class Club
      */
     protected $records_appendix;
 
-
     public function __construct()
     {
         $this->people = new ArrayCollection();
     }
 
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -74,7 +72,7 @@ class Club
     }
 
     /**
-     * Set name
+     * Set name.
      *
      * @param string $name
      *
@@ -88,7 +86,7 @@ class Club
     }
 
     /**
-     * Get name
+     * Get name.
      *
      * @return string
      */
@@ -98,7 +96,7 @@ class Club
     }
 
     /**
-     * Set website
+     * Set website.
      *
      * @param string $website
      *
@@ -112,7 +110,7 @@ class Club
     }
 
     /**
-     * Get website
+     * Get website.
      *
      * @return string
      */
@@ -122,7 +120,7 @@ class Club
     }
 
     /**
-     * Set email
+     * Set email.
      *
      * @param string $email
      *
@@ -136,7 +134,7 @@ class Club
     }
 
     /**
-     * Get email
+     * Get email.
      *
      * @return string
      */
@@ -146,7 +144,7 @@ class Club
     }
 
     /**
-     * Add people
+     * Add people.
      *
      * @param \AppBundle\Entity\Person $people
      *
@@ -160,7 +158,7 @@ class Club
     }
 
     /**
-     * Remove people
+     * Remove people.
      *
      * @param \AppBundle\Entity\Person $people
      */
@@ -170,7 +168,7 @@ class Club
     }
 
     /**
-     * Get people
+     * Get people.
      *
      * @return \Doctrine\Common\Collections\Collection
      */
@@ -185,7 +183,7 @@ class Club
     }
 
     /**
-     * Set recordsTitle
+     * Set recordsTitle.
      *
      * @param string $recordsTitle
      *
@@ -194,12 +192,12 @@ class Club
     public function setRecordsTitle($recordsTitle)
     {
         $this->records_title = $recordsTitle;
-    
+
         return $this;
     }
 
     /**
-     * Get recordsTitle
+     * Get recordsTitle.
      *
      * @return string
      */
@@ -209,7 +207,7 @@ class Club
     }
 
     /**
-     * Set recordsImageUrl
+     * Set recordsImageUrl.
      *
      * @param string $recordsImageUrl
      *
@@ -218,12 +216,12 @@ class Club
     public function setRecordsImageUrl($recordsImageUrl)
     {
         $this->records_image_url = $recordsImageUrl;
-    
+
         return $this;
     }
 
     /**
-     * Get recordsImageUrl
+     * Get recordsImageUrl.
      *
      * @return string
      */
@@ -233,7 +231,7 @@ class Club
     }
 
     /**
-     * Set recordsPreface
+     * Set recordsPreface.
      *
      * @param string $recordsPreface
      *
@@ -242,12 +240,12 @@ class Club
     public function setRecordsPreface($recordsPreface)
     {
         $this->records_preface = $recordsPreface;
-    
+
         return $this;
     }
 
     /**
-     * Get recordsPreface
+     * Get recordsPreface.
      *
      * @return string
      */
@@ -257,7 +255,7 @@ class Club
     }
 
     /**
-     * Set recordsAppendix
+     * Set recordsAppendix.
      *
      * @param string $recordsAppendix
      *
@@ -266,12 +264,12 @@ class Club
     public function setRecordsAppendix($recordsAppendix)
     {
         $this->records_appendix = $recordsAppendix;
-    
+
         return $this;
     }
 
     /**
-     * Get recordsAppendix
+     * Get recordsAppendix.
      *
      * @return string
      */

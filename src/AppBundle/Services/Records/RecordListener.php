@@ -24,6 +24,7 @@ class RecordListener
 
     /**
      * @param ScoreEvent $event
+     *
      * @return RecordHolder[]
      */
     public function handleScore(ScoreEvent $event)
@@ -55,7 +56,7 @@ class RecordListener
         foreach ($records as $record) {
             $scores = $this->getCandidateScores($em, $record, $score);
             $holder = $this->buildRecord($record, $scores);
-            if($holder != null) {
+            if ($holder != null) {
                 $newHolders = array_merge($newHolders, $this->addNewRecordIfBetter($em, $record, $holder));
             }
         }
@@ -67,8 +68,8 @@ class RecordListener
 
     /**
      * @param ObjectManager $em
-     * @param Record $record
-     * @param Score $score
+     * @param Record        $record
+     * @param Score         $score
      *
      * @return Score[]
      */
@@ -78,7 +79,7 @@ class RecordListener
 
         $scoreRepository = $em->getRepository('AppBundle:Score');
 
-        if($record->getNumHolders() == 1) {
+        if ($record->getNumHolders() == 1) {
             $person = $score->getPerson();
 
             return $scoreRepository->getByCompetitionAndPerson($competition, $person, $score->getClub());
@@ -93,12 +94,12 @@ class RecordListener
             return [];
         }
 
-        foreach($record->getUnconfirmedHolders($holder->getClub()) as $unconfirmedHolder) {
-            if($unconfirmedHolder->getCompetition()->getId() !== $holder->getCompetition()->getId()) {
+        foreach ($record->getUnconfirmedHolders($holder->getClub()) as $unconfirmedHolder) {
+            if ($unconfirmedHolder->getCompetition()->getId() !== $holder->getCompetition()->getId()) {
                 continue;
             }
 
-            if(!$holder->isBetterThan($unconfirmedHolder)) {
+            if (!$holder->isBetterThan($unconfirmedHolder)) {
                 return [];
             }
 
@@ -112,9 +113,8 @@ class RecordListener
         return [$holder];
     }
 
-
     /**
-     * @param Record $record
+     * @param Record  $record
      * @param Score[] $candidateScores
      *
      * @return RecordHolder
@@ -132,9 +132,9 @@ class RecordListener
      * PRE: $scores all same competition
      * PRE: $scores all same person
      * PRE: $scores all same club
-     * PRE: $scores is sorted by date
+     * PRE: $scores is sorted by date.
      *
-     * @param Record $record
+     * @param Record  $record
      * @param Score[] $candidateScores
      *
      * @return RecordHolder
@@ -151,14 +151,16 @@ class RecordListener
         $round = $rounds[0];
 
         // filter scores
-        $candidateScores = array_filter($candidateScores, function ($s) use($record) { return $this->canBeUsedInRecord($record, $s); });
+        $candidateScores = array_filter($candidateScores, function ($s) use ($record) {
+            return $this->canBeUsedInRecord($record, $s);
+        });
 
         // NOTE: only the first N scores count for records
         // NOTE: single scores can count for double records (but are unlikely to win)
         $selectedScores = array_slice($candidateScores, 0, $round->getCount());
 
-        if(count($selectedScores) == 0) {
-            return null;
+        if (count($selectedScores) == 0) {
+            return;
         }
 
         return RecordManager::createHolder($record, $selectedScores);
@@ -167,9 +169,9 @@ class RecordListener
     /**
      * PRE: $scores all same competition
      * PRE: $scores all same club
-     * PRE: $scores is sorted by date
+     * PRE: $scores is sorted by date.
      *
-     * @param Record $record
+     * @param Record  $record
      * @param Score[] $candidateScores
      *
      * @return RecordHolder
@@ -193,12 +195,12 @@ class RecordListener
 
         foreach ($candidateScores as $candidateScore) {
             // can the score can be used for this record
-            if(!$this->canBeUsedInRecord($record, $candidateScore)) {
+            if (!$this->canBeUsedInRecord($record, $candidateScore)) {
                 continue;
             }
 
             // if score.person has selected score already: remove existing if this is better
-            for ($i = 0; $i < $selectedCount; $i++) {
+            for ($i = 0; $i < $selectedCount; ++$i) {
                 $score = $selectedScores[$i];
 
                 if ($score->getPerson()->getId() != $candidateScore->getPerson()->getId()) {
@@ -211,7 +213,7 @@ class RecordListener
 
                 // remove candidate
                 array_splice($selectedScores, $i, 1);
-                $selectedCount--;
+                --$selectedCount;
 
                 break;
             }
@@ -225,11 +227,11 @@ class RecordListener
 
                 // remove lowest
                 array_splice($selectedScores, $selectedCount - 1, 1);
-                $selectedCount--;
+                --$selectedCount;
             }
 
             // insertion sort!
-            for ($i = 0; $i < $selectedCount; $i++) {
+            for ($i = 0; $i < $selectedCount; ++$i) {
                 $score = $selectedScores[$i];
 
                 if (!$candidateScore->isBetterThan($score)) {
@@ -237,17 +239,17 @@ class RecordListener
                 }
 
                 array_splice($selectedScores, $i, 0, [$candidateScore]);
-                $selectedCount++;
+                ++$selectedCount;
 
                 continue 2;
             }
 
             array_push($selectedScores, $candidateScore);
-            $selectedCount++;
+            ++$selectedCount;
         }
 
-        if(count($selectedScores) == 0) {
-            return null;
+        if (count($selectedScores) == 0) {
+            return;
         }
 
         return RecordManager::createHolder($record, $selectedScores);
@@ -255,35 +257,36 @@ class RecordListener
 
     /**
      * @param Record $record
-     * @param Score $score
+     * @param Score  $score
      *
      * @return bool
      */
-    private function canBeUsedInRecord(Record $record, Score $score) {
-        if(!$score->getCompetition()) {
+    private function canBeUsedInRecord(Record $record, Score $score)
+    {
+        if (!$score->getCompetition()) {
             return false;
         }
 
         $round = $score->getRound();
 
-        foreach($record->getRounds() as $recordRound) {
-            if($recordRound->getRound()->getId() !== $round->getId()) {
+        foreach ($record->getRounds() as $recordRound) {
+            if ($recordRound->getRound()->getId() !== $round->getId()) {
                 continue;
             }
 
 
             $skill = $recordRound->getSkill();
-            if($skill && $skill !== $score->getSkill()) {
+            if ($skill && $skill !== $score->getSkill()) {
                 continue;
             }
 
             $gender = $recordRound->getGender();
-            if($gender && $gender !== $score->getPerson()->getGender()) {
+            if ($gender && $gender !== $score->getPerson()->getGender()) {
                 continue;
             }
 
             $bowtype = $recordRound->getBowtype();
-            if($bowtype && $bowtype !== $score->getBowtype()) {
+            if ($bowtype && $bowtype !== $score->getBowtype()) {
                 continue;
             }
 

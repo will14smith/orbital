@@ -40,9 +40,9 @@ class LeaguePerson
     protected $points;
 
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -50,7 +50,7 @@ class LeaguePerson
     }
 
     /**
-     * Set date_added
+     * Set date_added.
      *
      * @param \DateTime $dateAdded
      *
@@ -64,7 +64,7 @@ class LeaguePerson
     }
 
     /**
-     * Get date_added
+     * Get date_added.
      *
      * @return \DateTime
      */
@@ -74,9 +74,9 @@ class LeaguePerson
     }
 
     /**
-     * Set initial_position
+     * Set initial_position.
      *
-     * @param integer $initialPosition
+     * @param int $initialPosition
      *
      * @return LeaguePerson
      */
@@ -88,9 +88,9 @@ class LeaguePerson
     }
 
     /**
-     * Get initial_position
+     * Get initial_position.
      *
-     * @return integer
+     * @return int
      */
     public function getInitialPosition()
     {
@@ -98,9 +98,9 @@ class LeaguePerson
     }
 
     /**
-     * Set points
+     * Set points.
      *
-     * @param integer $points
+     * @param int $points
      *
      * @return LeaguePerson
      */
@@ -112,9 +112,9 @@ class LeaguePerson
     }
 
     /**
-     * Get points
+     * Get points.
      *
-     * @return integer
+     * @return int
      */
     public function getPoints()
     {
@@ -122,7 +122,7 @@ class LeaguePerson
     }
 
     /**
-     * Set league
+     * Set league.
      *
      * @param League $league
      *
@@ -136,7 +136,7 @@ class LeaguePerson
     }
 
     /**
-     * Get league
+     * Get league.
      *
      * @return League
      */
@@ -146,7 +146,7 @@ class LeaguePerson
     }
 
     /**
-     * Set person
+     * Set person.
      *
      * @param Person $person
      *
@@ -160,7 +160,7 @@ class LeaguePerson
     }
 
     /**
-     * Get person
+     * Get person.
      *
      * @return Person
      */
@@ -169,7 +169,8 @@ class LeaguePerson
         return $this->person;
     }
 
-    public function __toString() {
+    public function __toString()
+    {
         return (string) $this->person;
     }
 }

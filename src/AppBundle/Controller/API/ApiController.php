@@ -11,7 +11,7 @@ abstract class ApiController extends Controller
     {
         $response = new JsonResponse();
         $response->setData($data);
+
         return $response;
     }
-
 }

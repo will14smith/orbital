@@ -31,7 +31,7 @@ class ApprovalController extends Controller
 
         return $this->render('approval/list.html.twig', [
             'items' => $items,
-            'club' => $club
+            'club' => $club,
         ]);
     }
 }

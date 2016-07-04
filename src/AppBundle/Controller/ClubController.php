@@ -16,18 +16,19 @@ class ClubController extends Controller
      */
     public function indexAction()
     {
-        $clubRepository = $this->getDoctrine()->getRepository("AppBundle:Club");
+        $clubRepository = $this->getDoctrine()->getRepository('AppBundle:Club');
 
         $clubs = $clubRepository->findAll();
 
         return $this->render('club/list.html.twig', [
-            'clubs' => $clubs
+            'clubs' => $clubs,
         ]);
     }
 
     /**
      * @Security("has_role('ROLE_ADMIN')")
      * @Route("/club/create", name="club_create", methods={"GET", "POST"})
+     *
      * @param Request $request
      *
      * @return \Symfony\Component\HttpFoundation\Response
@@ -64,7 +65,7 @@ class ClubController extends Controller
      */
     public function detailAction($id)
     {
-        $clubRepository = $this->getDoctrine()->getRepository("AppBundle:Club");
+        $clubRepository = $this->getDoctrine()->getRepository('AppBundle:Club');
 
         $club = $clubRepository->find($id);
         if (!$club) {
@@ -74,7 +75,7 @@ class ClubController extends Controller
         }
 
         return $this->render('club/detail.html.twig', [
-            'club' => $club
+            'club' => $club,
         ]);
     }
 
@@ -82,7 +83,7 @@ class ClubController extends Controller
      * @Security("has_role('ROLE_ADMIN')")
      * @Route("/club/{id}/edit", name="club_edit", methods={"GET", "POST"})
      *
-     * @param int $id
+     * @param int     $id
      * @param Request $request
      *
      * @return \Symfony\Component\HttpFoundation\Response
@@ -119,7 +120,7 @@ class ClubController extends Controller
      * @Security("has_role('ROLE_ADMIN')")
      * @Route("/club/{id}/delete", name="club_delete", methods={"GET", "POST"})
      *
-     * @param int $id
+     * @param int     $id
      * @param Request $request
      *
      * @return \Symfony\Component\HttpFoundation\Response
@@ -135,7 +136,7 @@ class ClubController extends Controller
             );
         }
 
-        if ($request->isMethod("POST")) {
+        if ($request->isMethod('POST')) {
             $em->remove($club);
             $em->flush();
 
@@ -143,7 +144,7 @@ class ClubController extends Controller
         }
 
         return $this->render('club/delete.html.twig', [
-            'club' => $club
+            'club' => $club,
         ]);
     }
 }

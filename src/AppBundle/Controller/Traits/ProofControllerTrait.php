@@ -76,7 +76,6 @@ trait ProofControllerTrait
         // notes
         $notes = trim($data['proof_notes']);
         if (!empty($notes)) {
-
             $proof = $this->createProof($object);
             $proof->setNotes($notes);
             $proof->setPerson($person);
@@ -105,22 +104,28 @@ trait ProofControllerTrait
     /**
      * @param mixed $attributes
      * @param mixed $object
+     *
      * @return bool
      */
     abstract protected function isGranted($attributes, $object = null);
+
     /**
      * @return mixed
      */
     abstract public function getUser();
+
     /**
      * @param string $id
+     *
      * @return object
      */
     abstract public function get($id);
+
     /**
      * @return Registry
      */
     abstract public function getDoctrine();
+
     /**
      * @param mixed $data
      * @param array $options
