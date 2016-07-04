@@ -2,16 +2,20 @@
 
 {% block title %}
     <div class="page-break-after" style="text-align: center;">
-        <h1 style="font-size: 72pt;">ICAC Club Records</h1>
+        <h1 style="font-size: 72pt;">{{ title }}</h1>
 
-        <img src="{{ absolute_url(asset("images/crest.png")) }}" style="width: 50%;"/>
+        {% if image_url %}
+            <img src="{{ image_url }}" style="width: 50%;"/>
+        {% endif %}
     </div>
 {% endblock %}
 
 {% block content %}
-    <div class="page-break-after">
-        {% include 'record/list_rules.pdf.twig' %}
-    </div>
+    {% if preface %}
+        <div class="page-break-after">
+            {{ preface | raw }}
+        </div>
+    {% endif %}
     <style>
         .record_table tr {
             padding-bottom: 1cm;
@@ -90,7 +94,9 @@
         </div>
     {% endfor %}
 
-    <div class="page-break-after">
-        {% include 'record/list_appendix.pdf.twig' %}
-    </div>
+    {% if appendix %}
+        <div class="page-break-after">
+            {{ appendix | raw }}
+        </div>
+    {% endif %}
 {% endblock %}
