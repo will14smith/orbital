@@ -27,9 +27,6 @@ class RecordPdfController extends Controller
      */
     public function pdfAction(Request $request)
     {
-        $recordRepository = $this->getDoctrine()->getRepository('AppBundle:Record');
-        $records = $recordRepository->findAll();
-
         $clubRepository = $this->getDoctrine()->getRepository('AppBundle:Club');
         $club_id = $request->query->getInt('club');
         $club = $clubRepository->find($club_id);
@@ -38,6 +35,9 @@ class RecordPdfController extends Controller
                 'No club found for id ' . $club_id
             );
         }
+
+        $recordRepository = $this->getDoctrine()->getRepository('AppBundle:Record');
+        $records = $recordRepository->findAllByClub($club->getId());
 
         $groups = [];
 

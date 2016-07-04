@@ -8,6 +8,17 @@ use Doctrine\ORM\EntityRepository;
 
 class RecordRepository extends EntityRepository
 {
+    public function findAllByClub($club_id)
+    {
+        return $this->createQueryBuilder('r')
+            ->join('r.clubs', 'c')
+            ->where('c.club = :club_id')
+
+            ->setParameter('club_id', $club_id, Type::INTEGER)
+
+            ->getQuery()->getResult();
+    }
+
     /**
      * @param int $person_id
      *
@@ -76,7 +87,6 @@ class RecordRepository extends EntityRepository
             ->join('r.rounds', 'rr')
             ->where('rr.round = :round')
             ->setParameter('round', $score->getRound())
-
             ->join('r.clubs', 'rc')
             ->andWhere('rc.club = :club')
             ->setParameter('club', $score->getClub());
