@@ -1,6 +1,5 @@
 <?php
 
-
 namespace AppBundle\Entity;
 
 use AppBundle\Services\Enum\BadgeState;
@@ -53,9 +52,9 @@ class BadgeHolder
     protected $proof;
 
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -63,7 +62,7 @@ class BadgeHolder
     }
 
     /**
-     * Set date_awarded
+     * Set date_awarded.
      *
      * @param \DateTime $dateAwarded
      *
@@ -77,7 +76,7 @@ class BadgeHolder
     }
 
     /**
-     * Get date_awarded
+     * Get date_awarded.
      *
      * @return \DateTime
      */
@@ -87,7 +86,7 @@ class BadgeHolder
     }
 
     /**
-     * Set date_confirmed
+     * Set date_confirmed.
      *
      * @param \DateTime $dateConfirmed
      *
@@ -101,7 +100,7 @@ class BadgeHolder
     }
 
     /**
-     * Get date_confirmed
+     * Get date_confirmed.
      *
      * @return \DateTime
      */
@@ -111,7 +110,7 @@ class BadgeHolder
     }
 
     /**
-     * Set date_made
+     * Set date_made.
      *
      * @param \DateTime $dateMade
      *
@@ -125,7 +124,7 @@ class BadgeHolder
     }
 
     /**
-     * Get date_made
+     * Get date_made.
      *
      * @return \DateTime
      */
@@ -135,7 +134,7 @@ class BadgeHolder
     }
 
     /**
-     * Set date_delivered
+     * Set date_delivered.
      *
      * @param \DateTime $dateDelivered
      *
@@ -149,7 +148,7 @@ class BadgeHolder
     }
 
     /**
-     * Get date_delivered
+     * Get date_delivered.
      *
      * @return \DateTime
      */
@@ -159,7 +158,7 @@ class BadgeHolder
     }
 
     /**
-     * Set badge
+     * Set badge.
      *
      * @param \AppBundle\Entity\Badge $badge
      *
@@ -173,7 +172,7 @@ class BadgeHolder
     }
 
     /**
-     * Get badge
+     * Get badge.
      *
      * @return \AppBundle\Entity\Badge
      */
@@ -183,7 +182,7 @@ class BadgeHolder
     }
 
     /**
-     * Set person
+     * Set person.
      *
      * @param \AppBundle\Entity\Person $person
      *
@@ -197,7 +196,7 @@ class BadgeHolder
     }
 
     /**
-     * Get person
+     * Get person.
      *
      * @return \AppBundle\Entity\Person
      */
@@ -227,7 +226,7 @@ class BadgeHolder
     }
 
     /**
-     * Constructor
+     * Constructor.
      */
     public function __construct()
     {
@@ -235,7 +234,7 @@ class BadgeHolder
     }
 
     /**
-     * Add proof
+     * Add proof.
      *
      * @param \AppBundle\Entity\BadgeHolderProof $proof
      *
@@ -249,7 +248,7 @@ class BadgeHolder
     }
 
     /**
-     * Remove proof
+     * Remove proof.
      *
      * @param \AppBundle\Entity\BadgeHolderProof $proof
      */
@@ -259,7 +258,7 @@ class BadgeHolder
     }
 
     /**
-     * Get proof
+     * Get proof.
      *
      * @return \Doctrine\Common\Collections\Collection
      */
@@ -268,7 +267,8 @@ class BadgeHolder
         return $this->proof;
     }
 
-    public function __toString() {
+    public function __toString()
+    {
         return $this->getBadge() . ' - ' . $this->getPerson();
     }
 }

@@ -12,11 +12,11 @@ class ScoreVoter extends BaseVoter
     protected $class = 'AppBundle\Entity\Score';
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     protected function voteInternal(Person $user, $score, $permission)
     {
-        /** @var Score $score */
+        /* @var Score $score */
 
         switch ($permission) {
             case SecurityAction::EDIT:

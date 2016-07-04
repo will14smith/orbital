@@ -37,9 +37,9 @@ class RecordClub
     protected $activeUntil;
 
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -47,7 +47,7 @@ class RecordClub
     }
 
     /**
-     * Set activeFrom
+     * Set activeFrom.
      *
      * @param \DateTime $activeFrom
      *
@@ -56,12 +56,12 @@ class RecordClub
     public function setActiveFrom($activeFrom)
     {
         $this->activeFrom = $activeFrom;
-    
+
         return $this;
     }
 
     /**
-     * Get activeFrom
+     * Get activeFrom.
      *
      * @return \DateTime
      */
@@ -71,7 +71,7 @@ class RecordClub
     }
 
     /**
-     * Set activeUntil
+     * Set activeUntil.
      *
      * @param \DateTime $activeUntil
      *
@@ -80,12 +80,12 @@ class RecordClub
     public function setActiveUntil($activeUntil)
     {
         $this->activeUntil = $activeUntil;
-    
+
         return $this;
     }
 
     /**
-     * Get activeUntil
+     * Get activeUntil.
      *
      * @return \DateTime
      */
@@ -95,7 +95,7 @@ class RecordClub
     }
 
     /**
-     * Set record
+     * Set record.
      *
      * @param Record $record
      *
@@ -104,12 +104,12 @@ class RecordClub
     public function setRecord(Record $record = null)
     {
         $this->record = $record;
-    
+
         return $this;
     }
 
     /**
-     * Get record
+     * Get record.
      *
      * @return Record
      */
@@ -119,7 +119,7 @@ class RecordClub
     }
 
     /**
-     * Set club
+     * Set club.
      *
      * @param Club $club
      *
@@ -128,12 +128,12 @@ class RecordClub
     public function setClub(Club $club = null)
     {
         $this->club = $club;
-    
+
         return $this;
     }
 
     /**
-     * Get club
+     * Get club.
      *
      * @return Club
      */
@@ -142,8 +142,9 @@ class RecordClub
         return $this->club;
     }
 
-    public function isActive(\DateTime $date = null) {
-        if($date === null) {
+    public function isActive(\DateTime $date = null)
+    {
+        if ($date === null) {
             $date = new \DateTime('now');
         }
 

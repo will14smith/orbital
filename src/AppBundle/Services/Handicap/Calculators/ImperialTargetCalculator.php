@@ -13,7 +13,7 @@ class ImperialTargetCalculator implements TargetCalculatorInterface
 
         $sigma_sq = pow($sigma, 2);
 
-        for ($n = $start; $n <= 4; $n++) {
+        for ($n = $start; $n <= 4; ++$n) {
             $x = pow($n * $targetDiameter / 10 + 0.357, 2);
 
             $sum += exp(-$x / $sigma_sq);

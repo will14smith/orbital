@@ -45,9 +45,9 @@ class RecordRound
     protected $gender;
 
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -55,7 +55,7 @@ class RecordRound
     }
 
     /**
-     * Set record
+     * Set record.
      *
      * @param Record $record
      *
@@ -64,12 +64,12 @@ class RecordRound
     public function setRecord(Record $record = null)
     {
         $this->record = $record;
-    
+
         return $this;
     }
 
     /**
-     * Get record
+     * Get record.
      *
      * @return Record
      */
@@ -79,7 +79,7 @@ class RecordRound
     }
 
     /**
-     * Set round
+     * Set round.
      *
      * @param Round $round
      *
@@ -88,12 +88,12 @@ class RecordRound
     public function setRound(Round $round = null)
     {
         $this->round = $round;
-    
+
         return $this;
     }
 
     /**
-     * Get round
+     * Get round.
      *
      * @return Round
      */
@@ -103,23 +103,23 @@ class RecordRound
     }
 
     /**
-     * Set count
+     * Set count.
      *
-     * @param integer $count
+     * @param int $count
      *
      * @return RecordRound
      */
     public function setCount($count)
     {
         $this->count = $count;
-    
+
         return $this;
     }
 
     /**
-     * Get count
+     * Get count.
      *
-     * @return integer
+     * @return int
      */
     public function getCount()
     {
@@ -127,7 +127,7 @@ class RecordRound
     }
 
     /**
-     * Set skill
+     * Set skill.
      *
      * @param string $skill
      *
@@ -136,12 +136,12 @@ class RecordRound
     public function setSkill($skill)
     {
         $this->skill = $skill;
-    
+
         return $this;
     }
 
     /**
-     * Get skill
+     * Get skill.
      *
      * @return string
      */
@@ -151,7 +151,7 @@ class RecordRound
     }
 
     /**
-     * Set bowtype
+     * Set bowtype.
      *
      * @param string $bowtype
      *
@@ -160,12 +160,12 @@ class RecordRound
     public function setBowtype($bowtype)
     {
         $this->bowtype = $bowtype;
-    
+
         return $this;
     }
 
     /**
-     * Get bowtype
+     * Get bowtype.
      *
      * @return string
      */
@@ -175,7 +175,7 @@ class RecordRound
     }
 
     /**
-     * Set gender
+     * Set gender.
      *
      * @param string $gender
      *
@@ -184,12 +184,12 @@ class RecordRound
     public function setGender($gender)
     {
         $this->gender = $gender;
-    
+
         return $this;
     }
 
     /**
-     * Get gender
+     * Get gender.
      *
      * @return string
      */

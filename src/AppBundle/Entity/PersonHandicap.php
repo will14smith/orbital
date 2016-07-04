@@ -1,6 +1,5 @@
 <?php
 
-
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -47,9 +46,9 @@ class PersonHandicap
     protected $score;
 
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -57,7 +56,7 @@ class PersonHandicap
     }
 
     /**
-     * Set type
+     * Set type.
      *
      * @param string $type
      *
@@ -71,7 +70,7 @@ class PersonHandicap
     }
 
     /**
-     * Get type
+     * Get type.
      *
      * @return string
      */
@@ -81,7 +80,7 @@ class PersonHandicap
     }
 
     /**
-     * Set date
+     * Set date.
      *
      * @param \DateTime $date
      *
@@ -95,7 +94,7 @@ class PersonHandicap
     }
 
     /**
-     * Get date
+     * Get date.
      *
      * @return \DateTime
      */
@@ -105,9 +104,9 @@ class PersonHandicap
     }
 
     /**
-     * Set handicap
+     * Set handicap.
      *
-     * @param integer $handicap
+     * @param int $handicap
      *
      * @return PersonHandicap
      */
@@ -119,9 +118,9 @@ class PersonHandicap
     }
 
     /**
-     * Get handicap
+     * Get handicap.
      *
-     * @return integer
+     * @return int
      */
     public function getHandicap()
     {
@@ -129,7 +128,7 @@ class PersonHandicap
     }
 
     /**
-     * Set person
+     * Set person.
      *
      * @param \AppBundle\Entity\Person $person
      *
@@ -143,7 +142,7 @@ class PersonHandicap
     }
 
     /**
-     * Get person
+     * Get person.
      *
      * @return \AppBundle\Entity\Person
      */
@@ -153,7 +152,7 @@ class PersonHandicap
     }
 
     /**
-     * Set score
+     * Set score.
      *
      * @param \AppBundle\Entity\Score $score
      *
@@ -167,7 +166,7 @@ class PersonHandicap
     }
 
     /**
-     * Get score
+     * Get score.
      *
      * @return \AppBundle\Entity\Score
      */
@@ -177,9 +176,10 @@ class PersonHandicap
     }
 
     /**
-     * Set indoor
+     * Set indoor.
      *
-     * @param boolean $indoor
+     * @param bool $indoor
+     *
      * @return Round
      */
     public function setIndoor($indoor)
@@ -190,9 +190,9 @@ class PersonHandicap
     }
 
     /**
-     * Get indoor
+     * Get indoor.
      *
-     * @return boolean
+     * @return bool
      */
     public function getIndoor()
     {

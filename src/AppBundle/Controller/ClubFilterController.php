@@ -12,12 +12,12 @@ class ClubFilterController extends Controller
      */
     public function filterAction()
     {
-        $clubRepository = $this->getDoctrine()->getRepository("AppBundle:Club");
+        $clubRepository = $this->getDoctrine()->getRepository('AppBundle:Club');
 
         $clubs = $clubRepository->findAll();
 
         return $this->render('club/filter.html.twig', [
-            'clubs' => $clubs
+            'clubs' => $clubs,
         ]);
     }
 }

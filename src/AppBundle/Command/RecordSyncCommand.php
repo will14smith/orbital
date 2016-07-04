@@ -14,8 +14,7 @@ class RecordSyncCommand extends ContainerAwareCommand
     {
         $this
             ->setName('orbital:records:sync')
-            ->setDescription('Update records by checking all existing scores. Useful after adding new records')
-        ;
+            ->setDescription('Update records by checking all existing scores. Useful after adding new records');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -33,10 +32,10 @@ class RecordSyncCommand extends ContainerAwareCommand
         $recordListener = $container->get('orbital.scoring.record_listener');
 
         $count = 0;
-        foreach($scores as $score) {
+        foreach ($scores as $score) {
             $newHolders = $recordListener->handleScore(new ScoreEvent($score));
             $count += count($newHolders);
-            foreach($newHolders as $newHolder) {
+            foreach ($newHolders as $newHolder) {
                 $output->writeln(sprintf('New holder for \'%s\'', RecordManager::toString($newHolder->getRecord())));
             }
         }

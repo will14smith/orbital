@@ -1,6 +1,5 @@
 <?php
 
-
 namespace AppBundle\Entity;
 
 use AppBundle\Services\Enum\Skill;
@@ -42,7 +41,7 @@ class Record
     protected $holders;
 
     /**
-     * Constructor
+     * Constructor.
      */
     public function __construct()
     {
@@ -50,9 +49,9 @@ class Record
     }
 
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -60,9 +59,9 @@ class Record
     }
 
     /**
-     * Set num_holders
+     * Set num_holders.
      *
-     * @param integer $numHolders
+     * @param int $numHolders
      *
      * @return Record
      */
@@ -74,9 +73,9 @@ class Record
     }
 
     /**
-     * Get num_holders
+     * Get num_holders.
      *
-     * @return integer
+     * @return int
      */
     public function getNumHolders()
     {
@@ -84,7 +83,7 @@ class Record
     }
 
     /**
-     * Add holders
+     * Add holders.
      *
      * @param \AppBundle\Entity\RecordHolder $holder
      *
@@ -99,7 +98,7 @@ class Record
     }
 
     /**
-     * Remove holders
+     * Remove holders.
      *
      * @param \AppBundle\Entity\RecordHolder $holders
      */
@@ -109,9 +108,10 @@ class Record
     }
 
     /**
-     * Get confirmed holders
+     * Get confirmed holders.
      *
      * @param $club
+     *
      * @return RecordHolder[]|\Doctrine\Common\Collections\Collection
      */
     public function getHolders(Club $club)
@@ -120,9 +120,10 @@ class Record
     }
 
     /**
-     * Get unconfirmed holders
+     * Get unconfirmed holders.
      *
      * @param Club $club
+     *
      * @return RecordHolder[]|\Doctrine\Common\Collections\Collection
      */
     public function getUnconfirmedHolders(Club $club)
@@ -131,9 +132,10 @@ class Record
     }
 
     /**
-     * Get all holders
+     * Get all holders.
      *
      * @param Club $club
+     *
      * @return RecordHolder[]|\Doctrine\Common\Collections\Collection
      */
     public function getAllHolders(Club $club)
@@ -145,7 +147,9 @@ class Record
 
     /**
      * @param Club $club
+     *
      * @return RecordHolder
+     *
      * @throws \Exception
      */
     public function getCurrentHolder(Club $club)
@@ -168,7 +172,7 @@ class Record
     }
 
     /**
-     * Add round
+     * Add round.
      *
      * @param RecordRound $round
      *
@@ -183,7 +187,7 @@ class Record
     }
 
     /**
-     * Remove round
+     * Remove round.
      *
      * @param RecordRound $round
      */
@@ -193,7 +197,7 @@ class Record
     }
 
     /**
-     * Get rounds
+     * Get rounds.
      *
      * @return \Doctrine\Common\Collections\Collection|RecordRound[]
      */
@@ -203,7 +207,7 @@ class Record
     }
 
     /**
-     * Add club
+     * Add club.
      *
      * @param RecordClub $club
      *
@@ -218,7 +222,7 @@ class Record
     }
 
     /**
-     * Remove club
+     * Remove club.
      *
      * @param RecordClub $club
      */
@@ -228,7 +232,7 @@ class Record
     }
 
     /**
-     * Get clubs
+     * Get clubs.
      *
      * @return \Doctrine\Common\Collections\Collection|RecordClub[]
      */
@@ -246,18 +250,23 @@ class Record
 
     public function isNovice()
     {
-        return $this->getRounds()->forAll(function($_, RecordRound $round) { return $round->getSkill() == Skill::NOVICE; });
+        return $this->getRounds()->forAll(function ($_, RecordRound $round) {
+            return $round->getSkill() == Skill::NOVICE;
+        });
     }
 
-    public function getGender() {
+    public function getGender()
+    {
         $rounds = $this->getRounds();
 
-        if($rounds->count() == 0) {
-            return null;
+        if ($rounds->count() == 0) {
+            return;
         }
 
         $primaryGender = $rounds[0]->getGender();
-        $allGender = $rounds->forAll(function($_, RecordRound $round) use($primaryGender) { return $round->getGender() == $primaryGender; });
+        $allGender = $rounds->forAll(function ($_, RecordRound $round) use ($primaryGender) {
+            return $round->getGender() == $primaryGender;
+        });
 
         return $allGender ? $primaryGender : null;
     }
@@ -266,12 +275,14 @@ class Record
     {
         $rounds = $this->getRounds();
 
-        if($rounds->count() == 0) {
-            return null;
+        if ($rounds->count() == 0) {
+            return;
         }
 
         $primaryBowtype = $rounds[0]->getBowtype();
-        $all = $rounds->forAll(function($_, RecordRound $round) use($primaryBowtype) { return $round->getBowtype() == $primaryBowtype; });
+        $all = $rounds->forAll(function ($_, RecordRound $round) use ($primaryBowtype) {
+            return $round->getBowtype() == $primaryBowtype;
+        });
 
         return $all ? $primaryBowtype : null;
     }

@@ -1,13 +1,9 @@
 <?php
 
-
 namespace AppBundle\DataFixtures\ORM;
 
-
 use AppBundle\Entity\Badge;
-
 use AppBundle\Services\Enum\BadgeCategory;
-
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -15,21 +11,21 @@ use Doctrine\Common\Persistence\ObjectManager;
 class LoadBadgeData extends AbstractFixture implements OrderedFixtureInterface
 {
     /**
-     * Load data fixtures with the passed EntityManager
+     * Load data fixtures with the passed EntityManager.
      *
      * @param ObjectManager $manager
      */
     public function load(ObjectManager $manager)
     {
         $badge1 = new Badge();
-        $badge1->setName("Badge 1");
-        $badge1->setDescription("This is badge number 1");
+        $badge1->setName('Badge 1');
+        $badge1->setDescription('This is badge number 1');
         $badge1->setCategory(BadgeCategory::SKILL);
         $badge1->setMultiple(false);
 
         $badge2 = new Badge();
-        $badge2->setName("Badge 2");
-        $badge2->setDescription("This is badge number 2");
+        $badge2->setName('Badge 2');
+        $badge2->setDescription('This is badge number 2');
         $badge2->setCategory(BadgeCategory::COLOUR);
         $badge2->setMultiple(true);
 
@@ -40,9 +36,9 @@ class LoadBadgeData extends AbstractFixture implements OrderedFixtureInterface
     }
 
     /**
-     * Get the order of this fixture
+     * Get the order of this fixture.
      *
-     * @return integer
+     * @return int
      */
     public function getOrder()
     {

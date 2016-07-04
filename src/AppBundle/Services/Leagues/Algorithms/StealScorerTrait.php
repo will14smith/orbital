@@ -8,6 +8,7 @@ trait StealScorerTrait
 {
     /**
      * @param LeagueMatch $match
+     *
      * @return \int[] [winner delta, loser delta]
      */
     public function score(LeagueMatch $match)

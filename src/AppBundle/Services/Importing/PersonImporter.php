@@ -1,13 +1,10 @@
 <?php
 
-
 namespace AppBundle\Services\Importing;
-
 
 use AppBundle\Entity\Person;
 use AppBundle\Exceptions\InvalidFormatException;
 use AppBundle\Services\Enum\Gender;
-use AppBundle\Services\Enum\Skill;
 use Doctrine\Bundle\DoctrineBundle\Registry;
 
 class PersonImporter
@@ -41,7 +38,7 @@ class PersonImporter
         $this->parse_header($reader, 'Full Members');
 
         $keys = $reader->fgetcsv();
-        if(!$this->verify_keys($keys, ['CID', 'Login', 'First Name', 'Surname', 'Gender', 'Email'])) {
+        if (!$this->verify_keys($keys, ['CID', 'Login', 'First Name', 'Surname', 'Gender', 'Email'])) {
             throw new InvalidFormatException("File doesn't contain all the required fields");
         }
 
@@ -62,7 +59,7 @@ class PersonImporter
         $this->parse_header($reader, 'Life / Associate');
 
         $keys = $reader->fgetcsv();
-        if(!$this->verify_keys($keys, ['CID/Card Number', 'Login', 'First Name', 'Surname', 'Gender', 'Email'])) {
+        if (!$this->verify_keys($keys, ['CID/Card Number', 'Login', 'First Name', 'Surname', 'Gender', 'Email'])) {
             throw new InvalidFormatException("File doesn't contain all the required fields");
         }
 
@@ -109,7 +106,7 @@ class PersonImporter
 
         if ($num_csv != $num_keys) {
             throw new InvalidFormatException(sprintf(
-                "Line %i contains %i entries but it should contain %i",
+                'Line %i contains %i entries but it should contain %i',
                 $reader->key(), $num_csv, $num_keys
             ));
         }
@@ -150,7 +147,7 @@ class PersonImporter
         // lookup person
         $current_person = $this->doctrine->getRepository('AppBundle:Person')
             ->findOneBy([
-                'cid' => $person->getCid()
+                'cid' => $person->getCid(),
             ]);
 
         // if we cared about performance we could share the em...

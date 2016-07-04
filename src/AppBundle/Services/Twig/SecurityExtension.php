@@ -1,13 +1,12 @@
 <?php
 
-
 namespace AppBundle\Services\Twig;
 
 use Symfony\Component\Security\Acl\Voter\FieldVote;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
-class SecurityExtension extends \Twig_Extension {
-
+class SecurityExtension extends \Twig_Extension
+{
     private $securityChecker;
 
     public function __construct(AuthorizationCheckerInterface $securityChecker = null)
@@ -24,14 +23,15 @@ class SecurityExtension extends \Twig_Extension {
             $object = new FieldVote($object, $field);
         }
 
-        foreach($roles as $role) {
-            if($this->securityChecker->isGranted($role, $object)) {
+        foreach ($roles as $role) {
+            if ($this->securityChecker->isGranted($role, $object)) {
                 return true;
             }
         }
 
         return false;
     }
+
     public function isGrantedAll(array $roles, $object = null, $field = null)
     {
         if (null === $this->securityChecker) {
@@ -41,8 +41,8 @@ class SecurityExtension extends \Twig_Extension {
             $object = new FieldVote($object, $field);
         }
 
-        foreach($roles as $role) {
-            if(!$this->securityChecker->isGranted($role, $object)) {
+        foreach ($roles as $role) {
+            if (!$this->securityChecker->isGranted($role, $object)) {
                 return false;
             }
         }

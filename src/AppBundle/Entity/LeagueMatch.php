@@ -61,7 +61,8 @@ class LeagueMatch
      */
     protected $accepted;
     /**
-     * True = challenger won
+     * True = challenger won.
+     *
      * @ORM\Column(type="boolean", nullable=true)
      */
     protected $result;
@@ -80,7 +81,7 @@ class LeagueMatch
     protected $proofs;
 
     /**
-     * Constructor
+     * Constructor.
      */
     public function __construct()
     {
@@ -88,9 +89,9 @@ class LeagueMatch
     }
 
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -98,9 +99,9 @@ class LeagueMatch
     }
 
     /**
-     * Set challenger_score_value
+     * Set challenger_score_value.
      *
-     * @param integer $challengerScoreValue
+     * @param int $challengerScoreValue
      *
      * @return LeagueMatch
      */
@@ -112,9 +113,9 @@ class LeagueMatch
     }
 
     /**
-     * Get challenger_score_value
+     * Get challenger_score_value.
      *
-     * @return integer
+     * @return int
      */
     public function getChallengerScoreValue()
     {
@@ -122,9 +123,9 @@ class LeagueMatch
     }
 
     /**
-     * Set challengee_score_value
+     * Set challengee_score_value.
      *
-     * @param integer $challengeeScoreValue
+     * @param int $challengeeScoreValue
      *
      * @return LeagueMatch
      */
@@ -136,9 +137,9 @@ class LeagueMatch
     }
 
     /**
-     * Get challengee_score_value
+     * Get challengee_score_value.
      *
-     * @return integer
+     * @return int
      */
     public function getChallengeeScoreValue()
     {
@@ -146,9 +147,9 @@ class LeagueMatch
     }
 
     /**
-     * Set accepted
+     * Set accepted.
      *
-     * @param boolean $accepted
+     * @param bool $accepted
      *
      * @return LeagueMatch
      */
@@ -160,9 +161,9 @@ class LeagueMatch
     }
 
     /**
-     * Get accepted
+     * Get accepted.
      *
-     * @return boolean
+     * @return bool
      */
     public function getAccepted()
     {
@@ -170,9 +171,9 @@ class LeagueMatch
     }
 
     /**
-     * Set result
+     * Set result.
      *
-     * @param boolean $result
+     * @param bool $result
      *
      * @return LeagueMatch
      */
@@ -184,9 +185,9 @@ class LeagueMatch
     }
 
     /**
-     * Get result
+     * Get result.
      *
-     * @return boolean
+     * @return bool
      */
     public function getResult()
     {
@@ -194,7 +195,7 @@ class LeagueMatch
     }
 
     /**
-     * Set date_challenged
+     * Set date_challenged.
      *
      * @param \DateTime $dateChallenged
      *
@@ -208,7 +209,7 @@ class LeagueMatch
     }
 
     /**
-     * Get date_challenged
+     * Get date_challenged.
      *
      * @return \DateTime
      */
@@ -218,7 +219,7 @@ class LeagueMatch
     }
 
     /**
-     * Set date_confirmed
+     * Set date_confirmed.
      *
      * @param \DateTime $dateConfirmed
      *
@@ -232,7 +233,7 @@ class LeagueMatch
     }
 
     /**
-     * Get date_confirmed
+     * Get date_confirmed.
      *
      * @return \DateTime
      */
@@ -242,7 +243,7 @@ class LeagueMatch
     }
 
     /**
-     * Set league
+     * Set league.
      *
      * @param League $league
      *
@@ -256,7 +257,7 @@ class LeagueMatch
     }
 
     /**
-     * Get league
+     * Get league.
      *
      * @return League
      */
@@ -266,7 +267,7 @@ class LeagueMatch
     }
 
     /**
-     * Set challenger
+     * Set challenger.
      *
      * @param LeaguePerson $challenger
      *
@@ -280,7 +281,7 @@ class LeagueMatch
     }
 
     /**
-     * Get challenger
+     * Get challenger.
      *
      * @return LeaguePerson
      */
@@ -290,7 +291,7 @@ class LeagueMatch
     }
 
     /**
-     * Set challengee
+     * Set challengee.
      *
      * @param LeaguePerson $challengee
      *
@@ -304,7 +305,7 @@ class LeagueMatch
     }
 
     /**
-     * Get challengee
+     * Get challengee.
      *
      * @return LeaguePerson
      */
@@ -314,7 +315,7 @@ class LeagueMatch
     }
 
     /**
-     * Get the person who won
+     * Get the person who won.
      *
      * @return LeaguePerson
      */
@@ -328,7 +329,7 @@ class LeagueMatch
     }
 
     /**
-     * Get the person who lost
+     * Get the person who lost.
      *
      * @return LeaguePerson
      */
@@ -344,17 +345,20 @@ class LeagueMatch
     /*
      * @return bool false doesn't mean no...
      */
-    public function challengerWon() {
+    public function challengerWon()
+    {
         if (!$this->getAccepted()) {
             return false;
         }
 
         return $this->getResult();
     }
+
     /*
      * @return bool false doesn't mean no...
      */
-    public function challengeeWon() {
+    public function challengeeWon()
+    {
         if (!$this->getAccepted()) {
             return false;
         }
@@ -363,7 +367,7 @@ class LeagueMatch
     }
 
     /**
-     * Set round
+     * Set round.
      *
      * @param Round $round
      *
@@ -377,7 +381,7 @@ class LeagueMatch
     }
 
     /**
-     * Get round
+     * Get round.
      *
      * @return Round
      */
@@ -387,7 +391,7 @@ class LeagueMatch
     }
 
     /**
-     * Set challenger_score
+     * Set challenger_score.
      *
      * @param Score $challengerScore
      *
@@ -401,7 +405,7 @@ class LeagueMatch
     }
 
     /**
-     * Get challenger_score
+     * Get challenger_score.
      *
      * @return Score
      */
@@ -411,7 +415,7 @@ class LeagueMatch
     }
 
     /**
-     * Set challengee_score
+     * Set challengee_score.
      *
      * @param Score $challengeeScore
      *
@@ -425,7 +429,7 @@ class LeagueMatch
     }
 
     /**
-     * Get challengee_score
+     * Get challengee_score.
      *
      * @return Score
      */
@@ -435,7 +439,7 @@ class LeagueMatch
     }
 
     /**
-     * Add proofs
+     * Add proofs.
      *
      * @param LeagueMatchProof $proofs
      *
@@ -449,7 +453,7 @@ class LeagueMatch
     }
 
     /**
-     * Remove proofs
+     * Remove proofs.
      *
      * @param LeagueMatchProof $proofs
      */
@@ -459,7 +463,7 @@ class LeagueMatch
     }
 
     /**
-     * Get proofs
+     * Get proofs.
      *
      * @return \Doctrine\Common\Collections\Collection
      */

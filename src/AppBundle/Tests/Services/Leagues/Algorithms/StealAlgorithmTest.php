@@ -1,24 +1,24 @@
 <?php
 
-
 namespace AppBundle\Tests\Services\Leagues\Algorithms;
-
 
 use AppBundle\Entity\LeaguePerson;
 use AppBundle\Services\Leagues\Algorithms\StealAlgorithm;
 
-class StealAlgorithmTest extends InitialiserTestCase {
-    private function assertUniqueAndValid($people) {
-        $positions = array_map(function(LeaguePerson $person) {
+class StealAlgorithmTest extends InitialiserTestCase
+{
+    private function assertUniqueAndValid($people)
+    {
+        $positions = array_map(function (LeaguePerson $person) {
             return $person->getInitialPosition();
         }, $people);
 
         $unique = array_unique($positions);
 
-        $this->assertCount(count($people), $unique, "the initial positions are not unique");
+        $this->assertCount(count($people), $unique, 'the initial positions are not unique');
 
-        foreach($people as $person) {
-            /** @var LeaguePerson $person */
+        foreach ($people as $person) {
+            /* @var LeaguePerson $person */
             $this->assertEquals(17, $person->getPoints());
         }
     }

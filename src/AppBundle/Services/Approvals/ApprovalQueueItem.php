@@ -2,8 +2,6 @@
 
 namespace AppBundle\Services\Approvals;
 
-use AppBundle\Entity\Club;
-
 class ApprovalQueueItem
 {
     private $type;

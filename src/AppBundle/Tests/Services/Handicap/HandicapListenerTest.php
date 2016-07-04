@@ -9,11 +9,13 @@ use AppBundle\Tests\Services\ServiceTestCase;
 
 class HandicapListenerTest extends ServiceTestCase
 {
-    private function createManager() {
+    private function createManager()
+    {
         return $this->getMockBuilder('\AppBundle\Services\Handicap\HandicapManager')->getMock();
     }
 
-    private function createListener() {
+    private function createListener()
+    {
         $manager = $this->createManager();
         $doctrine = $this->getDoctrine();
         $listener = new HandicapListener($manager, $doctrine);
@@ -21,7 +23,8 @@ class HandicapListenerTest extends ServiceTestCase
         return [$listener, $manager, $doctrine];
     }
 
-    private function getValidScore() {
+    private function getValidScore()
+    {
         $score = new Score();
 
         $score->setDateAccepted(new \DateTime('10 seconds ago'));
@@ -29,7 +32,8 @@ class HandicapListenerTest extends ServiceTestCase
         return $score;
     }
 
-    public function testCreateScoreValid() {
+    public function testCreateScoreValid()
+    {
         list($listener, $manager) = $this->createListener();
 
         $manager->expects($this->once())
@@ -38,7 +42,9 @@ class HandicapListenerTest extends ServiceTestCase
         $score = $this->getValidScore();
         $listener->score_create(new ScoreEvent($score));
     }
-    public function testCreateScoreNotAccepted() {
+
+    public function testCreateScoreNotAccepted()
+    {
         list($listener, $manager) = $this->createListener();
 
         $manager->expects($this->never())
@@ -49,19 +55,22 @@ class HandicapListenerTest extends ServiceTestCase
 
         $listener->score_create(new ScoreEvent($score));
     }
-    public function testCreateScoreAcceptedInFuture() {
+
+    public function testCreateScoreAcceptedInFuture()
+    {
         list($listener, $manager) = $this->createListener();
 
         $manager->expects($this->never())
             ->method('updateHandicap');
 
         $score = $this->getValidScore();
-        $score->setDateAccepted(new \DateTime("+1 year"));
+        $score->setDateAccepted(new \DateTime('+1 year'));
 
         $listener->score_create(new ScoreEvent($score));
     }
 
-    public function testUpdateScoreValid() {
+    public function testUpdateScoreValid()
+    {
         list($listener, $manager, $doctrine) = $this->createListener();
 
         $repo = $this->getRepository($doctrine, 'AppBundle:PersonHandicap', true);
@@ -75,7 +84,8 @@ class HandicapListenerTest extends ServiceTestCase
         $listener->score_update(new ScoreEvent($score));
     }
 
-    public function testUpdateScoreExisting() {
+    public function testUpdateScoreExisting()
+    {
         list($listener, $manager, $doctrine) = $this->createListener();
 
         $repo = $this->getRepository($doctrine, 'AppBundle:PersonHandicap', true);
@@ -88,7 +98,9 @@ class HandicapListenerTest extends ServiceTestCase
         $score = $this->getValidScore();
         $listener->score_update(new ScoreEvent($score));
     }
-    public function testUpdateScoreNotAccepted() {
+
+    public function testUpdateScoreNotAccepted()
+    {
         list($listener, $manager, $doctrine) = $this->createListener();
 
         $manager->expects($this->never())
@@ -103,7 +115,9 @@ class HandicapListenerTest extends ServiceTestCase
 
         $listener->score_update(new ScoreEvent($score));
     }
-    public function testUpdateScoreAcceptedInFuture() {
+
+    public function testUpdateScoreAcceptedInFuture()
+    {
         list($listener, $manager, $doctrine) = $this->createListener();
 
         $manager->expects($this->never())
@@ -114,7 +128,7 @@ class HandicapListenerTest extends ServiceTestCase
             ->method('exists')->willReturn(0);
 
         $score = $this->getValidScore();
-        $score->setDateAccepted(new \DateTime("+1 year"));
+        $score->setDateAccepted(new \DateTime('+1 year'));
 
         $listener->score_update(new ScoreEvent($score));
     }

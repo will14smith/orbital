@@ -23,6 +23,7 @@ class HandicapInitialiserTraitTest extends InitialiserTestCase
         $this->assertCount(1, $result);
         $this->assertEquals(1, $person->getInitialPosition());
     }
+
     public function testOnePersonNoHandicap()
     {
         $trait = new HandicapInitialiserTraitStub();
@@ -42,6 +43,7 @@ class HandicapInitialiserTraitTest extends InitialiserTestCase
 
         $this->assertCount(2, $result);
     }
+
     public function testTwoPeopleOneHandicap()
     {
         $trait = new HandicapInitialiserTraitStub();
@@ -62,6 +64,7 @@ class HandicapInitialiserTraitTest extends InitialiserTestCase
         $this->assertEquals(1, $person1->getInitialPosition());
         $this->assertEquals(2, $person2->getInitialPosition());
     }
+
     public function testTwoPeopleDifferentHandicaps()
     {
         $trait = new HandicapInitialiserTraitStub();
@@ -74,6 +77,7 @@ class HandicapInitialiserTraitTest extends InitialiserTestCase
         $this->assertEquals(1, $person1->getInitialPosition());
         $this->assertEquals(2, $person2->getInitialPosition());
     }
+
     public function testTwoPeopleSameHandicaps()
     {
         $trait = new HandicapInitialiserTraitStub();

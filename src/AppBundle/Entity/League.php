@@ -72,7 +72,7 @@ class League
     protected $matches;
 
     /**
-     * Constructor
+     * Constructor.
      */
     public function __construct()
     {
@@ -82,9 +82,9 @@ class League
     }
 
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -92,7 +92,7 @@ class League
     }
 
     /**
-     * Set name
+     * Set name.
      *
      * @param string $name
      *
@@ -106,7 +106,7 @@ class League
     }
 
     /**
-     * Get name
+     * Get name.
      *
      * @return string
      */
@@ -116,7 +116,7 @@ class League
     }
 
     /**
-     * Set description
+     * Set description.
      *
      * @param string $description
      *
@@ -130,7 +130,7 @@ class League
     }
 
     /**
-     * Get description
+     * Get description.
      *
      * @return string
      */
@@ -140,7 +140,7 @@ class League
     }
 
     /**
-     * Set algo_name
+     * Set algo_name.
      *
      * @param string $algoName
      *
@@ -154,7 +154,7 @@ class League
     }
 
     /**
-     * Get algo_name
+     * Get algo_name.
      *
      * @return string
      */
@@ -164,7 +164,7 @@ class League
     }
 
     /**
-     * Set open_date
+     * Set open_date.
      *
      * @param \DateTime $openDate
      *
@@ -178,7 +178,7 @@ class League
     }
 
     /**
-     * Get open_date
+     * Get open_date.
      *
      * @return \DateTime
      */
@@ -188,7 +188,7 @@ class League
     }
 
     /**
-     * Set close_date
+     * Set close_date.
      *
      * @param \DateTime $closeDate
      *
@@ -202,7 +202,7 @@ class League
     }
 
     /**
-     * Get close_date
+     * Get close_date.
      *
      * @return \DateTime
      */
@@ -212,7 +212,7 @@ class League
     }
 
     /**
-     * Set skill_limit
+     * Set skill_limit.
      *
      * @param string $skillLimit
      *
@@ -226,7 +226,7 @@ class League
     }
 
     /**
-     * Get skill_limit
+     * Get skill_limit.
      *
      * @return string
      */
@@ -236,7 +236,7 @@ class League
     }
 
     /**
-     * Set gender_limit
+     * Set gender_limit.
      *
      * @param string $genderLimit
      *
@@ -250,7 +250,7 @@ class League
     }
 
     /**
-     * Get gender_limit
+     * Get gender_limit.
      *
      * @return string
      */
@@ -260,7 +260,7 @@ class League
     }
 
     /**
-     * Add rounds
+     * Add rounds.
      *
      * @param Round $rounds
      *
@@ -274,7 +274,7 @@ class League
     }
 
     /**
-     * Remove rounds
+     * Remove rounds.
      *
      * @param Round $rounds
      */
@@ -284,7 +284,7 @@ class League
     }
 
     /**
-     * Get rounds
+     * Get rounds.
      *
      * @return \Doctrine\Common\Collections\Collection
      */
@@ -294,7 +294,7 @@ class League
     }
 
     /**
-     * Add people
+     * Add people.
      *
      * @param LeaguePerson $people
      *
@@ -308,7 +308,7 @@ class League
     }
 
     /**
-     * Remove people
+     * Remove people.
      *
      * @param LeaguePerson $people
      */
@@ -318,7 +318,7 @@ class League
     }
 
     /**
-     * Get people
+     * Get people.
      *
      * @return \Doctrine\Common\Collections\Collection|LeaguePerson[]
      */
@@ -382,7 +382,7 @@ class League
     }
 
     /**
-     * Add matches
+     * Add matches.
      *
      * @param LeagueMatch $matches
      *
@@ -396,7 +396,7 @@ class League
     }
 
     /**
-     * Remove matches
+     * Remove matches.
      *
      * @param LeagueMatch $matches
      */
@@ -406,7 +406,7 @@ class League
     }
 
     /**
-     * Get matches
+     * Get matches.
      *
      * @return \Doctrine\Common\Collections\Collection|LeagueMatch[]
      */
@@ -416,7 +416,7 @@ class League
     }
 
     /**
-     * Set bowtype_limit
+     * Set bowtype_limit.
      *
      * @param string $bowtypeLimit
      *
@@ -430,7 +430,7 @@ class League
     }
 
     /**
-     * Get bowtype_limit
+     * Get bowtype_limit.
      *
      * @return string
      */

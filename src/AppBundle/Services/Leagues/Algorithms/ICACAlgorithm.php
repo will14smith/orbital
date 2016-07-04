@@ -13,9 +13,9 @@ class ICACAlgorithm implements LeagueAlgorithmInterface
     {
         return 'icac';
     }
+
     public function getName()
     {
         return 'ICAC (random init)';
     }
 }
-

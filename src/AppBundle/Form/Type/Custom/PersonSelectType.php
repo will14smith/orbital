@@ -11,7 +11,7 @@ class PersonSelectType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'class' => 'AppBundle:Person'
+            'class' => 'AppBundle:Person',
         ]);
     }
 

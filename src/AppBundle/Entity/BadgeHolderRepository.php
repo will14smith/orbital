@@ -38,16 +38,16 @@ class BadgeHolderRepository extends EntityRepository
 
     public function findByIdentAndPerson($ident, $person_id)
     {
-        $badgeCondition = (new Expr)->orX(
-            (new Expr)->eq('b.algo_name', ':ident'),
-            (new Expr)->like('b.algo_name', ':ident_fuzzy')
+        $badgeCondition = (new Expr())->orX(
+            (new Expr())->eq('b.algo_name', ':ident'),
+            (new Expr())->like('b.algo_name', ':ident_fuzzy')
         );
 
         $subquery = $this->createQueryBuilder('bh')
             ->where('bh.badge = b')
             ->andWhere('bh.person = :person');
 
-        $holder = (new Expr)->exists($subquery);
+        $holder = (new Expr())->exists($subquery);
 
         return $this->_em->createQueryBuilder()
             ->from('AppBundle:Badge', 'b')

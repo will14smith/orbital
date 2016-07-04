@@ -4,7 +4,8 @@ namespace AppBundle\Services\Leagues\Algorithms;
 
 use AppBundle\Services\Leagues\LeagueAlgorithmInterface;
 
-class WinsAlgorithm implements LeagueAlgorithmInterface {
+class WinsAlgorithm implements LeagueAlgorithmInterface
+{
     use RandomInitialiserTrait;
     use WinsScorerTrait;
 
@@ -12,6 +13,7 @@ class WinsAlgorithm implements LeagueAlgorithmInterface {
     {
         return 'wins';
     }
+
     public function getName()
     {
         return 'Winner gets a point';

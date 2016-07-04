@@ -1,13 +1,9 @@
 # Learn more about services, parameters and containers at
 # http://symfony.com/doc/current/book/service_container.html
 parameters:
-    orbital.upload_dir: %kernel.root_dir%/../web/uploads/
+    orbital.upload_dir: '%kernel.root_dir%/../web/uploads/'
 
 services:
-    orbital.authenticator:
-        class: AppBundle\Services\Security\PamAuthenticator
-        arguments: ["@security.password_encoder", "@doctrine"]
-
     orbital.person_importer:
         class: AppBundle\Services\Importing\PersonImporter
         arguments: ["@doctrine"]

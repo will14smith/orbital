@@ -1,6 +1,5 @@
 <?php
 
-
 namespace AppBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
@@ -39,15 +38,33 @@ class Club
      */
     protected $people;
 
+    /* Record Stuff */
+    /**
+     * @ORM\Column(type="string")
+     */
+    protected $records_title;
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     */
+    protected $records_image_url;
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    protected $records_preface;
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    protected $records_appendix;
+
     public function __construct()
     {
         $this->people = new ArrayCollection();
     }
 
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -55,7 +72,7 @@ class Club
     }
 
     /**
-     * Set name
+     * Set name.
      *
      * @param string $name
      *
@@ -69,7 +86,7 @@ class Club
     }
 
     /**
-     * Get name
+     * Get name.
      *
      * @return string
      */
@@ -79,7 +96,7 @@ class Club
     }
 
     /**
-     * Set website
+     * Set website.
      *
      * @param string $website
      *
@@ -93,7 +110,7 @@ class Club
     }
 
     /**
-     * Get website
+     * Get website.
      *
      * @return string
      */
@@ -103,7 +120,7 @@ class Club
     }
 
     /**
-     * Set email
+     * Set email.
      *
      * @param string $email
      *
@@ -117,7 +134,7 @@ class Club
     }
 
     /**
-     * Get email
+     * Get email.
      *
      * @return string
      */
@@ -127,7 +144,7 @@ class Club
     }
 
     /**
-     * Add people
+     * Add people.
      *
      * @param \AppBundle\Entity\Person $people
      *
@@ -141,7 +158,7 @@ class Club
     }
 
     /**
-     * Remove people
+     * Remove people.
      *
      * @param \AppBundle\Entity\Person $people
      */
@@ -151,7 +168,7 @@ class Club
     }
 
     /**
-     * Get people
+     * Get people.
      *
      * @return \Doctrine\Common\Collections\Collection
      */
@@ -163,5 +180,101 @@ class Club
     public function __toString()
     {
         return $this->name;
+    }
+
+    /**
+     * Set recordsTitle.
+     *
+     * @param string $recordsTitle
+     *
+     * @return Club
+     */
+    public function setRecordsTitle($recordsTitle)
+    {
+        $this->records_title = $recordsTitle;
+
+        return $this;
+    }
+
+    /**
+     * Get recordsTitle.
+     *
+     * @return string
+     */
+    public function getRecordsTitle()
+    {
+        return $this->records_title;
+    }
+
+    /**
+     * Set recordsImageUrl.
+     *
+     * @param string $recordsImageUrl
+     *
+     * @return Club
+     */
+    public function setRecordsImageUrl($recordsImageUrl)
+    {
+        $this->records_image_url = $recordsImageUrl;
+
+        return $this;
+    }
+
+    /**
+     * Get recordsImageUrl.
+     *
+     * @return string
+     */
+    public function getRecordsImageUrl()
+    {
+        return $this->records_image_url;
+    }
+
+    /**
+     * Set recordsPreface.
+     *
+     * @param string $recordsPreface
+     *
+     * @return Club
+     */
+    public function setRecordsPreface($recordsPreface)
+    {
+        $this->records_preface = $recordsPreface;
+
+        return $this;
+    }
+
+    /**
+     * Get recordsPreface.
+     *
+     * @return string
+     */
+    public function getRecordsPreface()
+    {
+        return $this->records_preface;
+    }
+
+    /**
+     * Set recordsAppendix.
+     *
+     * @param string $recordsAppendix
+     *
+     * @return Club
+     */
+    public function setRecordsAppendix($recordsAppendix)
+    {
+        $this->records_appendix = $recordsAppendix;
+
+        return $this;
+    }
+
+    /**
+     * Get recordsAppendix.
+     *
+     * @return string
+     */
+    public function getRecordsAppendix()
+    {
+        return $this->records_appendix;
     }
 }

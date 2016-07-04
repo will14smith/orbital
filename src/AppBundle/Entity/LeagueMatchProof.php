@@ -16,9 +16,10 @@ class LeagueMatchProof extends ProofEntity
     protected $match;
 
     /**
-     * Set match
+     * Set match.
      *
      * @param LeagueMatch $match
+     *
      * @return LeagueMatchProof
      */
     public function setMatch(LeagueMatch $match = null)
@@ -29,7 +30,7 @@ class LeagueMatchProof extends ProofEntity
     }
 
     /**
-     * Get match
+     * Get match.
      *
      * @return LeagueMatch
      */

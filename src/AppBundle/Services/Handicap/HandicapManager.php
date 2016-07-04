@@ -51,7 +51,9 @@ class HandicapManager
                     return $hc->getDate() <= $score->getDateShot();
                 })->last();
 
-                if(!$last_handicap) { $last_handicap = null; }
+                if (!$last_handicap) {
+                    $last_handicap = null;
+                }
 
                 $new_handicaps = $this->calculateRebuild($person, $indoor, $last_handicap);
                 $this->removeAfter($person, $indoor, $last_handicap);
@@ -68,18 +70,18 @@ class HandicapManager
 
     /**
      * @param Person $person
-     * @param bool $indoor
+     * @param bool   $indoor
      */
     public function rebuildFromLastManual(Person $person, $indoor)
     {
         $handicaps = $person->getHandicaps();
 
         $handicap = null;
-        for ($i = $handicaps->count() - 1; $i >= 0; $i--) {
+        for ($i = $handicaps->count() - 1; $i >= 0; --$i) {
             /** @var PersonHandicap $i_handicap */
             $i_handicap = $handicaps->get($i);
             // it can be null when handicaps are removed.
-            if($i_handicap === null) {
+            if ($i_handicap === null) {
                 continue;
             }
 
@@ -93,8 +95,8 @@ class HandicapManager
     }
 
     /**
-     * @param Person $person
-     * @param bool $indoor
+     * @param Person         $person
+     * @param bool           $indoor
      * @param PersonHandicap $from
      */
     public function rebuild(Person $person, $indoor, PersonHandicap $from = null)
@@ -108,7 +110,7 @@ class HandicapManager
     }
 
     /**
-     * @param Person $person
+     * @param Person    $person
      * @param \DateTime $start_date
      * @param \DateTime $end_date
      */
@@ -129,8 +131,8 @@ class HandicapManager
     }
 
     /**
-     * @param Person $person
-     * @param bool $indoor
+     * @param Person         $person
+     * @param bool           $indoor
      * @param PersonHandicap $from
      *
      * @return PersonHandicap[]
@@ -175,7 +177,7 @@ class HandicapManager
         }
 
         // iterate remaining
-        for (; $score_index < $score_count; $score_index++) {
+        for (; $score_index < $score_count; ++$score_index) {
             $next_handicap = $this->averageUpdate($last_handicap, $scores[$score_index]);
             if ($next_handicap === null) {
                 continue;
@@ -188,9 +190,8 @@ class HandicapManager
         return $handicaps;
     }
 
-
     /**
-     * @param Person $person
+     * @param Person    $person
      * @param \DateTime $start_date
      * @param \DateTime $end_date
      *
@@ -240,13 +241,14 @@ class HandicapManager
 
     /**
      * @param Score[] $scores
-     * @param bool $indoor
+     * @param bool    $indoor
+     *
      * @return PersonHandicap
      */
     private function initialHandicap(array $scores, $indoor)
     {
         if (count($scores) !== 3) {
-            throw new \InvalidArgumentException("Initial handicap should only have 3 scores");
+            throw new \InvalidArgumentException('Initial handicap should only have 3 scores');
         }
 
         $accum = 0;
@@ -262,14 +264,15 @@ class HandicapManager
         }
 
         $handicap = ceil($accum / 3);
+
         return $this->createHandicap(HandicapType::INITIAL, $indoor, $handicap, $date);
     }
 
     /**
-     * ASSUMPTION: $current_handicap is BEFORE $score
+     * ASSUMPTION: $current_handicap is BEFORE $score.
      *
      * @param PersonHandicap $current_handicap
-     * @param Score $score
+     * @param Score          $score
      *
      * @return PersonHandicap[]
      */
@@ -279,18 +282,18 @@ class HandicapManager
         $new_value = ceil(($current_handicap->getHandicap() + $score_handicap) / 2);
 
         if ($new_value >= $current_handicap->getHandicap()) {
-            return null;
+            return;
         }
 
         return $this->createHandicap(HandicapType::UPDATE, $score->isIndoor(), $new_value, $score->getDateShot());
     }
 
     /**
-     * @param string $type
-     * @param bool $indoor
-     * @param int $value
+     * @param string    $type
+     * @param bool      $indoor
+     * @param int       $value
      * @param \DateTime $date
-     * @param Score $score
+     * @param Score     $score
      *
      * @return PersonHandicap
      */
@@ -311,7 +314,7 @@ class HandicapManager
     }
 
     /**
-     * @param Person $person
+     * @param Person           $person
      * @param PersonHandicap[] $handicaps
      */
     private function persist(Person $person, array $handicaps)
@@ -327,8 +330,8 @@ class HandicapManager
     }
 
     /**
-     * @param Person $person
-     * @param bool $indoor
+     * @param Person         $person
+     * @param bool           $indoor
      * @param PersonHandicap $last_handicap
      */
     private function removeAfter(Person $person, $indoor, PersonHandicap $last_handicap = null)

@@ -1,8 +1,6 @@
 <?php
 
-
 namespace AppBundle\Controller;
-
 
 use AppBundle\Entity\League;
 use AppBundle\Form\Type\LeagueType;
@@ -18,18 +16,19 @@ class LeagueController extends Controller
      */
     public function indexAction()
     {
-        $leagueRepository = $this->getDoctrine()->getRepository("AppBundle:League");
+        $leagueRepository = $this->getDoctrine()->getRepository('AppBundle:League');
 
         $leagues = $leagueRepository->findAll();
 
         return $this->render('league/list.html.twig', [
-            'leagues' => $leagues
+            'leagues' => $leagues,
         ]);
     }
 
     /**
      * @Security("has_role('ROLE_ADMIN')")
      * @Route("/league/create", name="league_create", methods={"GET", "POST"})
+     *
      * @param Request $request
      *
      * @return \Symfony\Component\HttpFoundation\Response
@@ -68,7 +67,7 @@ class LeagueController extends Controller
      */
     public function detailAction($id)
     {
-        $leagueRepository = $this->getDoctrine()->getRepository("AppBundle:League");
+        $leagueRepository = $this->getDoctrine()->getRepository('AppBundle:League');
 
         $league = $leagueRepository->find($id);
         if (!$league) {
@@ -78,7 +77,7 @@ class LeagueController extends Controller
         }
 
         return $this->render('league/detail.html.twig', [
-            'league' => $league
+            'league' => $league,
         ]);
     }
 
@@ -86,7 +85,7 @@ class LeagueController extends Controller
      * @Security("has_role('ROLE_ADMIN')")
      * @Route("/league/{id}/edit", name="league_edit", methods={"GET", "POST"})
      *
-     * @param int $id
+     * @param int     $id
      * @param Request $request
      *
      * @return \Symfony\Component\HttpFoundation\Response
@@ -123,7 +122,7 @@ class LeagueController extends Controller
      * @Security("has_role('ROLE_ADMIN')")
      * @Route("/league/{id}/init", name="league_init", methods={"GET", "POST"})
      *
-     * @param int $id
+     * @param int     $id
      * @param Request $request
      *
      * @return \Symfony\Component\HttpFoundation\Response
@@ -148,13 +147,13 @@ class LeagueController extends Controller
             $em->flush();
 
             return $this->redirectToRoute('league_detail', [
-                'id' => $league->getId()
+                'id' => $league->getId(),
             ]);
         }
 
         return $this->render('league/init.html.twig', [
             'form' => $form->createView(),
-            'league' => $league
+            'league' => $league,
         ]);
     }
 
@@ -162,7 +161,7 @@ class LeagueController extends Controller
      * @Security("has_role('ROLE_ADMIN')")
      * @Route("/league/{id}/delete", name="league_delete", methods={"GET", "POST"})
      *
-     * @param int $id
+     * @param int     $id
      * @param Request $request
      *
      * @return \Symfony\Component\HttpFoundation\Response
@@ -178,7 +177,7 @@ class LeagueController extends Controller
             );
         }
 
-        if ($request->isMethod("POST")) {
+        if ($request->isMethod('POST')) {
             $em->remove($league);
             $em->flush();
 
@@ -186,7 +185,7 @@ class LeagueController extends Controller
         }
 
         return $this->render('league/delete.html.twig', [
-            'league' => $league
+            'league' => $league,
         ]);
     }
 }

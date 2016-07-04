@@ -31,7 +31,7 @@ class ClassificationCalculator
     public function calculateTargetScore(RoundTarget $target, $gender, $bowtype, $classification)
     {
         $handicap = ClassificationTable::getHandicap($gender, $bowtype, $classification);
-        
+
         $score = $this->calculator->scoreTarget($target, $bowtype == BowType::COMPOUND, $handicap);
 
         return $score;
@@ -39,7 +39,7 @@ class ClassificationCalculator
 
     public function calculateClassification(Score $score)
     {
-        throw new \Exception("Not Implemented");
+        throw new \Exception('Not Implemented');
     }
 
     public function isValidClassifiation($round, $gender, $bowtype, $classification)
@@ -48,4 +48,3 @@ class ClassificationCalculator
         return true;
     }
 }
-

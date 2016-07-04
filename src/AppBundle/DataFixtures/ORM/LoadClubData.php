@@ -9,22 +9,23 @@ use Doctrine\Common\Persistence\ObjectManager;
 
 class LoadClubData extends AbstractFixture implements OrderedFixtureInterface
 {
-
     /**
-     * Load data fixtures with the passed EntityManager
+     * Load data fixtures with the passed EntityManager.
      *
      * @param ObjectManager $manager
      */
     public function load(ObjectManager $manager)
     {
         $club1 = new Club();
-        $club1->setName("Club 1");
+        $club1->setName('Club 1');
+        $club1->setRecordsTitle('Club 1');
 
         $club2 = new Club();
-        $club2->setName("Club 2");
+        $club2->setName('Club 2');
+        $club2->setRecordsTitle('Club 1');
 
-        $this->addReference("club-1", $club1);
-        $this->addReference("club-2", $club2);
+        $this->addReference('club-1', $club1);
+        $this->addReference('club-2', $club2);
 
         $manager->persist($club1);
         $manager->persist($club2);
@@ -33,9 +34,9 @@ class LoadClubData extends AbstractFixture implements OrderedFixtureInterface
     }
 
     /**
-     * Get the order of this fixture
+     * Get the order of this fixture.
      *
-     * @return integer
+     * @return int
      */
     public function getOrder()
     {

@@ -21,8 +21,8 @@ class RoundupType extends AbstractType
                     'records' => 'Records',
                     'badges' => 'Badges',
                     'leagues' => 'Leagues',
-                    'competitions' => 'Competitions'
-                ]
+                    'competitions' => 'Competitions',
+                ],
             ]);
     }
 }

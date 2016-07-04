@@ -1,6 +1,5 @@
 <?php
 
-
 namespace AppBundle\Controller;
 
 use AppBundle\Controller\Traits\ProofControllerTrait;
@@ -23,7 +22,7 @@ class LeagueChallengeController extends Controller
      * @Security("is_granted('SUBMIT', league)")
      * @Route("/league/{id}/submit", name="league_submit", methods={"GET", "POST"})
      *
-     * @param League $league
+     * @param League  $league
      * @param Request $request
      *
      * @return \Symfony\Component\HttpFoundation\Response
@@ -61,7 +60,6 @@ class LeagueChallengeController extends Controller
         return $this->render('league/create_match.html.twig', [
             'form' => $form->createView(),
         ]);
-
     }
 
     /**
@@ -69,9 +67,9 @@ class LeagueChallengeController extends Controller
      * @Route("/league/{id}/match/{match_id}/accept", name="league_match_accept", methods={"GET", "POST"})
      * @ParamConverter("leagueMatch", options={"id" = "match_id"})
      *
-     * @param League $league
+     * @param League      $league
      * @param LeagueMatch $leagueMatch
-     * @param Request $request
+     * @param Request     $request
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
@@ -89,7 +87,7 @@ class LeagueChallengeController extends Controller
         if ($confirmProof !== false) {
             return $this->render(':league:proof_confirm.html.twig', [
                 'form' => $confirmProof,
-                'match' => $leagueMatch
+                'match' => $leagueMatch,
             ]);
         }
 
@@ -106,7 +104,6 @@ class LeagueChallengeController extends Controller
      * @param $object
      *
      * @return ProofEntity
-     *
      */
     protected function createProof($object)
     {

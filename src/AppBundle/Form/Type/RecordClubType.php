@@ -2,9 +2,6 @@
 
 namespace AppBundle\Form\Type;
 
-use AppBundle\Form\Type\Custom\BowTypeSelectType;
-use AppBundle\Form\Type\Custom\GenderSelectType;
-use AppBundle\Form\Type\Custom\SkillSelectType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -24,7 +21,7 @@ class RecordClubType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => 'AppBundle\Entity\RecordClub'
+            'data_class' => 'AppBundle\Entity\RecordClub',
         ]);
     }
 }

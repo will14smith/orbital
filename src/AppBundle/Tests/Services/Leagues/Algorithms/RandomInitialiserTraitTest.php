@@ -6,14 +6,15 @@ use AppBundle\Entity\LeaguePerson;
 
 class RandomInitialiserTraitTest extends InitialiserTestCase
 {
-    private function assertUnique($people) {
-        $positions = array_map(function(LeaguePerson $person) {
+    private function assertUnique($people)
+    {
+        $positions = array_map(function (LeaguePerson $person) {
             return $person->getInitialPosition();
         }, $people);
 
         $unique = array_unique($positions);
 
-        $this->assertCount(count($people), $unique, "the initial positions are not unique");
+        $this->assertCount(count($people), $unique, 'the initial positions are not unique');
     }
 
     public function testInitNoPeople()

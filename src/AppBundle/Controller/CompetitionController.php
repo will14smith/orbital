@@ -16,17 +16,18 @@ class CompetitionController extends Controller
      */
     public function indexAction()
     {
-        $repository = $this->getDoctrine()->getRepository("AppBundle:Competition");
+        $repository = $this->getDoctrine()->getRepository('AppBundle:Competition');
         $competitions = $repository->findAll();
 
         return $this->render('competition/list.html.twig', [
-            'competitions' => $competitions
+            'competitions' => $competitions,
         ]);
     }
 
     /**
      * @Security("has_role('ROLE_ADMIN')")
      * @Route("/competition/create", name="competition_create", methods={"GET", "POST"})
+     *
      * @param Request $request
      *
      * @return \Symfony\Component\HttpFoundation\Response
@@ -55,7 +56,7 @@ class CompetitionController extends Controller
      * @Security("has_role('ROLE_ADMIN')")
      * @Route("/competition/{id}/edit", name="competition_edit", methods={"GET", "POST"})
      *
-     * @param int $id
+     * @param int     $id
      * @param Request $request
      *
      * @return \Symfony\Component\HttpFoundation\Response
@@ -89,7 +90,7 @@ class CompetitionController extends Controller
      * @Security("has_role('ROLE_ADMIN')")
      * @Route("/competition/{id}/delete", name="competition_delete", methods={"GET", "POST"})
      *
-     * @param int $id
+     * @param int     $id
      * @param Request $request
      *
      * @return \Symfony\Component\HttpFoundation\Response
@@ -105,7 +106,7 @@ class CompetitionController extends Controller
             );
         }
 
-        if ($request->isMethod("POST")) {
+        if ($request->isMethod('POST')) {
             $em->remove($competition);
             $em->flush();
 
@@ -113,7 +114,7 @@ class CompetitionController extends Controller
         }
 
         return $this->render('competition/delete.html.twig', [
-            'competition' => $competition
+            'competition' => $competition,
         ]);
     }
 }

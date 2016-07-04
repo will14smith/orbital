@@ -22,6 +22,7 @@ class DefaultController extends Controller
     /**
      * @Security("has_role('ROLE_ADMIN')")
      * @Route("/roundup", name="roundup", methods={"GET", "POST"})
+     *
      * @param Request $request
      *
      * @return \Symfony\Component\HttpFoundation\Response
@@ -30,7 +31,7 @@ class DefaultController extends Controller
     {
         $data = [
             'start_date' => new \DateTime('1 week ago'),
-            'end_date' => new \DateTime('now')
+            'end_date' => new \DateTime('now'),
         ];
 
         $form = $this->createForm(RoundupType::class, $data);
@@ -41,18 +42,18 @@ class DefaultController extends Controller
             $roundup = $this->generateRoundup($data['start_date'], $data['end_date'], $data['type']);
 
             $html = $this->renderView('pdf/roundup.pdf.twig', [
-                'blocks' => $roundup
+                'blocks' => $roundup,
             ]);
 
             return new Response($this->get('knp_snappy.pdf')->getOutputFromHtml($html), 200, [
                     'Content-Type' => 'application/pdf',
-                    'Content-Disposition' => 'attachment; filename="roundup.pdf"'
+                    'Content-Disposition' => 'attachment; filename="roundup.pdf"',
                 ]
             );
         }
 
         return $this->render('default/roundup.html.twig', [
-            'form' => $form->createView()
+            'form' => $form->createView(),
         ]);
     }
 

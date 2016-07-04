@@ -12,8 +12,8 @@ class BarcodeExtension extends \Twig_Extension
      */
     private $container;
 
-    public function __construct(ContainerInterface $container) {
-
+    public function __construct(ContainerInterface $container)
+    {
         $this->container = $container;
     }
 
@@ -22,13 +22,13 @@ class BarcodeExtension extends \Twig_Extension
         return [new \Twig_SimpleFilter('barcode', [$this, 'barcodeFilter'], ['is_safe' => ['all']])];
     }
 
-    public function barcodeFilter($value) {
-
-        if(!is_int($value)) {
-            throw new \Exception("Not currently implemented");
+    public function barcodeFilter($value)
+    {
+        if (!is_int($value)) {
+            throw new \Exception('Not currently implemented');
         }
 
-        $code = str_pad($value, 12, "0", STR_PAD_LEFT);
+        $code = str_pad($value, 12, '0', STR_PAD_LEFT);
 
         \ob_start();
 

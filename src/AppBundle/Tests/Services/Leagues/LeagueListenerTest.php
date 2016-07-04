@@ -9,18 +9,21 @@ use AppBundle\Services\Leagues\LeagueListener;
 use AppBundle\Services\Leagues\LeagueManager;
 use AppBundle\Tests\Services\ServiceTestCase;
 
-class LeagueListenerTest extends ServiceTestCase {
-    private function getListener($count) {
+class LeagueListenerTest extends ServiceTestCase
+{
+    private function getListener($count)
+    {
         /** @var LeagueManager|\PHPUnit_Framework_MockObject_MockObject $manager */
         $manager = $this->getMockBuilder('\AppBundle\Services\Leagues\LeagueManager')->getMock();
 
         $manager->expects($this->exactly($count))
-            ->method("handleMatch");
+            ->method('handleMatch');
 
         return new LeagueListener($manager);
     }
 
-    private function getMatch() {
+    private function getMatch()
+    {
         $league = new League();
         $league->setAlgoName('dummy');
 
@@ -32,14 +35,17 @@ class LeagueListenerTest extends ServiceTestCase {
         return $match;
     }
 
-    public function testCreateValid() {
+    public function testCreateValid()
+    {
         $listener = $this->getListener(1);
 
         $match = $this->getMatch();
 
         $listener->match_create(new LeagueMatchEvent($match));
     }
-    public function testCreateNotAccepted() {
+
+    public function testCreateNotAccepted()
+    {
         $listener = $this->getListener(0);
 
         $match = $this->getMatch();
@@ -47,7 +53,9 @@ class LeagueListenerTest extends ServiceTestCase {
 
         $listener->match_create(new LeagueMatchEvent($match));
     }
-    public function testCreateNotConfirmed() {
+
+    public function testCreateNotConfirmed()
+    {
         $listener = $this->getListener(0);
 
         $match = $this->getMatch();
@@ -55,7 +63,9 @@ class LeagueListenerTest extends ServiceTestCase {
 
         $listener->match_create(new LeagueMatchEvent($match));
     }
-    public function testCreateNoAlgo() {
+
+    public function testCreateNoAlgo()
+    {
         $listener = $this->getListener(0);
 
         $match = $this->getMatch();
@@ -64,14 +74,17 @@ class LeagueListenerTest extends ServiceTestCase {
         $listener->match_create(new LeagueMatchEvent($match));
     }
 
-    public function testUpdateValid() {
+    public function testUpdateValid()
+    {
         $listener = $this->getListener(1);
 
         $match = $this->getMatch();
 
         $listener->match_update(new LeagueMatchEvent($match));
     }
-    public function testUpdateNotAccepted() {
+
+    public function testUpdateNotAccepted()
+    {
         $listener = $this->getListener(0);
 
         $match = $this->getMatch();
@@ -79,7 +92,9 @@ class LeagueListenerTest extends ServiceTestCase {
 
         $listener->match_update(new LeagueMatchEvent($match));
     }
-    public function testUpdateNotConfirmed() {
+
+    public function testUpdateNotConfirmed()
+    {
         $listener = $this->getListener(0);
 
         $match = $this->getMatch();
@@ -87,7 +102,9 @@ class LeagueListenerTest extends ServiceTestCase {
 
         $listener->match_update(new LeagueMatchEvent($match));
     }
-    public function testUpdateNoAlgo() {
+
+    public function testUpdateNoAlgo()
+    {
         $listener = $this->getListener(0);
 
         $match = $this->getMatch();

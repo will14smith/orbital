@@ -1,8 +1,6 @@
 <?php
 
-
 namespace AppBundle\Services\Enum;
-
 
 class BowType
 {
@@ -12,16 +10,16 @@ class BowType
     const TRADITIONAL = 'traditional';
     const COMPOUND = 'compound';
 
-    static $choices = [
-        BowType::RECURVE => 'Recurve',
-        BowType::BAREBOW => 'Barebow',
-        BowType::LONGBOW => 'Longbow',
-        BowType::TRADITIONAL => 'Traditional',
-        BowType::COMPOUND => 'Compound'
+    public static $choices = [
+        self::RECURVE => 'Recurve',
+        self::BAREBOW => 'Barebow',
+        self::LONGBOW => 'Longbow',
+        self::TRADITIONAL => 'Traditional',
+        self::COMPOUND => 'Compound',
     ];
 
     public static function display($bow_type)
     {
-        return BowType::$choices[$bow_type];
+        return self::$choices[$bow_type];
     }
 }

@@ -12,11 +12,11 @@ class BadgeVoter extends BaseVoter
     protected $class = 'AppBundle\Entity\Badge';
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     protected function voteInternal(Person $user, $badge, $permission)
     {
-        /** @var Badge $badge */
+        /* @var Badge $badge */
 
         switch ($permission) {
             case SecurityAction::CLAIM:

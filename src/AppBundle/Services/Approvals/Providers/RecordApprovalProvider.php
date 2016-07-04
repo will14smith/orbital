@@ -12,12 +12,12 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 class RecordApprovalProvider implements ApprovalQueueProviderInterface
 {
     /**
-     * @param Registry $doctrine
+     * @param Registry              $doctrine
      * @param UrlGeneratorInterface $url
      *
      * @return ApprovalQueueItem[]
      */
-    function getItems(Registry $doctrine, UrlGeneratorInterface $url)
+    public function getItems(Registry $doctrine, UrlGeneratorInterface $url)
     {
         $repository = $doctrine->getRepository('AppBundle:RecordHolder');
         $records = $repository->getUnconfirmed();
@@ -28,30 +28,32 @@ class RecordApprovalProvider implements ApprovalQueueProviderInterface
     }
 
     /**
-     * @param Registry $doctrine
+     * @param Registry              $doctrine
      * @param UrlGeneratorInterface $url
-     * @param Club $club
+     * @param Club                  $club
      *
      * @return ApprovalQueueItem[]
      */
-    function getItemsByClub(Registry $doctrine, UrlGeneratorInterface $url, Club $club)
+    public function getItemsByClub(Registry $doctrine, UrlGeneratorInterface $url, Club $club)
     {
         $repository = $doctrine->getRepository('AppBundle:RecordHolder');
         $records = $repository->getUnconfirmedByClub($club);
 
         return array_map(function (RecordHolder $recordHolder) use ($url) {
             return $this->createApprovalItem($url, $recordHolder);
-        }, $records);    }
+        }, $records);
+    }
 
     /**
      * @param RecordHolder $recordHolder
      * @param $url
+     *
      * @return ApprovalQueueItem
      */
-    function createApprovalItem(UrlGeneratorInterface $url, RecordHolder $recordHolder)
+    public function createApprovalItem(UrlGeneratorInterface $url, RecordHolder $recordHolder)
     {
         $record = $recordHolder->getRecord();
 
-        return new ApprovalQueueItem('record', 'Record' . ' - ' . (string)$record, $url->generate('record_detail', ['id' => $record->getId(), 'club' => $recordHolder->getClub()->getId()]), $recordHolder);
+        return new ApprovalQueueItem('record', 'Record' . ' - ' . (string) $record, $url->generate('record_detail', ['id' => $record->getId(), 'club' => $recordHolder->getClub()->getId()]), $recordHolder);
     }
 }

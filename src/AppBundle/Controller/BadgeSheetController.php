@@ -9,7 +9,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
-class BadgeSheetController extends Controller {
+class BadgeSheetController extends Controller
+{
     use PdfRenderTrait;
 
     /**
@@ -27,10 +28,10 @@ class BadgeSheetController extends Controller {
         $doctrine = $this->getDoctrine();
 
         if (is_array($badges) && count($badges) > 0) {
-            $holderRepository = $doctrine->getRepository("AppBundle:BadgeHolder");
+            $holderRepository = $doctrine->getRepository('AppBundle:BadgeHolder');
             $badges = $holderRepository->findBy([
                 'badge' => $badges,
-                'date_made' => null
+                'date_made' => null,
             ]);
 
             $em = $doctrine->getManager();
@@ -43,10 +44,10 @@ class BadgeSheetController extends Controller {
 
             return $this->renderPdf('pdf/badge_sheet.pdf.twig', [
                 'badges' => $badges,
-                'sheet' => $sheet
+                'sheet' => $sheet,
             ], ['footer-html' => $footer]);
         } else {
-            $badgeRepository = $doctrine->getRepository("AppBundle:Badge");
+            $badgeRepository = $doctrine->getRepository('AppBundle:Badge');
             $badges = $badgeRepository->findAll();
 
             return $this->render('badge/sheet.html.twig', ['badges' => $badges]);
@@ -66,7 +67,7 @@ class BadgeSheetController extends Controller {
         $sheetId = intval($request->request->get('sheet_id'));
         $markType = intval($request->request->get('mark_type'));
 
-        $badgeSheetRepository = $this->getDoctrine()->getRepository("AppBundle:BadgeSheet");
+        $badgeSheetRepository = $this->getDoctrine()->getRepository('AppBundle:BadgeSheet');
         $sheet = $badgeSheetRepository->find($sheetId);
 
         if (!$sheet) {

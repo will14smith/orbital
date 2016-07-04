@@ -26,7 +26,7 @@ class BadgeController extends Controller
             return $this->indexClubAction();
         }
 
-        $badgeRepository = $this->getDoctrine()->getRepository("AppBundle:Badge");
+        $badgeRepository = $this->getDoctrine()->getRepository('AppBundle:Badge');
         if ($club_id == -1 && $this->isGranted('ROLE_ADMIN')) {
             $badges = $badgeRepository->findAll();
 
@@ -36,7 +36,7 @@ class BadgeController extends Controller
             ]);
         }
 
-        $clubRepository = $this->getDoctrine()->getRepository("AppBundle:Club");
+        $clubRepository = $this->getDoctrine()->getRepository('AppBundle:Club');
         $club = $clubRepository->find($club_id);
         if ($club == null) {
             return $this->indexClubAction();
@@ -48,17 +48,16 @@ class BadgeController extends Controller
             'badges' => $badges,
             'club' => $club,
         ]);
-
     }
 
     private function indexClubAction()
     {
-        $clubRepository = $this->getDoctrine()->getRepository("AppBundle:Club");
+        $clubRepository = $this->getDoctrine()->getRepository('AppBundle:Club');
 
         $clubs = $clubRepository->findAll();
 
         return $this->render('badge/list_select_club.html.twig', [
-            'clubs' => $clubs
+            'clubs' => $clubs,
         ]);
     }
 
@@ -106,7 +105,7 @@ class BadgeController extends Controller
      */
     public function detailAction($id)
     {
-        $badgeRepository = $this->getDoctrine()->getRepository("AppBundle:Badge");
+        $badgeRepository = $this->getDoctrine()->getRepository('AppBundle:Badge');
 
         $badge = $badgeRepository->find($id);
         if (!$badge) {
@@ -118,7 +117,7 @@ class BadgeController extends Controller
         return $this->render(
             'badge/detail.html.twig',
             [
-                'badge' => $badge
+                'badge' => $badge,
             ]
         );
     }
@@ -127,7 +126,7 @@ class BadgeController extends Controller
      * @Security("has_role('ROLE_ADMIN')")
      * @Route("/badge/{id}/edit", name="badge_edit", methods={"GET", "POST"})
      *
-     * @param int $id
+     * @param int     $id
      * @param Request $request
      *
      * @return \Symfony\Component\HttpFoundation\Response
@@ -167,7 +166,7 @@ class BadgeController extends Controller
      * @Security("has_role('ROLE_ADMIN')")
      * @Route("/badge/{id}/delete", name="badge_delete", methods={"GET", "POST"})
      *
-     * @param int $id
+     * @param int     $id
      * @param Request $request
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
@@ -183,7 +182,7 @@ class BadgeController extends Controller
             );
         }
 
-        if ($request->isMethod("POST")) {
+        if ($request->isMethod('POST')) {
             $em->remove($badge);
             $em->flush();
 
@@ -193,7 +192,7 @@ class BadgeController extends Controller
         return $this->render(
             'badge/delete.html.twig',
             [
-                'badge' => $badge
+                'badge' => $badge,
             ]
         );
     }

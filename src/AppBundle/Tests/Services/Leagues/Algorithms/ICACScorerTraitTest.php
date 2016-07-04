@@ -1,18 +1,18 @@
 <?php
 
-
 namespace AppBundle\Tests\Services\Leagues\Algorithms;
-
 
 use AppBundle\Entity\LeagueMatch;
 use AppBundle\Entity\LeaguePerson;
 use AppBundle\Tests\Services\ServiceTestCase;
 
-class ICACScorerTraitTest extends ServiceTestCase {
+class ICACScorerTraitTest extends ServiceTestCase
+{
     /**
      * @dataProvider icacScoreData
      */
-    public function testScore($delta, $expectedPoints) {
+    public function testScore($delta, $expectedPoints)
+    {
         $scorer = new ICACScorerTraitStub();
         $match = new LeagueMatch();
 
@@ -32,7 +32,8 @@ class ICACScorerTraitTest extends ServiceTestCase {
         $this->assertEquals(0, $deltaLoser);
     }
 
-    public function icacScoreData() {
+    public function icacScoreData()
+    {
         // [-20,-19,-15,-14,-10,-9,-4,-3,3,4,9,10,14,15,19,20]
         return [
             [20, 1],

@@ -2,8 +2,10 @@
 
 namespace AppBundle\Tests\Services;
 
-abstract class ServiceTestCase extends \PHPUnit_Framework_TestCase {
-    public function getMockBuilder($name) {
+abstract class ServiceTestCase extends \PHPUnit_Framework_TestCase
+{
+    public function getMockBuilder($name)
+    {
         return parent::getMockBuilder($name)
             ->disableOriginalConstructor()
             ->disableProxyingToOriginalMethods();
@@ -14,24 +16,27 @@ abstract class ServiceTestCase extends \PHPUnit_Framework_TestCase {
      *
      * @return \Doctrine\Bundle\DoctrineBundle\Registry|\PHPUnit_Framework_MockObject_MockObject
      */
-    protected function getDoctrine($flushCount = null) {
+    protected function getDoctrine($flushCount = null)
+    {
         $doctrine = $this->getMockBuilder('\Doctrine\Bundle\DoctrineBundle\Registry')->getMock();
         $entityManager = $this->getMockBuilder('\Doctrine\Common\Persistence\ObjectManager')->getMock();
 
         $doctrine->expects($this->any())
             ->method('getManager')->willReturn($entityManager);
 
-        if($flushCount !== null) {
+        if ($flushCount !== null) {
             $entityManager->expects($this->exactly($flushCount))
                 ->method('flush');
         }
 
         return $doctrine;
     }
-    protected function getRepository(\PHPUnit_Framework_MockObject_MockObject $doctrine, $name, $type = null) {
-        if($type === null) {
+
+    protected function getRepository(\PHPUnit_Framework_MockObject_MockObject $doctrine, $name, $type = null)
+    {
+        if ($type === null) {
             $type = '\Doctrine\ORM\EntityRepository';
-        } else if($type === true) {
+        } elseif ($type === true) {
             $type = '\\' . str_replace(':', '\Entity\\', $name) . 'Repository';
         }
 

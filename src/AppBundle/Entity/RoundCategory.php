@@ -27,8 +27,9 @@ class RoundCategory
      * @ORM\OneToMany(targetEntity="Round", mappedBy="category")
      */
     protected $rounds;
+
     /**
-     * Constructor
+     * Constructor.
      */
     public function __construct()
     {
@@ -36,9 +37,9 @@ class RoundCategory
     }
 
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer 
+     * @return int
      */
     public function getId()
     {
@@ -46,22 +47,23 @@ class RoundCategory
     }
 
     /**
-     * Set name
+     * Set name.
      *
      * @param string $name
+     *
      * @return RoundCategory
      */
     public function setName($name)
     {
         $this->name = $name;
-    
+
         return $this;
     }
 
     /**
-     * Get name
+     * Get name.
      *
-     * @return string 
+     * @return string
      */
     public function getName()
     {
@@ -69,20 +71,21 @@ class RoundCategory
     }
 
     /**
-     * Add rounds
+     * Add rounds.
      *
      * @param Round $rounds
+     *
      * @return RoundCategory
      */
     public function addRound(Round $rounds)
     {
         $this->rounds[] = $rounds;
-    
+
         return $this;
     }
 
     /**
-     * Remove rounds
+     * Remove rounds.
      *
      * @param Round $rounds
      */
@@ -92,7 +95,7 @@ class RoundCategory
     }
 
     /**
-     * Get rounds
+     * Get rounds.
      *
      * @return \Doctrine\Common\Collections\Collection|Round[]
      */
@@ -101,7 +104,8 @@ class RoundCategory
         return $this->rounds;
     }
 
-    public function __toString() {
+    public function __toString()
+    {
         return $this->name;
     }
 }

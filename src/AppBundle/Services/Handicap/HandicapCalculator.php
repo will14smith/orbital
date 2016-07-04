@@ -1,6 +1,5 @@
 <?php
 
-
 namespace AppBundle\Services\Handicap;
 
 // http://www.roystonarchery.org/new/wp-content/uploads/2013/09/Graduated-Handicap-Tables.pdf
@@ -29,13 +28,14 @@ class HandicapCalculator
     }
 
     /**
-     * Get the lowest score needed for the given handicap
+     * Get the lowest score needed for the given handicap.
      *
      * @param Round $round
-     * @param boolean $useInnerTen
-     * @param int $handicap
+     * @param bool  $useInnerTen
+     * @param int   $handicap
      *
      * @return int
+     *
      * @throws \Exception
      */
     public function score(Round $round, $useInnerTen, $handicap)
@@ -49,7 +49,8 @@ class HandicapCalculator
         return round($score);
     }
 
-    public function scoreTarget(RoundTarget $target, $useInnerTen, $handicap) {
+    public function scoreTarget(RoundTarget $target, $useInnerTen, $handicap)
+    {
         $range = Unit::convert($target->getDistanceValue(), $target->getDistanceUnit(), Unit::METER);
         $targetDiameter = Unit::convert($target->getTargetValue(), $target->getTargetUnit(), Unit::CENTIMETER);
 
@@ -62,11 +63,11 @@ class HandicapCalculator
     }
 
     /**
-     * Get the handicap for the given score
+     * Get the handicap for the given score.
      *
      * @param Round $round
-     * @param boolean $useInnerTen
-     * @param int $score
+     * @param bool  $useInnerTen
+     * @param int   $score
      *
      * @return int
      */
@@ -81,7 +82,7 @@ class HandicapCalculator
 
             if ($score < $hc_min_score) {
                 $handicap += $delta;
-            } else if ($score > $hc_min_score) {
+            } elseif ($score > $hc_min_score) {
                 $handicap -= $delta;
             } else {
                 return $handicap;
@@ -105,7 +106,8 @@ class HandicapCalculator
         );
     }
 
-    private function useInnerTen(Score $score) {
+    private function useInnerTen(Score $score)
+    {
         return $score->getBowtype() == BowType::COMPOUND && $score->getRound()->getIndoor();
     }
 }

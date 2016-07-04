@@ -1,17 +1,14 @@
 <?php
 
-
 namespace BarcodeBundle\Utility;
 
-
 /**
- * Class Barcode
- * @package BarcodeBundle\Utility
+ * Class Barcode.
  */
 class Barcode extends \Hackzilla\BarcodeBundle\Utility\Barcode
 {
     /**
-     * Build barcode
+     * Build barcode.
      *
      * @param string $code
      *
@@ -21,7 +18,7 @@ class Barcode extends \Hackzilla\BarcodeBundle\Utility\Barcode
     {
         $bars = $this->encode($code);
         if (!$bars) {
-            return null;
+            return;
         }
 
         $bars = $bars['bars'];
@@ -33,14 +30,14 @@ class Barcode extends \Hackzilla\BarcodeBundle\Utility\Barcode
         /* count total width */
         $xpos = 0;
         $width = true;
-        for ($i = 0; $i < $barsLength; $i++) {
+        for ($i = 0; $i < $barsLength; ++$i) {
             $val = \strtolower($bars[$i]);
             if ($width) {
-                $xpos += (int)$val * $scale;
+                $xpos += (int) $val * $scale;
                 $width = false;
                 continue;
             }
-            if (\preg_match("#[a-z]#", $val)) {
+            if (\preg_match('#[a-z]#', $val)) {
                 /* tall bar */
                 $val = \ord($val) - \ord('a') + 1;
             }
@@ -60,17 +57,17 @@ class Barcode extends \Hackzilla\BarcodeBundle\Utility\Barcode
 
         /* paint the bars */
         $width = true;
-        for ($i = 0; $i < $barsLength; $i++) {
+        for ($i = 0; $i < $barsLength; ++$i) {
             $val = \strtolower($bars[$i]);
             if ($width) {
-                $xpos += (int)$val * $scale;
+                $xpos += (int) $val * $scale;
                 $width = false;
                 continue;
             }
 
             $h = $height;
 
-            if (\preg_match("#[a-z]#", $val)) {
+            if (\preg_match('#[a-z]#', $val)) {
                 /* tall bar */
                 $val = \ord($val) - \ord('a') + 1;
             }

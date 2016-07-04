@@ -19,7 +19,7 @@ class RecordAwardController extends Controller
      * @Security("has_role('ROLE_ADMIN')")
      * @Route("/record/{id}/award", name="record_award", methods={"GET", "POST"})
      *
-     * @param int $id
+     * @param int     $id
      * @param Request $request
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
@@ -40,7 +40,7 @@ class RecordAwardController extends Controller
         $holder->setRecord($record);
 
         $club_id = $request->query->getInt('club');
-        $clubRepository = $this->getDoctrine()->getRepository("AppBundle:Club");
+        $clubRepository = $this->getDoctrine()->getRepository('AppBundle:Club');
         $club = $clubRepository->find($club_id);
 
         $holder->setClub($club);
@@ -54,7 +54,7 @@ class RecordAwardController extends Controller
             }
         }
 
-        for ($i = 0; $i < $numScores; $i++) {
+        for ($i = 0; $i < $numScores; ++$i) {
             $holder->addPerson(new RecordHolderPerson());
         }
         $form = $this->createForm(RecordHolderType::class, $holder);
@@ -71,7 +71,7 @@ class RecordAwardController extends Controller
                     $p = $score->getData()->getPerson();
 
                     if ($person->getId() != $p->getId()) {
-                        $score->get('person')->addError(new FormError("Person must be the same for each score"));
+                        $score->get('person')->addError(new FormError('Person must be the same for each score'));
                     }
                 }
             }
@@ -86,7 +86,7 @@ class RecordAwardController extends Controller
 
             return $this->redirectToRoute('record_detail', [
                 'id' => $record->getId(),
-                'club' => $holder->getClub()->getId()
+                'club' => $holder->getClub()->getId(),
             ]);
         }
 
@@ -119,7 +119,7 @@ class RecordAwardController extends Controller
 
         return $this->redirectToRoute('record_detail', [
             'id' => $record->getId(),
-            'club' => $holder->getClub()->getId()
+            'club' => $holder->getClub()->getId(),
         ]);
     }
 
@@ -127,13 +127,13 @@ class RecordAwardController extends Controller
      * @Security("has_role('ROLE_ADMIN')")
      * @Route("/record/{id}/revoke", name="record_revoke", methods={"GET", "POST"})
      *
-     * @param int $id
+     * @param int     $id
      * @param Request $request
      *
      * @throws \Exception
      */
     public function revokeAction($id, Request $request)
     {
-        throw new \Exception("NOT IMPLEMENTED");
+        throw new \Exception('NOT IMPLEMENTED');
     }
 }

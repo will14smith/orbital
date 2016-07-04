@@ -1,6 +1,5 @@
 <?php
 
-
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -38,9 +37,9 @@ class RecordHolderPerson
     protected $score;
 
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -48,9 +47,9 @@ class RecordHolderPerson
     }
 
     /**
-     * Set score_value
+     * Set score_value.
      *
-     * @param integer $scoreValue
+     * @param int $scoreValue
      *
      * @return RecordHolderPerson
      */
@@ -62,9 +61,9 @@ class RecordHolderPerson
     }
 
     /**
-     * Get score_value
+     * Get score_value.
      *
-     * @return integer
+     * @return int
      */
     public function getScoreValue()
     {
@@ -72,7 +71,7 @@ class RecordHolderPerson
     }
 
     /**
-     * Set record_holder
+     * Set record_holder.
      *
      * @param \AppBundle\Entity\RecordHolder $recordHolder
      *
@@ -86,7 +85,7 @@ class RecordHolderPerson
     }
 
     /**
-     * Get record_holder
+     * Get record_holder.
      *
      * @return \AppBundle\Entity\RecordHolder
      */
@@ -96,7 +95,7 @@ class RecordHolderPerson
     }
 
     /**
-     * Set person
+     * Set person.
      *
      * @param \AppBundle\Entity\Person $person
      *
@@ -110,7 +109,7 @@ class RecordHolderPerson
     }
 
     /**
-     * Get person
+     * Get person.
      *
      * @return \AppBundle\Entity\Person
      */
@@ -120,7 +119,7 @@ class RecordHolderPerson
     }
 
     /**
-     * Set score
+     * Set score.
      *
      * @param \AppBundle\Entity\Score $score
      *
@@ -134,7 +133,7 @@ class RecordHolderPerson
     }
 
     /**
-     * Get score
+     * Get score.
      *
      * @return \AppBundle\Entity\Score
      */

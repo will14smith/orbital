@@ -14,7 +14,6 @@ class ScoreEvent extends Event
 
     public function __construct(Score $score)
     {
-
         $this->score = $score;
     }
 

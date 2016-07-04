@@ -13,9 +13,10 @@ class TargetCalculatorFactory
 {
     /**
      * @param RoundTarget $roundTarget
-     * @param boolean $useInnerTen
+     * @param bool        $useInnerTen
      *
      * @return TargetCalculatorInterface
+     *
      * @throws \Exception
      */
     public static function create(RoundTarget $roundTarget, $useInnerTen)
@@ -30,7 +31,7 @@ class TargetCalculatorFactory
             case ScoreZones::WORCESTER:
                 return new WorcesterTargetCalculator();
             default:
-                throw new \Exception("Failed to create target calculator");
+                throw new \Exception('Failed to create target calculator');
         }
     }
 }

@@ -4,12 +4,14 @@ namespace AppBundle\Tests;
 
 class CriticalPageFunctionalTest extends FunctionalWebTestCase
 {
-    public function setUp() {
+    public function setUp()
+    {
         parent::setUp();
     }
 
     /**
      * @dataProvider publicUrls
+     *
      * @param string $url
      */
     public function testPageIsSuccessful($url)

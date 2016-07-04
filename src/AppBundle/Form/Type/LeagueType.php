@@ -23,19 +23,19 @@ class LeagueType extends AbstractType
         $builder
             ->add('name')
             ->add('description', TextareaType::class, [
-                'required' => false
+                'required' => false,
             ])
             ->add('algo_name', ChoiceType::class, [
                 'choices' => array_flip($leagueManager->getAlgorithmNames()),
-                'required' => false
+                'required' => false,
             ])
-            #region LIMIT
+            //region LIMIT
             ->add('open_date')
             ->add('close_date')
             ->add('skill_limit', SkillSelectType::class, ['required' => false])
             ->add('bowtype_limit', BowTypeSelectType::class, ['required' => false])
             ->add('gender_limit', GenderSelectType::class, ['required' => false])
-            #end region
+            //end region
             ->add('rounds', RoundSelectType::class, ['multiple' => true, 'required' => false]);
     }
 
@@ -44,7 +44,7 @@ class LeagueType extends AbstractType
         $resolver->setDefaults([
             'data_class' => 'AppBundle\Entity\League',
 
-            'manager' => null
+            'manager' => null,
         ]);
     }
 }

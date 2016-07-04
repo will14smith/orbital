@@ -10,7 +10,7 @@ class ConstantExtension extends \Twig_Extension implements \Twig_Extension_Globa
     {
         return [
             'DATE_FORMAT' => Constants::DATE_FORMAT,
-            'DATETIME_FORMAT' => Constants::DATETIME_FORMAT
+            'DATETIME_FORMAT' => Constants::DATETIME_FORMAT,
         ];
     }
 

@@ -2,18 +2,16 @@
 
 namespace AppBundle\DataFixtures\ORM;
 
-
 use AppBundle\Entity\Score;
 use AppBundle\Services\Enum\BowType;
-use AppBundle\Services\Enum\Skill;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 
-class LoadScoreData extends AbstractFixture implements OrderedFixtureInterface {
-
+class LoadScoreData extends AbstractFixture implements OrderedFixtureInterface
+{
     /**
-     * Load data fixtures with the passed EntityManager
+     * Load data fixtures with the passed EntityManager.
      *
      * @param ObjectManager $manager
      */
@@ -35,9 +33,9 @@ class LoadScoreData extends AbstractFixture implements OrderedFixtureInterface {
     }
 
     /**
-     * Get the order of this fixture
+     * Get the order of this fixture.
      *
-     * @return integer
+     * @return int
      */
     public function getOrder()
     {

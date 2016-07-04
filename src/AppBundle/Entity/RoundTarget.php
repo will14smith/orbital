@@ -1,6 +1,5 @@
 <?php
 
-
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -56,9 +55,9 @@ class RoundTarget implements \JsonSerializable
     protected $end_size;
 
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -66,7 +65,7 @@ class RoundTarget implements \JsonSerializable
     }
 
     /**
-     * Set distance_value
+     * Set distance_value.
      *
      * @param string $distanceValue
      *
@@ -80,7 +79,7 @@ class RoundTarget implements \JsonSerializable
     }
 
     /**
-     * Get distance_value
+     * Get distance_value.
      *
      * @return string
      */
@@ -90,7 +89,7 @@ class RoundTarget implements \JsonSerializable
     }
 
     /**
-     * Set distance_unit
+     * Set distance_unit.
      *
      * @param string $distanceUnit
      *
@@ -104,7 +103,7 @@ class RoundTarget implements \JsonSerializable
     }
 
     /**
-     * Get distance_unit
+     * Get distance_unit.
      *
      * @return string
      */
@@ -114,7 +113,7 @@ class RoundTarget implements \JsonSerializable
     }
 
     /**
-     * Set target_value
+     * Set target_value.
      *
      * @param string $targetValue
      *
@@ -128,7 +127,7 @@ class RoundTarget implements \JsonSerializable
     }
 
     /**
-     * Get target_value
+     * Get target_value.
      *
      * @return string
      */
@@ -138,7 +137,7 @@ class RoundTarget implements \JsonSerializable
     }
 
     /**
-     * Set target_unit
+     * Set target_unit.
      *
      * @param string $targetUnit
      *
@@ -152,7 +151,7 @@ class RoundTarget implements \JsonSerializable
     }
 
     /**
-     * Get target_unit
+     * Get target_unit.
      *
      * @return string
      */
@@ -162,9 +161,9 @@ class RoundTarget implements \JsonSerializable
     }
 
     /**
-     * Set arrow_count
+     * Set arrow_count.
      *
-     * @param integer $arrowCount
+     * @param int $arrowCount
      *
      * @return RoundTarget
      */
@@ -176,9 +175,9 @@ class RoundTarget implements \JsonSerializable
     }
 
     /**
-     * Get arrow_count
+     * Get arrow_count.
      *
-     * @return integer
+     * @return int
      */
     public function getArrowCount()
     {
@@ -186,9 +185,9 @@ class RoundTarget implements \JsonSerializable
     }
 
     /**
-     * Set end_size
+     * Set end_size.
      *
-     * @param integer $endSize
+     * @param int $endSize
      *
      * @return RoundTarget
      */
@@ -200,9 +199,9 @@ class RoundTarget implements \JsonSerializable
     }
 
     /**
-     * Get end_size
+     * Get end_size.
      *
-     * @return integer
+     * @return int
      */
     public function getEndSize()
     {
@@ -210,7 +209,7 @@ class RoundTarget implements \JsonSerializable
     }
 
     /**
-     * Set round
+     * Set round.
      *
      * @param \AppBundle\Entity\Round $round
      *
@@ -224,7 +223,7 @@ class RoundTarget implements \JsonSerializable
     }
 
     /**
-     * Get round
+     * Get round.
      *
      * @return \AppBundle\Entity\Round
      */
@@ -234,7 +233,7 @@ class RoundTarget implements \JsonSerializable
     }
 
     /**
-     * Set scoring_zones
+     * Set scoring_zones.
      *
      * @param string $scoringZones
      *
@@ -248,7 +247,7 @@ class RoundTarget implements \JsonSerializable
     }
 
     /**
-     * Get scoring_zones
+     * Get scoring_zones.
      *
      * @return string
      */
@@ -257,20 +256,20 @@ class RoundTarget implements \JsonSerializable
         return $this->scoring_zones;
     }
 
-    function jsonSerialize()
+    public function jsonSerialize()
     {
         return [
             'scoring_zones' => $this->getScoringZones(),
             'distance' => [
                 'value' => $this->getDistanceValue(),
-                'unit' => $this->getDistanceUnit()
+                'unit' => $this->getDistanceUnit(),
             ],
             'target' => [
                 'value' => $this->getTargetValue(),
-                'unit' => $this->getTargetUnit()
+                'unit' => $this->getTargetUnit(),
             ],
             'arrow_count' => $this->getArrowCount(),
-            'end_size' => $this->getEndSize()
+            'end_size' => $this->getEndSize(),
         ];
     }
 }

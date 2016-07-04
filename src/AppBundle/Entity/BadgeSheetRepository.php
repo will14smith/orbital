@@ -7,7 +7,6 @@ use Doctrine\ORM\EntityRepository;
 
 class BadgeSheetRepository extends EntityRepository
 {
-
     public function mark(BadgeSheet $sheet, $markType)
     {
         $badges = $this->createQueryBuilder('bs')
@@ -22,7 +21,7 @@ class BadgeSheetRepository extends EntityRepository
         $q = $this->_em->createQueryBuilder()
             ->update('AppBundle\Entity\BadgeHolder', 'bh');
 
-        if($markType == 1) {
+        if ($markType == 1) {
             $q = $q->set('bh.date_delivered', ':date');
         } else {
             $q = $q->set('bh.date_made', ':date');

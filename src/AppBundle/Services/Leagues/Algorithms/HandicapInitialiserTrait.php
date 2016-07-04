@@ -14,17 +14,17 @@ trait HandicapInitialiserTrait
      */
     public function init(array $people)
     {
-        usort($people, function(LeaguePerson $personA, LeaguePerson $personB) {
+        usort($people, function (LeaguePerson $personA, LeaguePerson $personB) {
             $handicapA = $this->getHandicap($personA->getPerson());
             $handicapB = $this->getHandicap($personB->getPerson());
 
-            if(!$handicapA && !$handicapB) {
+            if (!$handicapA && !$handicapB) {
                 return 0;
             }
-            if(!$handicapA) {
+            if (!$handicapA) {
                 return -1;
             }
-            if(!$handicapB) {
+            if (!$handicapB) {
                 return 1;
             }
 
@@ -32,24 +32,25 @@ trait HandicapInitialiserTrait
         });
 
         $position = 1;
-        foreach($people as $person) {
+        foreach ($people as $person) {
             $person->setInitialPosition($position++);
         }
 
         return $people;
     }
 
-    private function getHandicap(Person $person) {
+    private function getHandicap(Person $person)
+    {
         $indoor = $person->getCurrentHandicap(true);
         $outdoor = $person->getCurrentHandicap(false);
 
-        if($indoor === null) {
+        if ($indoor === null) {
             return $outdoor;
-        } else if($outdoor === null) {
+        } elseif ($outdoor === null) {
             return $indoor;
         }
 
-        if($indoor->getHandicap() < $outdoor->getHandicap()) {
+        if ($indoor->getHandicap() < $outdoor->getHandicap()) {
             return $indoor;
         } else {
             return $outdoor;

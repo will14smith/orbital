@@ -22,12 +22,14 @@ trait ICACScorerTrait
     }
 
     /**
-     * using the table from ICAC rules of 2014-2015
+     * using the table from ICAC rules of 2014-2015.
+     *
      * @param int $delta
      *
      * @return int
      */
-    private function lookup_points($delta) {
+    private function lookup_points($delta)
+    {
         if ($delta >= 20) {
             return 1;
         }

@@ -1,8 +1,6 @@
 <?php
 
-
 namespace AppBundle\Tests\Services\Handicap;
-
 
 use AppBundle\Entity\Person;
 use AppBundle\Entity\PersonHandicap;
@@ -88,7 +86,7 @@ class HandicapManagerTest extends ServiceTestCase
             $score = $scores[count($scores) - 1];
         }
 
-        /** @noinspection PhpUndefinedFieldInspection used in the tests */
+        /* @noinspection PhpUndefinedFieldInspection used in the tests */
         $person->scores = $scores;
 
         return [$person, $score];
@@ -105,13 +103,14 @@ class HandicapManagerTest extends ServiceTestCase
         $em = $doctrine->getManager();
         $em->expects($this->exactly(count($handicaps)))
             ->method('persist')
-            ->with($this->callback(function(PersonHandicap $handicap) use ($handicaps, &$i, &$last_hc) {
-                if($handicap !== $last_hc) {
+            ->with($this->callback(function (PersonHandicap $handicap) use ($handicaps, &$i, &$last_hc) {
+                if ($handicap !== $last_hc) {
                     $last_hc = $handicap;
-                    $i++;
+                    ++$i;
                 }
 
                 $expected = $handicaps[$i];
+
                 return $expected == $handicap->getHandicap();
             }));
 
