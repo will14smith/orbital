@@ -101,7 +101,7 @@ class HandicapManagerTest extends ServiceTestCase
         $last_hc = null;
 
         $em = $doctrine->getManager();
-        $em->expects($this->exactly(count($handicaps)))
+        $em->expects($this->atMost(count($handicaps)))
             ->method('persist')
             ->with($this->callback(function (PersonHandicap $handicap) use ($handicaps, &$i, &$last_hc) {
                 if ($handicap !== $last_hc) {
@@ -126,11 +126,12 @@ class HandicapManagerTest extends ServiceTestCase
             });
 
         $repository->expects($this->any())
-            ->method('getScoresByPersonBetween')->willReturnCallback(function ($_, $start, $end) use ($person) {
+            ->method('getScoresByHandicapIdBetween')->willReturnCallback(function ($_, $start, $end) use ($person) {
                 return array_filter($person->scores, function (Score $x) use ($start, $end) {
                     return $x->getDateShot() >= $start && $x->getDateShot() <= $end;
                 });
             });
+        
 
         return $manager;
     }

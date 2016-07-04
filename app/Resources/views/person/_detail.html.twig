@@ -14,22 +14,8 @@
     {% if person.bowtype %}
         {{ field('Preferred bow type', person.bowtype|enum('bowtype')) }}
     {% endif %}
-    <dt>Indoor Handicap</dt>
+    <dt>Handicaps & Classification</dt>
     <dd>
-        {% if person.getCurrentHandicap(true) %}
-            {{ person.getCurrentHandicap(true).handicap }}
-        {% else %}
-            None
-        {% endif %}
-    </dd>
-    <dt>Outdoor Handicap / Classification</dt>
-    <dd>
-        {% if person.getCurrentHandicap(false) %}
-            {{ person.getCurrentHandicap(false).handicap }}
-        {% else %}
-            None
-        {% endif %}
-        -
         TODO
     </dd>
 </dl>

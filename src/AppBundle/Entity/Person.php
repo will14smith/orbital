@@ -74,7 +74,6 @@ class Person extends BaseUser
 
     /**
      * @ORM\OneToMany(targetEntity="PersonHandicap", mappedBy="person")
-     * @ORM\OrderBy({"date" = "ASC"})
      */
     protected $handicaps;
 
@@ -379,24 +378,6 @@ class Person extends BaseUser
     public function getHandicaps()
     {
         return $this->handicaps;
-    }
-
-    /**
-     * @return PersonHandicap
-     */
-    public function getCurrentHandicap($indoor)
-    {
-        $count = $this->handicaps->count();
-
-        for ($i = $count - 1; $i >= 0; --$i) {
-            /** @var PersonHandicap $handicap */
-            $handicap = $this->handicaps->get($i);
-            if ($handicap->getIndoor() === $indoor) {
-                return $handicap;
-            }
-        }
-
-        return;
     }
 
     public function __toString()

@@ -38,6 +38,10 @@ class PersonHandicap
      * @ORM\Column(type="boolean")
      */
     protected $indoor;
+    /**
+     * @ORM\Column(type="string")
+     */
+    protected $bowType;
 
     /**
      * @ORM\ManyToOne(targetEntity="Score")
@@ -197,5 +201,29 @@ class PersonHandicap
     public function getIndoor()
     {
         return $this->indoor;
+    }
+
+    /**
+     * Set bowType
+     *
+     * @param string $bowType
+     *
+     * @return PersonHandicap
+     */
+    public function setBowType($bowType)
+    {
+        $this->bowType = $bowType;
+    
+        return $this;
+    }
+
+    /**
+     * Get bowType
+     *
+     * @return string
+     */
+    public function getBowType()
+    {
+        return $this->bowType;
     }
 }

@@ -5,6 +5,8 @@ namespace AppBundle\Services\Handicap;
 use AppBundle\Entity\Person;
 use AppBundle\Entity\PersonHandicap;
 use AppBundle\Entity\Score;
+use AppBundle\Services\Enum\BowType;
+use AppBundle\Services\Enum\Environment;
 use AppBundle\Services\Enum\HandicapType;
 use Doctrine\Bundle\DoctrineBundle\Registry;
 
@@ -32,220 +34,202 @@ class HandicapManager
      */
     public function updateHandicap(Score $score)
     {
-        $person = $score->getPerson();
-        $indoor = $score->isIndoor();
-        $current_handicap = $person->getCurrentHandicap($indoor);
+        $personHandicapRepository = $this->doctrine->getRepository('AppBundle:PersonHandicap');
+
+        $id = new HandicapIdentifier($score->getPerson(), $score->isIndoor(), $score->getBowtype());
+        $current_handicap = $personHandicapRepository->findCurrent($id);
 
         $new_handicaps = [];
 
         if ($current_handicap) {
-            // existing hc is older => average update
             if ($current_handicap->getDate() < $score->getDateShot()) {
+                // existing hc is older => average update
                 $new_handicap = $this->averageUpdate($current_handicap, $score);
                 if ($new_handicap !== null) {
                     $new_handicaps = [$new_handicap];
                 }
             } else {
-                // existing hc is newer => rebuild from score
-                $last_handicap = $person->getHandicaps()->filter(function (PersonHandicap $hc) use ($score) {
-                    return $hc->getDate() <= $score->getDateShot();
-                })->last();
-
-                if (!$last_handicap) {
-                    $last_handicap = null;
-                }
-
-                $new_handicaps = $this->calculateRebuild($person, $indoor, $last_handicap);
-                $this->removeAfter($person, $indoor, $last_handicap);
+                // existing hc is newer => rebuild
+                $new_handicaps = $this->calculateRebuild($id);
+                $this->remove($id);
             }
         } else {
             // might be 3 scores => try rebuilding
-            $new_handicaps = $this->calculateRebuild($person, $indoor);
+            $new_handicaps = $this->calculateRebuild($id);
         }
 
         if (count($new_handicaps) > 0) {
-            $this->persist($person, $new_handicaps);
+            $this->persist($new_handicaps);
         }
     }
 
-    /**
-     * @param Person $person
-     * @param bool   $indoor
-     */
-    public function rebuildFromLastManual(Person $person, $indoor)
+    // person methods
+    public function rebuildPerson(Person $person)
     {
-        $handicaps = $person->getHandicaps();
+        $environments = [Environment::INDOOR, Environment::OUTDOOR];
+        $bowTypes = array_keys(BowType::$choices);
 
-        $handicap = null;
-        for ($i = $handicaps->count() - 1; $i >= 0; --$i) {
-            /** @var PersonHandicap $i_handicap */
-            $i_handicap = $handicaps->get($i);
-            // it can be null when handicaps are removed.
-            if ($i_handicap === null) {
-                continue;
-            }
-
-            if ($i_handicap->getIndoor() === $indoor && $i_handicap->getType() === HandicapType::MANUAL) {
-                $handicap = $i_handicap;
-                break;
+        foreach ($environments as $environment) {
+            foreach ($bowTypes as $bowType) {
+                $this->rebuild(new HandicapIdentifier($person, $environment, $bowType));
             }
         }
-
-        $this->rebuild($person, $indoor, $handicap);
     }
 
-    /**
-     * @param Person         $person
-     * @param bool           $indoor
-     * @param PersonHandicap $from
-     */
-    public function rebuild(Person $person, $indoor, PersonHandicap $from = null)
+    // handicap methods
+    public function rebuild(HandicapIdentifier $id)
     {
-        $new_handicaps = $this->calculateRebuild($person, $indoor, $from);
-        $this->removeAfter($person, $indoor, $from);
+        $newHandicaps = $this->calculateRebuild($id);
+        $this->remove($id);
+        $this->persist($newHandicaps);
 
-        if (count($new_handicaps) > 0) {
-            $this->persist($person, $new_handicaps);
-        }
+        return $newHandicaps;
     }
 
-    /**
-     * @param Person    $person
-     * @param \DateTime $start_date
-     * @param \DateTime $end_date
-     */
-    public function reassess(Person $person, \DateTime $start_date = null, \DateTime $end_date = null)
-    {
-        if ($start_date === null) {
-            $start_date = new \DateTime('1 year ago');
-        }
-        if ($end_date === null) {
-            $end_date = new \DateTime('now');
-        }
 
-        $new_handicaps = $this->calculateReassesment($person, $start_date, $end_date);
-
-        if (count($new_handicaps) > 0) {
-            $this->persist($person, $new_handicaps);
-        }
-    }
+    // functional methods
 
     /**
-     * @param Person         $person
-     * @param bool           $indoor
-     * @param PersonHandicap $from
+     * @param HandicapIdentifier $id
      *
-     * @return PersonHandicap[]
+     * @return \AppBundle\Entity\PersonHandicap[]
      */
-    private function calculateRebuild(Person $person, $indoor, PersonHandicap $from = null)
+    private function calculateRebuild(HandicapIdentifier $id)
     {
         // get all scores (in date order) since from
-        $person_scores = $this->doctrine->getRepository('AppBundle:Score')
-            ->getScoresByPersonBetween($person, $from === null ? new \DateTime('1990-01-01') : $from->getDate(), new \DateTime('now'));
-        usort($person_scores, function (Score $a, Score $b) {
-            return $a->getDateShot() < $b->getDateShot() ? -1 : 1;
-        });
+        $scores = $this->doctrine->getRepository('AppBundle:Score')
+            ->getScoresByHandicapIdBetween($id, new \DateTime('1950-01-01'), new \DateTime('now'));
 
-        $scores = [];
-        foreach ($person_scores as $score) {
-            if ($score->isIndoor() !== $indoor) {
-                continue;
-            }
-            if (!$score->getDateAccepted()) {
-                continue;
+        $seasons = [];
+
+        foreach ($scores as $score) {
+            $season = $this->getSeason($id, $score->getDateShot())->format('Y-m-d');
+
+            if (!array_key_exists($season, $seasons)) {
+                $seasons[$season] = [];
             }
 
-            $scores[] = $score;
+            $seasons[$season][] = $score;
         }
 
-        $score_index = 0;
-        $score_count = count($scores);
         $handicaps = [];
-        $last_handicap = $from;
+        /** @var PersonHandicap $previous_handicap */
+        $previous_handicap = null;
 
-        // if $from === null => initial
-        if ($from === null) {
-            if ($score_count < 3) {
-                return [];
+        foreach ($seasons as $dateString => $scores) {
+            $score_index = 0;
+            $score_count = count($scores);
+
+            $season_start = new \DateTime($dateString);
+            $season_end = clone $season_start;
+            $season_end->add(new \DateInterval('P1Y'));
+
+            // ignore prev if it wasn't last season
+            if ($previous_handicap !== null) {
+                $diff = $season_start->diff($previous_handicap->getDate());
+
+                if ($diff->y > 0) {
+                    $previous_handicap = null;
+                }
             }
 
-            $initial_scores = array_slice($scores, 0, 3);
-            $score_index = 3;
+            // if $previous_handicap === null => initial
+            if ($previous_handicap === null) {
+                if ($score_count < 3) {
+                    // nothing in this season
+                    continue;
+                }
 
-            $last_handicap = $this->initialHandicap($initial_scores, $indoor);
-            $handicaps[] = $last_handicap;
-        }
+                $initial_scores = array_slice($scores, 0, 3);
+                $score_index = 3;
 
-        // iterate remaining
-        for (; $score_index < $score_count; ++$score_index) {
-            $next_handicap = $this->averageUpdate($last_handicap, $scores[$score_index]);
-            if ($next_handicap === null) {
-                continue;
+                $previous_handicap = $this->initialHandicap($id, $initial_scores);
+                $handicaps[] = $previous_handicap;
             }
 
-            $last_handicap = $next_handicap;
-            $handicaps[] = $last_handicap;
+
+            // iterate remaining
+            for (; $score_index < $score_count; ++$score_index) {
+                $new_handicap = $this->averageUpdate($previous_handicap, $scores[$score_index]);
+                if ($new_handicap === null) {
+                    // this score doesn't change anything
+                    continue;
+                }
+
+                $handicaps[] = $new_handicap;
+                $previous_handicap = $new_handicap;
+            }
+
+            // if the season has ended do the annual re-assessment
+            if ($season_end <= new \DateTime('now')) {
+                $handicaps = array_merge($handicaps, $this->calculateAssessment($id, $season_start, $season_end));
+            }
         }
 
         return $handicaps;
     }
 
-    /**
-     * @param Person    $person
-     * @param \DateTime $start_date
-     * @param \DateTime $end_date
-     *
-     * @return PersonHandicap[]
-     */
-    private function calculateReassesment(Person $person, \DateTime $start_date, \DateTime $end_date)
+    private function getSeason(HandicapIdentifier $id, \DateTime $date)
     {
-        $scores = $this->doctrine->getRepository('AppBundle:Score')
-            ->getScoresByPersonBetween($person, $start_date, $end_date);
+        $threshold_date = new \DateTime();
+        $threshold_date->setTime(0, 0, 0);
 
-        $indoor = [];
-        $outdoor = [];
+        // ArcheryGB dates
+        if ($id->isIndoor()) {
+            $threshold_date->setDate($date->format('Y'), 7, 1);
+            if ($threshold_date > $date) {
+                $threshold_date->sub(new \DateInterval('P1Y'));
+            }
+        } else {
+            $threshold_date->setDate($date->format('Y'), 1, 1);
+        }
 
-        foreach ($scores as $score) {
+        return $threshold_date;
+    }
+
+    /**
+     * @param HandicapIdentifier $id
+     * @param \DateTime          $start_date
+     * @param \DateTime          $end_date
+     *
+     * @return \AppBundle\Entity\PersonHandicap[]
+     */
+    private function calculateAssessment(HandicapIdentifier $id, \DateTime $start_date, \DateTime $end_date)
+    {
+        $candidateScores = $this->doctrine->getRepository('AppBundle:Score')
+            ->getScoresByHandicapIdBetween($id, $start_date, $end_date);
+
+        $scores = [];
+
+        foreach ($candidateScores as $score) {
             if (!$score->getDateAccepted()) {
                 continue;
             }
 
             $handicap = $this->calculator->handicapForScore($score);
-            if ($score->isIndoor()) {
-                $indoor[] = $handicap;
-            } else {
-                $outdoor[] = $handicap;
-            }
+            $scores[] = $handicap;
         }
 
         $newHandicaps = [];
 
-        if (count($indoor) >= 3) {
-            sort($indoor);
-            $indoor_scores = array_slice($indoor, 0, 3);
-            $indoor_handicap = ceil(array_sum($indoor_scores) / 3);
+        if (count($scores) >= 3) {
+            sort($scores);
+            $handicaps = array_slice($scores, 0, 3);
+            $handicap = ceil(array_sum($handicaps) / 3);
 
-            $newHandicaps[] = $this->createHandicap(HandicapType::REASSESS, true, $indoor_handicap, $end_date);
-        }
-
-        if (count($outdoor) >= 3) {
-            sort($outdoor);
-            $outdoor_scores = array_slice($outdoor, 0, 3);
-            $outdoor_handicap = ceil(array_sum($outdoor_scores) / 3);
-
-            $newHandicaps[] = $this->createHandicap(HandicapType::REASSESS, false, $outdoor_handicap, $end_date);
+            $newHandicaps[] = $this->createHandicap($id, HandicapType::REASSESS, $handicap, $end_date);
         }
 
         return $newHandicaps;
     }
 
     /**
-     * @param Score[] $scores
-     * @param bool    $indoor
+     * @param HandicapIdentifier $id
+     * @param Score[]            $scores
      *
      * @return PersonHandicap
      */
-    private function initialHandicap(array $scores, $indoor)
+    private function initialHandicap(HandicapIdentifier $id, array $scores)
     {
         if (count($scores) !== 3) {
             throw new \InvalidArgumentException('Initial handicap should only have 3 scores');
@@ -258,14 +242,18 @@ class HandicapManager
             $accum += $this->calculator->handicapForScore($score);
             $date = $date < $score->getDateShot() ? $score->getDateShot() : $date;
 
-            if ($score->isIndoor() !== $indoor) {
-                throw new \InvalidArgumentException("Score and handicap type don't match?");
+            if ($score->isIndoor() !== $id->isIndoor()) {
+                throw new \InvalidArgumentException("Scores don't all have the same indoor setting");
+            }
+
+            if ($score->getBowtype() !== $id->getBowtype()) {
+                throw new \InvalidArgumentException("Scores don't all have the same bowtype");
             }
         }
 
         $handicap = ceil($accum / 3);
 
-        return $this->createHandicap(HandicapType::INITIAL, $indoor, $handicap, $date);
+        return $this->createHandicap($id, HandicapType::INITIAL, $handicap, $date);
     }
 
     /**
@@ -274,7 +262,7 @@ class HandicapManager
      * @param PersonHandicap $current_handicap
      * @param Score          $score
      *
-     * @return PersonHandicap[]
+     * @return PersonHandicap
      */
     private function averageUpdate(PersonHandicap $current_handicap, Score $score)
     {
@@ -282,28 +270,32 @@ class HandicapManager
         $new_value = ceil(($current_handicap->getHandicap() + $score_handicap) / 2);
 
         if ($new_value >= $current_handicap->getHandicap()) {
-            return;
+            return null;
         }
 
-        return $this->createHandicap(HandicapType::UPDATE, $score->isIndoor(), $new_value, $score->getDateShot());
+        $id = new HandicapIdentifier($current_handicap->getPerson(), $score->isIndoor(), $score->getBowtype());
+
+        return $this->createHandicap($id, HandicapType::UPDATE, $new_value, $score->getDateShot());
     }
 
     /**
-     * @param string    $type
-     * @param bool      $indoor
-     * @param int       $value
-     * @param \DateTime $date
-     * @param Score     $score
+     * @param HandicapIdentifier $id
+     * @param string             $type
+     * @param int                $value
+     * @param \DateTime          $date
+     * @param Score              $score
      *
      * @return PersonHandicap
      */
-    private function createHandicap($type, $indoor, $value, $date, Score $score = null)
+    private function createHandicap(HandicapIdentifier $id, $type, $value, $date, Score $score = null)
     {
         $handicap = new PersonHandicap();
 
+        $handicap->setPerson($id->getPerson());
         $handicap->setHandicap($value);
         $handicap->setType($type);
-        $handicap->setIndoor($indoor);
+        $handicap->setIndoor($id->isIndoor());
+        $handicap->setBowType($id->getBowtype());
         $handicap->setDate($date);
 
         if ($score !== null) {
@@ -314,15 +306,13 @@ class HandicapManager
     }
 
     /**
-     * @param Person           $person
      * @param PersonHandicap[] $handicaps
      */
-    private function persist(Person $person, array $handicaps)
+    private function persist(array $handicaps)
     {
         $em = $this->doctrine->getManager();
 
         foreach ($handicaps as $handicap) {
-            $handicap->setPerson($person);
             $em->persist($handicap);
         }
 
@@ -330,22 +320,16 @@ class HandicapManager
     }
 
     /**
-     * @param Person         $person
-     * @param bool           $indoor
-     * @param PersonHandicap $last_handicap
+     * @param HandicapIdentifier $id
      */
-    private function removeAfter(Person $person, $indoor, PersonHandicap $last_handicap = null)
+    private function remove(HandicapIdentifier $id)
     {
         /** @var PersonHandicap[] $handicaps */
         $handicaps = $this->doctrine->getRepository('AppBundle:PersonHandicap')
-            ->findAfter($person, $last_handicap !== null ? $last_handicap->getDate() : new \DateTime('1990-01-01'));
+            ->findAfter($id, new \DateTime('1950-01-01'));
 
         $em = $this->doctrine->getManager();
         foreach ($handicaps as $handicap) {
-            if ($handicap->getIndoor() !== $indoor) {
-                continue;
-            }
-
             $em->remove($handicap);
         }
         $em->flush();

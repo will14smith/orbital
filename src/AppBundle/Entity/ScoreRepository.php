@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use AppBundle\Services\Handicap\HandicapIdentifier;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\Expr;
@@ -33,23 +34,32 @@ class ScoreRepository extends EntityRepository
     }
 
     /**
-     * @param Person    $person
-     * @param \DateTime $start_date
-     * @param \DateTime $end_date
+     * @param HandicapIdentifier $hcId
+     * @param \DateTime          $start_date
+     * @param \DateTime          $end_date
      *
      * @return Score[]
      */
-    public function getScoresByPersonBetween(Person $person, \DateTime $start_date, \DateTime $end_date)
+    public function getScoresByHandicapIdBetween(HandicapIdentifier $hcId, \DateTime $start_date, \DateTime $end_date)
     {
-        $score_query = $this->createQueryBuilder('s');
+        $score_query = $this->createQueryBuilder('s')
+            ->join('s.round', 'r');
 
         return $score_query
-            ->where('s.person = :person_id')
+            ->where('s.person = :person')
+            ->andWhere('r.indoor = :indoor')
+            ->andWhere('s.bowtype = :bowtype')
             ->andWhere('s.date_shot >= :start_date')
             ->andWhere('s.date_shot <= :end_date')
-            ->setParameter('person_id', $person->getId())
+
+            ->orderBy('s.date_shot', 'ASC')
+
+            ->setParameter('person', $hcId->getPerson())
+            ->setParameter('indoor', $hcId->isIndoor())
+            ->setParameter('bowtype', $hcId->getBowtype())
             ->setParameter('start_date', $start_date, Type::DATE)
             ->setParameter('end_date', $end_date, Type::DATE)
+
             ->getQuery()
             ->getResult();
     }

@@ -22,4 +22,9 @@ class BowType
     {
         return self::$choices[$bow_type];
     }
+
+    public static function isValid($bowtype)
+    {
+        return in_array($bowtype, array_keys(self::$choices));
+    }
 }

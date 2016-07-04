@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use AppBundle\Services\Handicap\HandicapIdentifier;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\ORM\EntityRepository;
 
@@ -17,15 +18,70 @@ class PersonHandicapRepository extends EntityRepository
         return $q->getQuery()->getSingleScalarResult();
     }
 
-    public function findAfter(Person $person, \DateTime $date)
+    public function findAfter(HandicapIdentifier $id, \DateTime $date)
     {
         return $this->createQueryBuilder('ph')
             ->where('ph.person = :person')
+            ->andWhere('ph.indoor = :indoor')
+            ->andWhere('ph.bowType = :bowtype')
             ->andWhere('ph.date > :date')
-
-            ->setParameter('person', $person->getId())
+            ->setParameter('person', $id->getPerson())
+            ->setParameter('indoor', $id->isIndoor())
+            ->setParameter('bowtype', $id->getBowtype())
             ->setParameter('date', $date, Type::DATE)
             ->getQuery()
             ->getResult();
+    }
+
+    /**
+     * @param HandicapIdentifier $id
+     *
+     * @return PersonHandicap|null
+     *
+     * @throws \Doctrine\ORM\NoResultException
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
+    public function findCurrent(HandicapIdentifier $id)
+    {
+        return $this->createQueryBuilder('ph')
+            ->where('ph.person = :person')
+            ->andWhere('ph.indoor = :indoor')
+            ->andWhere('ph.bowType = :bowtype')
+
+            ->orderBy('ph.date', 'DESC')
+            ->setMaxResults(1)
+
+            ->setParameter('person', $id->getPerson())
+            ->setParameter('indoor', $id->isIndoor())
+            ->setParameter('bowtype', $id->getBowtype())
+
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
+    /**
+     * @param HandicapIdentifier $id
+     * @param \DateTime          $dt
+     *
+     * @return PersonHandicap|null
+     */
+    public function findLastBefore(HandicapIdentifier $id, \DateTime $dt)
+    {
+        return $this->createQueryBuilder('ph')
+            ->where('ph.person = :person')
+            ->andWhere('ph.indoor = :indoor')
+            ->andWhere('ph.bowType = :bowtype')
+            ->andWhere('ph.date < :date')
+
+            ->orderBy('ph.date', 'DESC')
+            ->setMaxResults(1)
+
+            ->setParameter('person', $id->getPerson())
+            ->setParameter('indoor', $id->isIndoor())
+            ->setParameter('bowtype', $id->getBowtype())
+            ->setParameter('date', $dt, Type::DATE)
+
+            ->getQuery()
+            ->getOneOrNullResult();
     }
 }
