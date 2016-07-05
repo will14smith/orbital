@@ -35,6 +35,31 @@ class ScoreRepository extends EntityRepository
 
     /**
      * @param HandicapIdentifier $hcId
+     *
+     * @return Score[]
+     */
+    public function getScoresByHandicapId(HandicapIdentifier $hcId)
+    {
+        $score_query = $this->createQueryBuilder('s')
+            ->join('s.round', 'r');
+
+        return $score_query
+            ->where('s.person = :person')
+            ->andWhere('r.indoor = :indoor')
+            ->andWhere('s.bowtype = :bowtype')
+
+            ->orderBy('s.date_shot', 'ASC')
+
+            ->setParameter('person', $hcId->getPerson())
+            ->setParameter('indoor', $hcId->isIndoor())
+            ->setParameter('bowtype', $hcId->getBowtype())
+
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * @param HandicapIdentifier $hcId
      * @param \DateTime          $start_date
      * @param \DateTime          $end_date
      *

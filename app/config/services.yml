@@ -22,9 +22,15 @@ services:
 # handicaps
     orbital.handicap.calculate:
         class: AppBundle\Services\Handicap\HandicapCalculator
+    orbital.handicap.decider:
+        class: AppBundle\Services\Handicap\HandicapDecider
+        arguments: ["@orbital.handicap.calculate", "@orbital.handicap.reassess_repository"]
     orbital.handicap.manager:
         class: AppBundle\Services\Handicap\HandicapManager
-        arguments: ["@doctrine", "@orbital.handicap.calculate"]
+        arguments: ["@doctrine", "@orbital.handicap.decider"]
+    orbital.handicap.reassess_repository:
+        class: AppBundle\Services\Handicap\ReassessmentRepository
+        arguments: ["@doctrine"]
     orbital.handicap.listener:
         class: AppBundle\Services\Handicap\HandicapListener
         arguments: ["@orbital.handicap.manager", "@doctrine"]
@@ -79,11 +85,6 @@ services:
           - { name: orbital.league.algo }
     orbital.league.algo.icac:
         class: AppBundle\Services\Leagues\Algorithms\ICACAlgorithm
-        public: false
-        tags:
-          - { name: orbital.league.algo }
-    orbital.league.algo.icac_hc:
-        class: AppBundle\Services\Leagues\Algorithms\ICACHandicapAlgorithm
         public: false
         tags:
           - { name: orbital.league.algo }
