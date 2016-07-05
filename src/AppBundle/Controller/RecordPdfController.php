@@ -4,6 +4,8 @@ namespace AppBundle\Controller;
 
 use AppBundle\Constants;
 use AppBundle\Controller\Traits\PdfRenderTrait;
+use AppBundle\Entity\Club;
+use AppBundle\Entity\Record;
 use AppBundle\Entity\RecordHolderPerson;
 use AppBundle\Services\Enum\BowType;
 use AppBundle\Services\Enum\Environment;
@@ -14,9 +16,16 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
+// TODO make groups a proper data structure
+
 class RecordPdfController extends Controller
 {
     use PdfRenderTrait;
+
+    private static $envs = [Environment::INDOOR, Environment::OUTDOOR];
+    private static $skills = [Skill::SENIOR, Skill::NOVICE];
+    private static $genders = [Gender::MALE, Gender::FEMALE];
+    private static $bowtypes = [BowType::RECURVE, BowType::COMPOUND, BowType::BAREBOW, BowType::LONGBOW];
 
     /**
      * @Route("/records/pdf", name="record_pdf", methods={"GET"})
@@ -39,31 +48,43 @@ class RecordPdfController extends Controller
         $recordRepository = $this->getDoctrine()->getRepository('AppBundle:Record');
         $records = $recordRepository->findAllByClub($club->getId());
 
+        $groups = $this->buildGroups();
+        $groups = $this->populateGroups($records, $groups, $club);
+        $groups = $this->pruneGroups($groups);
+
+        $data = [
+            'title' => $club->getRecordsTitle(),
+            'image_url' => $club->getRecordsImageUrl(),
+            'preface' => $club->getRecordsPreface(),
+            'appendix' => $club->getRecordsAppendix(),
+
+            'groups' => $groups,
+        ];
+
+        if ($request->query->has('html')) {
+            return $this->render('record/list.pdf.twig', $data);
+        }
+
+        return $this->renderPdf('record/list.pdf.twig', $data, [
+            'margin-top' => '12mm',
+            'margin-bottom' => '12mm',
+            'margin-left' => '24mm',
+            'margin-right' => '24mm',
+
+            'orientation' => 'Landscape',
+
+            'footer-html' => $this->renderView('record/list_footer.pdf.twig', $data),
+        ]);
+    }
+
+    /**
+     * @return array
+     */
+    private function buildGroups()
+    {
         $groups = [];
 
-        $envs = [
-            Environment::INDOOR,
-            Environment::OUTDOOR,
-        ];
-
-        $skills = [
-            Skill::SENIOR,
-            Skill::NOVICE,
-        ];
-
-        $genders = [
-            Gender::MALE,
-            Gender::FEMALE,
-        ];
-
-        $bowtypes = [
-            BowType::RECURVE,
-            BowType::COMPOUND,
-            BowType::BAREBOW,
-            BowType::LONGBOW,
-        ];
-
-        foreach ($envs as $env) {
+        foreach (self::$envs as $env) {
             $envN = Environment::display($env);
 
             array_push($groups, [
@@ -74,14 +95,14 @@ class RecordPdfController extends Controller
                 ],
             ]);
 
-            foreach ($skills as $skill) {
+            foreach (self::$skills as $skill) {
                 $skillN = Skill::display($skill);
 
-                foreach ($genders as $gender) {
+                foreach (self::$genders as $gender) {
                     $genderN = Gender::display($gender);
                     $subgroups = [];
 
-                    foreach ($bowtypes as $bowtype) {
+                    foreach (self::$bowtypes as $bowtype) {
                         array_push($subgroups, [
                             'name' => $skillN . ' ' . $genderN . ' ' . BowType::display($bowtype),
                             'isTeam' => false,
@@ -97,20 +118,31 @@ class RecordPdfController extends Controller
             }
         }
 
+        return $groups;
+    }
 
+    /**
+     * @param Record[] $records
+     * @param array    $groups
+     * @param Club     $club
+     *
+     * @return array
+     */
+    private function populateGroups($records, $groups, $club)
+    {
         foreach ($records as $record) {
             $indoors = $record->isIndoor();
             $team = $record->getNumHolders() > 1;
             $novice = $record->isNovice();
             $female = $record->getGender() === Gender::FEMALE;
 
-            $envOffset = $indoors ? 0 : (count($skills) * count($genders) + 1);
+            $envOffset = $indoors ? 0 : (count(self::$skills) * count(self::$genders) + 1);
 
             if ($team) {
                 $target = &$groups[$envOffset]['subgroups'][$novice ? 1 : 0]['records'];
             } else {
-                $groupIdx = $envOffset + count($genders) * ($novice ? 1 : 0) + ($female ? 2 : 1);
-                $subgroupIdx = array_search($record->getBowtype(), $bowtypes, true);
+                $groupIdx = $envOffset + count(self::$genders) * ($novice ? 1 : 0) + ($female ? 2 : 1);
+                $subgroupIdx = array_search($record->getBowtype(), self::$bowtypes, true);
 
                 $target = &$groups[$groupIdx]['subgroups'][$subgroupIdx]['records'];
             }
@@ -137,28 +169,22 @@ class RecordPdfController extends Controller
             }
         }
 
-        $data = [
-            'title' => $club->getRecordsTitle(),
-            'image_url' => $club->getRecordsImageUrl(),
-            'preface' => $club->getRecordsPreface(),
-            'appendix' => $club->getRecordsAppendix(),
+        return $groups;
+    }
 
-            'groups' => $groups,
-        ];
+    /**
+     * @param array $groups
+     *
+     * @return array
+     */
+    private function pruneGroups($groups)
+    {
+        return array_filter($groups, function ($group) {
+            $group['subgroups'] = array_filter($group['subgroups'], function ($subgroup) {
+                return count($subgroup['records']) > 0;
+            });
 
-        if ($request->query->has('html')) {
-            return $this->render('record/list.pdf.twig', $data);
-        }
-
-        return $this->renderPdf('record/list.pdf.twig', $data, [
-            'margin-top' => '12mm',
-            'margin-bottom' => '12mm',
-            'margin-left' => '24mm',
-            'margin-right' => '24mm',
-
-            'orientation' => 'Landscape',
-
-            'footer-html' => $this->renderView('record/list_footer.pdf.twig', $data),
-        ]);
+            return count($group['subgroups']) > 0;
+        });
     }
 }

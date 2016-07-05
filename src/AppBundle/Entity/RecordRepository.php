@@ -8,6 +8,11 @@ use Doctrine\ORM\EntityRepository;
 
 class RecordRepository extends EntityRepository
 {
+    /**
+     * @param $club_id
+     *
+     * @return Record[]
+     */
     public function findAllByClub($club_id)
     {
         return $this->createQueryBuilder('r')
