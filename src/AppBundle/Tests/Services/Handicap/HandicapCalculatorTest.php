@@ -98,16 +98,6 @@ class HandicapCalculatorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException \PHPUnit_Framework_Error
-     */
-    public function testScoreNullRound()
-    {
-        $calc = new HandicapCalculator();
-
-        $calc->score(null, false, 1);
-    }
-
-    /**
      * @expectedException
      */
     public function testScoreLowHandicap()
