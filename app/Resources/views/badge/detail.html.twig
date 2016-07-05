@@ -48,7 +48,6 @@
                     <li><a href="{{ url('badge_award', { 'badge': badge.id }) }}">Claim</a></li>
                 {% elseif is_granted('ROLE_ADMIN') %}
                     <li><a href="{{ url('badge_award', { 'badge': badge.id }) }}">Award</a></li>
-                    <li><a href="{{ url('badge_sheet', { 'badge[]': badge.id }) }}">Generate Sheet</a></li>
                     <li><a href="{{ url('badge_edit', { 'id': badge.id }) }}">Edit</a></li>
                     <li><a href="{{ url('badge_delete', { 'id': badge.id }) }}">Delete</a></li>
                 {% endif %}
