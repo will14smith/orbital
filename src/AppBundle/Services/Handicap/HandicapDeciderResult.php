@@ -4,7 +4,6 @@ namespace AppBundle\Services\Handicap;
 
 use AppBundle\Entity\PersonHandicap;
 use AppBundle\Entity\Score;
-use AppBundle\Services\Enum\HandicapType;
 
 class HandicapDeciderResult
 {
@@ -64,7 +63,7 @@ class HandicapDeciderResult
      */
     public static function none(array $scores)
     {
-        return new HandicapDeciderResult(null, $scores);
+        return new self(null, $scores);
     }
 
     /**
@@ -75,6 +74,6 @@ class HandicapDeciderResult
      */
     public static function success(PersonHandicap $handicap, array $remaining_scores)
     {
-        return new HandicapDeciderResult($handicap, $remaining_scores);
+        return new self($handicap, $remaining_scores);
     }
 }

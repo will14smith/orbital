@@ -2,7 +2,6 @@
 
 namespace AppBundle\Services\Handicap;
 
-
 use AppBundle\Entity\PersonHandicap;
 use AppBundle\Entity\Score;
 use AppBundle\Services\Enum\HandicapType;

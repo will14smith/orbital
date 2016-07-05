@@ -32,7 +32,7 @@ class HandicapSyncCommand extends ContainerAwareCommand
         $progress->start();
 
         $handicapManager = $container->get('orbital.handicap.manager');
-        foreach($people as $person) {
+        foreach ($people as $person) {
             $handicapManager->rebuildPerson($person);
             $progress->advance();
         }
@@ -41,5 +41,4 @@ class HandicapSyncCommand extends ContainerAwareCommand
 
         $output->writeln('Completed');
     }
-
 }

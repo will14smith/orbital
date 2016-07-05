@@ -35,7 +35,6 @@ class HandicapDeciderTest extends \PHPUnit_Framework_TestCase
 
         $this->assertFalse($result->hasHandicap());
         $this->assertEmpty($result->getRemainingScores());
-
     }
 
     public function testInitialScore()
@@ -141,8 +140,8 @@ class HandicapDeciderTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($handicap->getHandicap(), 86);
     }
 
-
     // helpers
+
     /**
      * @return Round
      */

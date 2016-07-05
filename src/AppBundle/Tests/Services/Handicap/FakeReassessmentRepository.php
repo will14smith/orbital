@@ -18,7 +18,6 @@ class FakeReassessmentRepository implements ReassessmentRepositoryInterface
      */
     public function __construct(array $scores)
     {
-
         $this->scores = $scores;
     }
 

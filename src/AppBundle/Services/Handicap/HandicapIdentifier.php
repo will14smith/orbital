@@ -37,7 +37,7 @@ class HandicapIdentifier
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function isIndoor()
     {

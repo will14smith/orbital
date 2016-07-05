@@ -204,7 +204,7 @@ class PersonHandicap
     }
 
     /**
-     * Set bowType
+     * Set bowType.
      *
      * @param string $bowType
      *
@@ -213,12 +213,12 @@ class PersonHandicap
     public function setBowType($bowType)
     {
         $this->bowType = $bowType;
-    
+
         return $this;
     }
 
     /**
-     * Get bowType
+     * Get bowType.
      *
      * @return string
      */

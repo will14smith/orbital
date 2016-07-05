@@ -49,9 +49,7 @@ class HandicapManager
         $em->flush();
 
         return $new_handicaps;
-
     }
-
 
     /**
      * @param Person $person

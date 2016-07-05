@@ -19,6 +19,6 @@ class NullReassessmentRepository implements ReassessmentRepositoryInterface
      */
     public function getScores(HandicapIdentifier $id, \DateTime $start_date, \DateTime $end_date)
     {
-        throw new \Exception("This should not be called");
+        throw new \Exception('This should not be called');
     }
 }
