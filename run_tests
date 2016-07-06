@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+# need to clear cache because stuff...
+php app/console cache:clear --env=test --no-warmup
+phpunit

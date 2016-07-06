@@ -4,8 +4,9 @@ namespace AppBundle\Controller\API;
 
 use AppBundle\Entity\Person;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
-class PersonApiController extends ApiController
+class PersonApiController extends Controller
 {
     /**
      * @Route("/api/people", name="api_person_list", methods={"GET"})
