@@ -67,7 +67,7 @@
                         </tr>
                         {% for record in subgroup.records %}
                             <tr{% if subgroup.isTeam %} class="team"{% endif %}>
-                                <td>{{ record.round }}</td>
+                                <td>{{ record.roundName }}</td>
                                 {% if record.unclaimed %}
                                     <td colspan="3"><em>Not yet claimed</em></td>
                                 {% else %}
