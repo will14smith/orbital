@@ -30,6 +30,8 @@ class PersonHandicapRepository extends EntityRepository
             ->andWhere('ph.indoor = :indoor')
             ->andWhere('ph.bowType = :bowtype')
 
+            ->orderBy('ph.date', 'ASC')
+
             ->setParameter('person', $id->getPerson())
             ->setParameter('indoor', $id->isIndoor())
             ->setParameter('bowtype', $id->getBowtype())

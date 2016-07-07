@@ -7,10 +7,14 @@ use AppBundle\Entity\PersonHandicap;
 use AppBundle\Entity\Score;
 use AppBundle\Services\Enum\BowType;
 use AppBundle\Services\Enum\Environment;
+use AppBundle\View\Model\HandicapDetailViewModel;
 use Doctrine\Bundle\DoctrineBundle\Registry;
 
 class HandicapManager
 {
+    public static $environments = [Environment::INDOOR, Environment::OUTDOOR];
+    public static $bowTypes = [BowType::RECURVE, BowType::COMPOUND, BowType::BAREBOW, BowType::LONGBOW];
+
     /**
      * @var Registry
      */
@@ -24,6 +28,47 @@ class HandicapManager
     {
         $this->doctrine = $doctrine;
         $this->decider = $decider;
+    }
+
+    /**
+     * @param Person $person
+     *
+     * @return HandicapDetailViewModel[]
+     */
+    public function getPersonDetails(Person $person)
+    {
+        $handicaps = [];
+
+        foreach (self::$environments as $environment) {
+            foreach (self::$bowTypes as $bowType) {
+                $handicap = $this->getDetail(new HandicapIdentifier($person, $environment, $bowType));
+
+                if($handicap) {
+                    $handicaps[] = $handicap;
+                }
+            }
+        }
+
+        return $handicaps;
+    }
+
+    /**
+     * @param HandicapIdentifier $id
+     *
+     * @return HandicapDetailViewModel|null
+     */
+    private function getDetail(HandicapIdentifier $id)
+    {
+        $personHandicapRepository = $this->doctrine->getRepository('AppBundle:PersonHandicap');
+        $current = $personHandicapRepository->findCurrent($id);
+
+        if($current === null) {
+            return null;
+        }
+
+        $historic = $personHandicapRepository->findById($id);
+
+        return new HandicapDetailViewModel($id, $current, $historic);
     }
 
     /**
@@ -56,11 +101,8 @@ class HandicapManager
      */
     public function rebuildPerson(Person $person)
     {
-        $environments = [Environment::INDOOR, Environment::OUTDOOR];
-        $bowTypes = array_keys(BowType::$choices);
-
-        foreach ($environments as $environment) {
-            foreach ($bowTypes as $bowType) {
+        foreach (self::$environments as $environment) {
+            foreach (self::$bowTypes as $bowType) {
                 $this->rebuild(new HandicapIdentifier($person, $environment, $bowType));
             }
         }

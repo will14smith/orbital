@@ -119,4 +119,8 @@ dl {
   dt.admin, dt.admin + dd {
     color: map-get($color-red, '900')
   }
+
+  dt.error, dt.error + dd {
+    color: map-get($color-red, '900')
+  }
 }

@@ -1,0 +1,122 @@
+{% extends '::base.html.twig' %}
+
+{% set show_graph = handicaps|length > 0 %}
+
+{% block body %}
+    <dl>
+        {% for handicap in handicaps %}
+            <dt>{{ handicap.id.indoor|enum('environment') }} - {{ handicap.id.bowtype|enum('bowtype') }}</dt>
+            <dd>{{ handicap.current.handicap }} <span
+                        class="text-muted">since {{ handicap.current.date|date(DATE_FORMAT) }}</span></dd>
+        {% else %}
+            <dt class="error">No handicaps have been calculated.</dt>
+        {% endfor %}
+    </dl>
+
+    {% if show_graph %}
+        <div id="handicap_chart"></div>
+    {% endif %}
+{% endblock %}
+
+{% block title %}
+    {{ person.name }} - Handicap
+{% endblock %}
+
+{% block head_javascripts %}
+    {{ parent() }}
+
+    {% if show_graph %}
+        <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+        <script type="text/javascript">
+            google.charts.load('current', {packages: ['corechart']});
+        </script>
+    {% endif %}
+{% endblock %}
+
+{% block javascripts %}
+    {% if show_graph %}
+        <script>
+            var data = JSON.parse('{{ handicaps_json|json_encode|e('js') }}');
+
+            function buildDataTable(data) {
+                var headers = ['Date'];
+                var usedDates = {};
+                var table = [];
+
+                for (var i in data) {
+                    var handicapType = data[i];
+
+                    headers.push(handicapType.environment + ' - ' + handicapType.bowtype);
+
+                    for (var x in handicapType.data) {
+                        var handicap = handicapType.data[x];
+
+                        if (!(handicap.date in usedDates)) {
+                            usedDates[handicap.date] = true;
+                            table.push([handicap.date]);
+                        }
+                    }
+                }
+
+                table.sort(function(a, b) {
+                    return new Date(a[0]) - new Date(b[0]);
+                });
+
+                var handicapIndex = 0;
+                for (i in data) {
+                    handicapIndex++;
+                    handicapType = data[i];
+
+                    var tableIndex = 0;
+                    var previousHandicap = null;
+
+                    for (var x in handicapType.data) {
+                        handicap = handicapType.data[x];
+
+                        while(table[tableIndex][0] != handicap.date) {
+                            table[tableIndex++][handicapIndex] = previousHandicap;
+                        }
+
+                        previousHandicap = handicap.handicap;
+                        table[tableIndex][handicapIndex] = previousHandicap;
+                    }
+
+                    while(tableIndex < table.length) {
+                        table[tableIndex++][handicapIndex] = previousHandicap;
+                    }
+                }
+
+                for(i in table) {
+                    table[i][0] = new Date(table[i][0]);
+                }
+
+                return {
+                    headers: headers,
+                    table: table
+                };
+            }
+
+            function drawChart() {
+                var rawTable = buildDataTable(data);
+                var table = new google.visualization.DataTable();
+
+                table.addColumn('date', 'Date');
+                for(var i = 1; i < rawTable.headers.length; i++) {
+                    table.addColumn('number', rawTable.headers[i]);
+                }
+                table.addRows(rawTable.table);
+
+                var options = {
+                    title: 'Handicap',
+                    curveType: 'function',
+                    legend: { position: 'bottom' }
+                };
+
+                var chart = new google.visualization.LineChart($('#handicap_chart')[0]);
+                chart.draw(table, options);
+            }
+
+            google.charts.setOnLoadCallback(drawChart);
+        </script>
+    {% endif %}
+{% endblock %}

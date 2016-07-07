@@ -6,6 +6,7 @@ use AppBundle\Services\Enum\BadgeCategory;
 use AppBundle\Services\Enum\BadgeState;
 use AppBundle\Services\Enum\BowType;
 use AppBundle\Services\Enum\Classification;
+use AppBundle\Services\Enum\Environment;
 use AppBundle\Services\Enum\Gender;
 use AppBundle\Services\Enum\Skill;
 use AppBundle\Services\Enum\Unit;
@@ -28,6 +29,7 @@ class EnumExtension extends \Twig_Extension implements \Twig_Extension_GlobalsIn
             'badgestate' => BadgeState::$choices,
             'classification' => Classification::$choices,
             'short_classification' => Classification::$shortChoices,
+            'environment' => Environment::$choices,
         ]];
     }
 
