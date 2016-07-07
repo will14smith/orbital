@@ -16,7 +16,12 @@
     {% endif %}
     <dt>Handicaps & Classification</dt>
     <dd>
-        TODO: summary.... <a href="{{ url('person_handicap', { id: person.id }) }}">view more.</a>
+        {% for handicap in handicaps %}
+            <span class="text-muted">{{ handicap.id.indoor|enum('environment') }} - {{ handicap.id.bowtype|enum('bowtype') }}</span>: {{ handicap.current.handicap }}
+        {% else %}
+            <span class="text-muted">No handicaps</span>
+        {% endfor %}
+        <a href="{{ url('person_handicap', { id: person.id }) }}">view more.</a>
     </dd>
 </dl>
 

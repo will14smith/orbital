@@ -133,8 +133,13 @@ class PersonController extends Controller
 
         $pbs = $scoreRepository->getPersonalBests($person);
 
+        $handicap_manager = $this->get('orbital.handicap.manager');
+        $handicaps = $handicap_manager->getPersonDetails($person);
+
+
         return $this->render('person/detail.html.twig', [
             'person' => $person,
+            'handicaps' => $handicaps,
             'badges' => $badges,
             'records' => $records,
             'scores' => $recent_scores,

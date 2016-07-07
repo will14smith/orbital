@@ -8,7 +8,7 @@
 {% endblock %}
 
 {% block body %}
-    {% include ':person:_detail.html.twig' with { 'person': person } only %}
+    {% include ':person:_detail.html.twig' with { 'person': person, 'handicaps': handicaps } only %}
 
     <h2>Badges</h2>
     {% include ':person:_badges.html.twig' with { 'person': person, 'badges': badges } only %}
