@@ -11,6 +11,11 @@ use AppBundle\Services\Records\RecordManager;
 class RecordViewModel
 {
     /**
+     * @var Record
+     */
+    private $record;
+
+    /**
      * @var string
      */
     private $roundName;
@@ -37,6 +42,8 @@ class RecordViewModel
      */
     public function __construct(Record $record, RecordHolder $current_holder = null)
     {
+        $this->record = $record;
+
         $this->roundName = RecordManager::getRoundName($record);
         $this->unclaimed = $current_holder === null;
 
@@ -50,6 +57,22 @@ class RecordViewModel
         });
 
         $this->details = $current_holder->getCompetition()->getName() . ', ' . $current_holder->getDate()->format(Constants::DATE_FORMAT);
+    }
+
+    /**
+     * @return Record
+     */
+    public function getRecord()
+    {
+        return $this->record;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSortOrder()
+    {
+        return $this->record->getSortOrder();
     }
 
     /**

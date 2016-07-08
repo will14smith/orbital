@@ -13,6 +13,7 @@ class RecordType extends AbstractType
     {
         $builder
             ->add('num_holders')
+            ->add('sort_order')
             ->add('rounds', CollectionType::class, [
                 'entry_type' => RecordRoundType::class,
                 'allow_add' => true,

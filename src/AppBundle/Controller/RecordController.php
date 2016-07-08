@@ -17,55 +17,6 @@ use Symfony\Component\HttpFoundation\Request;
 class RecordController extends Controller
 {
     /**
-     * @Route("/records", name="record_list", methods={"GET"})
-     *
-     * @param Request $request
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function indexAction(Request $request)
-    {
-        $club_id = $request->query->getInt('club');
-        if ($club_id == 0) {
-            return $this->indexClubAction();
-        }
-
-        $recordRepository = $this->getDoctrine()->getRepository('AppBundle:Record');
-        if ($club_id == -1 && $this->isGranted('ROLE_ADMIN')) {
-            $records = $recordRepository->findAll();
-
-            return $this->render('record/list.html.twig', [
-                'records' => $records,
-                'club' => null,
-            ]);
-        }
-
-        $clubRepository = $this->getDoctrine()->getRepository('AppBundle:Club');
-        $club = $clubRepository->find($club_id);
-        if ($club == null) {
-            return $this->indexClubAction();
-        }
-
-        $records = $recordRepository->getByClub($club);
-
-        return $this->render('record/list.html.twig', [
-            'records' => $records,
-            'club' => $club,
-        ]);
-    }
-
-    private function indexClubAction()
-    {
-        $clubRepository = $this->getDoctrine()->getRepository('AppBundle:Club');
-
-        $clubs = $clubRepository->findAll();
-
-        return $this->render('record/list_select_club.html.twig', [
-            'clubs' => $clubs,
-        ]);
-    }
-
-    /**
      * @Security("has_role('ROLE_ADMIN')")
      * @Route("/record/create", name="record_create", methods={"GET", "POST"})
      *
@@ -218,6 +169,36 @@ class RecordController extends Controller
         return $this->render('record/delete.html.twig', [
             'record' => $record,
         ]);
+    }
+
+    /**
+     * @Security("has_role('ROLE_ADMIN')")
+     * @Route("/record/order", name="record_order", methods={"POST"})
+     *
+     * @param Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @throws \Exception
+     */
+    public function orderAction(Request $request)
+    {
+        $records = $request->request->get('records');
+        if (!$records || !is_array($records)) {
+            throw new \Exception('Invalid input.');
+        }
+
+        $em = $this->getDoctrine()->getManager();
+        $record_repository = $em->getRepository('AppBundle:Record');
+
+        $i = 0;
+        foreach ($records as $record_id) {
+            $record = $record_repository->find($record_id);
+            $record->setSortOrder($i++);
+        }
+
+        $em->flush();
+
+        return $this->json(['success' => true]);
     }
 
     /**

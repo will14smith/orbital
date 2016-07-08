@@ -6,26 +6,37 @@
 {% endblock %}
 
 {% block body %}
-    <ul class="list">
-        {% for record in records %}
-            <li>
-                {% if club %}
-                    <a href="{{ url('record_detail', { 'id': record.id, 'club': club.id }) }}">{{ record.displayName }}</a>
-                {% else %}
-                    <a href="#">{{ record.displayName }}</a>
-                {% endif %}
+    {% for group in groups %}
+        <h2>{{ group.name }}</h2>
+        {% for subgroup in group.subgroups %}
+            <h3>{{ subgroup.name }}</h3>
 
-                {% if is_granted('ROLE_ADMIN') %}
-                    <span class="actions">
-                        <a href="{{ url('record_edit', { 'id': record.id }) }}"><i class="fa fa-pencil"></i></a>
-                        <a href="{{ url('record_delete', { 'id': record.id }) }}"><i class="fa fa-trash-o"></i></a>
-                    </span>
-                {% endif %}
-            </li>
-        {% else %}
-            <li>No Records :(</li>
+            <ul class="list record-sortable">
+                {% for s_record in subgroup.records %}
+                    {% set record = s_record.record %}
+                    <li data-id="{{ record.id }}">
+                        {% if is_granted('ROLE_ADMIN') %}
+                            <a class="shrink record-handle"><i class="fa fa-th"></i></a>
+                        {% endif %}
+                        {% if club %}
+                            <a href="{{ url('record_detail', { 'id': record.id, 'club': club.id }) }}">{{ record.displayName }}</a>
+                        {% else %}
+                            <a href="#">{{ record.displayName }}</a>
+                        {% endif %}
+
+                        {% if is_granted('ROLE_ADMIN') %}
+                            <span class="actions">
+                                <a href="{{ url('record_edit', { 'id': record.id }) }}"><i class="fa fa-pencil"></i></a>
+                                <a href="{{ url('record_delete', { 'id': record.id }) }}"><i class="fa fa-trash-o"></i></a>
+                            </span>
+                        {% endif %}
+                    </li>
+                {% else %}
+                    <li>No Records :(</li>
+                {% endfor %}
+            </ul>
         {% endfor %}
-    </ul>
+    {% endfor %}
 {% endblock %}
 
 {% block sidebar %}
@@ -34,7 +45,7 @@
             <h2 class="widget-title">Actions</h2>
             <ul>
                 {% if is_granted('ROLE_ADMIN') %}
-                <li><a href="{{ url('record_create') }}">Create</a></li>
+                    <li><a href="{{ url('record_create') }}">Create</a></li>
                 {% endif %}
                 {% if club %}
                     <li><a href="{{ url('record_pdf', { 'club': club.id }) }}">View as PDF</a></li>
@@ -44,4 +55,25 @@
     {% endif %}
 
     {{ parent() }}
+{% endblock %}
+
+{% block javascripts %}
+    {% if is_granted('ROLE_ADMIN') %}
+        <script>
+            (function ($) {
+                $(function () {
+                    $('.record-sortable').sortable({
+                        handle: '.record-handle',
+                        onUpdate: function () {
+                            var order = this.toArray();
+
+                            $.post('{{ url('record_order')|e('js') }}', {
+                                records: order
+                            });
+                        }
+                    });
+                })
+            })(jQuery);
+        </script>
+    {% endif %}
 {% endblock %}

@@ -65,7 +65,12 @@
                             {% endif %}
                             <th>Details</th>
                         </tr>
+                        {% set last_sort_order = 0 %}
                         {% for record in subgroup.records %}
+                            {% if last_sort_order != 0 and (last_sort_order + 1) != record.sortOrder %}
+                                <tr><td colspan="3">&nbsp;</td></tr>
+                            {% endif %}
+                            {% set last_sort_order = record.sortOrder %}
                             <tr{% if subgroup.isTeam %} class="team"{% endif %}>
                                 <td>{{ record.roundName }}</td>
                                 {% if record.unclaimed %}

@@ -4,6 +4,7 @@ namespace AppBundle\View\Model;
 
 use AppBundle\Entity\Record;
 use AppBundle\Entity\RecordHolder;
+use AppBundle\Services\Records\RecordComparer;
 
 class RecordSubgroupViewModel
 {
@@ -64,11 +65,26 @@ class RecordSubgroupViewModel
     }
 
     /**
-     * @param Record $record
+     * @param Record       $record
      * @param RecordHolder $currentHolder
      */
     public function addRecord(Record $record, RecordHolder $currentHolder)
     {
         $this->records[] = new RecordViewModel($record, $currentHolder);
+    }
+
+    /**
+     * @return RecordSubgroupViewModel
+     */
+    public function sort()
+    {
+        $new_subgroup = new RecordSubgroupViewModel($this->name, $this->team);
+        $new_subgroup->records = $this->records;
+
+        usort($new_subgroup->records, function (RecordViewModel $a, RecordViewModel $b) {
+            return $a->getRecord()->getSortOrder() - $b->getRecord()->getSortOrder();
+        });
+
+        return $new_subgroup;
     }
 }

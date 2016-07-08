@@ -15,7 +15,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
-class RecordPdfController extends Controller
+class RecordListController extends Controller
 {
     use PdfRenderTrait;
 
@@ -23,6 +23,48 @@ class RecordPdfController extends Controller
     private static $skills = [Skill::SENIOR, Skill::NOVICE];
     private static $genders = [Gender::MALE, Gender::FEMALE];
     private static $bowtypes = [BowType::RECURVE, BowType::COMPOUND, BowType::BAREBOW, BowType::LONGBOW];
+
+    /**
+     * @Route("/records", name="record_list", methods={"GET"})
+     *
+     * @param Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function indexAction(Request $request)
+    {
+
+        $clubRepository = $this->getDoctrine()->getRepository('AppBundle:Club');
+        $club_id = $request->query->getInt('club');
+        $club = $clubRepository->find($club_id);
+        if (!$club) {
+            return $this->indexClubAction();
+        }
+
+        $recordRepository = $this->getDoctrine()->getRepository('AppBundle:Record');
+        $records = $recordRepository->findAllByClub($club->getId());
+
+        $groups = $this->buildGroups();
+        $groups = $this->populateGroups($records, $groups, $club);
+        $groups = $this->pruneGroups($groups);
+        $groups = $this->sortRecords($groups);
+
+        return $this->render('record/list.html.twig', [
+            'groups' => $groups,
+            'club' => $club,
+        ]);
+    }
+
+    private function indexClubAction()
+    {
+        $clubRepository = $this->getDoctrine()->getRepository('AppBundle:Club');
+
+        $clubs = $clubRepository->findAll();
+
+        return $this->render('record/list_select_club.html.twig', [
+            'clubs' => $clubs,
+        ]);
+    }
 
     /**
      * @Route("/records/pdf", name="record_pdf", methods={"GET"})
@@ -48,7 +90,7 @@ class RecordPdfController extends Controller
         $groups = $this->buildGroups();
         $groups = $this->populateGroups($records, $groups, $club);
         $groups = $this->pruneGroups($groups);
-        //TODO $groups = $this->sortRecords($groups);
+        $groups = $this->sortRecords($groups);
 
         $data = [
             'title' => $club->getRecordsTitle(),
@@ -156,7 +198,7 @@ class RecordPdfController extends Controller
      */
     private function pruneGroups(array $groups)
     {
-        $groups = array_map(function(RecordGroupViewModel $group) {
+        $groups = array_map(function (RecordGroupViewModel $group) {
             $subgroups = array_filter($group->getSubgroups(), function (RecordSubgroupViewModel $subgroup) {
                 return count($subgroup->getRecords()) > 0;
             });
@@ -167,5 +209,19 @@ class RecordPdfController extends Controller
         return array_filter($groups, function (RecordGroupViewModel $group) {
             return count($group->getSubgroups()) > 0;
         });
+    }
+
+    /**
+     * @param RecordGroupViewModel[] $groups
+     *
+     * @return RecordGroupViewModel[]
+     */
+    private function sortRecords(array $groups)
+    {
+        return array_map(function (RecordGroupViewModel $group) {
+            return new RecordGroupViewModel($group->getName(), array_map(function (RecordSubgroupViewModel $subgroup) {
+                return $subgroup->sort();
+            }, $group->getSubgroups()));
+        }, $groups);
     }
 }
