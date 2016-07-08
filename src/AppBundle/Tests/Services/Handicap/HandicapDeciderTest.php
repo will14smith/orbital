@@ -145,7 +145,7 @@ class HandicapDeciderTest extends \PHPUnit_Framework_TestCase
     /**
      * @return Round
      */
-    private function getRound()
+    public static function getRound()
     {
         $round = new Round();
         $target = new RoundTarget();
@@ -166,7 +166,7 @@ class HandicapDeciderTest extends \PHPUnit_Framework_TestCase
     /**
      * @return HandicapCalculator
      */
-    private function getCalculator()
+    public static function getCalculator()
     {
         return new HandicapCalculator();
     }
@@ -176,12 +176,13 @@ class HandicapDeciderTest extends \PHPUnit_Framework_TestCase
      *
      * @return Score
      */
-    private function getScore($value)
+    public static function getScore($value)
     {
         $score = new Score();
 
-        $score->setRound($this->getRound());
-        $score->setDateShot($this->getSeason(1));
+        $score->setRound(self::getRound());
+        $score->setPerson(new Person());
+        $score->setDateShot(self::getSeason(1));
         $score->setScore($value);
 
         return $score;
@@ -192,15 +193,15 @@ class HandicapDeciderTest extends \PHPUnit_Framework_TestCase
      *
      * @return Score[]
      */
-    private function getScores(...$values)
+    public static function getScores(...$values)
     {
-        return array_map([$this, 'getScore'], $values);
+        return array_map([self::class, 'getScore'], $values);
     }
 
     /**
      * @return HandicapIdentifier
      */
-    private function getHandicapId()
+    public static function getHandicapId()
     {
         return new HandicapIdentifier(new Person(), true, BowType::RECURVE);
     }
@@ -210,10 +211,10 @@ class HandicapDeciderTest extends \PHPUnit_Framework_TestCase
      *
      * @return PersonHandicap
      */
-    private function getHandicap($value)
+    public static function getHandicap($value)
     {
         $handicap = new PersonHandicap();
-        $handicap->setDate($this->getSeason(1));
+        $handicap->setDate(self::getSeason(1));
         $handicap->setHandicap($value);
 
         return $handicap;
@@ -224,7 +225,7 @@ class HandicapDeciderTest extends \PHPUnit_Framework_TestCase
      *
      * @return \DateTime
      */
-    private function getSeason($year)
+    public static function getSeason($year)
     {
         $base_date = new \DateTime('2010-05-01');
         $base_date->add(new \DateInterval('P' . $year . 'Y'));
@@ -232,7 +233,7 @@ class HandicapDeciderTest extends \PHPUnit_Framework_TestCase
         return $base_date;
     }
 
-    private function getReassessmentRepository(array $scores = null)
+    public static function getReassessmentRepository(array $scores = null)
     {
         if ($scores === null) {
             return new NullReassessmentRepository();

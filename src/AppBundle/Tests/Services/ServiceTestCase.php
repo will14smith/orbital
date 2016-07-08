@@ -29,6 +29,17 @@ abstract class ServiceTestCase extends \PHPUnit_Framework_TestCase
                 ->method('flush');
         }
 
+        $doctrine->repositories = [];
+        $doctrine->expects($this->any())
+            ->method('getRepository')
+            ->willReturnCallback(function (string $name) use ($doctrine) {
+                if (!array_key_exists($name, $doctrine->repositories)) {
+                    throw new \Exception("Repository not found");
+                }
+
+                return $doctrine->repositories[$name];
+            });
+
         return $doctrine;
     }
 
@@ -42,10 +53,7 @@ abstract class ServiceTestCase extends \PHPUnit_Framework_TestCase
 
         $repository = $this->getMockBuilder($type)->getMock();
 
-        $doctrine->expects($this->any())
-            ->method('getRepository')
-            ->with($this->stringEndsWith($name))
-            ->will($this->returnValue($repository));
+        $doctrine->repositories[$name] = $repository;
 
         return $repository;
     }

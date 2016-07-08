@@ -85,8 +85,14 @@ class HandicapManager
         $id = new HandicapIdentifier($score->getPerson(), $score->isIndoor(), $score->getBowtype());
         $current_handicap = $personHandicapRepository->findCurrent($id);
 
-        $new_handicaps = $this->buildHandicaps($id, $current_handicap, [$score]);
+        if ($current_handicap === null) {
+            $scores = $this->doctrine->getRepository('AppBundle:Score')->getScoresByHandicapId($id);
 
+            $new_handicaps = $this->buildHandicaps($id, $current_handicap, $scores);
+        } else {
+            $new_handicaps = $this->buildHandicaps($id, $current_handicap, [$score]);
+        }
+        
         $em = $this->doctrine->getManager();
         foreach ($new_handicaps as $handicap) {
             $em->persist($handicap);
