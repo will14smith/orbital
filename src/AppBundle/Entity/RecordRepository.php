@@ -127,17 +127,4 @@ class RecordRepository extends EntityRepository
 
         return $q->getQuery()->getResult();
     }
-
-    public function getByClub(Club $club)
-    {
-        $qb = $this->getEntityManager()->createQueryBuilder();
-
-        $q = $qb->select('r')
-            ->from('AppBundle:Record', 'r')
-            ->join('r.clubs', 'rc')
-            ->where('rc.club = :club')
-            ->setParameter('club', $club);
-
-        return $q->getQuery()->getResult();
-    }
 }

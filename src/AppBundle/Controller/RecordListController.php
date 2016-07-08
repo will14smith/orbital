@@ -2,23 +2,20 @@
 
 namespace AppBundle\Controller;
 
-use AppBundle\Constants;
 use AppBundle\Controller\Traits\PdfRenderTrait;
 use AppBundle\Entity\Club;
 use AppBundle\Entity\Record;
-use AppBundle\Entity\RecordHolderPerson;
 use AppBundle\Services\Enum\BowType;
 use AppBundle\Services\Enum\Environment;
 use AppBundle\Services\Enum\Gender;
 use AppBundle\Services\Enum\Skill;
-use AppBundle\Services\Records\RecordManager;
+use AppBundle\View\Model\RecordGroupViewModel;
+use AppBundle\View\Model\RecordSubgroupViewModel;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
-// TODO make groups a proper data structure
-
-class RecordPdfController extends Controller
+class RecordListController extends Controller
 {
     use PdfRenderTrait;
 
@@ -26,6 +23,47 @@ class RecordPdfController extends Controller
     private static $skills = [Skill::SENIOR, Skill::NOVICE];
     private static $genders = [Gender::MALE, Gender::FEMALE];
     private static $bowtypes = [BowType::RECURVE, BowType::COMPOUND, BowType::BAREBOW, BowType::LONGBOW];
+
+    /**
+     * @Route("/records", name="record_list", methods={"GET"})
+     *
+     * @param Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function indexAction(Request $request)
+    {
+        $clubRepository = $this->getDoctrine()->getRepository('AppBundle:Club');
+        $club_id = $request->query->getInt('club');
+        $club = $clubRepository->find($club_id);
+        if (!$club) {
+            return $this->indexClubAction();
+        }
+
+        $recordRepository = $this->getDoctrine()->getRepository('AppBundle:Record');
+        $records = $recordRepository->findAllByClub($club->getId());
+
+        $groups = $this->buildGroups();
+        $groups = $this->populateGroups($records, $groups, $club);
+        $groups = $this->pruneGroups($groups);
+        $groups = $this->sortRecords($groups);
+
+        return $this->render('record/list.html.twig', [
+            'groups' => $groups,
+            'club' => $club,
+        ]);
+    }
+
+    private function indexClubAction()
+    {
+        $clubRepository = $this->getDoctrine()->getRepository('AppBundle:Club');
+
+        $clubs = $clubRepository->findAll();
+
+        return $this->render('record/list_select_club.html.twig', [
+            'clubs' => $clubs,
+        ]);
+    }
 
     /**
      * @Route("/records/pdf", name="record_pdf", methods={"GET"})
@@ -51,6 +89,7 @@ class RecordPdfController extends Controller
         $groups = $this->buildGroups();
         $groups = $this->populateGroups($records, $groups, $club);
         $groups = $this->pruneGroups($groups);
+        $groups = $this->sortRecords($groups);
 
         $data = [
             'title' => $club->getRecordsTitle(),
@@ -78,21 +117,19 @@ class RecordPdfController extends Controller
     }
 
     /**
-     * @return array
+     * @return RecordGroupViewModel[]
      */
     private function buildGroups()
     {
+        /** @var RecordGroupViewModel[] $groups */
         $groups = [];
 
         foreach (self::$envs as $env) {
             $envN = Environment::display($env);
 
-            array_push($groups, [
-                'name' => $envN . ' - Teams',
-                'subgroups' => [
-                    ['name' => 'Senior Team', 'isTeam' => true, 'records' => []],
-                    ['name' => 'Novice Team', 'isTeam' => true, 'records' => []],
-                ],
+            $groups[] = new RecordGroupViewModel($envN . ' - Teams', [
+                new RecordSubgroupViewModel('Senior Team', true),
+                new RecordSubgroupViewModel('Novice Team', true),
             ]);
 
             foreach (self::$skills as $skill) {
@@ -103,17 +140,10 @@ class RecordPdfController extends Controller
                     $subgroups = [];
 
                     foreach (self::$bowtypes as $bowtype) {
-                        array_push($subgroups, [
-                            'name' => $skillN . ' ' . $genderN . ' ' . BowType::display($bowtype),
-                            'isTeam' => false,
-                            'records' => [],
-                        ]);
+                        $subgroups[] = new RecordSubgroupViewModel($skillN . ' ' . $genderN . ' ' . BowType::display($bowtype), false);
                     }
 
-                    array_push($groups, [
-                        'name' => $envN . ' - ' . $skillN . ' ' . $genderN,
-                        'subgroups' => $subgroups,
-                    ]);
+                    $groups[] = new RecordGroupViewModel($envN . ' - ' . $skillN . ' ' . $genderN, $subgroups);
                 }
             }
         }
@@ -122,11 +152,11 @@ class RecordPdfController extends Controller
     }
 
     /**
-     * @param Record[] $records
-     * @param array    $groups
-     * @param Club     $club
+     * @param Record[]               $records
+     * @param RecordGroupViewModel[] $groups
+     * @param Club                   $club
      *
-     * @return array
+     * @return RecordGroupViewModel[]
      */
     private function populateGroups($records, $groups, $club)
     {
@@ -138,34 +168,22 @@ class RecordPdfController extends Controller
 
             $envOffset = $indoors ? 0 : (count(self::$skills) * count(self::$genders) + 1);
 
+            /* @var RecordSubgroupViewModel $target */
             if ($team) {
-                $target = &$groups[$envOffset]['subgroups'][$novice ? 1 : 0]['records'];
+                $target = $groups[$envOffset]->getSubgroup($novice ? 1 : 0);
             } else {
                 $groupIdx = $envOffset + count(self::$genders) * ($novice ? 1 : 0) + ($female ? 2 : 1);
                 $subgroupIdx = array_search($record->getBowtype(), self::$bowtypes, true);
 
-                $target = &$groups[$groupIdx]['subgroups'][$subgroupIdx]['records'];
+                $target = $groups[$groupIdx]->getSubgroup($subgroupIdx);
             }
 
             $currentHolder = $record->getCurrentHolder($club);
 
-            $roundName = RecordManager::getRoundName($record);
-
             if ($currentHolder === null) {
-                array_push($target, [
-                    'round' => $roundName,
-                    'unclaimed' => true,
-                ]);
+                $target->addUnclaimed($record);
             } else {
-                array_push($target, [
-                    'round' => $roundName,
-                    'unclaimed' => false,
-                    'score' => $currentHolder->getScore(),
-                    'holders' => $currentHolder->getPeople()->map(function (RecordHolderPerson $person) {
-                        return ['name' => $person->getPerson()->getName(), 'score' => $person->getScoreValue()];
-                    }),
-                    'details' => $currentHolder->getCompetition()->getName() . ', ' . $currentHolder->getDate()->format(Constants::DATE_FORMAT),
-                ]);
+                $target->addRecord($record, $currentHolder);
             }
         }
 
@@ -173,18 +191,36 @@ class RecordPdfController extends Controller
     }
 
     /**
-     * @param array $groups
+     * @param RecordGroupViewModel[] $groups
      *
-     * @return array
+     * @return RecordGroupViewModel[]
      */
-    private function pruneGroups($groups)
+    private function pruneGroups(array $groups)
     {
-        return array_filter($groups, function ($group) {
-            $group['subgroups'] = array_filter($group['subgroups'], function ($subgroup) {
-                return count($subgroup['records']) > 0;
+        $groups = array_map(function (RecordGroupViewModel $group) {
+            $subgroups = array_filter($group->getSubgroups(), function (RecordSubgroupViewModel $subgroup) {
+                return count($subgroup->getRecords()) > 0;
             });
 
-            return count($group['subgroups']) > 0;
+            return new RecordGroupViewModel($group->getName(), $subgroups);
+        }, $groups);
+
+        return array_filter($groups, function (RecordGroupViewModel $group) {
+            return count($group->getSubgroups()) > 0;
         });
+    }
+
+    /**
+     * @param RecordGroupViewModel[] $groups
+     *
+     * @return RecordGroupViewModel[]
+     */
+    private function sortRecords(array $groups)
+    {
+        return array_map(function (RecordGroupViewModel $group) {
+            return new RecordGroupViewModel($group->getName(), array_map(function (RecordSubgroupViewModel $subgroup) {
+                return $subgroup->sort();
+            }, $group->getSubgroups()));
+        }, $groups);
     }
 }

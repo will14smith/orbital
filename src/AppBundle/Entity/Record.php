@@ -35,6 +35,11 @@ class Record
     protected $num_holders = 1;
 
     /**
+     * @ORM\Column(type="integer")
+     */
+    protected $sort_order;
+
+    /**
      * @ORM\OneToMany(targetEntity="RecordHolder", mappedBy="record")
      * @ORM\OrderBy({"date" = "DESC", "score" = "DESC"})
      */
@@ -285,5 +290,29 @@ class Record
         });
 
         return $all ? $primaryBowtype : null;
+    }
+
+    /**
+     * Set sortOrder.
+     *
+     * @param int $sortOrder
+     *
+     * @return Record
+     */
+    public function setSortOrder($sortOrder)
+    {
+        $this->sort_order = $sortOrder;
+
+        return $this;
+    }
+
+    /**
+     * Get sortOrder.
+     *
+     * @return int
+     */
+    public function getSortOrder()
+    {
+        return $this->sort_order;
     }
 }

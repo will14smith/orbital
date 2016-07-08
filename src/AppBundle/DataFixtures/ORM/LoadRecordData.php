@@ -24,6 +24,7 @@ class LoadRecordData extends AbstractFixture implements OrderedFixtureInterface
     {
         $record1 = new Record();
         $record1->setNumHolders(1);
+        $record1->setSortOrder(1);
         $recordRound1 = new RecordRound();
         $recordRound1->setCount(1);
         $recordRound1->setRound($this->getReference('round-1'));
@@ -35,6 +36,7 @@ class LoadRecordData extends AbstractFixture implements OrderedFixtureInterface
 
         $record2 = new Record();
         $record2->setNumHolders(2);
+        $record2->setSortOrder(2);
         $recordRound2 = new RecordRound();
         $recordRound2->setCount(1);
         $recordRound2->setRound($this->getReference('round-2'));

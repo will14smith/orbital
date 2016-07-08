@@ -50,6 +50,8 @@ gulp.task('js:vendors', function() {
         './node_modules/socket.io-client/socket.io.js',
         './node_modules/select2/dist/js/select2.js',
         './node_modules/mithril/mithril.js',
+        './node_modules/sortablejs/Sortable.js',
+        './node_modules/sortablejs/jquery.binding.js',
     ], 'vendors');
 });
 
