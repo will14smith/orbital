@@ -293,9 +293,9 @@ class Record
     }
 
     /**
-     * Set sortOrder
+     * Set sortOrder.
      *
-     * @param integer $sortOrder
+     * @param int $sortOrder
      *
      * @return Record
      */
@@ -307,9 +307,9 @@ class Record
     }
 
     /**
-     * Get sortOrder
+     * Get sortOrder.
      *
-     * @return integer
+     * @return int
      */
     public function getSortOrder()
     {

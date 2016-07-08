@@ -84,7 +84,7 @@ class RecordViewModel
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function isUnclaimed()
     {

@@ -178,6 +178,7 @@ class RecordController extends Controller
      * @param Request $request
      *
      * @return \Symfony\Component\HttpFoundation\Response
+     *
      * @throws \Exception
      */
     public function orderAction(Request $request)

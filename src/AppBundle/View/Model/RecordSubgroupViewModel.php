@@ -4,7 +4,6 @@ namespace AppBundle\View\Model;
 
 use AppBundle\Entity\Record;
 use AppBundle\Entity\RecordHolder;
-use AppBundle\Services\Records\RecordComparer;
 
 class RecordSubgroupViewModel
 {
@@ -41,7 +40,7 @@ class RecordSubgroupViewModel
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function isTeam()
     {
@@ -78,7 +77,7 @@ class RecordSubgroupViewModel
      */
     public function sort()
     {
-        $new_subgroup = new RecordSubgroupViewModel($this->name, $this->team);
+        $new_subgroup = new self($this->name, $this->team);
         $new_subgroup->records = $this->records;
 
         usort($new_subgroup->records, function (RecordViewModel $a, RecordViewModel $b) {

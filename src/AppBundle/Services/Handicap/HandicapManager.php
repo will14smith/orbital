@@ -43,7 +43,7 @@ class HandicapManager
             foreach (self::$bowTypes as $bowType) {
                 $handicap = $this->getDetail(new HandicapIdentifier($person, $environment, $bowType));
 
-                if($handicap) {
+                if ($handicap) {
                     $handicaps[] = $handicap;
                 }
             }
@@ -62,8 +62,8 @@ class HandicapManager
         $personHandicapRepository = $this->doctrine->getRepository('AppBundle:PersonHandicap');
         $current = $personHandicapRepository->findCurrent($id);
 
-        if($current === null) {
-            return null;
+        if ($current === null) {
+            return;
         }
 
         $historic = $personHandicapRepository->findById($id);

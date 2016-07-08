@@ -33,7 +33,6 @@ class RecordListController extends Controller
      */
     public function indexAction(Request $request)
     {
-
         $clubRepository = $this->getDoctrine()->getRepository('AppBundle:Club');
         $club_id = $request->query->getInt('club');
         $club = $clubRepository->find($club_id);
@@ -169,7 +168,7 @@ class RecordListController extends Controller
 
             $envOffset = $indoors ? 0 : (count(self::$skills) * count(self::$genders) + 1);
 
-            /** @var RecordSubgroupViewModel $target */
+            /* @var RecordSubgroupViewModel $target */
             if ($team) {
                 $target = $groups[$envOffset]->getSubgroup($novice ? 1 : 0);
             } else {

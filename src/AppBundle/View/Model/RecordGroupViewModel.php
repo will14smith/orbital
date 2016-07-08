@@ -14,7 +14,7 @@ class RecordGroupViewModel
     private $subgroups;
 
     /**
-     * @param string                  $name
+     * @param string                    $name
      * @param RecordSubgroupViewModel[] $subgroups
      */
     public function __construct(string $name, array $subgroups)
