@@ -24,11 +24,20 @@ class PersonController extends Controller
         $personRepository = $this->getDoctrine()->getRepository('AppBundle:Person');
 
         $club = $request->query->getInt('club');
-        if ($club == 0) {
-            $people = $personRepository->findAll();
-        } else {
-            $people = $personRepository->findBy(['club' => $club]);
+        if ($club <= 0) {
+            $club = null;
         }
+
+        $namePrefix = $request->query->get('name');
+        if ($namePrefix === '') {
+            $namePrefix = null;
+        }
+
+        $query = $personRepository->getPagedByFilterQuery($club, $namePrefix);
+
+        $paginator = $this->get('knp_paginator');
+        $people = $paginator->paginate($query, $request->query->getInt('page', 1), 20);
+
 
         return $this->render('person/list.html.twig', [
             'people' => $people,

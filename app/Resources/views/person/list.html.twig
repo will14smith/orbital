@@ -5,6 +5,15 @@
 {% endblock %}
 
 {% block body %}
+    {% from ':macro:filter.html.twig' import link %}
+
+    <ul class="inline text-center">
+        <li>{{ link('name', '', '-') }}</li>
+        {% for letter in 'A'..'Z' %}
+            <li>{{ link('name', letter, letter) }}</li>
+        {% endfor %}
+    </ul>
+
     <ul class="list">
         {% for person in people %}
             <li>
@@ -24,6 +33,10 @@
             <li>No People :(</li>
         {% endfor %}
     </ul>
+
+    <div class="navigation">
+        {{ knp_pagination_render(people) }}
+    </div>
 {% endblock %}
 
 {% block sidebar %}
