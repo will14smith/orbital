@@ -22,6 +22,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface
         $admin->setUsername('admin');
         $admin->setEmail('admin@test.com');
         $admin->setPassword('');
+        $admin->setEnabled(true);
         $admin->addRole('ROLE_ADMIN');
         $admin->setClub($this->getReference('club-1'));
         $this->init($admin);

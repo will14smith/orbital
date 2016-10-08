@@ -106,6 +106,8 @@ class RoundController extends Controller
             );
         }
 
+        // TODO age
+        $age = 18;
         $gender = $request->get('gender');
         $bowtype = $request->get('bowtype');
 
@@ -119,12 +121,12 @@ class RoundController extends Controller
             $scores = [];
 
             foreach ($classifications as $classification) {
-                $valid = $calc->isValidClassifiation($round, $gender, $bowtype, $classification);
-                $score = $calc->calculateRoundScore($round, $gender, $bowtype, $classification);
+                $valid = $calc->isValidClassifiation($round, $gender, $age, $classification);
+                $score = $calc->calculateRoundScore($round, $gender, $age, $bowtype, $classification);
 
                 $targets = [];
                 foreach ($round->getTargets() as $rt) {
-                    $targetScore = $calc->calculateTargetScore($rt, $gender, $bowtype, $classification);
+                    $targetScore = $calc->calculateTargetScore($rt, $gender, $age, $bowtype, $classification);
 
                     $targets[] = [
                         'distance' => ['value' => $rt->getDistanceValue(), 'unit' => $rt->getDistanceUnit()],
@@ -155,9 +157,9 @@ class RoundController extends Controller
                 $scores = [];
 
                 foreach ($classifications as $classification) {
-                    $valid = $calc->isValidClassifiation($round, $gender, $bowtype, $classification);
+                    $valid = $calc->isValidClassifiation($round, $gender, $age, $classification);
 
-                    $score = $calc->calculateRoundScore($round, $gender, $bowtype, $classification);
+                    $score = $calc->calculateRoundScore($round, $gender, $age, $bowtype, $classification);
                     $scores[] = [
                         'classification' => $classification,
                         'score' => $score,

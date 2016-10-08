@@ -427,4 +427,21 @@ class Person extends BaseUser
     {
         return $this->date_started;
     }
+
+    public function getAge(\DateTime $when = null)
+    {
+        if ($when === null) {
+            $when = new \DateTime('now');
+        }
+
+        $dob = $this->getDateOfBirth();
+        if ($dob === null) {
+            // default age....
+            return 18;
+        }
+
+        $diff = $when->diff($dob);
+
+        return $diff->y;
+    }
 }

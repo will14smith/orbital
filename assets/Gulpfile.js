@@ -4,7 +4,6 @@ var gulp = require('gulp'),
     concat = require('gulp-concat'),
     notify = require("gulp-notify"),
     rename = require('gulp-rename'),
-    uglify = require('gulp-uglify'),
     path = require('path'),
     merge = require('merge-stream');
 
