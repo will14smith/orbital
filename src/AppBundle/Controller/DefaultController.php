@@ -2,15 +2,17 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Controller\Traits\PdfRenderTrait;
 use AppBundle\Form\Type\RoundupType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 
 class DefaultController extends Controller
 {
+    use PdfRenderTrait;
+
     /**
      * @Route("/", name="homepage", methods={"GET"})
      */
@@ -41,15 +43,22 @@ class DefaultController extends Controller
             $data = $form->getData();
             $roundup = $this->generateRoundup($data['start_date'], $data['end_date'], $data['type']);
 
-            $html = $this->renderView('pdf/roundup.pdf.twig', [
+            $data = [
                 'blocks' => $roundup,
-            ]);
+            ];
 
-            return new Response($this->get('knp_snappy.pdf')->getOutputFromHtml($html), 200, [
-                    'Content-Type' => 'application/pdf',
-                    'Content-Disposition' => 'attachment; filename="roundup.pdf"',
-                ]
-            );
+            if ($request->query->has('html')) {
+                return $this->render('pdf/roundup.pdf.twig', $data);
+            }
+
+            return $this->renderPdf('pdf/roundup.pdf.twig', $data, [
+                'margin-top' => '12mm',
+                'margin-bottom' => '12mm',
+                'margin-left' => '24mm',
+                'margin-right' => '24mm',
+
+                'orientation' => 'Portrait',
+            ]);
         }
 
         return $this->render('default/roundup.html.twig', [
@@ -63,6 +72,7 @@ class DefaultController extends Controller
         $doctrine = $this->getDoctrine();
 
         if (in_array('records', $types)) {
+
             $records = $doctrine->getRepository('AppBundle:Record')
                 ->getByRoundup($start, $end);
 

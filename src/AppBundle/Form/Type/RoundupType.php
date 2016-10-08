@@ -18,10 +18,10 @@ class RoundupType extends AbstractType
                 'multiple' => true,
                 'required' => true,
                 'choices' => [
-                    'records' => 'Records',
-                    'badges' => 'Badges',
-                    'leagues' => 'Leagues',
-                    'competitions' => 'Competitions',
+                    'Records' => 'records',
+                    'Badges' => 'badges',
+                    'Leagues' => 'leagues',
+                    'Competitions' => 'competitions',
                 ],
             ]);
     }
