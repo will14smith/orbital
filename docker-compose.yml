@@ -1,0 +1,23 @@
+# TODO logs
+# TODO db persistence
+# TODO fileuploads
+
+env_file: .env
+
+services:
+    web:
+        image: will14smith/orbital_web
+        ports: 
+            - "8080:80"
+        links:
+            - php
+
+    php:
+        image: will14smith/orbital_php
+        links:
+            - db
+
+    db:
+        image: mariadb:10
+        volumes:
+            - ./db:/var/lib/mysql

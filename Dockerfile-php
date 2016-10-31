@@ -1,0 +1,41 @@
+# TODO uploads, logging, etc...
+
+FROM php:7-fpm
+
+RUN apt-get update && \
+    apt-get install -y zlib1g-dev && \
+    docker-php-ext-install zip && \
+    curl https://getcomposer.org/composer.phar -o /tmp/composer.phar
+
+COPY app/config/config.yml \
+     app/config/config_prod.yml \
+     app/config/parameters.yml.dist \
+     app/config/routing.yml \
+     app/config/security.yml \
+     app/config/services.yml \
+     app/config/version.yml \
+     \
+     /orbital/app/config/
+
+COPY infrastructure/symfony.yml /orbital/app/config/parameters.yml
+
+COPY app/AppCache.php \
+     app/AppKernel.php \
+     app/autoload.php \
+     app/console \
+     \
+     /orbital/app/
+
+COPY app/Resources/ /orbital/app/Resources/
+COPY src/AppBundle/ /orbital/src/AppBundle/
+COPY web/app.php /orbital/web/
+COPY composer.json composer.lock /orbital/
+
+ENV SYMFONY_ENV=prod
+
+RUN cd /orbital && php /tmp/composer.phar install --prefer-dist --no-scripts --no-suggest --no-dev --optimize-autoloader
+RUN cd /orbital && php /tmp/composer.phar run-script post-install-cmd
+
+RUN cd /orbital && \
+    chown -R www-data:www-data app/cache/prod app/logs/ && \
+    chmod -R +w app/cache/prod app/logs/
